@@ -22,6 +22,8 @@ const useConfig = () => {
         silla2?: Phaser.GameObjects.Image | null;
         silla3?: Phaser.GameObjects.Image | null;
         silla4?: Phaser.GameObjects.Image | null;
+        sofaUno?: Phaser.GameObjects.Image | null;
+        sofaDos?: Phaser.GameObjects.Image | null;
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
         initialPointerPosition?: { x: number; y: number };
@@ -29,9 +31,16 @@ const useConfig = () => {
         sentadoSofa: boolean;
         sentadoEscritorio: boolean;
         isMoving: boolean;
+        movimientosDesdeSentado: number;
         nextMoveTime: number;
         lastDireccion: Direccion | null;
         lastDireccions: Direccion[];
+        estaSentado: boolean;
+        estaMoviendoHaciaObjeto: boolean;
+        sentado: {
+          animacion: string | undefined;
+          eleccion: Phaser.GameObjects.Image | null | undefined;
+        };
 
         constructor() {
           super();
@@ -42,14 +51,23 @@ const useConfig = () => {
           this.escritorio2 = null;
           this.escritorio3 = null;
           this.escritorio4 = null;
+          this.sofaUno = null;
+          this.sofaDos = null;
+          this.estaSentado = false;
           this.lastDireccions = [];
           this.panelDeControl = null;
           this.frameCount = 0;
           this.sentadoSofa = false;
+          this.estaMoviendoHaciaObjeto = false;
           this.sentadoEscritorio = false;
           this.isMoving = false;
           this.nextMoveTime = 0;
+          this.movimientosDesdeSentado = 0;
           this.lastDireccion = null;
+          this.sentado = {
+            eleccion: undefined,
+            animacion: undefined,
+          };
         }
 
         preload() {
@@ -195,12 +213,11 @@ const useConfig = () => {
             .setOrigin(0, 0)
             .setScale(1.2);
           alfombra.scaleX = 1.5;
-          const sofaUno = this.add
+          this.sofaUno = this.add
             .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
             .setOrigin(0, 0)
             .setScale(1.2);
-
-          const sofaDos = this.add
+          this.sofaDos = this.add
             .image(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
             .setOrigin(0, 0)
             .setScale(1.2);
@@ -385,7 +402,7 @@ const useConfig = () => {
           );
           this.physics.add.collider(
             this.muchacho,
-            sofaUno,
+            this.sofaUno,
             () => {
               this.stopCharacterAndPlanNextMove();
             },
@@ -394,7 +411,7 @@ const useConfig = () => {
           );
           this.physics.add.collider(
             this.muchacho,
-            sofaDos,
+            this.sofaDos,
             () => {
               this.stopCharacterAndPlanNextMove();
             },
@@ -508,23 +525,40 @@ const useConfig = () => {
             !this.isMoving &&
             (!this.nextMoveTime || this.time.now > this.nextMoveTime)
           ) {
-            const newDirection = this.chooseDirectionBasedOnSpace();
+            if (this.movimientosDesdeSentado >= 1 && !this.estaSentado) {
+              this.decidirSentarse();
+            } else if (!this.estaSentado) {
+              this.movimientosDesdeSentado++;
+              const newDirection = this.chooseDirectionBasedOnSpace();
 
-            if (newDirection) {
-              this.moveCharacter(newDirection);
+              if (newDirection) {
+                this.moveCharacter(newDirection);
 
-              const moveDuration = Phaser.Math.Between(5000, 12000);
+                const moveDuration = Phaser.Math.Between(5000, 12000);
 
-              this.time.delayedCall(
-                moveDuration,
-                () => {
-                  this.stopCharacterAndPlanNextMove();
-                },
-                [],
-                this
-              );
+                this.time.delayedCall(
+                  moveDuration,
+                  () => {
+                    this.stopCharacterAndPlanNextMove();
+                  },
+                  [],
+                  this
+                );
+              }
+            }
+          } else if (this.isMoving) {
+            const reachedWorldBounds =
+              this.muchacho?.body?.blocked.right ||
+              this.muchacho?.body?.blocked.left ||
+              this.muchacho?.body?.blocked.up ||
+              this.muchacho?.body?.blocked.down;
+
+            if (reachedWorldBounds) {
+              this.stopCharacterAndPlanNextMove();
             }
           }
+
+          this.manejarProfundidad();
 
           if (this.frameCount % 10 === 0) {
             this.game.renderer.snapshot((snapshot: any) => {
@@ -540,28 +574,33 @@ const useConfig = () => {
               mapaDiv!.style.width = "100%";
               mapaDiv!.style.height = "100%";
             });
-          } else if (this.isMoving) {
-            const reachedWorldBounds =
-              this.muchacho?.body?.blocked.right ||
-              this.muchacho?.body?.blocked.left ||
-              this.muchacho?.body?.blocked.up ||
-              this.muchacho?.body?.blocked.down;
-
-            if (reachedWorldBounds) {
-              this.stopCharacterAndPlanNextMove();
-            }
           }
           this.frameCount++;
         }
         stopCharacterAndPlanNextMove() {
-          this.muchacho?.setVelocityX(0);
-          this.muchacho?.setVelocityY(0);
-          this.muchacho?.anims.play("inactivo", true);
+          if (!this.estaSentado) {
+            this.muchacho?.setVelocityX(0);
+            this.muchacho?.setVelocityY(0);
+            this.muchacho?.anims.play("inactivo", true);
 
-          const idleTime = Phaser.Math.Between(10000, 20000);
-          this.nextMoveTime = this.time.now + idleTime;
+            const idleTime = Phaser.Math.Between(10000, 20000);
+            this.nextMoveTime = this.time.now + idleTime;
 
-          this.isMoving = false;
+            this.isMoving = false;
+          }
+        }
+        manejarProfundidad() {
+          this.muchacho!.depth = (this.muchacho!?.y +
+            this.muchacho!?.height / 4) as number;
+          this.escritorio1!.depth = this.escritorio1?.y as number;
+          this.silla1!.depth = this.silla1?.y as number;
+          this.escritorio2!.depth = this.escritorio2?.y as number;
+          this.silla2!.depth = this.silla2?.y as number;
+          this.escritorio3!.depth = this.escritorio3?.y as number;
+          this.silla3!.depth = this.silla3?.y as number;
+          this.escritorio4!.depth = this.escritorio4?.y as number;
+          this.silla4!.depth = this.silla4?.y as number;
+          this.panelDeControl!.depth = this.panelDeControl?.y as number;
         }
         moveCharacter(direction: Direccion) {
           this.isMoving = true;
@@ -580,19 +619,19 @@ const useConfig = () => {
               break;
             case Direccion.IzquierdaAbajo:
               this.muchacho?.setVelocityX(-160);
-              this.muchacho?.setVelocityY(-160);
+              this.muchacho?.setVelocityY(160);
               break;
             case Direccion.DerechaAbajo:
               this.muchacho?.setVelocityX(160);
-              this.muchacho?.setVelocityY(-160);
+              this.muchacho?.setVelocityY(160);
               break;
             case Direccion.IzquierdaArriba:
               this.muchacho?.setVelocityY(-160);
-              this.muchacho?.setVelocityX(160);
+              this.muchacho?.setVelocityX(-160);
               break;
             case Direccion.DerechaArriba:
               this.muchacho?.setVelocityY(160);
-              this.muchacho?.setVelocityX(160);
+              this.muchacho?.setVelocityX(-160);
               break;
           }
 
@@ -641,7 +680,6 @@ const useConfig = () => {
           const gameWidth = Number(this.game.config.width);
           const gameHeight = Number(this.game.config.height);
 
-          // Asegúrate de que tus casos para Direccion.Arriba y otros incluyan break;
           switch (direction) {
             case Direccion.Izquierda:
               distance = this.muchacho!?.x;
@@ -676,36 +714,93 @@ const useConfig = () => {
           const simulatedDistance = speed * (checkTime / 1000);
           return Math.min(distance, simulatedDistance);
         }
+        moverHaciaObjeto() {
+          const posibilidades = [
+            this.sofaUno,
+            this.sofaDos,
+            this.silla1,
+            this.silla2,
+            this.silla3,
+            this.silla4,
+          ];
+          this.sentado!.eleccion = Phaser.Utils.Array.GetRandom(posibilidades)!;
 
-        // moveCharacterTo(waypoint: Waypoint) {
-        //   const { destino, direccion } = waypoint;
-        //   this.muchacho?.anims.play(direccion, true);
-        //   this.physics.moveTo(this.muchacho!, destino.x, destino.y, 100);
+          this.sentado!.animacion =
+            this.sentado?.eleccion === this.sofaUno ||
+            this.sentado?.eleccion === this.sofaDos
+              ? "sentadoSofa"
+              : "sentadoEscritorio";
 
-        //   const distance = Phaser.Math.Distance.Between(
-        //     this.muchacho?.x!,
-        //     this.muchacho?.y!,
-        //     destino.x,
-        //     destino.y
-        //   );
+          this.estaMoviendoHaciaObjeto = true;
+          const direccionX =
+            Number(this.sentado?.eleccion?.x) - Number(this.muchacho?.x);
+          const direccionY =
+            Number(this.sentado?.eleccion?.y) - Number(this.muchacho?.y);
+          const distancia = Math.sqrt(
+            direccionX * direccionX + direccionY * direccionY
+          );
 
-        //   if (distance < 4) {
-        //     this.muchacho?.body?.stop();
-        //     this.muchacho?.setPosition(destino.x, destino.y);
-        //     this.isMoving = false;
-        //     this.advanceToNextWaypoint();
-        //   }
-        // }
-        // handleSittingAction(waypoint: Waypoint) {
-        //   this.adjustCharacterForSitting(
-        //     { x: waypoint.destino.x, y: waypoint.destino.y },
-        //     waypoint.direccion
-        //   );
+          const normDirX = direccionX / distancia;
+          const normDirY = direccionY / distancia;
 
-        //   this.time.delayedCall(waypoint.duracion || 1000, () => {
-        //     this.advanceToNextWaypoint();
-        //   });
-        // }
+          this.muchacho?.setVelocityX(normDirX * 160);
+          this.muchacho?.setVelocityY(normDirY * 160);
+
+          const angulo = (Math.atan2(normDirY, normDirX) * 180) / Math.PI;
+
+          if (direccionX > 0 && direccionY > 0) {
+            this.muchacho?.anims.play("derechaAbajo", true);
+          } else if (direccionX < 0 && direccionY > 0) {
+            this.muchacho?.anims.play("izquierdaAbajo", true);
+          } else if (direccionX < 0 && direccionY < 0) {
+            this.muchacho?.anims.play("izquierdaArriba", true);
+          } else if (direccionX > 0 && direccionY < 0) {
+            this.muchacho?.anims.play("derechaArriba", true);
+          } else if (angulo >= 45 && angulo < 135) {
+            this.muchacho?.anims.play("abajo", true);
+          } else if (angulo >= 135 || angulo < -135) {
+            this.muchacho?.anims.play("izquierda", true);
+          } else if (angulo >= -135 && angulo < -45) {
+            this.muchacho?.anims.play("arriba", true);
+          } else if (angulo >= -45 && angulo < 45) {
+            this.muchacho?.anims.play("derecha", true);
+          }
+        }
+        decidirSentarse() {
+          if (this.estaMoviendoHaciaObjeto) {
+            this.checkLlegada();
+          } else {
+            this.moverHaciaObjeto();
+          }
+        }
+        checkLlegada() {
+          if (
+            Phaser.Math.Distance.Between(
+              this.muchacho?.x!,
+              this.muchacho?.y!,
+              this.sentado?.eleccion?.x!,
+              this.sentado?.eleccion?.y!
+            ) < 10 ||
+            this.muchacho?.anims.getName() == "inactivo"
+          ) {
+            this.estaSentado = true;
+            this.muchacho?.setVelocityX(0);
+            this.muchacho?.setVelocityY(0);
+            this.muchacho?.anims.play(this.sentado?.animacion!);
+            this.estaMoviendoHaciaObjeto = false;
+
+            const tiempoSentado = Phaser.Math.Between(10000, 20000);
+            this.time.delayedCall(
+              tiempoSentado,
+              () => {
+                this.estaSentado = false;
+                // this.stopCharacterAndPlanNextMove();
+              },
+              [],
+              this
+            );
+          }
+        }
         // adjustCharacterForSitting(
         //   destino: {
         //     x: number;
