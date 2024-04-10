@@ -1,0 +1,10 @@
+{
+  "Home": {
+    "title": "NPC STUDIO",
+    "notify": "Notify Me",
+    "chat": "CHAT\nLOG"
+  },
+  "Nav": {
+    "lan": "Choose Language"
+  }
+}

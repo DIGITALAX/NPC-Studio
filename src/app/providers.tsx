@@ -1,6 +1,8 @@
 "use client";
 
-import { darkTheme, RainbowKitProvider, Theme } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import pick from "lodash/pick";
+import { NextIntlClientProvider } from "next-intl";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
@@ -8,13 +10,7 @@ import { store } from "./../../redux/store";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, mainnet } from "wagmi/chains";
-import { merge } from "lodash";
-
-const walletTheme = merge(darkTheme(), {
-  colors: {
-    accentColor: "#111313",
-  },
-} as Theme);
+import messages from "./../../public/locale/en.json";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -32,12 +28,18 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
-          <Provider store={store}>{children}</Provider>
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <NextIntlClientProvider
+      locale="en"
+      messages={pick(messages, ["Nav", "Home"])}
+      timeZone="America/New_York"
+    >
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>
+            <Provider store={store}>{children}</Provider>
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </NextIntlClientProvider>
   );
 }

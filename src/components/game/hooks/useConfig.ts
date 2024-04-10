@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
-import { Direcion, Waypoint } from "../types/game.types";
+import { Direccion, Waypoint } from "../types/game.types";
 
 const useConfig = () => {
   const gameRef = useRef<HTMLElement | undefined>(null);
@@ -28,9 +28,10 @@ const useConfig = () => {
         frameCount: number;
         sentadoSofa: boolean;
         sentadoEscritorio: boolean;
-        waypoints: Waypoint[];
-        currentWaypointIndex: number;
         isMoving: boolean;
+        nextMoveTime: number;
+        lastDireccion: Direccion | null;
+        lastDireccions: Direccion[];
 
         constructor() {
           super();
@@ -41,13 +42,14 @@ const useConfig = () => {
           this.escritorio2 = null;
           this.escritorio3 = null;
           this.escritorio4 = null;
+          this.lastDireccions = [];
           this.panelDeControl = null;
           this.frameCount = 0;
           this.sentadoSofa = false;
           this.sentadoEscritorio = false;
           this.isMoving = false;
-          this.currentWaypointIndex = 0;
-          this.waypoints = [];
+          this.nextMoveTime = 0;
+          this.lastDireccion = null;
         }
 
         preload() {
@@ -327,24 +329,79 @@ const useConfig = () => {
           this.cameras.main.setBounds(0, 0, parentWidth, parentHeight);
 
           this.cursor = this.input.keyboard?.createCursorKeys();
-          this.physics.add.collider(this.muchacho, capsula);
-          this.physics.add.collider(this.muchacho, telefono);
-          this.physics.add.collider(this.muchacho, arcade);
-          this.physics.add.collider(this.muchacho, pared);
-          this.physics.add.collider(this.muchacho, nevera);
-          this.physics.add.collider(this.muchacho, maquina);
-          this.physics.add.collider(this.muchacho, sofaUno);
-          this.physics.add.collider(this.muchacho, sofaDos);
+          this.physics.add.collider(
+            this.muchacho,
+            capsula,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            telefono,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            arcade,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            pared,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            nevera,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            maquina,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            sofaUno,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
+          this.physics.add.collider(
+            this.muchacho,
+            sofaDos,
+            () => {
+              this.stopCharacterAndPlanNextMove();
+            },
+            undefined,
+            this
+          );
           this.muchacho.setCollideWorldBounds(true);
-
-          // if (
-          //   this.sys.game.device.os.iOS ||
-          //   this.sys.game.device.os.android ||
-          //   this.sys.game.device.os.iPad ||
-          //   this.sys.game.device.os.iPhone
-          // ) {
-          //   this.enableTouchControls();
-          // }
 
           this.anims.create({
             key: "inactivo",
@@ -445,219 +502,29 @@ const useConfig = () => {
             frameRate: 0.3,
             repeat: -1,
           });
-
-          this.input.on("pointerdown", () => {
-            this.sentadoSofa = false;
-            this.sentadoEscritorio = false;
-          });
-
-          this.waypoints = [
-            {
-              direccion: "derecha",
-              destino: { x: 902, y: 576 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 902, y: 576 },
-              duracion: 5000,
-            },
-            {
-              direccion: "abajo",
-              destino: { x: 902, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 902, y: 680 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 1280.5, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 1280.5, y: 680 },
-              duracion: 15000,
-            },
-            {
-              direccion: "izquierda",
-              destino: { x: 196, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 196, y: 680 },
-              duracion: 1000,
-            },
-            {
-              direccion: "arriba",
-              destino: { x: 196, y: 421 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 196, y: 421 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 584, y: 421 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 421 },
-              duracion: 1000,
-            },
-            {
-              direccion: "arriba",
-              destino: { x: 584, y: 210 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 210 },
-              duracion: 1000,
-            },
-            {
-              direccion: "abajo",
-              destino: { x: 584, y: 303 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 303 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 1336, y: 303 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 1336, y: 303 },
-              duracion: 10000,
-            },
-            {
-              direccion: "sentadoEscritorio",
-              destino: {
-                x: 1336,
-                y: this.silla1!?.y - Number(this.silla1!?.y) / 4,
-              },
-              duracion: 15000,
-            },
-          ];
         }
-
         update() {
-          if (!this.isMoving && this.waypoints.length > 0) {
-            const waypoint = this.waypoints[this.currentWaypointIndex];
+          if (
+            !this.isMoving &&
+            (!this.nextMoveTime || this.time.now > this.nextMoveTime)
+          ) {
+            const newDirection = this.chooseDirectionBasedOnSpace();
 
-            if (
-              waypoint.direccion === "sentadoSofa" ||
-              waypoint.direccion === "sentadoEscritorio"
-            ) {
-              this.handleSittingAction(waypoint);
-            } else if (waypoint.direccion !== "inactivo") {
-              this.moveCharacterTo(waypoint);
-            } else {
-              this.handleAction(waypoint);
+            if (newDirection) {
+              this.moveCharacter(newDirection);
 
-              this.muchacho!.depth = (this.muchacho!?.y +
-                this.muchacho!?.height / 4) as number;
-              this.escritorio1!.depth = this.escritorio1?.y as number;
-              this.silla1!.depth = this.silla1?.y as number;
-              this.escritorio2!.depth = this.escritorio2?.y as number;
-              this.silla2!.depth = this.silla2?.y as number;
-              this.escritorio3!.depth = this.escritorio3?.y as number;
-              this.silla3!.depth = this.silla3?.y as number;
-              this.escritorio4!.depth = this.escritorio4?.y as number;
-              this.silla4!.depth = this.silla4?.y as number;
-              this.panelDeControl!.depth = this.panelDeControl?.y as number;
+              const moveDuration = Phaser.Math.Between(5000, 12000);
+
+              this.time.delayedCall(
+                moveDuration,
+                () => {
+                  this.stopCharacterAndPlanNextMove();
+                },
+                [],
+                this
+              );
             }
           }
-          // if (this.sentadoSofa) {
-          //   this.muchacho?.setVelocityX(0);
-          //   this.muchacho?.setVelocityY(0);
-          //   this.muchacho?.anims.play("sentadoSofa", true);
-          //   return;
-          // }
-
-          // if (this.sentadoEscritorio) {
-          //   this.muchacho?.setVelocityX(0);
-          //   this.muchacho?.setVelocityY(0);
-          //   this.muchacho?.anims.play("sentadoEscritorio", true);
-          //   return;
-          // }
-
-          // if (
-          //   this.cursor?.left.isDown &&
-          //   this.cursor?.down?.isDown &&
-          //   this.bloqueoDinamico(Direcion.Izquierda) &&
-          //   this.bloqueoDinamico(Direcion.Abajo)
-          // ) {
-          //   this.muchacho?.setVelocityX(-160);
-          //   this.muchacho?.setVelocityY(160);
-          //   this.muchacho?.anims.play("izquierdaAbajo", true);
-          // } else if (
-          //   this.cursor?.left.isDown &&
-          //   this.cursor?.up?.isDown &&
-          //   this.bloqueoDinamico(Direcion.Izquierda) &&
-          //   this.bloqueoDinamico(Direcion.Arriba)
-          // ) {
-          //   this.muchacho?.setVelocityX(-160);
-          //   this.muchacho?.setVelocityY(-160);
-          //   this.muchacho?.anims.play("izquierdaArriba", true);
-          // } else if (
-          //   this.cursor?.right.isDown &&
-          //   this.cursor?.down?.isDown &&
-          //   this.bloqueoDinamico(Direcion.Abajo) &&
-          //   this.bloqueoDinamico(Direcion.Derecha)
-          // ) {
-          //   this.muchacho?.setVelocityX(160);
-          //   this.muchacho?.setVelocityY(160);
-          //   this.muchacho?.anims.play("derechaAbajo", true);
-          // } else if (
-          //   this.cursor?.right.isDown &&
-          //   this.cursor?.up?.isDown &&
-          //   this.bloqueoDinamico(Direcion.Arriba) &&
-          //   this.bloqueoDinamico(Direcion.Derecha)
-          // ) {
-          //   this.muchacho?.setVelocityX(160);
-          //   this.muchacho?.setVelocityY(-160);
-          //   this.muchacho?.anims.play("derechaArriba", true);
-          // } else if (
-          //   this.cursor?.left.isDown &&
-          //   this.bloqueoDinamico(Direcion.Izquierda)
-          // ) {
-          //   this.muchacho?.setVelocityX(-160);
-          //   this.muchacho?.anims.play("izquierda", true);
-          // } else if (
-          //   this.cursor?.right.isDown &&
-          //   this.bloqueoDinamico(Direcion.Derecha)
-          // ) {
-          //   this.muchacho?.setVelocityX(160);
-          //   this.muchacho?.anims.play("derecha", true);
-          // } else if (
-          //   this.cursor?.up.isDown &&
-          //   this.bloqueoDinamico(Direcion.Arriba)
-          // ) {
-          //   this.muchacho?.setVelocityY(-160);
-          //   this.muchacho?.anims.play("arriba", true);
-          // } else if (
-          //   this.cursor?.down.isDown &&
-          //   this.bloqueoDinamico(Direcion.Abajo)
-          // ) {
-          //   this.muchacho?.setVelocityY(160);
-          //   this.muchacho?.anims.play("abajo", true);
-          // } else {
-          //   this.muchacho?.setVelocityY(0);
-          //   this.muchacho?.setVelocityX(0);
-          // }
-
-          // if (
-          //   !this.cursor?.left.isDown &&
-          //   !this.cursor?.right.isDown &&
-          //   !this.cursor?.up.isDown &&
-          //   !this.cursor?.down.isDown
-          // ) {
-          //   this.muchacho?.anims.play("inactivo", true);
-          // }
 
           if (this.frameCount % 10 === 0) {
             this.game.renderer.snapshot((snapshot: any) => {
@@ -673,165 +540,311 @@ const useConfig = () => {
               mapaDiv!.style.width = "100%";
               mapaDiv!.style.height = "100%";
             });
+          } else if (this.isMoving) {
+            const reachedWorldBounds =
+              this.muchacho?.body?.blocked.right ||
+              this.muchacho?.body?.blocked.left ||
+              this.muchacho?.body?.blocked.up ||
+              this.muchacho?.body?.blocked.down;
+
+            if (reachedWorldBounds) {
+              this.stopCharacterAndPlanNextMove();
+            }
           }
           this.frameCount++;
         }
-        moveCharacterTo(waypoint: Waypoint) {
-          const { destino, direccion } = waypoint;
-          this.muchacho?.anims.play(direccion, true);
-          this.physics.moveTo(this.muchacho!, destino.x, destino.y, 100);
+        stopCharacterAndPlanNextMove() {
+          this.muchacho?.setVelocityX(0);
+          this.muchacho?.setVelocityY(0);
+          this.muchacho?.anims.play("inactivo", true);
 
-          const distance = Phaser.Math.Distance.Between(
-            this.muchacho?.x!,
-            this.muchacho?.y!,
-            destino.x,
-            destino.y
-          );
+          const idleTime = Phaser.Math.Between(10000, 20000);
+          this.nextMoveTime = this.time.now + idleTime;
 
-          if (distance < 4) {
-            this.muchacho?.body?.stop();
-            this.muchacho?.setPosition(destino.x, destino.y);
-            this.isMoving = false;
-            this.advanceToNextWaypoint();
-          }
+          this.isMoving = false;
         }
-        handleSittingAction(waypoint: Waypoint) {
-          this.adjustCharacterForSitting(
-            { x: waypoint.destino.x, y: waypoint.destino.y },
-            waypoint.direccion
-          );
-
-          this.time.delayedCall(waypoint.duracion || 1000, () => {
-            this.advanceToNextWaypoint();
-          });
-        }
-        adjustCharacterForSitting(
-          destino: {
-            x: number;
-            y: number;
-          },
-          action: string
-        ) {
-          this.muchacho?.body?.stop();
-          this.muchacho?.setPosition(destino.x, destino.y);
-          this.muchacho?.anims.play(action, true);
-
-          if (action === "sentadoEscritorio") {
-            this.handleTolerancia();
-          }
-        }
-        handleTolerancia() {
-          [
-            { escritorio: this.escritorio1!, silla: this.silla1! },
-            { escritorio: this.escritorio2!, silla: this.silla2! },
-            { escritorio: this.escritorio3!, silla: this.silla3! },
-            { escritorio: this.escritorio4!, silla: this.silla4! },
-          ].forEach(
-            (item: {
-              escritorio: Phaser.GameObjects.Image;
-              silla: Phaser.GameObjects.Image;
-            }) => {
-              const centroEscritorioX =
-                Number(item.escritorio.x) -
-                Number(item.escritorio.displayWidth) * 0.5;
-              const frenteEscritorioY = Number(item.escritorio.y);
-              const muchachoX = this.muchacho?.x;
-              const muchachoY = this.muchacho?.y;
-
-              const toleranciaX = Number(item.escritorio.displayWidth) * 0.5;
-              const toleranciaY = 100;
-            
-              if (
-                Math.abs(Number(muchachoX) - centroEscritorioX) <=
-                  toleranciaX &&
-                Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-              ) {
-                item.escritorio?.setDepth(1);
-                item.silla?.setDepth(2);
-                this.muchacho?.setDepth(1.5);
-              }
-            }
-          );
-        }
-        handleAction(waypoint: Waypoint) {
-          const { duracion, direccion } = waypoint;
+        moveCharacter(direction: Direccion) {
           this.isMoving = true;
-          if (direccion) this.muchacho?.anims.play(direccion, true);
-
-          this.time.delayedCall(duracion!, () => {
-            this.isMoving = false;
-            this.advanceToNextWaypoint();
-          });
-        }
-        advanceToNextWaypoint() {
-          this.currentWaypointIndex++;
-          if (this.currentWaypointIndex >= this.waypoints.length) {
-            this.currentWaypointIndex = 0;
+          switch (direction) {
+            case Direccion.Izquierda:
+              this.muchacho?.setVelocityX(-160);
+              break;
+            case Direccion.Derecha:
+              this.muchacho?.setVelocityX(160);
+              break;
+            case Direccion.Arriba:
+              this.muchacho?.setVelocityY(-160);
+              break;
+            case Direccion.Abajo:
+              this.muchacho?.setVelocityY(160);
+              break;
+            case Direccion.IzquierdaAbajo:
+              this.muchacho?.setVelocityX(-160);
+              this.muchacho?.setVelocityY(-160);
+              break;
+            case Direccion.DerechaAbajo:
+              this.muchacho?.setVelocityX(160);
+              this.muchacho?.setVelocityY(-160);
+              break;
+            case Direccion.IzquierdaArriba:
+              this.muchacho?.setVelocityY(-160);
+              this.muchacho?.setVelocityX(160);
+              break;
+            case Direccion.DerechaArriba:
+              this.muchacho?.setVelocityY(160);
+              this.muchacho?.setVelocityX(160);
+              break;
           }
+
+          this.muchacho?.anims.play(direction, true);
         }
-        bloqueoDinamico(direcion: Direcion): boolean {
-          const numeroUmbral = 20;
-          const bloqueos = [
-            this.escritorio1,
-            this.silla1,
-            this.escritorio2,
-            this.silla2,
-            this.escritorio3,
-            this.silla3,
-            this.escritorio4,
-            this.silla4,
-            this.panelDeControl,
+        chooseDirectionBasedOnSpace() {
+          const directions = [
+            Direccion.Arriba,
+            Direccion.Abajo,
+            Direccion.Izquierda,
+            Direccion.Derecha,
+            Direccion.DerechaAbajo,
+            Direccion.DerechaArriba,
+            Direccion.IzquierdaAbajo,
+            Direccion.IzquierdaArriba,
           ];
-
-          const esBloqueado = bloqueos.some(
-            (item: Phaser.GameObjects.Image | null | undefined) => {
-              const escritorio4Y =
-                this.muchacho!?.y > item!?.y - item!?.height - numeroUmbral &&
-                this.muchacho!?.y < item!?.y - item!?.height + numeroUmbral;
-              const escritorio4DerechoX =
-                this.muchacho!?.x >= item!?.x - item!?.width - numeroUmbral &&
-                this.muchacho!?.x <= item!?.x - item!?.width + numeroUmbral;
-              const escritorio4IzquierdoX =
-                this.muchacho!?.x <= item!?.x + numeroUmbral &&
-                this.muchacho!?.x >= item!?.x - numeroUmbral;
-
-              const escritorio4X =
-                this.muchacho!?.x > item!?.x - item!?.width - numeroUmbral &&
-                this.muchacho!?.y < item!?.x - item!?.width + numeroUmbral;
-
-              const escritorio4AbajoY =
-                this.muchacho!?.y >= item!?.y - item!?.height - numeroUmbral &&
-                this.muchacho!?.y <= item!?.y - item!?.height + numeroUmbral;
-              const escritorio4ArribaY =
-                this.muchacho!?.y <=
-                  item!?.y - item!?.height / 1.5 + numeroUmbral &&
-                this.muchacho!?.y >=
-                  item!?.y - item!?.height / 1.5 - numeroUmbral;
-
-              if (direcion == Direcion.Izquierda) {
-                if (escritorio4Y && escritorio4IzquierdoX) {
-                  return true;
-                }
-              } else if (direcion == Direcion.Derecha) {
-                if (escritorio4Y && escritorio4DerechoX) {
-                  return true;
-                }
-              } else if (direcion == Direcion.Arriba) {
-                if (escritorio4X && escritorio4ArribaY) {
-                  return true;
-                }
-              } else if (direcion == Direcion.Abajo) {
-                if (escritorio4X && escritorio4AbajoY) {
-                  return true;
-                }
-              }
-
-              return false;
-            }
+          const filteredDirections = directions.filter(
+            (direction) => !this.lastDireccions.includes(direction)
           );
 
-          return !esBloqueado;
+          let distances = filteredDirections
+            .map((direction) => ({
+              direction,
+              distance: this.simulateDirectionCheck(direction),
+            }))
+            .filter((d) => d.distance > 0);
+
+          if (distances.length === 0) return null;
+
+          distances.sort((a, b) => b.distance - a.distance);
+          const topThreeDistances = distances.slice(0, 3);
+          const chosenDirection =
+            Phaser.Utils.Array.GetRandom(topThreeDistances).direction;
+          this.lastDireccion = chosenDirection;
+          this.lastDireccions.push(chosenDirection);
+          if (this.lastDireccions.length > 3) {
+            this.lastDireccions.shift();
+          }
+
+          return chosenDirection;
         }
+        simulateDirectionCheck(direction: Direccion) {
+          let distance = 0;
+          const speed = 160;
+          const checkTime = 2000;
+          const gameWidth = Number(this.game.config.width);
+          const gameHeight = Number(this.game.config.height);
+
+          // Asegúrate de que tus casos para Direccion.Arriba y otros incluyan break;
+          switch (direction) {
+            case Direccion.Izquierda:
+              distance = this.muchacho!?.x;
+              break;
+            case Direccion.Derecha:
+              distance = gameWidth - this.muchacho!?.x;
+              break;
+            case Direccion.Arriba:
+              distance = this.muchacho!?.y;
+              break;
+            case Direccion.Abajo:
+              distance = gameHeight - this.muchacho!?.y;
+              break;
+            case Direccion.IzquierdaArriba:
+            case Direccion.IzquierdaAbajo:
+            case Direccion.DerechaArriba:
+            case Direccion.DerechaAbajo:
+              const horizontalDistance =
+                direction === Direccion.DerechaArriba ||
+                direction === Direccion.DerechaAbajo
+                  ? gameWidth - this.muchacho!?.x
+                  : this.muchacho!?.x;
+              const verticalDistance =
+                direction === Direccion.DerechaAbajo ||
+                direction === Direccion.IzquierdaAbajo
+                  ? gameHeight - this.muchacho!?.y
+                  : this.muchacho!?.y;
+              distance = Math.min(horizontalDistance, verticalDistance);
+              break;
+          }
+
+          const simulatedDistance = speed * (checkTime / 1000);
+          return Math.min(distance, simulatedDistance);
+        }
+
+        // moveCharacterTo(waypoint: Waypoint) {
+        //   const { destino, direccion } = waypoint;
+        //   this.muchacho?.anims.play(direccion, true);
+        //   this.physics.moveTo(this.muchacho!, destino.x, destino.y, 100);
+
+        //   const distance = Phaser.Math.Distance.Between(
+        //     this.muchacho?.x!,
+        //     this.muchacho?.y!,
+        //     destino.x,
+        //     destino.y
+        //   );
+
+        //   if (distance < 4) {
+        //     this.muchacho?.body?.stop();
+        //     this.muchacho?.setPosition(destino.x, destino.y);
+        //     this.isMoving = false;
+        //     this.advanceToNextWaypoint();
+        //   }
+        // }
+        // handleSittingAction(waypoint: Waypoint) {
+        //   this.adjustCharacterForSitting(
+        //     { x: waypoint.destino.x, y: waypoint.destino.y },
+        //     waypoint.direccion
+        //   );
+
+        //   this.time.delayedCall(waypoint.duracion || 1000, () => {
+        //     this.advanceToNextWaypoint();
+        //   });
+        // }
+        // adjustCharacterForSitting(
+        //   destino: {
+        //     x: number;
+        //     y: number;
+        //   },
+        //   action: string
+        // ) {
+        //   this.muchacho?.body?.stop();
+        //   this.muchacho?.setPosition(destino.x, destino.y);
+        //   this.muchacho?.anims.play(action, true);
+
+        //   if (action === "sentadoEscritorio") {
+        //     this.handleTolerancia();
+        //   }
+        // }
+        // handleTolerancia() {
+        //   [
+        //     { escritorio: this.escritorio1!, silla: this.silla1! },
+        //     { escritorio: this.escritorio2!, silla: this.silla2! },
+        //     { escritorio: this.escritorio3!, silla: this.silla3! },
+        //     { escritorio: this.escritorio4!, silla: this.silla4! },
+        //   ].forEach(
+        //     (item: {
+        //       escritorio: Phaser.GameObjects.Image;
+        //       silla: Phaser.GameObjects.Image;
+        //     }) => {
+        //       const centroEscritorioX =
+        //         Number(item.escritorio.x) -
+        //         Number(item.escritorio.displayWidth) * 0.5;
+        //       const frenteEscritorioY = Number(item.escritorio.y);
+        //       const muchachoX = this.muchacho?.x;
+        //       const muchachoY = this.muchacho?.y;
+
+        //       const toleranciaX = Number(item.escritorio.displayWidth) * 0.5;
+        //       const toleranciaY = 100;
+
+        //       if (
+        //         Math.abs(Number(muchachoX) - centroEscritorioX) <=
+        //           toleranciaX &&
+        //         Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+        //       ) {
+        //         item.escritorio?.setDepth(1);
+        //         item.silla?.setDepth(2);
+        //         this.muchacho?.setDepth(1.5);
+        //       }
+        //     }
+        //   );
+        // }
+        // handleAction(waypoint: Waypoint) {
+        //   const { duracion, direccion } = waypoint;
+        //   this.isMoving = true;
+        //   if (direccion) this.muchacho?.anims.play(direccion, true);
+
+        //   this.time.delayedCall(duracion!, () => {
+        //     this.isMoving = false;
+        //     this.advanceToNextWaypoint();
+        //   });
+        // }
+        // advanceToNextWaypoint() {
+        //   this.currentWaypointIndex++;
+        //   if (this.currentWaypointIndex >= this.waypoints.length) {
+        //     this.currentWaypointIndex = 0;
+        //   }
+        // }
+
+        // checkDistanceAndObstacles(
+        //   ray: Phaser.Geom.Line,
+        //   directionName: Direccion
+        // ) {
+        //   const directionBlocked = !this.bloqueoDinamico(directionName);
+        //   if (directionBlocked) {
+        //     return 250;
+        //   } else {
+        //     return Phaser.Geom.Line.Length(ray);
+        //   }
+        // }
+        // bloqueoDinamico(Direccion: Direccion): boolean {
+        //   const numeroUmbral = 20;
+        //   const bloqueos = [
+        //     this.escritorio1,
+        //     this.silla1,
+        //     this.escritorio2,
+        //     this.silla2,
+        //     this.escritorio3,
+        //     this.silla3,
+        //     this.escritorio4,
+        //     this.silla4,
+        //     this.panelDeControl,
+        //   ];
+
+        //   const esBloqueado = bloqueos.some(
+        //     (item: Phaser.GameObjects.Image | null | undefined) => {
+        //       const escritorio4Y =
+        //         this.muchacho!?.y > item!?.y - item!?.height - numeroUmbral &&
+        //         this.muchacho!?.y < item!?.y - item!?.height + numeroUmbral;
+        //       const escritorio4DerechoX =
+        //         this.muchacho!?.x >= item!?.x - item!?.width - numeroUmbral &&
+        //         this.muchacho!?.x <= item!?.x - item!?.width + numeroUmbral;
+        //       const escritorio4IzquierdoX =
+        //         this.muchacho!?.x <= item!?.x + numeroUmbral &&
+        //         this.muchacho!?.x >= item!?.x - numeroUmbral;
+
+        //       const escritorio4X =
+        //         this.muchacho!?.x > item!?.x - item!?.width - numeroUmbral &&
+        //         this.muchacho!?.y < item!?.x - item!?.width + numeroUmbral;
+
+        //       const escritorio4AbajoY =
+        //         this.muchacho!?.y >= item!?.y - item!?.height - numeroUmbral &&
+        //         this.muchacho!?.y <= item!?.y - item!?.height + numeroUmbral;
+        //       const escritorio4ArribaY =
+        //         this.muchacho!?.y <=
+        //           item!?.y - item!?.height / 1.5 + numeroUmbral &&
+        //         this.muchacho!?.y >=
+        //           item!?.y - item!?.height / 1.5 - numeroUmbral;
+
+        //       if (Direccion == Direccion.Izquierda) {
+        //         if (escritorio4Y && escritorio4IzquierdoX) {
+        //           return true;
+        //         }
+        //       } else if (Direccion == Direccion.Derecha) {
+        //         if (escritorio4Y && escritorio4DerechoX) {
+        //           return true;
+        //         }
+        //       } else if (Direccion == Direccion.Arriba) {
+        //         if (escritorio4X && escritorio4ArribaY) {
+        //           return true;
+        //         }
+        //       } else if (Direccion == Direccion.Abajo) {
+        //         if (escritorio4X && escritorio4AbajoY) {
+        //           return true;
+        //         }
+        //       }
+
+        //       return false;
+        //     }
+        //   );
+
+        //   return !esBloqueado;
+        // }
       }
 
       const config: Phaser.Types.Core.GameConfig = {

@@ -1,13 +1,18 @@
-export enum Direcion {
-  Izquierda,
-  Derecha,
-  Arriba,
-  Abajo,
+export enum Direccion {
+  Izquierda = "izquierda",
+  Derecha = "derecha",
+  Arriba = "arriba",
+  Abajo = "abajo",
+  IzquierdaArriba = "izquierdaArriba",
+  IzquierdaAbajo = "izquierdaAbajo",
+  DerechaArriba = "derechaArriba",
+  DerechaAbajo = "derechaAbajo",
 }
 
 export type LogProps = {
   connected: boolean;
   openConnectModal: (() => void) | undefined;
+  t: any;
 };
 
 export interface Message {

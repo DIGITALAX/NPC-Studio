@@ -4,21 +4,21 @@ import usePush from "../hooks/usePush";
 import { AiOutlineLoading } from "react-icons/ai";
 import { LogProps } from "../types/game.types";
 
-function Log({ connected, openConnectModal }: LogProps) {
+function Log({ connected, openConnectModal, t }: LogProps) {
   const { handleSubscripcion, subscripcionCargando, handleNotify } = usePush();
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
       <div className="relative flex flex-col gap-5 h-full w-full items-center justify-start">
         <div className="relative text-white font-leco items-center justify-center flex w-fit h-fit text-4xl">
-          NPC STUDIO
+          {t.rich("title")}
         </div>
         <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-row p-2 gap-4">
           <div className="relative w-fit h-full flex flex-col items-center justify-between">
-            <div className="absolute font-at text-4xl text-white items-center justify-center w-fit h-fit flex whitespace-nowrap text-center leading-5 top-1">
-              CHAT <br /> LOG
+            <div className="absolute font-at text-4xl text-white items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5 top-1">
+              {t.rich("chat")}
             </div>
-            <div className="relative font-at text-4xl text-viola items-center justify-center w-fit h-fit flex whitespace-nowrap text-center leading-5">
-              CHAT <br /> LOG
+            <div className="relative font-at text-4xl text-viola items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5">
+              {t.rich("chat")}
             </div>
             <div className="relative w-20 h-20 flex items-center justify-center border-black border-2">
               <Image
@@ -67,7 +67,7 @@ function Log({ connected, openConnectModal }: LogProps) {
             {subscripcionCargando ? (
               <AiOutlineLoading size={15} color="white" />
             ) : (
-              "NOTIFY ME!"
+              t.rich("notify")
             )}
           </div>
         </div>

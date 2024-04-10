@@ -43,35 +43,41 @@ body {
 html::-webkit-scrollbar {
   width: 0;
   height: 0;
+  opacity: 0;
 }
 
 html::-webkit-scrollbar {
   width: 0;
+  height: 0;
+  opacity: 0;
 }
 
 html::-webkit-scrollbar-track:active {
   background-color: transparent !important;
-  opacity: 0%;
+  opacity: 0;
 }
 
 html::-webkit-scrollbar-thumb:active {
   background-color: transparent !important;
 }
 
-body::-webkit-scrollbar {
+div::-webkit-scrollbar {
   width: 0;
   height: 0;
+  opacity: 0;
 }
 
-body::-webkit-scrollbar {
+div::-webkit-scrollbar {
   width: 0;
+  height: 0;
+  opacity: 0;
 }
 
-body::-webkit-scrollbar-track:active {
+div::-webkit-scrollbar-track:active {
   background-color: transparent !important;
-  opacity: 0%;
+  opacity: 0;
 }
 
-body::-webkit-scrollbar-thumb:active {
+div::-webkit-scrollbar-thumb:active {
   background-color: transparent !important;
 }
