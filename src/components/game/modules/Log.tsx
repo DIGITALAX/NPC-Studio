@@ -40,7 +40,7 @@ function Log({
               />
             </div>
           </div>
-          <div className="relative w-full h-full flex items-center justify-center border-lime rounded-md border-2 p-2 bg-black/95 gap-3 flex-col">
+          <div className="relative w-full h-full flex items-center justify-center gap-1.5 flex-col py-2 px-1">
             <div className="relative w-full h-fit flex items-end justify-end">
               <div
                 className="relative w-fit cursor-pointer h-fit flex items-center justify-center active:scale-95 mr-0"
@@ -49,12 +49,14 @@ function Log({
                 <PiArrowSquareInBold size={15} color="white" />
               </div>
             </div>
-            <Chat
-              indiceMensajeActual={indiceMensajeActual}
-              handleCompletarTyping={handleCompletarTyping}
-              indiceConversacionActual={indiceConversacionActual}
-              contenedorMensajesRef={contenedorMensajesRef}
-            />
+            <div className="relative w-full h-full flex items-center justify-center p-2 bg-black/80 border-lime rounded-md border-2">
+              <Chat
+                indiceMensajeActual={indiceMensajeActual}
+                handleCompletarTyping={handleCompletarTyping}
+                indiceConversacionActual={indiceConversacionActual}
+                contenedorMensajesRef={contenedorMensajesRef}
+              />
+            </div>
           </div>
         </div>
         <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">

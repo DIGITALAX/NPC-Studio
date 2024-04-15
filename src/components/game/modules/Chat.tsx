@@ -12,7 +12,7 @@ const Chat: FunctionComponent<ChatProps> = ({
 }): JSX.Element => {
   return (
     <div
-      className={`relative w-full flex flex-col items-start justify-start font-at text-base text-white overflow-y-scroll ${
+      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 text-white overflow-y-scroll ${
         open ? "h-96" : "h-full"
       }`}
       key={indiceConversacionActual}

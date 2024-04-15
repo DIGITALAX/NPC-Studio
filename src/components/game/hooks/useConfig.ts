@@ -17,17 +17,6 @@ const useConfig = (chosenNpc: number) => {
   useEffect(() => {
     if (typeof window !== "undefined" && gameRef.current) {
       class CustomPhaserScene extends Phaser.Scene {
-        escritorio1!: Phaser.GameObjects.Image;
-        escritorio2!: Phaser.GameObjects.Image;
-        escritorio3!: Phaser.GameObjects.Image;
-        escritorio4!: Phaser.GameObjects.Image;
-        silla1!: Phaser.GameObjects.Image;
-        silla2!: Phaser.GameObjects.Image;
-        silla3!: Phaser.GameObjects.Image;
-        silla4!: Phaser.GameObjects.Image;
-        sofaUno!: Phaser.GameObjects.Image;
-        sofaDos!: Phaser.GameObjects.Image;
-        panelDeControl!: Phaser.GameObjects.Image;
         frameCount: number;
         npcs: RandomWalkerNPC[] = [];
 
@@ -179,16 +168,16 @@ const useConfig = (chosenNpc: number) => {
             .setOrigin(0, 0)
             .setScale(1.2);
           alfombra.scaleX = 1.5;
-          this.sofaUno = this.add
+          const sofaUno = this.add
             .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
             .setOrigin(0, 0)
             .setScale(1.2);
-          this.sofaDos = this.add
+          const sofaDos = this.add
             .image(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
             .setOrigin(0, 0)
             .setScale(1.2);
 
-          this.panelDeControl = this.add
+          const panelDeControl = this.add
             .image(
               Number(parentWidth),
               Number(parentHeight) / 1.1,
@@ -196,61 +185,61 @@ const useConfig = (chosenNpc: number) => {
             )
             .setOrigin(1, 1);
 
-          this.escritorio1 = this.add
+          const escritorio1 = this.add
             .image(
               Number(parentWidth) - 20,
               Number(parentHeight) / 2.2,
               "escritorio1"
             )
             .setOrigin(1, 1);
-          this.silla1 = this.add
+          const silla1 = this.add
             .image(
-              Number(this.escritorio1.x) - Number(this.escritorio1.width / 2.5),
-              this.escritorio1.y,
+              Number(escritorio1.x) - Number(escritorio1.width / 2.5),
+              escritorio1.y,
               "silla1"
             )
             .setOrigin(1, 1);
-          this.escritorio2 = this.add
+          const escritorio2 = this.add
             .image(
               Number(parentWidth) - 20,
               Number(parentHeight) / 1.6,
               "escritorio2"
             )
             .setOrigin(1, 1);
-          this.silla2 = this.add
+          const silla2 = this.add
             .image(
-              Number(this.escritorio2.x) - Number(this.escritorio2.width / 2.5),
-              this.escritorio2.y,
+              Number(escritorio2.x) - Number(escritorio2.width / 2.5),
+              escritorio2.y,
               "silla2"
             )
             .setOrigin(1, 1);
 
-          this.escritorio3 = this.add
+          const escritorio3 = this.add
             .image(
-              Number(parentWidth) - (this.escritorio1.width + 20),
+              Number(parentWidth) - (escritorio1.width + 20),
               Number(parentHeight) / 2.2,
               "escritorio3"
             )
             .setOrigin(1, 1);
-          this.silla3 = this.add
+          const silla3 = this.add
             .image(
-              Number(this.escritorio3.x) - Number(this.escritorio3.width / 2.5),
-              this.escritorio3.y,
+              Number(escritorio3.x) - Number(escritorio3.width / 2.5),
+              escritorio3.y,
               "silla3"
             )
             .setOrigin(1, 1);
 
-          this.escritorio4 = this.add
+          const escritorio4 = this.add
             .image(
-              Number(parentWidth) - (this.escritorio2.width + 20),
+              Number(parentWidth) - (escritorio2.width + 20),
               Number(parentHeight) / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
-          this.silla4 = this.add
+          const silla4 = this.add
             .image(
-              Number(this.escritorio4.x) - Number(this.escritorio4.width / 2.5),
-              this.escritorio4.y,
+              Number(escritorio4.x) - Number(escritorio4.width / 2.5),
+              escritorio4.y,
               "silla4"
             )
             .setOrigin(1, 1);
@@ -317,19 +306,27 @@ const useConfig = (chosenNpc: number) => {
                 pared,
                 nevera,
                 maquina,
-                this.sofaUno,
-                this.sofaDos,
+                sofaUno,
+                sofaDos,
               ],
               [
-                this.escritorio1,
-                this.silla1,
-                this.escritorio2,
-                this.silla2,
-                this.escritorio3,
-                this.silla3,
-                this.escritorio4,
-                this.silla4,
-                this.panelDeControl,
+                escritorio1,
+                silla1,
+                escritorio2,
+                silla2,
+                escritorio3,
+                silla3,
+                escritorio4,
+                silla4,
+                panelDeControl,
+              ],
+              [
+                { obj: silla1, anim: "sentadoEscritorio" },
+                { obj: silla2, anim: "sentadoEscritorio" },
+                { obj: silla3, anim: "sentadoEscritorio" },
+                { obj: silla4, anim: "sentadoEscritorio" },
+                { obj: sofaUno, anim: "sentadoSofa" },
+                { obj: sofaDos, anim: "sentadoSofa" },
               ],
               true
             )

@@ -22,8 +22,8 @@ const Scene: FunctionComponent<SceneProps> = ({
           {t.rich("config")}
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-row">
-        <div className="relative w-48 h-36 xl:h-32 flex items-center justify-center flex-col gap-2 bg-black p-2 rounded-md border-2 border-lime">
+      <div className="relative w-full h-fit flex items-center justify-start gap-4 sm:gap-2 flex-col sm:flex-row">
+        <div className="relative w-full sm:w-48 h-40 sm:h-36 xl:h-32 flex items-center justify-center flex-col gap-2 bg-black p-2 rounded-md border-2 border-lime">
           <div className="relative w-fit h-fit flex items-center justify-center font-leco text-viola text-base whitespace-nowrap">
             {t.rich("npc")}
           </div>
@@ -58,7 +58,7 @@ const Scene: FunctionComponent<SceneProps> = ({
             </div>
           </div>
         </div>
-        <div className="relative w-48 h-36 xl:h-32 flex items-center justify-center flex-col gap-2 bg-black p-2 rounded-md border-2 border-lime">
+        <div className="relative w-full sm:w-48 h-40 sm:h-36 xl:h-32 flex items-center justify-center flex-col gap-2 bg-black p-2 rounded-md border-2 border-lime">
           <div className="relative w-fit h-fit flex items-center justify-center font-leco text-viola text-base whitespace-nowrap">
             {t.rich("scene")}
           </div>

@@ -11,6 +11,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   prof: Phaser.GameObjects.Image[];
   previousPosition: Phaser.Math.Vector2;
   idle: boolean;
+  moveCounter: number = 0;
+  sitting: boolean;
+  seats: { obj: Phaser.GameObjects.Image; anim: string }[];
 
   constructor(
     scene: Phaser.Scene,
@@ -21,13 +24,16 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     },
     obs: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
+    seats: { obj: Phaser.GameObjects.Image; anim: string }[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.texture);
     this.scene.physics.world.enable(this);
     this.lastPositionCheckTime = 0;
     this.idle = false;
+    this.sitting = false;
     this.prof = prof;
+    this.seats = seats;
     this.previousPosition = new Phaser.Math.Vector2(sprite.x, sprite.y);
     this.setExistingSprite(cam, sprite);
     this.gestionarObstaculos(obs);
@@ -58,7 +64,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       Math.random() < this.idleProbability
     ) {
       this.goIdle();
+    } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
+      this.goSit();
     } else {
+      this.moveCounter++;
       const angle = Phaser.Math.Between(0, 360);
       this.direction = new Phaser.Math.Vector2(
         Math.cos(angle),
@@ -70,7 +79,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   update() {
-    if (!this.idle) {
+    if (!this.idle && !this.sitting) {
       this.updateAnimation();
       this.comprobarBordesDelMundo();
       this.comprobarUbicacion();
@@ -173,6 +182,47 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     ).scale(this.speed);
     this.npc.setVelocity(this.direction.x, this.direction.y);
     this.updateAnimation();
+  }
+  private goSit() {
+    this.sitting = true;
+    let randomSeat = this.seats[Phaser.Math.Between(0, this.seats.length - 1)];
+    const dx = randomSeat.obj.x - this.npc.x;
+    const dy = randomSeat.obj.y - this.npc.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const duration = (distance / this.speed) * 1000;
+
+    const angle = Math.atan2(dy, dx);
+    this.direction = new Phaser.Math.Vector2(
+      Math.cos(angle),
+      Math.sin(angle)
+    ).scale(this.speed);
+
+    this.scene.tweens.add({
+      targets: this.npc,
+      x: randomSeat.obj.x,
+      y: randomSeat.obj.y,
+      duration: duration,
+      ease: "Linear",
+      onStart: () => {
+        this.npc.setVelocity(this.direction.x, this.direction.y);
+        this.updateAnimation();
+      },
+      onUpdate: this.updateAnimation.bind(this),
+      onComplete: () => {
+        this.npc.setVelocity(0, 0);
+        this.npc.anims.play(randomSeat.anim, true);
+        this.scene.time.delayedCall(
+          Phaser.Math.Between(15000, 30000),
+          () => {
+            this.sitting = false;
+            this.moveCounter = 0;
+            this.setRandomDirection();
+          },
+          [],
+          this
+        );
+      },
+    });
   }
 
   private configurarAnimaciones() {
