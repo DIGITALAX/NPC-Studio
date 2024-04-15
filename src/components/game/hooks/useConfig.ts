@@ -2,11 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import Phaser from "phaser";
-import { INFURA_GATEWAY } from "../../../../lib/constants";
-import RandomWalkerNPC from "./RandomWalkerNPC";
+import { INFURA_GATEWAY, NPC_LIST } from "../../../../lib/constants";
+import RandomWalkerNPC from "./classes/RandomWalkerNPC";
 
-const useConfig = () => {
-  const gameRef = useRef<HTMLElement | undefined>(null);
+interface PhaserGameElement extends HTMLElement {
+  game: Phaser.Game;
+}
+
+const useConfig = (chosenNpc: number) => {
+  const gameRef = useRef<PhaserGameElement | undefined>(null);
   const parentWidth = 1512;
   const parentHeight = 830;
 
@@ -25,10 +29,10 @@ const useConfig = () => {
         sofaDos!: Phaser.GameObjects.Image;
         panelDeControl!: Phaser.GameObjects.Image;
         frameCount: number;
-        npc!: RandomWalkerNPC;
+        npcs: RandomWalkerNPC[] = [];
 
         constructor() {
-          super();
+          super({ key: "CustomPhaserScene" });
           this.frameCount = 0;
         }
 
@@ -298,29 +302,42 @@ const useConfig = () => {
           this.physics.world.bounds.height = parentHeight;
           this.cameras.main.setBounds(0, 0, parentWidth, parentHeight);
 
-          this.npc = new RandomWalkerNPC(
-            this,
-            {
-              texture: "muchacho",
-              x: alfombra.x + alfombra.x / 2,
-              y: alfombra.y + alfombra.y / 2,
-            },
-            [
-              capsula,
-              telefono,
-              arcade,
-              pared,
-              nevera,
-              maquina,
-              this.sofaUno,
-              this.sofaDos,
-            ],
-            true
+          this.npcs.push(
+            new RandomWalkerNPC(
+              this,
+              {
+                texture: "muchacho",
+                x: alfombra.x + alfombra.x / 2,
+                y: alfombra.y + alfombra.y / 2,
+              },
+              [
+                capsula,
+                telefono,
+                arcade,
+                pared,
+                nevera,
+                maquina,
+                this.sofaUno,
+                this.sofaDos,
+              ],
+              [
+                this.escritorio1,
+                this.silla1,
+                this.escritorio2,
+                this.silla2,
+                this.escritorio3,
+                this.silla3,
+                this.escritorio4,
+                this.silla4,
+                this.panelDeControl,
+              ],
+              true
+            )
           );
         }
         update() {
-          if (this.npc) {
-            this.npc.update();
+          if (this.npcs.length > 0) {
+            this.npcs.forEach((npc) => npc.update());
           }
 
           if (this.frameCount % 10 === 0) {
@@ -340,6 +357,14 @@ const useConfig = () => {
           }
           this.frameCount++;
         }
+
+        setCameraTarget() {
+          this.npcs.forEach((npc) => {
+            if (NPC_LIST[chosenNpc].texture === npc.texture.key) {
+              npc.makeCameraFollow();
+            }
+          });
+        }
       }
 
       const config: Phaser.Types.Core.GameConfig = {
@@ -354,7 +379,7 @@ const useConfig = () => {
           },
         },
         scene: [CustomPhaserScene],
-        parent: gameRef.current as HTMLElement,
+        parent: gameRef.current,
       };
 
       const game = new Phaser.Game(config);
@@ -375,6 +400,18 @@ const useConfig = () => {
       document.body.removeChild(script);
     };
   }, []);
+
+  useEffect(() => {
+    if (gameRef.current && gameRef.current.game && gameRef.current.game.scene) {
+      const scenes = gameRef.current.game.scene.getScenes(true);
+      const customScene = scenes.find(
+        (scene) => scene.scene.key === "CustomPhaserScene"
+      );
+      if (customScene) {
+        (customScene as any).setCameraTarget(chosenNpc);
+      }
+    }
+  }, [chosenNpc]);
 
   return {
     gameRef,

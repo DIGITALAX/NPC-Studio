@@ -1,62 +1,36 @@
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
-import useDialog from "../hooks/useDialog";
-import Typist from "react-typist";
 import messages from "./../../../../public/conversation.json";
+import Draggable from "react-draggable";
+import { FunctionComponent } from "react";
+import { DialogProps } from "../types/game.types";
+import Chat from "./Chat";
+import { IoIosCloseCircle } from "react-icons/io";
 
-function Dialog() {
-  const {
-    indiceMensajeActual,
-    handleCompletaTyping,
-    setIndiceConversacionActual,
-    indiceConversacionActual,
-    setIndiceMensajeActual,
-    contenedorMensajesRef
-  } = useDialog();
+const Dialog: FunctionComponent<DialogProps> = ({
+  setDragDialog,
+  indiceMensajeActual,
+  handleCompletarTyping,
+  setIndiceConversacionActual,
+  indiceConversacionActual,
+  setIndiceMensajeActual,
+  contenedorMensajesRef,
+  wrapperRef,
+}) => {
   return (
-    <div className="relative w-full h-fit flex items-start justify-start md:px-0 px-1 md:pb-0 pb-5">
-      <div className="relative w-full h-96 flex flex-col items-start justify-start bg-black/80 rounded-md border-4 border-white p-4">
-        <div
-          className="relative w-full h-full flex flex-col items-start justify-start font-at text-3xl text-white overflow-y-scroll"
-          key={indiceConversacionActual}
-          ref={contenedorMensajesRef}
-        >
-          {messages[indiceConversacionActual]
-            .slice(0, indiceMensajeActual + 1)
-            .map((msg, index) => (
-              <div
-                key={index}
-              >
-                {index === indiceMensajeActual ? (
-                  <Typist
-                    onTypingDone={handleCompletaTyping}
-                    cursor={{ hideWhenDone: true, hideWhenDoneDelay: 500 }}
-                  >
-                    <span style={{ color: msg.color }}>
-                      {msg.name} ({msg.team}):
-                    </span>
-                    <span style={{ color: msg.base, whiteSpace: "pre-wrap" }}>
-                      {" "}
-                      {msg.message}
-                      <br /> <br />
-                    </span>
-                  </Typist>
-                ) : (
-                  <p>
-                    <span style={{ color: msg.color }}>
-                      <strong>
-                        {msg.name} ({msg.team}):{" "}
-                      </strong>
-                    </span>
-                    <span style={{ color: msg.base, whiteSpace: "pre-wrap" }}>
-                      {" "}
-                      {msg.message}
-                      <br /> <br />
-                    </span>
-                  </p>
-                )}
-              </div>
-            ))}
+    <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
+      <div className="absolute w-72 h-fit flex flex-col items-start justify-start p-2 rounded-md border-4 border-white bg-black/80 cursor-grab active:cursor-grabbing">
+        <div className="relative w-full h-fit flex items-start justify-start flex-col gap-3">
+          <div className="close" onClick={() => setDragDialog(false)}>
+            <IoIosCloseCircle size={20} color="white" />
+          </div>
+          <Chat
+            indiceMensajeActual={indiceMensajeActual}
+            handleCompletarTyping={handleCompletarTyping}
+            indiceConversacionActual={indiceConversacionActual}
+            contenedorMensajesRef={contenedorMensajesRef}
+            open
+          />
         </div>
         <div className="relative w-full h-fit flex items-end justify-end">
           <div className="relative flex items-center justify-center flex-row gap-2">
@@ -105,8 +79,8 @@ function Dialog() {
           </div>
         </div>
       </div>
-    </div>
+    </Draggable>
   );
-}
+};
 
 export default Dialog;

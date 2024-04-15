@@ -5,6 +5,9 @@ import Log from "@/components/game/modules/Log";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dynamic from "next/dynamic";
 import { useAccount } from "wagmi";
+import Scene from "@/components/game/modules/Scene";
+import useManage from "@/components/game/hooks/useManage";
+import useDialog from "@/components/game/hooks/useDialog";
 const DynamicComponentWithNoSSR = dynamic(
   () => import("@/components/game/modules/Studio"),
   { ssr: false }
@@ -14,6 +17,18 @@ export default function IndexPage() {
   const t = useTranslations("Home");
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const { npc, setNpc, setEscena, escena } = useManage();
+  const {
+    indiceMensajeActual,
+    handleCompletarTyping,
+    setIndiceConversacionActual,
+    indiceConversacionActual,
+    setIndiceMensajeActual,
+    contenedorMensajesRef,
+    wrapperRef,
+    dragDialog,
+    setDragDialog,
+  } = useDialog();
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full xl:h-[692px] h-fit flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -21,13 +36,35 @@ export default function IndexPage() {
           t={t}
           connected={isConnected}
           openConnectModal={openConnectModal}
+          setDragDialog={setDragDialog}
+          indiceMensajeActual={indiceMensajeActual}
+          handleCompletarTyping={handleCompletarTyping}
+          indiceConversacionActual={indiceConversacionActual}
+          contenedorMensajesRef={contenedorMensajesRef}
         />
         <div className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1">
           <DynamicComponentWithNoSSR />
         </div>
       </div>
-      <Dialog />
+      <Scene
+        npc={npc}
+        setNpc={setNpc}
+        t={t}
+        escena={escena}
+        setEscena={setEscena}
+      />
+      {dragDialog && (
+        <Dialog
+          setDragDialog={setDragDialog}
+          indiceMensajeActual={indiceMensajeActual}
+          handleCompletarTyping={handleCompletarTyping}
+          setIndiceConversacionActual={setIndiceConversacionActual}
+          indiceConversacionActual={indiceConversacionActual}
+          setIndiceMensajeActual={setIndiceMensajeActual}
+          contenedorMensajesRef={contenedorMensajesRef}
+          wrapperRef={wrapperRef}
+        />
+      )}
     </div>
   );
 }
-

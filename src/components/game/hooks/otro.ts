@@ -727,25 +727,7 @@
 
 //           this.currentPath.coords = newCoords;
 //         }
-//         manejarProfundidad() {
-//           this.muchacho!.depth = this.muchacho!.y + this.muchacho!.height / 4;
-
-//           [
-//             this.escritorio1,
-//             this.silla1,
-//             this.escritorio2,
-//             this.silla2,
-//             this.escritorio3,
-//             this.silla3,
-//             this.escritorio4,
-//             this.silla4,
-//             this.panelDeControl,
-//           ].forEach((item) => {
-//             if (item) {
-//               item.depth = item.y;
-//             }
-//           });
-//         }
+//        
 //         moveCharacter(direction: Direccion) {
 //           switch (direction) {
 //             case Direccion.Izquierda:

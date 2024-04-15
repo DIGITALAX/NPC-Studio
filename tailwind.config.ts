@@ -17,7 +17,8 @@ const config: Config = {
         ballena: "#7AB3DD",
         naranja: "#ED5700",
         frita: "#D76645",
-        viola: "#F700DB"
+        viola: "#F700DB",
+        lime: "#10FF90",
       },
       fontFamily: {
         rain: "Internal Rainbows",

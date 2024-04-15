@@ -2,7 +2,10 @@
   "Home": {
     "title": "EL ESTUDIO NPC",
     "notify": "Notify Me",
-    "chat": "REGISTRO\nDE CHAT"
+    "chat": "REGISTRO\nDE CHAT",
+    "npc": "Seguir NPC",
+    "scene": "Elegir Taller",
+    "config": "Gestionar Configuración"
   },
   "Nav": {
     "lan": "Elige Idioma"

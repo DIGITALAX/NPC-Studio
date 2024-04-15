@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import messages from "./../../../../public/conversation.json";
+import Draggable from "react-draggable";
 
 const useDialog = () => {
+  const wrapperRef = useRef<Draggable | null>(null);
   const contenedorMensajesRef = useRef<HTMLDivElement | null>(null);
+  const [dragDialog, setDragDialog] = useState<boolean>(false);
   const [indiceMensajeActual, setIndiceMensajeActual] = useState<number>(0);
   const [indiceConversacionActual, setIndiceConversacionActual] =
     useState<number>(0);
@@ -19,7 +22,7 @@ const useDialog = () => {
     }
   }, [indiceMensajeActual, indiceConversacionActual]);
 
-  const handleCompletaTyping = (): void => {
+  const handleCompletarTyping = (): void => {
     setTimeout(() => {
       setIndiceMensajeActual(indiceMensajeActual + 1);
     }, 500);
@@ -38,11 +41,14 @@ const useDialog = () => {
 
   return {
     indiceMensajeActual,
-    handleCompletaTyping,
+    handleCompletarTyping,
     setIndiceConversacionActual,
     setIndiceMensajeActual,
     indiceConversacionActual,
-    contenedorMensajesRef
+    contenedorMensajesRef,
+    wrapperRef,
+    dragDialog,
+    setDragDialog,
   };
 };
 

@@ -1,12 +1,16 @@
 import Phaser from "phaser";
-import { Direccion } from "../types/game.types";
+import { Direccion } from "../../types/game.types";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   direction!: Phaser.Math.Vector2;
   speed: number = 60;
   npc!: Phaser.Physics.Arcade.Sprite;
   lastPositionCheckTime: number;
+  idleProbability: number = 0.3;
+  lastIdleTime: number = 0;
+  prof: Phaser.GameObjects.Image[];
   previousPosition: Phaser.Math.Vector2;
+  idle: boolean;
 
   constructor(
     scene: Phaser.Scene,
@@ -16,11 +20,14 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       y: number;
     },
     obs: Phaser.GameObjects.Image[],
+    prof: Phaser.GameObjects.Image[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.texture);
     this.scene.physics.world.enable(this);
     this.lastPositionCheckTime = 0;
+    this.idle = false;
+    this.prof = prof;
     this.previousPosition = new Phaser.Math.Vector2(sprite.x, sprite.y);
     this.setExistingSprite(cam, sprite);
     this.gestionarObstaculos(obs);
@@ -46,23 +53,34 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private setRandomDirection() {
-    const angle = Phaser.Math.Between(0, 360);
-    this.direction = new Phaser.Math.Vector2(
-      Math.cos(angle),
-      Math.sin(angle)
-    ).scale(this.speed);
-    this.npc.setVelocity(this.direction.x, this.direction.y);
-    this.updateAnimation();
+    if (
+      this.scene.time.now > this.lastIdleTime + 30000 ||
+      Math.random() < this.idleProbability
+    ) {
+      this.goIdle();
+    } else {
+      const angle = Phaser.Math.Between(0, 360);
+      this.direction = new Phaser.Math.Vector2(
+        Math.cos(angle),
+        Math.sin(angle)
+      ).scale(this.speed);
+      this.npc.setVelocity(this.direction.x, this.direction.y);
+      this.updateAnimation();
+    }
   }
 
   update() {
-    this.npc.setVelocity(this.direction.x, this.direction.y);
-    this.updateAnimation();
-    this.comprobarBordesDelMundo();
-    this.comprobarUbicacion();
+    if (!this.idle) {
+      this.updateAnimation();
+      this.comprobarBordesDelMundo();
+      this.comprobarUbicacion();
+    }
+
+    this.manejarProfundidad();
   }
 
   private updateAnimation() {
+    this.npc.setVelocity(this.direction.x, this.direction.y);
     const dx = this.direction.x;
     const dy = this.direction.y;
     const absX = Math.abs(dx);
@@ -94,27 +112,28 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       this.scene.physics.add.collider(
         this.npc,
         ob,
-        this.gestionarColision,
+        this.setRandomDirection,
         undefined,
         this
       );
     });
   }
 
-  private gestionarColision() {
-    if (Phaser.Math.Between(0, 1)) {
-      this.npc.setVelocity(0, 0);
-      this.npc.anims.play(Direccion.Inactivo, true);
-      let pauseDuration = Phaser.Math.Between(5000, 20000);
-      this.scene.time.delayedCall(
-        pauseDuration,
-        this.setRandomDirection,
-        [],
-        this
-      );
-    } else {
-      this.setRandomDirection();
-    }
+  private goIdle() {
+    this.idle = true;
+    this.npc.setVelocity(0, 0);
+    this.npc.anims.play(Direccion.Inactivo, true);
+    this.lastIdleTime = this.scene.time.now;
+    this.scene.time.delayedCall(
+      Phaser.Math.Between(5000, 20000),
+      () => {
+        this.lastIdleTime = this.scene.time.now;
+        this.idle = false;
+        this.setRandomDirection();
+      },
+      [],
+      this
+    );
   }
 
   private comprobarUbicacion() {
@@ -256,5 +275,19 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       frameRate: 0.3,
       repeat: -1,
     });
+  }
+
+  private manejarProfundidad() {
+    this.npc!.depth = this.npc!.y + this.npc!.height / 4;
+
+    this.prof.forEach((item) => {
+      if (item) {
+        item.depth = item.y;
+      }
+    });
+  }
+
+  makeCameraFollow() {
+    this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
   }
 }

@@ -3,8 +3,19 @@ import { INFURA_GATEWAY } from "../../../../lib/constants";
 import usePush from "../hooks/usePush";
 import { AiOutlineLoading } from "react-icons/ai";
 import { LogProps } from "../types/game.types";
+import Chat from "./Chat";
+import { PiArrowSquareInBold } from "react-icons/pi";
 
-function Log({ connected, openConnectModal, t }: LogProps) {
+function Log({
+  connected,
+  openConnectModal,
+  t,
+  setDragDialog,
+  indiceMensajeActual,
+  handleCompletarTyping,
+  indiceConversacionActual,
+  contenedorMensajesRef,
+}: LogProps) {
   const { handleSubscripcion, subscripcionCargando, handleNotify } = usePush();
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
@@ -29,15 +40,21 @@ function Log({ connected, openConnectModal, t }: LogProps) {
               />
             </div>
           </div>
-          <div className="relative w-full h-full flex items-center justify-center border-black border-2 p-2">
-            <div className="relative w-full h-full flex items-center justify-center">
-              <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmNcCMEJaxyp5fiDef7nQ9A7wNem4fTr3DLGqkrPeDkbUC`}
-                draggable={false}
-                objectFit="fill"
-                layout="fill"
-              />
+          <div className="relative w-full h-full flex items-center justify-center border-lime rounded-md border-2 p-2 bg-black/95 gap-3 flex-col">
+            <div className="relative w-full h-fit flex items-end justify-end">
+              <div
+                className="relative w-fit cursor-pointer h-fit flex items-center justify-center active:scale-95 mr-0"
+                onClick={() => setDragDialog((prev) => !prev)}
+              >
+                <PiArrowSquareInBold size={15} color="white" />
+              </div>
             </div>
+            <Chat
+              indiceMensajeActual={indiceMensajeActual}
+              handleCompletarTyping={handleCompletarTyping}
+              indiceConversacionActual={indiceConversacionActual}
+              contenedorMensajesRef={contenedorMensajesRef}
+            />
           </div>
         </div>
         <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">

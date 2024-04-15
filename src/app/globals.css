@@ -81,3 +81,13 @@ div::-webkit-scrollbar-track:active {
 div::-webkit-scrollbar-thumb:active {
   background-color: transparent !important;
 }
+
+.close {
+  position: relative;
+  display: flex;
+  justify-items: end;
+  width: fit-content;
+  height: fit-content;
+  margin-left: auto;
+  cursor: pointer;
+}

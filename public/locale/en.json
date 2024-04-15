@@ -2,7 +2,10 @@
   "Home": {
     "title": "NPC STUDIO",
     "notify": "Notify Me",
-    "chat": "CHAT\nLOG"
+    "chat": "CHAT\nLOG",
+    "npc": "Follow NPC",
+    "scene": "Select Workshop",
+    "config": "Manage Config"
   },
   "Nav": {
     "lan": "Choose Language"
