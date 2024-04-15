@@ -11,6 +11,8 @@ export enum Direccion {
   DerechaArriba = "derechaArriba",
   DerechaAbajo = "derechaAbajo",
   Inactivo = "inactivo",
+  Sofa = "sentadoSofa",
+  Silla = "sentadoEscritorio",
 }
 
 export type LogProps = {
@@ -64,3 +66,11 @@ export type ChatProps = {
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   open?: boolean;
 };
+
+export interface Seat {
+  obj: Phaser.GameObjects.Image;
+  anim: string;
+  depth: boolean;
+  adjustedX: number;
+  adjustedY: number
+}

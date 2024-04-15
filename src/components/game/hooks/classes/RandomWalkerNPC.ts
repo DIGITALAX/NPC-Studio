@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Direccion } from "../../types/game.types";
+import { Direccion, Seat } from "../../types/game.types";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   direction!: Phaser.Math.Vector2;
@@ -13,7 +13,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   idle: boolean;
   moveCounter: number = 0;
   sitting: boolean;
-  seats: { obj: Phaser.GameObjects.Image; anim: string }[];
+  seatTaken: Seat | null = null;
+  seats: Seat[];
 
   constructor(
     scene: Phaser.Scene,
@@ -24,7 +25,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     },
     obs: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
-    seats: { obj: Phaser.GameObjects.Image; anim: string }[],
+    seats: Seat[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.texture);
@@ -50,32 +51,32 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.npc = this.scene.physics.add
       .sprite(sprite.x, sprite.y, sprite.texture)
       .setScale(0.5);
-    this.setRandomDirection();
+
     if (cam) {
       this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
     }
 
-    this.configurarAnimaciones();
+    this.configurarAnimaciones().then(() => this.setRandomDirection());
   }
 
   private setRandomDirection() {
-    if (
-      this.scene.time.now > this.lastIdleTime + 30000 ||
-      Math.random() < this.idleProbability
-    ) {
-      this.goIdle();
-    } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
-      this.goSit();
-    } else {
-      this.moveCounter++;
-      const angle = Phaser.Math.Between(0, 360);
-      this.direction = new Phaser.Math.Vector2(
-        Math.cos(angle),
-        Math.sin(angle)
-      ).scale(this.speed);
-      this.npc.setVelocity(this.direction.x, this.direction.y);
-      this.updateAnimation();
-    }
+    // if (
+    //   this.scene.time.now > this.lastIdleTime + 30000 ||
+    //   Math.random() < this.idleProbability
+    // ) {
+    //   this.goIdle();
+    // } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
+    this.goSit();
+    // } else {
+    //   this.moveCounter++;
+    //   const angle = Phaser.Math.Between(0, 360);
+    //   this.direction = new Phaser.Math.Vector2(
+    //     Math.cos(angle),
+    //     Math.sin(angle)
+    //   ).scale(this.speed);
+    //   this.npc.setVelocity(this.direction.x, this.direction.y);
+    //   this.updateAnimation();
+    // }
   }
 
   update() {
@@ -186,8 +187,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private goSit() {
     this.sitting = true;
     let randomSeat = this.seats[Phaser.Math.Between(0, this.seats.length - 1)];
-    const dx = randomSeat.obj.x - this.npc.x;
-    const dy = randomSeat.obj.y - this.npc.y;
+    const dx = randomSeat.adjustedX - this.npc.x;
+    const dy = randomSeat.adjustedY - this.npc.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const duration = (distance / this.speed) * 1000;
 
@@ -197,26 +198,44 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       Math.sin(angle)
     ).scale(this.speed);
 
+    const originalDepth = randomSeat.obj.depth;
+
+    this.seats.forEach((seat) =>
+      console.log(seat.obj.texture.key, seat.obj.x, seat.obj.y)
+    );
+
     this.scene.tweens.add({
       targets: this.npc,
-      x: randomSeat.obj.x,
-      y: randomSeat.obj.y,
+      x: randomSeat.adjustedX,
+      y: randomSeat.adjustedY,
       duration: duration,
       ease: "Linear",
       onStart: () => {
-        this.npc.setVelocity(this.direction.x, this.direction.y);
+        this.npc.setVelocity(
+          this.direction.x * this.speed,
+          this.direction.y * this.speed
+        );
+
         this.updateAnimation();
       },
       onUpdate: this.updateAnimation.bind(this),
       onComplete: () => {
+        this.seatTaken = randomSeat;
         this.npc.setVelocity(0, 0);
+
+        if (randomSeat.depth) {
+          randomSeat.obj.setDepth(this.npc.depth + 0.1);
+        }
+
         this.npc.anims.play(randomSeat.anim, true);
         this.scene.time.delayedCall(
           Phaser.Math.Between(15000, 30000),
           () => {
             this.sitting = false;
             this.moveCounter = 0;
+            randomSeat.obj.setDepth(originalDepth);
             this.setRandomDirection();
+            this.seatTaken = null;
           },
           [],
           this
@@ -225,9 +244,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     });
   }
 
-  private configurarAnimaciones() {
+  private async configurarAnimaciones() {
     this.scene.anims.create({
-      key: "inactivo",
+      key: Direccion.Inactivo,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 132,
         end: 143,
@@ -236,7 +255,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "arriba",
+      key: Direccion.Arriba,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 0,
         end: 11,
@@ -245,7 +264,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "izquierda",
+      key: Direccion.Izquierda,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 24,
         end: 35,
@@ -254,7 +273,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "abajo",
+      key: Direccion.Abajo,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 12,
         end: 23,
@@ -263,7 +282,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "derecha",
+      key: Direccion.Derecha,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 36,
         end: 47,
@@ -272,7 +291,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "izquierdaAbajo",
+      key: Direccion.IzquierdaAbajo,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 72,
         end: 83,
@@ -281,7 +300,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "izquierdaArriba",
+      key: Direccion.IzquierdaArriba,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 48,
         end: 59,
@@ -290,7 +309,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.anims.create({
-      key: "derechaArriba",
+      key: Direccion.DerechaArriba,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 60,
         end: 71,
@@ -299,7 +318,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "derechaAbajo",
+      key: Direccion.DerechaAbajo,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 84,
         end: 95,
@@ -308,7 +327,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "sentadoSofa",
+      key: Direccion.Sofa,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 97,
         end: 108,
@@ -317,7 +336,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: "sentadoEscritorio",
+      key: Direccion.Silla,
       frames: this.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 108,
         end: 119,
@@ -330,11 +349,17 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private manejarProfundidad() {
     this.npc!.depth = this.npc!.y + this.npc!.height / 4;
 
-    this.prof.forEach((item) => {
-      if (item) {
-        item.depth = item.y;
-      }
-    });
+    this.prof
+      .filter((ob) =>
+        this.seatTaken?.depth
+          ? ob.texture.key !== this.seatTaken?.obj.texture.key
+          : true
+      )
+      .forEach((item) => {
+        if (item) {
+          item.depth = item.y;
+        }
+      });
   }
 
   makeCameraFollow() {
