@@ -7,6 +7,7 @@ export enum Direccion {
   IzquierdaAbajo = "izquierdaAbajo",
   DerechaArriba = "derechaArriba",
   DerechaAbajo = "derechaAbajo",
+  Inactivo = "inactivo",
 }
 
 export type LogProps = {

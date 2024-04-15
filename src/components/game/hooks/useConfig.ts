@@ -13,7 +13,6 @@ const useConfig = () => {
   useEffect(() => {
     if (typeof window !== "undefined" && gameRef.current) {
       class CustomPhaserScene extends Phaser.Scene {
-        muchacho!: Phaser.Physics.Arcade.Sprite;
         escritorio1!: Phaser.GameObjects.Image;
         escritorio2!: Phaser.GameObjects.Image;
         escritorio3!: Phaser.GameObjects.Image;
@@ -271,15 +270,6 @@ const useConfig = () => {
             .setSize(capsula.width, capsula.height, false)
             .setOffset(0, -capsula.height / 2);
 
-          this.muchacho = this.physics.add
-            .sprite(
-              alfombra.x + alfombra.x / 2,
-              alfombra.y + alfombra.y / 2,
-              "muchacho"
-            )
-            .setScale(0.5);
-          this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
-
           const audio1 = this.add
             .image(Number(parentWidth) / 2, Number(parentHeight), "audio1")
             .setOrigin(1, 1)
@@ -308,181 +298,25 @@ const useConfig = () => {
           this.physics.world.bounds.height = parentHeight;
           this.cameras.main.setBounds(0, 0, parentWidth, parentHeight);
 
-          this.physics.add.collider(
-            this.muchacho,
-            capsula,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
+          this.npc = new RandomWalkerNPC(
+            this,
+            {
+              texture: "muchacho",
+              x: alfombra.x + alfombra.x / 2,
+              y: alfombra.y + alfombra.y / 2,
             },
-            undefined,
-            this
+            [
+              capsula,
+              telefono,
+              arcade,
+              pared,
+              nevera,
+              maquina,
+              this.sofaUno,
+              this.sofaDos,
+            ],
+            true
           );
-          this.physics.add.collider(
-            this.muchacho,
-            telefono,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            arcade,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            pared,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            nevera,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            maquina,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            this.sofaUno,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.physics.add.collider(
-            this.muchacho,
-            this.sofaDos,
-            () => {
-              // this.stopCharacterAndPlanNextMove();
-            },
-            undefined,
-            this
-          );
-          this.muchacho.setCollideWorldBounds(true);
-
-          this.anims.create({
-            key: "inactivo",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 132,
-              end: 143,
-            }),
-            frameRate: 0.3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "arriba",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 0,
-              end: 11,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "izquierda",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 24,
-              end: 35,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "abajo",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 12,
-              end: 23,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "derecha",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 36,
-              end: 47,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "izquierdaAbajo",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 72,
-              end: 83,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "izquierdaArriba",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 48,
-              end: 59,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "derechaArriba",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 60,
-              end: 71,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "derechaAbajo",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 84,
-              end: 95,
-            }),
-            frameRate: 3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "sentadoSofa",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 97,
-              end: 108,
-            }),
-            frameRate: 0.3,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "sentadoEscritorio",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 108,
-              end: 119,
-            }),
-            frameRate: 0.3,
-            repeat: -1,
-          });
-
-          this.npc = new RandomWalkerNPC(this, this.muchacho);
         }
         update() {
           if (this.npc) {
