@@ -5,7 +5,7 @@ import Phaser from "phaser";
 import { INFURA_GATEWAY, NPC_LIST } from "../../../../lib/constants";
 import RandomWalkerNPC from "./classes/RandomWalkerNPC";
 
-interface PhaserGameElement extends HTMLElement {
+export interface PhaserGameElement extends HTMLElement {
   game: Phaser.Game;
 }
 
@@ -363,6 +363,14 @@ const useConfig = (chosenNpc: number) => {
                   adjustedX: 1240,
                   adjustedY: 220,
                 },
+              ],
+              [
+                escritorio1,
+                escritorio2,
+                escritorio2,
+                escritorio3,
+                escritorio4,
+                panelDeControl,
               ],
               true
             )

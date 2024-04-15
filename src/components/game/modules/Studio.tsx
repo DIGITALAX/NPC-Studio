@@ -1,13 +1,15 @@
 "use client";
-import useConfig from "@/components/game/hooks/useConfig";
+import useConfig, {
+  PhaserGameElement,
+} from "@/components/game/hooks/useConfig";
 import { RefObject } from "react";
 
-function Studio() {
-  const { gameRef } = useConfig();
+function Studio({ npc }: { npc: number }) {
+  const { gameRef } = useConfig(npc);
 
   return (
     <div
-      ref={gameRef as RefObject<HTMLDivElement>}
+      ref={gameRef as RefObject<PhaserGameElement> as any}
       className="relative w-full h-full flex items-start justify-start"
     />
   );

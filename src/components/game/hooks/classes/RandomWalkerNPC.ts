@@ -13,6 +13,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   idle: boolean;
   moveCounter: number = 0;
   sitting: boolean;
+  avoid: Phaser.GameObjects.Image[];
   seatTaken: Seat | null = null;
   seats: Seat[];
 
@@ -26,6 +27,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     obs: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
     seats: Seat[],
+    avoid: Phaser.GameObjects.Image[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.texture);
@@ -35,6 +37,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.sitting = false;
     this.prof = prof;
     this.seats = seats;
+    this.avoid = avoid;
     this.previousPosition = new Phaser.Math.Vector2(sprite.x, sprite.y);
     this.setExistingSprite(cam, sprite);
     this.gestionarObstaculos(obs);
@@ -60,33 +63,69 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private setRandomDirection() {
-    // if (
-    //   this.scene.time.now > this.lastIdleTime + 30000 ||
-    //   Math.random() < this.idleProbability
-    // ) {
-    //   this.goIdle();
-    // } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
-    this.goSit();
-    // } else {
-    //   this.moveCounter++;
-    //   const angle = Phaser.Math.Between(0, 360);
-    //   this.direction = new Phaser.Math.Vector2(
-    //     Math.cos(angle),
-    //     Math.sin(angle)
-    //   ).scale(this.speed);
-    //   this.npc.setVelocity(this.direction.x, this.direction.y);
-    //   this.updateAnimation();
-    // }
+    if (
+      this.scene.time.now > this.lastIdleTime + 30000 ||
+      Math.random() < this.idleProbability
+    ) {
+      this.goIdle();
+    } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
+      this.goSit();
+    } else {
+      this.moveCounter++;
+      const angle = Phaser.Math.Between(0, 360);
+      this.direction = new Phaser.Math.Vector2(
+        Math.cos(angle),
+        Math.sin(angle)
+      ).scale(this.speed);
+      this.npc.setVelocity(this.direction.x, this.direction.y);
+      this.updateAnimation();
+    }
   }
 
   update() {
     if (!this.idle && !this.sitting) {
       this.updateAnimation();
+      this.checkObstacleIntersections();
       this.comprobarBordesDelMundo();
       this.comprobarUbicacion();
     }
 
     this.manejarProfundidad();
+  }
+
+  private checkObstacleIntersections() {
+    this.avoid.forEach((ob) => {
+      const padding = 10;
+      const hitArea = new Phaser.Geom.Rectangle(
+        ob.x - padding,
+        ob.y - padding,
+        ob.width + 2 * padding,
+        ob.height + 2 * padding
+      );
+
+      if (
+        Phaser.Geom.Intersects.RectangleToRectangle(
+          hitArea,
+          this.npc.getBounds()
+        )
+      ) {
+        this.adjustDirectionAwayFromObstacle(ob);
+      }
+    });
+  }
+
+  private adjustDirectionAwayFromObstacle(obstacle: Phaser.GameObjects.Image) {
+    const angleFromObstacle = Phaser.Math.Angle.Between(
+      this.npc.x,
+      this.npc.y,
+      obstacle.x + obstacle.width / 2,
+      obstacle.y + obstacle.height / 2
+    );
+    this.direction = new Phaser.Math.Vector2(
+      Math.cos(angleFromObstacle + Math.PI),
+      Math.sin(angleFromObstacle + Math.PI)
+    ).scale(this.speed);
+    this.npc.setVelocity(this.direction.x, this.direction.y);
   }
 
   private updateAnimation() {
@@ -199,10 +238,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     ).scale(this.speed);
 
     const originalDepth = randomSeat.obj.depth;
-
-    this.seats.forEach((seat) =>
-      console.log(seat.obj.texture.key, seat.obj.x, seat.obj.y)
-    );
 
     this.scene.tweens.add({
       targets: this.npc,
