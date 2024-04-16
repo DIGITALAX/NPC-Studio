@@ -10,11 +10,12 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   lastIdleTime: number = 0;
   prof: Phaser.GameObjects.Image[];
   previousPosition: Phaser.Math.Vector2;
-  lastDirection: Direccion | null;
+  lastDirection: Direccion | null = null;
   idle: boolean;
   moveCounter: number = 0;
   sitting: boolean;
   seatTaken: Seat | null = null;
+  randomSeat: Seat | null = null;
   seats: Seat[];
   avoid: Phaser.GameObjects.Image[];
 
@@ -39,7 +40,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.prof = prof;
     this.seats = seats;
     this.avoid = avoid;
-    this.lastDirection = null;
+    this.lastDirection;
     this.previousPosition = new Phaser.Math.Vector2(sprite.x, sprite.y);
     this.configureSprite(cam, sprite);
     this.gestionarObstaculos(obs);
@@ -68,105 +69,183 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private setRandomDirection() {
-    // if (
-    //   this.scene.time.now > this.lastIdleTime + 30000 ||
-    //   Math.random() < this.idleProbability
-    // ) {
-    //   this.goIdle();
-    // } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
-    //   this.goSit();
-    // } else {
-    this.moveCounter++;
-    const angle = Phaser.Math.Between(0, 360);
-    this.direction = new Phaser.Math.Vector2(
-      Math.cos(angle),
-      Math.sin(angle)
-    ).scale(this.speed);
-    this.npc.setVelocity(this.direction.x, this.direction.y);
-    this.updateAnimation();
-    // }
+    if (
+      this.scene.time.now > this.lastIdleTime + 30000 ||
+      Math.random() < this.idleProbability
+    ) {
+      this.goIdle();
+    } else if (++this.moveCounter >= Phaser.Math.Between(7, 13)) {
+      this.goSit();
+    } else {
+      this.moveCounter++;
+      const angle = Phaser.Math.Between(0, 360);
+      this.direction = new Phaser.Math.Vector2(
+        Math.cos(angle),
+        Math.sin(angle)
+      ).scale(this.speed);
+      this.npc.setVelocity(this.direction.x, this.direction.y);
+      this.updateAnimation();
+    }
   }
 
   update() {
-    this.willCollide();
-    if (!this.idle && !this.sitting) {
-      this.comprobarBordesDelMundo();
-      this.updateAnimation();
-      this.comprobarUbicacion();
+    if (!this.idle) {
+      this.willCollide();
+      if (!this.sitting) {
+        this.comprobarBordesDelMundo();
+        this.updateAnimation();
+        this.comprobarUbicacion();
+      }
     }
 
     this.manejarProfundidad();
   }
 
   private willCollide() {
-    let npcMiddleY = this.npc.y + this.npc.height / 2;
-    let npcBottomY = this.npc.y + this.npc.height;
-    let npcTopY = this.npc.y;
-    let npcRightX = this.npc.x + this.npc.width;
-    let npcLeftX = this.npc.x;
+    let npcMiddleX = this.npc.x;
+    let npcMiddleY = this.npc.y;
+    let npcTopY = this.npc.y - this.npc.displayHeight / 2;
+    let npcBottomY = this.npc.y + this.npc.displayHeight / 2;
+    let npcLeftX = this.npc.x - this.npc.displayWidth / 2;
+    let npcRightX = this.npc.x + this.npc.displayWidth / 2;
     let blockedDirections: Direccion[] = [];
 
     this.avoid.forEach((obstacle) => {
-      let obstacleMiddleY = obstacle.y + obstacle.displayHeight / 2;
-      let obstacleBottomY = obstacle.y + obstacle.displayHeight;
-      let obstacleTopY = obstacle.y;
-      let obstacleRightX = obstacle.x + obstacle.displayWidth;
-      let obstacleLeftX = obstacle.x;
+      let obstacleMiddleY = obstacle.y - obstacle.displayHeight / 2;
+      let obstacleTopY = obstacle.y - obstacle.displayHeight;
+      let obstacleLeftX = obstacle.x - obstacle.displayWidth;
+      let obstacleBottomY = obstacle.y;
+      let obstacleRightX = obstacle.x;
 
-      if (
-        npcLeftX <= obstacleRightX &&
-        Math.abs(npcMiddleY - obstacleMiddleY) < 5 &&
-        npcRightX > obstacleRightX
-      ) {
-        blockedDirections.push(Direccion.Izquierda);
-      }
-
-      if (
-        npcRightX >= obstacleLeftX &&
-        Math.abs(npcMiddleY - obstacleMiddleY) < 5 &&
-        npcLeftX < obstacleLeftX
-      ) {
-        blockedDirections.push(Direccion.Derecha);
-      }
-
-      if (
-        Math.abs(npcMiddleY - obstacleMiddleY) < 5 &&
-        npcTopY < obstacleTopY &&
-        npcLeftX < obstacleRightX &&
-        npcRightX > obstacleLeftX
-      ) {
-        blockedDirections.push(Direccion.Abajo);
-      }
-      if (
-        Math.abs(npcMiddleY - obstacleMiddleY) < 5 &&
-        npcBottomY > obstacleBottomY &&
-        npcLeftX < obstacleRightX &&
-        npcRightX > obstacleLeftX
-      ) {
-        blockedDirections.push(Direccion.Arriba);
+      if (Math.abs(npcMiddleY - obstacleMiddleY) < this.npc.displayHeight / 2) {
+        if (npcRightX >= obstacleLeftX && npcLeftX < obstacleLeftX) {
+          console.log("dech");
+          blockedDirections.push(Direccion.Derecha);
+        }
+        if (npcLeftX <= obstacleRightX && npcRightX > obstacleRightX) {
+          console.log("izq");
+          blockedDirections.push(Direccion.Izquierda);
+        }
+        if (npcTopY < obstacleBottomY && npcBottomY > obstacleTopY) {
+          console.log("altura");
+          if (npcMiddleX >= obstacleLeftX && npcMiddleX < obstacleRightX) {
+            console.log("anchura");
+            if (npcBottomY > obstacleTopY) {
+              blockedDirections.push(Direccion.Abajo);
+            }
+            if (npcTopY < obstacleBottomY) {
+              blockedDirections.push(Direccion.Arriba);
+            }
+          }
+        }
       }
     });
 
     if (blockedDirections.length > 0) {
       console.log({ blockedDirections });
-      let availableDirections = Object.values(Direccion).filter(
-        (dir) => !blockedDirections.includes(dir)
-      );
 
-      if (availableDirections.includes(this.lastDirection!)) {
-        this.updateDirection(this.lastDirection);
+      if (this.sitting) {
+        this.adjustPathTowardsChair(blockedDirections);
       } else {
-        let newDirection =
-          availableDirections.length > 0 ? availableDirections[0] : null;
-        this.lastDirection = newDirection;
-        this.updateDirection(newDirection);
+        let availableDirections = Object.values(Direccion).filter(
+          (dir) => !blockedDirections.includes(dir)
+        );
+
+        if (availableDirections.includes(this.lastDirection!)) {
+          this.updateDirection(this.lastDirection, blockedDirections);
+        } else {
+          let newDirection =
+            availableDirections.length > 0 ? availableDirections[0] : null;
+          this.lastDirection = newDirection;
+          this.updateDirection(newDirection, blockedDirections);
+        }
       }
     }
   }
 
-  private updateDirection(direction: Direccion | null) {
-    console.log({ direction });
-    if (direction !== null) {
+  private adjustPathTowardsChair(blockedDirections: Direccion[]) {
+    const increment = 5;
+    const maxAttempts = 36;
+    let adjustedAngle = Phaser.Math.RadToDeg(
+      Math.atan2(
+        Number(this.randomSeat?.adjustedY) - this.npc.y,
+        Number(this.randomSeat?.adjustedX) - this.npc.x
+      )
+    );
+
+    for (let i = 0; i < maxAttempts; i++) {
+      if (i > 0) {
+        adjustedAngle =
+          (adjustedAngle +
+            (i % 2 == 0 ? 1 : -1) * increment * (Math.floor(i / 2) + 1)) %
+          360;
+      }
+
+      let directionVector = new Phaser.Math.Vector2(
+        Math.cos(Phaser.Math.DegToRad(adjustedAngle)),
+        Math.sin(Phaser.Math.DegToRad(adjustedAngle))
+      ).scale(this.speed);
+
+      if (!this.isDirectionBlocked(directionVector, blockedDirections)) {
+        this.direction = directionVector;
+        this.updateAnimation();
+        break;
+      }
+    }
+  }
+
+  private isDirectionBlocked(
+    vector: Phaser.Math.Vector2,
+    blockedDirections: Direccion[]
+  ): boolean {
+    let predominantDirection: Direccion;
+    if (Math.abs(vector.x) > Math.abs(vector.y)) {
+      predominantDirection =
+        vector.x > 0 ? Direccion.Derecha : Direccion.Izquierda;
+    } else {
+      predominantDirection = vector.y > 0 ? Direccion.Abajo : Direccion.Arriba;
+    }
+
+    return blockedDirections.includes(predominantDirection);
+  }
+
+  private attemptToFindPath(
+    targetAngle: number,
+    blockedDirections: Direccion[]
+  ) {
+    const increment = 5;
+    for (let i = 0; i < 360 / increment; i++) {
+      let angle = (targetAngle + i * increment) % 360;
+      let dirVector = new Phaser.Math.Vector2(
+        Math.cos(Phaser.Math.DegToRad(angle)),
+        Math.sin(Phaser.Math.DegToRad(angle))
+      ).scale(this.speed);
+      if (!this.isDirectionBlocked(dirVector, blockedDirections)) {
+        this.npc.setVelocity(dirVector.x, dirVector.y);
+        this.direction = dirVector;
+        this.updateAnimation();
+        return;
+      }
+    }
+  }
+
+  private updateDirection(
+    direction: Direccion | null,
+    blockedDirections: Direccion[]
+  ) {
+    if (!direction) {
+      let targetAngle =
+        this.sitting && this.randomSeat
+          ? Phaser.Math.RadToDeg(
+              Math.atan2(
+                this.randomSeat.adjustedY - this.npc.y,
+                this.randomSeat.adjustedX - this.npc.x
+              )
+            )
+          : Phaser.Math.Between(0, 360);
+      this.attemptToFindPath(targetAngle, blockedDirections);
+      return;
+    } else {
       let angle;
       switch (direction) {
         case Direccion.Arriba:
@@ -280,9 +359,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
   private goSit() {
     this.sitting = true;
-    let randomSeat = this.seats[Phaser.Math.Between(0, this.seats.length - 1)];
-    const dx = randomSeat.adjustedX - this.npc.x;
-    const dy = randomSeat.adjustedY - this.npc.y;
+    this.randomSeat = this.seats[Phaser.Math.Between(0, this.seats.length - 1)];
+    const dx = this.randomSeat.adjustedX - this.npc.x;
+    const dy = this.randomSeat.adjustedY - this.npc.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const duration = (distance / this.speed) * 1000;
 
@@ -292,12 +371,12 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       Math.sin(angle)
     ).scale(this.speed);
 
-    const originalDepth = randomSeat.obj.depth;
+    const originalDepth = this.randomSeat.obj.depth;
 
     this.scene.tweens.add({
       targets: this.npc,
-      x: randomSeat.adjustedX,
-      y: randomSeat.adjustedY,
+      x: this.randomSeat.adjustedX,
+      y: this.randomSeat.adjustedY,
       duration: duration,
       ease: "Linear",
       onStart: () => {
@@ -310,20 +389,21 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       },
       onUpdate: this.updateAnimation.bind(this),
       onComplete: () => {
-        this.seatTaken = randomSeat;
+        this.seatTaken = this.randomSeat;
         this.npc.setVelocity(0, 0);
 
-        if (randomSeat.depth) {
-          randomSeat.obj.setDepth(this.npc.depth + 0.1);
+        if (this.randomSeat?.depth) {
+          this.randomSeat?.obj.setDepth(this.npc.depth + 0.1);
         }
 
-        this.npc.anims.play(randomSeat.anim, true);
+        this.npc.anims.play(this.randomSeat?.anim!, true);
         this.scene.time.delayedCall(
           Phaser.Math.Between(15000, 30000),
           () => {
             this.sitting = false;
             this.moveCounter = 0;
-            randomSeat.obj.setDepth(originalDepth);
+            this.randomSeat?.obj.setDepth(originalDepth);
+            this.randomSeat = null;
             this.setRandomDirection();
             this.seatTaken = null;
           },
