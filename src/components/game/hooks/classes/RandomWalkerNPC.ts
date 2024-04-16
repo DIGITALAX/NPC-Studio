@@ -119,17 +119,13 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
       if (Math.abs(npcMiddleY - obstacleMiddleY) < this.npc.displayHeight / 2) {
         if (npcRightX >= obstacleLeftX && npcLeftX < obstacleLeftX) {
-          console.log("dech");
           blockedDirections.push(Direccion.Derecha);
         }
         if (npcLeftX <= obstacleRightX && npcRightX > obstacleRightX) {
-          console.log("izq");
           blockedDirections.push(Direccion.Izquierda);
         }
         if (npcTopY < obstacleBottomY && npcBottomY > obstacleTopY) {
-          console.log("altura");
           if (npcMiddleX >= obstacleLeftX && npcMiddleX < obstacleRightX) {
-            console.log("anchura");
             if (npcBottomY > obstacleTopY) {
               blockedDirections.push(Direccion.Abajo);
             }
@@ -142,8 +138,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     });
 
     if (blockedDirections.length > 0) {
-      console.log({ blockedDirections });
-
       if (this.sitting) {
         this.adjustPathTowardsChair(blockedDirections);
       } else {
