@@ -77,6 +77,7 @@ const Scene: FunctionComponent<SceneProps> = ({
               <Image
                 draggable={false}
                 layout="fill"
+                priority
                 objectFit="cover"
                 src={`${INFURA_GATEWAY}/ipfs/${SCENE_LIST[escena].cover}`}
               />

@@ -177,21 +177,29 @@ const useConfig = (chosenNpc: number) => {
             .setOrigin(0, 0)
             .setScale(1.2);
 
-          const panelDeControl = this.add
-            .image(
+          const panelDeControl = this.physics.add
+            .staticImage(
               Number(parentWidth),
               Number(parentHeight) / 1.1,
               "panelDeControl"
             )
             .setOrigin(1, 1);
 
-          const escritorio1 = this.add
-            .image(
+          panelDeControl.body
+            .setSize(pared.width / 3, pared.height, true)
+            .setOffset(-pared.width / 6, -pared.height / 2);
+
+          const escritorio1 = this.physics.add
+            .staticImage(
               Number(parentWidth) - 20,
               Number(parentHeight) / 2.2,
               "escritorio1"
             )
             .setOrigin(1, 1);
+          escritorio1.body
+            .setSize(escritorio1.width, escritorio1.height, true)
+            .setOffset(-escritorio1.width / 2, -escritorio1.height / 2);
+
           const silla1 = this.add
             .image(
               Number(escritorio1.x) - Number(escritorio1.width / 2.5),
@@ -199,13 +207,18 @@ const useConfig = (chosenNpc: number) => {
               "silla1"
             )
             .setOrigin(1, 1);
-          const escritorio2 = this.add
-            .image(
+          const escritorio2 = this.physics.add
+            .staticImage(
               Number(parentWidth) - 20,
               Number(parentHeight) / 1.6,
               "escritorio2"
             )
             .setOrigin(1, 1);
+
+          escritorio2.body
+            .setSize(escritorio2.width, escritorio2.height, true)
+            .setOffset(-escritorio2.width / 2, -escritorio2.height / 2);
+
           const silla2 = this.add
             .image(
               Number(escritorio2.x) - Number(escritorio2.width / 2.5),
@@ -214,13 +227,17 @@ const useConfig = (chosenNpc: number) => {
             )
             .setOrigin(1, 1);
 
-          const escritorio3 = this.add
-            .image(
+          const escritorio3 = this.physics.add
+            .staticImage(
               Number(parentWidth) - (escritorio1.width + 20),
               Number(parentHeight) / 2.2,
               "escritorio3"
             )
             .setOrigin(1, 1);
+          escritorio3.body
+            .setSize(escritorio3.width, escritorio3.height, true)
+            .setOffset(-escritorio3.width / 2, -escritorio3.height / 2);
+
           const silla3 = this.add
             .image(
               Number(escritorio3.x) - Number(escritorio3.width / 2.5),
@@ -229,13 +246,17 @@ const useConfig = (chosenNpc: number) => {
             )
             .setOrigin(1, 1);
 
-          const escritorio4 = this.add
-            .image(
+          const escritorio4 = this.physics.add
+            .staticImage(
               Number(parentWidth) - (escritorio2.width + 20),
               Number(parentHeight) / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
+          escritorio4.body
+            .setSize(escritorio4.width, escritorio4.height, true)
+            .setOffset(-escritorio4.width / 2, -escritorio4.height / 2);
+
           const silla4 = this.add
             .image(
               Number(escritorio4.x) - Number(escritorio4.width / 2.5),
@@ -416,7 +437,7 @@ const useConfig = (chosenNpc: number) => {
           default: "arcade",
           arcade: {
             gravity: { y: 0, x: 0 },
-            debug: false,
+            debug: true,
           },
         },
         scene: [CustomPhaserScene],

@@ -37,6 +37,7 @@ function Log({
                 draggable={false}
                 objectFit="cover"
                 layout="fill"
+                priority
               />
             </div>
           </div>
