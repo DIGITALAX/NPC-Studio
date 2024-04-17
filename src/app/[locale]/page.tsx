@@ -3,15 +3,11 @@ import { useTranslations } from "next-intl";
 import Dialog from "@/components/game/modules/Dialog";
 import Log from "@/components/game/modules/Log";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import dynamic from "next/dynamic";
 import { useAccount } from "wagmi";
 import Scene from "@/components/game/modules/Scene";
 import useManage from "@/components/game/hooks/useManage";
 import useDialog from "@/components/game/hooks/useDialog";
-const DynamicComponentWithNoSSR = dynamic(
-  () => import("@/components/game/modules/Studio"),
-  { ssr: false }
-);
+import Studio from "@/components/game/modules/Studio";
 
 export default function IndexPage() {
   const t = useTranslations("Home");
@@ -42,8 +38,11 @@ export default function IndexPage() {
           indiceConversacionActual={indiceConversacionActual}
           contenedorMensajesRef={contenedorMensajesRef}
         />
-        <div className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1">
-          <DynamicComponentWithNoSSR npc={npc} />
+        <div
+          className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
+          id="studioParent"
+        >
+          <Studio npc={npc} />
         </div>
       </div>
       <Scene

@@ -1,20 +1,6 @@
 import { MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
 
-export enum Direccion {
-  Izquierda = "izquierda",
-  Derecha = "derecha",
-  Arriba = "arriba",
-  Abajo = "abajo",
-  IzquierdaArriba = "izquierdaArriba",
-  IzquierdaAbajo = "izquierdaAbajo",
-  DerechaArriba = "derechaArriba",
-  DerechaAbajo = "derechaAbajo",
-  Inactivo = "inactivo",
-  Sofa = "sentadoSofa",
-  Silla = "sentadoEscritorio",
-}
-
 export type LogProps = {
   connected: boolean;
   openConnectModal: (() => void) | undefined;
@@ -72,5 +58,18 @@ export interface Seat {
   anim: string;
   depth: boolean;
   adjustedX: number;
-  adjustedY: number
+  adjustedY: number;
+}
+export enum Direccion {
+  Izquierda = "izquierda",
+  Derecha = "derecha",
+  Arriba = "arriba",
+  Abajo = "abajo",
+  IzquierdaArriba = "izquierdaArriba",
+  IzquierdaAbajo = "izquierdaAbajo",
+  DerechaArriba = "derechaArriba",
+  DerechaAbajo = "derechaAbajo",
+  Inactivo = "inactivo",
+  Sofa = "sentadoSofa",
+  Silla = "sentadoEscritorio",
 }

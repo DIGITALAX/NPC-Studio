@@ -15,6 +15,7 @@
     "critters": "^0.0.20",
     "encoding": "^0.1.13",
     "ethers": "^6.11.1",
+    "lance-gg": "^4.0.9",
     "lodash": "^4.17.21",
     "next": "13.5.4",
     "next-intl": "^3.11.1",
@@ -28,6 +29,7 @@
     "react-router-dom": "^6.4.3",
     "react-typist": "^2.0.5",
     "redux": "^4.2.1",
+    "socket.io-client": "^4.7.5",
     "viem": "^2.8.18",
     "wagmi": "^2.5.12"
   },
@@ -38,6 +40,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-typist": "^2.0.6",
+    "@types/socket.io-client": "^3.0.0",
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",

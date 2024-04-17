@@ -1,4 +1,6 @@
 export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
+export const FIXED_WIDTH: number = 1512;
+export const FIXED_HEIGHT: number = 830;
 export const SCENE_LIST: {
   key: string;
   cover: string;

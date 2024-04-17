@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 import { INFURA_GATEWAY, NPC_LIST } from "../../../../lib/constants";
-import RandomWalkerNPC from "./classes/RandomWalkerNPC";
+import RandomWalkerNPC from "../class/RandomWalkNPC";
+import io, { Socket } from "socket.io-client";
 
 export interface PhaserGameElement extends HTMLElement {
   game: Phaser.Game;
 }
 
 const useConfig = (chosenNpc: number) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const gameRef = useRef<PhaserGameElement | undefined>(null);
   const parentWidth = 1512;
   const parentHeight = 830;
@@ -18,11 +20,14 @@ const useConfig = (chosenNpc: number) => {
     if (typeof window !== "undefined" && gameRef.current) {
       class CustomPhaserScene extends Phaser.Scene {
         frameCount: number;
+        prof: Phaser.GameObjects.Image[];
         npcs: RandomWalkerNPC[] = [];
 
         constructor() {
           super({ key: "CustomPhaserScene" });
           this.frameCount = 0;
+          this.prof = [];
+          setSocket(io("ws://localhost:3001"));
         }
 
         preload() {
@@ -315,6 +320,7 @@ const useConfig = (chosenNpc: number) => {
           this.npcs.push(
             new RandomWalkerNPC(
               this,
+              socket,
               {
                 texture: "muchacho",
                 x: alfombra.x + alfombra.x / 2,
@@ -341,58 +347,7 @@ const useConfig = (chosenNpc: number) => {
                 silla4,
                 panelDeControl,
               ],
-              [
-                {
-                  obj: silla1,
-                  anim: "sentadoEscritorio",
-                  depth: true,
-                  adjustedX: 1330,
-                  adjustedY: 270,
-                },
-                {
-                  obj: silla2,
-                  anim: "sentadoEscritorio",
-                  depth: true,
-                  adjustedX: 1330,
-                  adjustedY: 430,
-                },
-                {
-                  obj: silla3,
-                  anim: "sentadoEscritorio",
-                  depth: true,
-                  adjustedX: 1000,
-                  adjustedY: 275,
-                },
-                {
-                  obj: silla4,
-                  anim: "sentadoEscritorio",
-                  depth: true,
-                  adjustedX: 1020,
-                  adjustedY: 430,
-                },
-                {
-                  obj: sofaUno,
-                  anim: "sentadoSofa",
-                  depth: false,
-                  adjustedX: 800,
-                  adjustedY: 220,
-                },
-                {
-                  obj: sofaDos,
-                  anim: "sentadoSofa",
-                  depth: false,
-                  adjustedX: 1240,
-                  adjustedY: 220,
-                },
-              ],
-              [
-                escritorio1,
-                escritorio2,
-                escritorio2,
-                escritorio3,
-                escritorio4,
-                panelDeControl,
-              ],
+
               true
             )
           );
@@ -437,7 +392,7 @@ const useConfig = (chosenNpc: number) => {
           default: "arcade",
           arcade: {
             gravity: { y: 0, x: 0 },
-            debug: true,
+            debug: false,
           },
         },
         scene: [CustomPhaserScene],

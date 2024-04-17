@@ -1,15 +1,12 @@
 "use client";
-import useConfig, {
-  PhaserGameElement,
-} from "@/components/game/hooks/useConfig";
-import { RefObject } from "react";
+
+import useLance from "../hooks/useLance";
 
 function Studio({ npc }: { npc: number }) {
-  const { gameRef } = useConfig(npc);
-
+  const { gameRef } = useLance(npc);
   return (
     <div
-      ref={gameRef as RefObject<PhaserGameElement> as any}
+      ref={gameRef as any}
       className="relative w-full h-full flex items-start justify-start"
     />
   );
