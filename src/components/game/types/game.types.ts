@@ -59,6 +59,8 @@ export interface Seat {
   depth: boolean;
   adjustedX: number;
   adjustedY: number;
+  texture: string
+  depthCount: number | undefined;
 }
 export enum Direccion {
   Izquierda = "izquierda",
@@ -72,4 +74,8 @@ export enum Direccion {
   Inactivo = "inactivo",
   Sofa = "sentadoSofa",
   Silla = "sentadoEscritorio",
+}
+
+export interface PhaserGameElement extends HTMLElement {
+  game: Phaser.Game;
 }

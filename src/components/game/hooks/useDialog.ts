@@ -16,6 +16,7 @@ const useDialog = () => {
         setIndiceConversacionActual((prev) =>
           prev + 1 < messages.length ? prev + 1 : 0
         );
+
         setIndiceMensajeActual(0);
       }, 6000);
       return;

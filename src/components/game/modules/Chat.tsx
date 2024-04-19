@@ -12,7 +12,7 @@ const Chat: FunctionComponent<ChatProps> = ({
 }): JSX.Element => {
   return (
     <div
-      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 text-white overflow-y-scroll ${
+      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 max-w-full text-white overflow-y-scroll break-all ${
         open ? "h-96" : "h-full"
       }`}
       key={indiceConversacionActual}
@@ -30,7 +30,13 @@ const Chat: FunctionComponent<ChatProps> = ({
                 <span style={{ color: msg.color }}>
                   {msg.name} ({msg.team}):
                 </span>
-                <span style={{ color: msg.base, whiteSpace: "pre-wrap" }}>
+                <span
+                  style={{
+                    color: msg.base,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   {" "}
                   {msg.message}
                   <br /> <br />
@@ -43,7 +49,13 @@ const Chat: FunctionComponent<ChatProps> = ({
                     {msg.name} ({msg.team}):{" "}
                   </strong>
                 </span>
-                <span style={{ color: msg.base, whiteSpace: "pre-wrap" }}>
+                <span
+                  style={{
+                    color: msg.base,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   {" "}
                   {msg.message}
                   <br /> <br />

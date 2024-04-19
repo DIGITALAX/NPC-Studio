@@ -1,34 +1,51 @@
-import io, { Socket } from "socket.io-client";
 import { Direccion, Seat } from "../types/game.types";
+import Phaser from "phaser";
+import { Socket } from "socket.io-client";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   npc!: Phaser.Physics.Arcade.Sprite;
   prof: Phaser.GameObjects.Image[];
-  obs: Phaser.GameObjects.Image[];
+  seats: Phaser.GameObjects.Image[];
   seatTaken: Seat | null = null;
-  socket: Socket | null = null;
+  socket: Socket;
+  direccionActual: {
+    x: number;
+    y: number;
+    anim: Direccion;
+    vx: number;
+    vy: number;
+  } | null = null;
 
   constructor(
     scene: Phaser.Scene,
-    socket: Socket | null,
+    socket: Socket,
     sprite: {
       texture: string;
       x: number;
       y: number;
     },
-    obs: Phaser.GameObjects.Image[],
+    seats: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.texture);
     this.scene.physics.world.enable(this);
-    this.prof = prof;
-    this.obs = obs;
     this.socket = socket;
+    this.seats = seats;
+    this.prof = prof;
     this.configureSprite({
       ...sprite,
       cam,
     });
+  }
+
+  update() {
+    if (this.direccionActual && this.npc) {
+      this.npc.anims.play(this.direccionActual.anim, true);
+      this.npc.setVelocity(this.direccionActual.vx * 60, this.direccionActual.vy * 60);
+
+      this.manejarProfundidad();
+    }
   }
 
   private configureSprite(ops: {
@@ -37,162 +54,73 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     y: number;
     cam: boolean;
   }) {
-    this.npc = this.scene.physics.add
-      .sprite(ops.x, ops.y, ops.texture)
-      .setScale(0.5);
-    this.npc.body
-      ?.setSize(this.npc.width / 2, this.npc.height, true)
-      .setOffset(this.npc.width / 4, 0);
+    if (!this.npc) {
+      this.npc = this.scene.physics.add
+        .sprite(this.direccionActual?.x!, this.direccionActual?.y!, ops.texture)
+        .setScale(0.5);
+      this.npc.body
+        ?.setSize(this.npc.width / 2, this.npc.height, true)
+        .setOffset(this.npc.width / 4, 0);
+      this.configurarAnimaciones();
+      this.actualizarAnimacion();
+      ops.cam && this.makeCameraFollow();
+    }
+  }
 
-    this.configurarAnimaciones();
-    this.gestionarObstaculos();
-    this.actualizarAnimacion();
-    this.goIdle();
-    this.goSit();
-    ops.cam && this.makeCameraFollow();
-  }
-  update() {
-    this.comprobarBordesDelMundo();
-    this.manejarProfundidad();
-  }
-  private comprobarBordesDelMundo() {
-    const blocked = this.npc.body?.blocked;
-    this.socket?.emit("blocked", {
-      blockedRight: blocked?.right,
-      blockedLeft: blocked?.left,
-      blockedUp: blocked?.up,
-      blockedDown: blocked?.down,
-    });
-  }
   private actualizarAnimacion() {
-    this.socket?.on(
+    this.socket.on(
       "direccionCambio",
-      (data: { direccionX: number; direccionY: number; textura: string }) => {
-        this.npc.setVelocity(data.direccionX, data.direccionY);
-        const dx = data.direccionX;
-        const dy = data.direccionY;
-        const absX = Math.abs(dx);
-        const absY = Math.abs(dy);
-        if (Math.abs(absX - absY) <= Math.max(absX, absY) * 0.3) {
-          if (dx > 0 && dy > 0) {
-            this.npc.anims.play(Direccion.DerechaAbajo, true);
-          } else if (dx > 0 && dy < 0) {
-            this.npc.anims.play(Direccion.DerechaArriba, true);
-          } else if (dx < 0 && dy > 0) {
-            this.npc.anims.play(Direccion.IzquierdaAbajo, true);
-          } else if (dx < 0 && dy < 0) {
-            this.npc.anims.play(Direccion.IzquierdaArriba, true);
-          }
-        } else if (absX > absY) {
-          this.npc.anims.play(
-            dx > 0 ? Direccion.Derecha : Direccion.Izquierda,
-            true
-          );
+      (data: {
+        direccion: Direccion;
+        velocidadX: number;
+        velocidadY: number;
+        npcX: number;
+        npcY: number;
+        randomSeat: Seat | null;
+      }) => {
+        console.log({ data });
+        this.direccionActual = {
+          x: data.npcX,
+          y: data.npcY,
+          anim: data.direccion,
+          vx: data.velocidadX,
+          vy: data.velocidadY,
+        };
+        this.anims.play(data.direccion, true);
+        this.npc.setPosition(data.npcX, data.npcY);
+        this.npc.setVelocity(data.velocidadX, data.velocidadY);
+
+        if (
+          data.direccion == Direccion.Silla ||
+          data.direccion == Direccion.Sofa
+        ) {
+          this.goSit(data.randomSeat!);
         } else {
-          this.npc.anims.play(
-            dy > 0 ? Direccion.Abajo : Direccion.Arriba,
-            true
-          );
+          if (this.seatTaken) {
+            this.seatTaken?.obj.setDepth(this.seatTaken.depthCount!);
+            this.seatTaken = null;
+          }
         }
       }
     );
   }
-  private gestionarObstaculos() {
-    this.npc.setCollideWorldBounds(true);
-    this.obs.forEach((ob) => {
-      this.scene.physics.add.collider(
-        this.npc,
-        ob,
-        this.callRandomDireccion,
-        undefined,
-        this
-      );
-    });
-  }
-  private callRandomDireccion() {
-    this.socket?.emit("recibirDireccion");
-  }
-  private goIdle() {
-    this.socket?.on(
-      "goIdle",
-      (
-        data: {
-          between: number;
-          texture: string;
-        },
-        callback
-      ) => {
-        this.npc.setVelocity(0, 0);
-        this.npc.anims.play(Direccion.Inactivo, true);
-        this.scene.time.delayedCall(
-          data.between,
-          () => {
-            callback();
-            this.callRandomDireccion();
-          },
-          [],
-          this
-        );
-      }
+
+  private goSit(randomSeat: Seat) {
+    const foundSeat = this.seats.find(
+      (seat) => seat.texture.key == randomSeat.texture
     );
-  }
+    if (foundSeat) {
+      this.seatTaken = {
+        ...randomSeat,
+        obj: foundSeat,
+      };
 
-  private goSit() {
-    this.socket?.on(
-      "goSit",
-      (
-        data: {
-          randomSeat: Seat;
-          duration: number;
-          numeroBetween: number;
-          originalDepth: number;
-          texture: string;
-          direccionX: number;
-          direccionY: number;
-          speed: number;
-        },
-        callback
-      ) => {
-        this.scene.tweens.add({
-          targets: this.npc,
-          x: data?.randomSeat.adjustedX,
-          y: data?.randomSeat.adjustedY,
-          duration: data?.duration,
-          ease: "Linear",
-          onStart: () => {
-            this.npc.setVelocity(
-              data.direccionX * data.speed,
-              data.direccionY * data.speed
-            );
-
-            this.actualizarAnimacion();
-          },
-          onUpdate: this.actualizarAnimacion.bind(this),
-          onComplete: () => {
-            this.seatTaken = data?.randomSeat;
-            this.npc.setVelocity(0, 0);
-
-            if (data?.randomSeat?.depth) {
-              data?.randomSeat?.obj.setDepth(this.npc.depth + 0.1);
-            }
-
-            this.npc.anims.play(data?.randomSeat?.anim, true);
-            this.scene.time.delayedCall(
-              data.numeroBetween,
-              () => {
-                data?.randomSeat.obj.setDepth(data?.originalDepth);
-                this.callRandomDireccion();
-                this.seatTaken = null;
-                callback();
-              },
-              [],
-              this
-            );
-          },
-        });
+      if (randomSeat?.depth) {
+        foundSeat?.setDepth(this.npc.depth + 0.1);
       }
-    );
+    }
   }
+
   private manejarProfundidad() {
     this.npc.depth = this.npc!.y + this.npc!.height / 4;
 

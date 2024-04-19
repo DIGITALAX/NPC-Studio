@@ -7,7 +7,10 @@ import { useAccount } from "wagmi";
 import Scene from "@/components/game/modules/Scene";
 import useManage from "@/components/game/hooks/useManage";
 import useDialog from "@/components/game/hooks/useDialog";
-import Studio from "@/components/game/modules/Studio";
+import dynamic from "next/dynamic";
+const Studio = dynamic(() => import("@/components/game/modules/Studio"), {
+  ssr: false,
+});
 
 export default function IndexPage() {
   const t = useTranslations("Home");
