@@ -35,8 +35,8 @@ const useConfig = (chosenNpc: number) => {
         ) {
           const config: Phaser.Types.Core.GameConfig = {
             type: Phaser.AUTO,
-            width: gameRef.current.clientWidth,
-            height: gameRef.current.clientHeight,
+            width: gameRef.current?.clientWidth,
+            height: gameRef.current?.clientHeight,
             physics: {
               default: "arcade",
               arcade: {
@@ -45,7 +45,7 @@ const useConfig = (chosenNpc: number) => {
               },
             },
             scene: [new NPCEnginePhaser(newSocket)],
-            parent: gameRef.current,
+            parent: gameRef?.current,
           };
 
           const game = new Phaser.Game(config);
@@ -61,7 +61,6 @@ const useConfig = (chosenNpc: number) => {
       };
     }
   }, []);
-
 
   useEffect(() => {
     const script = document.createElement("script");

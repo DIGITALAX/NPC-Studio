@@ -134,38 +134,27 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     fondo.displayWidth = parentWidth;
     fondo.displayHeight = parentHeight;
     const pared = this.physics.add
-      .staticImage(fondo.width, 0, "pared")
-      .setOrigin(0.62, 0)
-      .setScale(1.1);
-    pared.scaleX = 1.3;
-    pared.body
-      .setSize(pared.width, pared.height / 1.5, false)
-      .setOffset(-0.5, 0);
+      .staticImage(fondo.width - 170, 110, "pared")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.3, 1.1);
+    pared.body.setSize(fondo.displayWidth, pared.height / 5, false);
     const nevera = this.physics.add
-      .staticImage(0, 0, "nevera")
-      .setOrigin(0, 0)
-      .setScale(1.1);
-    nevera.scaleX = 1.4;
-    nevera.body
-      .setSize(nevera.width * 2, nevera.height * 0.8, false)
-      .setOffset(0, 0);
+      .staticImage(165, 205, "nevera")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.4, 1.1);
+    nevera.body.setSize(nevera.width, nevera.height / 4, false);
     const maquina = this.physics.add
-      .staticImage(
-        nevera.width + nevera.width / 2,
-        nevera.height / 7,
-        "maquina"
-      )
-      .setOrigin(0, 0)
-      .setScale(1.1);
-    maquina.scaleX = 1.6;
+      .staticImage(nevera.width * 2, 200, "maquina")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.6, 1.1);
     maquina.body
       .setSize(maquina.width, maquina.height / 3, false)
-      .setOffset(maquina.width, maquina.height / 5);
+      .setOffset(0, -60);
+
     const alfombra = this.add
       .image(fondo.width / 4, fondo.height / 2, "alfombra")
       .setOrigin(0, 0)
-      .setScale(1.2);
-    alfombra.scaleX = 1.5;
+      .setScale(1.5, 1.2);
     this.add
       .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
       .setOrigin(0, 0)
@@ -175,112 +164,99 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScale(1.2);
 
-    const panelDeControl = this.physics.add
-      .staticImage(
-        Number(parentWidth),
-        Number(parentHeight) / 1.1,
-        "panelDeControl"
-      )
-      .setOrigin(1, 1);
-
-    panelDeControl.body
-      .setSize(pared.width / 3, pared.height, true)
-      .setOffset(-pared.width / 6, -pared.height / 2);
-
     const escritorio1 = this.physics.add
-      .staticImage(
-        Number(parentWidth) - 20,
-        Number(parentHeight) / 2.2,
-        "escritorio1"
-      )
-      .setOrigin(1, 1);
-    escritorio1.body
-      .setSize(escritorio1.width, escritorio1.height, true)
-      .setOffset(-escritorio1.width / 2, -escritorio1.height / 2);
+      .staticImage(Number(parentWidth) - 170, 300, "escritorio1")
+      .setOrigin(0.5, 0.5);
+    escritorio1.body.setSize(escritorio1.width, escritorio1.height, false);
 
     const silla1 = this.add
       .image(
-        Number(escritorio1.x) - Number(escritorio1.width / 2.5),
-        escritorio1.y,
+        Number(escritorio1.x) + 20,
+        escritorio1.y + escritorio1.height / 2,
         "silla1"
       )
       .setOrigin(1, 1);
     const escritorio2 = this.physics.add
       .staticImage(
-        Number(parentWidth) - 20,
-        Number(parentHeight) / 1.6,
+        Number(parentWidth) - 170,
+        escritorio1.y + 130,
         "escritorio2"
       )
-      .setOrigin(1, 1);
-
-    escritorio2.body
-      .setSize(escritorio2.width, escritorio2.height, true)
-      .setOffset(-escritorio2.width / 2, -escritorio2.height / 2);
+      .setOrigin(0.5, 0.5);
+    escritorio2.body.setSize(escritorio2.width, escritorio2.height, true);
 
     const silla2 = this.add
       .image(
-        Number(escritorio2.x) - Number(escritorio2.width / 2.5),
-        escritorio2.y,
+        Number(escritorio2.x) + 20,
+        escritorio2.y + escritorio2.height / 2,
         "silla2"
       )
       .setOrigin(1, 1);
 
     const escritorio3 = this.physics.add
       .staticImage(
-        Number(parentWidth) - (escritorio1.width + 20),
-        Number(parentHeight) / 2.2,
+        escritorio1.x - escritorio1.width / 2 - 170,
+        escritorio1.y,
         "escritorio3"
       )
-      .setOrigin(1, 1);
-    escritorio3.body
-      .setSize(escritorio3.width, escritorio3.height, true)
-      .setOffset(-escritorio3.width / 2, -escritorio3.height / 2);
+      .setOrigin(0.5, 0.5);
+    escritorio3.body.setSize(escritorio3.width, escritorio3.height, true);
 
     const silla3 = this.add
       .image(
-        Number(escritorio3.x) - Number(escritorio3.width / 2.5),
-        escritorio3.y,
+        Number(escritorio3.x) + 20,
+        escritorio3.y + escritorio3.height / 2,
         "silla3"
       )
       .setOrigin(1, 1);
 
     const escritorio4 = this.physics.add
       .staticImage(
-        Number(parentWidth) - (escritorio2.width + 20),
-        Number(parentHeight) / 1.6,
+        escritorio2.x - escritorio2.width / 2 - 170,
+        escritorio2.y,
         "escritorio4"
       )
-      .setOrigin(1, 1);
-    escritorio4.body
-      .setSize(escritorio4.width, escritorio4.height, true)
-      .setOffset(-escritorio4.width / 2, -escritorio4.height / 2);
+      .setOrigin(0.5, 0.5);
+    escritorio4.body.setSize(escritorio4.width, escritorio4.height, true);
 
     const silla4 = this.add
       .image(
-        Number(escritorio4.x) - Number(escritorio4.width / 2.5),
-        escritorio4.y,
+        Number(escritorio4.x) + 20,
+        escritorio4.y + escritorio4.height / 2,
         "silla4"
       )
       .setOrigin(1, 1);
+    const panelDeControl = this.physics.add
+      .staticImage(
+        Number(parentWidth) - 210,
+        Number(parentHeight) - 200,
+        "panelDeControl"
+      )
+      .setOrigin(0.5, 0.5);
+    panelDeControl.body.setSize(
+      panelDeControl.width,
+      panelDeControl.height,
+      true
+    );
 
     this.physics.add
-      .staticImage(Number(parentWidth), Number(parentHeight), "arcade")
-      .setOrigin(1, 1)
+      .staticImage(
+        Number(parentWidth) - 90,
+        Number(parentHeight) - 130,
+        "arcade"
+      )
+      .setOrigin(0.5, 0.5)
       .setDepth(10000);
     const telefono = this.physics.add
-      .staticImage(0, Number(parentHeight), "telefono")
-      .setOrigin(0, 1)
+      .staticImage(50, Number(parentHeight) - 120, "telefono")
+      .setOrigin(0.5, 0.5)
       .setDepth(10000);
-    telefono.body
-      .setSize(telefono.width, telefono.height, false)
-      .setOffset(0, -telefono.height / 2);
+    telefono.body.setSize(telefono.width, telefono.height, false);
     const capsula = this.physics.add
-      .staticImage(0, Number(parentHeight) - telefono.height, "capsula")
-      .setOrigin(0, 1)
-      .setDepth(10000);
-    capsula.body
-      .setSize(capsula.width, capsula.height, false)
-      .setOffset(0, -capsula.height / 2);
+      .staticImage(50, Number(parentHeight) - telefono.height - 120, "capsula")
+      .setOrigin(0.5, 0.5)
+      .setDepth(9900);
+    capsula.body.setSize(capsula.width, capsula.height, false);
 
     const audio1 = this.add
       .image(Number(parentWidth) / 2, Number(parentHeight), "audio1")

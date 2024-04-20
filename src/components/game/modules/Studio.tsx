@@ -1,9 +1,9 @@
 "use client";
 
-import useLance from "../hooks/useLance";
+import useConfig from "../hooks/useConfig";
 
 function Studio({ npc }: { npc: number }) {
-  const { gameRef } = useLance(npc);
+  const { gameRef } = useConfig(npc);
   return (
     <div
       ref={gameRef as any}

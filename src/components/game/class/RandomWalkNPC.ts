@@ -42,7 +42,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   update() {
     if (this.direccionActual && this.npc) {
       this.npc.anims.play(this.direccionActual.anim, true);
-      this.npc.setVelocity(this.direccionActual.vx * 60, this.direccionActual.vy * 60);
+      this.npc.setVelocity(
+        this.direccionActual.vx * 60,
+        this.direccionActual.vy * 60
+      );
 
       this.manejarProfundidad();
     }
@@ -57,6 +60,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     if (!this.npc) {
       this.npc = this.scene.physics.add
         .sprite(this.direccionActual?.x!, this.direccionActual?.y!, ops.texture)
+        .setOrigin(0.5, 0.5)
         .setScale(0.5);
       this.npc.body
         ?.setSize(this.npc.width / 2, this.npc.height, true)
