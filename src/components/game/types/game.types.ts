@@ -59,7 +59,7 @@ export interface Seat {
   depth: boolean;
   adjustedX: number;
   adjustedY: number;
-  texture: string
+  texture: string;
   depthCount: number | undefined;
 }
 export enum Direccion {
@@ -78,4 +78,92 @@ export enum Direccion {
 
 export interface PhaserGameElement extends HTMLElement {
   game: Phaser.Game;
+}
+
+export interface Escena {
+  key: string;
+  world: {
+    width: number;
+    height: number;
+  };
+  fondo: {
+    etiqueta: string;
+    uri: string;
+    displayWidth: number;
+    displayHeight: number;
+    origen: {
+      x: number;
+      y: number;
+    };
+    sitio: {
+      x: number;
+      y: number;
+    };
+  };
+  objects: {
+    uri: string;
+    etiqueta: string;
+    sitio: {
+      x: number;
+      y: number;
+    };
+    origen: {
+      x: number;
+      y: number;
+    };
+    escala: {
+      x: number;
+      y: number;
+    };
+    offset: {
+      x: number;
+      y: number;
+    };
+    talla: {
+      x: number;
+      y: number;
+    };
+    centro: boolean;
+    fisica: boolean;
+    depth?: number;
+    seatInfo?: {
+      adjustedX: number;
+      adjustedY: number;
+      depthCount: number;
+      anim: Direccion;
+      depth: boolean;
+    };
+    profound?: boolean;
+    avoid?: {
+      x: number;
+      y: number;
+      displayHeight: number;
+      displayWidth: number;
+      all?: boolean;
+    };
+  }[];
+  sprite: Sprite[];
+}
+
+export interface Sprite {
+  etiqueta: string;
+  uri: string;
+  x: number;
+  y: number;
+  displayHeight: number;
+  displayWidth: number;
+  frameWidth: number;
+  frameHeight: number;
+  margin: number;
+  startFrame: number;
+  endFrame: number;
+  origen: {
+    x: number;
+    y: number;
+  };
+  escala: {
+    x: number;
+    y: number;
+  };
+  centro: boolean;
 }

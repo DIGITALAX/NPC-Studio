@@ -1,14 +1,14 @@
-import { Direccion, Seat } from "../types/game.types";
+import { Direccion, Escena, Seat, Sprite } from "./../types/game.types";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
-  npc!: Phaser.Physics.Arcade.Sprite;
-  prof: Phaser.GameObjects.Image[];
-  seats: Phaser.GameObjects.Image[];
-  seatTaken: Seat | null = null;
-  socket: Socket;
-  direccionActual: {
+  private npc!: Phaser.Physics.Arcade.Sprite;
+  private prof: Phaser.GameObjects.Image[];
+  private seats: Phaser.GameObjects.Image[];
+  private seatTaken: Seat | null = null;
+  private socket: Socket;
+  private direccionActual: {
     x: number;
     y: number;
     anim: Direccion;
@@ -19,24 +19,18 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   constructor(
     scene: Phaser.Scene,
     socket: Socket,
-    sprite: {
-      texture: string;
-      x: number;
-      y: number;
-    },
+    sprite: Sprite,
+    location: { x: number; y: number },
     seats: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
     cam: boolean
   ) {
-    super(scene, sprite.x, sprite.y, sprite.texture);
+    super(scene, sprite.x, sprite.y, sprite.etiqueta);
     this.scene.physics.world.enable(this);
     this.socket = socket;
     this.seats = seats;
     this.prof = prof;
-    this.configureSprite({
-      ...sprite,
-      cam,
-    });
+    this.configureSprite(sprite, cam, location);
   }
 
   update() {
@@ -51,23 +45,21 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     }
   }
 
-  private configureSprite(ops: {
-    texture: string;
-    x: number;
-    y: number;
-    cam: boolean;
-  }) {
+  private configureSprite(
+    ops: Sprite,
+    cam: boolean,
+    location: { x: number; y: number }
+  ) {
     if (!this.npc) {
       this.npc = this.scene.physics.add
-        .sprite(this.direccionActual?.x!, this.direccionActual?.y!, ops.texture)
-        .setOrigin(0.5, 0.5)
-        .setScale(0.5);
-      this.npc.body
-        ?.setSize(this.npc.width / 2, this.npc.height, true)
-        .setOffset(this.npc.width / 4, 0);
+        .sprite(location.x, location.y, ops.etiqueta)
+        .setScale(ops.escala.x, ops.escala.y)
+        .setOrigin(ops.origen.x, ops.origen.y);
+      this.npc.body?.setSize(ops.x, ops.y, ops.centro);
       this.configurarAnimaciones();
       this.actualizarAnimacion();
-      ops.cam && this.makeCameraFollow();
+
+      cam && this.makeCameraFollow();
     }
   }
 
@@ -89,6 +81,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           vx: data.velocidadX,
           vy: data.velocidadY,
         };
+
         this.anims.play(data.direccion, true);
         this.npc.setPosition(data.npcX, data.npcY);
         this.npc.setVelocity(data.velocidadX, data.velocidadY);
@@ -131,6 +124,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       .filter((ob) =>
         this.seatTaken?.depth
           ? ob.texture.key !== this.seatTaken?.obj.texture.key
+            ? true
+            : false
           : true
       )
       .forEach((item) => {
