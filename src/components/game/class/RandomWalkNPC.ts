@@ -78,7 +78,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         npcY: number;
         randomSeat: Seat | null;
       }) => {
-        console.log({ data });
         this.direccionActual = {
           x: data.npcX,
           y: data.npcY,
