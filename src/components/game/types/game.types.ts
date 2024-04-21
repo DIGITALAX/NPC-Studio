@@ -125,7 +125,7 @@ export interface Escena {
     };
     centro: boolean;
     fisica: boolean;
-    depth?: number;
+    depth: number;
     seatInfo?: {
       adjustedX: number;
       adjustedY: number;

@@ -95,21 +95,29 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.objects.forEach((obj) => {
         let item;
         if (obj.fisica) {
-          item = this.physics.add
-            .staticImage(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-            .setOrigin(obj.origen.x, obj.origen.y)
-            .setScale(obj.escala.x, obj.escala.y);
-          item.body.setSize(obj.talla.x, obj.talla.y, obj.centro);
+          item = this.physics.add.staticImage(
+            obj.sitio.x,
+            obj.sitio.y,
+            obj.etiqueta
+          );
+
+          if (obj.avoid) {
+            item.body
+              .setSize(
+                obj.avoid.displayWidth,
+                obj.avoid.displayHeight,
+                obj.centro
+              )
+              .setOffset(obj.offset.x, obj.offset.y);
+          }
         } else {
-          item = this.add
-            .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-            .setOrigin(obj.origen.x, obj.origen.y)
-            .setScale(obj.escala.x, obj.escala.y);
+          item = this.add.image(obj.sitio.x, obj.sitio.y, obj.etiqueta);
         }
 
-        if (obj?.depth) {
-          item.setDepth(obj.depth);
-        }
+        item
+          .setOrigin(obj.origen.x, obj.origen.y)
+          .setScale(obj.escala.x, obj.escala.y)
+          .setDepth(obj.depth);
 
         if (obj?.seatInfo) {
           seats.push(item);

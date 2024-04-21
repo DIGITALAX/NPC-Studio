@@ -1,4 +1,4 @@
-import { Direccion, Escena, Seat, Sprite } from "./../types/game.types";
+import { Direccion, Seat, Sprite } from "./../types/game.types";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
 
@@ -30,6 +30,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.socket = socket;
     this.seats = seats;
     this.prof = prof;
+
     this.configureSprite(sprite, cam, location);
   }
 
@@ -55,7 +56,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         .sprite(location.x, location.y, ops.etiqueta)
         .setScale(ops.escala.x, ops.escala.y)
         .setOrigin(ops.origen.x, ops.origen.y);
-      this.npc.body?.setSize(ops.x, ops.y, ops.centro);
+      this.npc.body?.setSize(ops.displayWidth, ops.displayHeight, ops.centro);
       this.configurarAnimaciones();
       this.actualizarAnimacion();
 
@@ -91,11 +92,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           data.direccion == Direccion.Sofa
         ) {
           this.goSit(data.randomSeat!);
-        } else {
-          if (this.seatTaken) {
-            this.seatTaken?.obj.setDepth(this.seatTaken.depthCount!);
-            this.seatTaken = null;
-          }
         }
       }
     );
@@ -118,8 +114,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private manejarProfundidad() {
-    this.npc.depth = this.npc!.y + this.npc!.height / 4;
-
     this.prof
       .filter((ob) =>
         this.seatTaken?.depth
@@ -128,15 +122,13 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
             : false
           : true
       )
-      .forEach((item) => {
-        if (item) {
-          item.depth = item.y;
+      .forEach((obj) => {
+        if (this.npc.y - this.height / 4 > obj.y) {
+          this.npc.setDepth(Math.max(this.npc.depth, obj.depth + 0.01));
+        } else {
+          this.npc.setDepth(Math.min(this.npc.depth, obj.depth - 0.01));
         }
       });
-
-    if (this.seatTaken?.depth) {
-      this.seatTaken?.obj.setDepth(this.npc.depth + 0.1);
-    }
   }
   private async configurarAnimaciones() {
     this.scene.anims.create({

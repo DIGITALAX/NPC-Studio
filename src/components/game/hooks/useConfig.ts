@@ -45,6 +45,9 @@ const useConfig = (chosenNpc: number) => {
               arcade: {
                 gravity: { y: 0, x: 0 },
                 debug: true,
+                debugShowBody: true,
+                debugShowStaticBody: true,
+                debugShowVelocity: true,
               },
             },
             scene: [new NPCEnginePhaser(newSocket)],
