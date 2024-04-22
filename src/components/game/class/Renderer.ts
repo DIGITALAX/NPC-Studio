@@ -11,12 +11,14 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   socket: Socket;
   escena: Escena | null = null;
   location!: { x: number; y: number };
+  readonly sceneKey: string;
 
-  constructor(socket: Socket) {
+  constructor(socket: Socket, sceneKey: string) {
     super({ key: "NPCEnginePhaser" });
     this.frameCount = 0;
     this.prof = [];
     this.socket = socket;
+    this.sceneKey = sceneKey;
     this.configurarEscena();
   }
 
@@ -56,7 +58,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.objects.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
-      this.escena?.sprite.forEach((sprite) => {
+      this.escena?.sprites.forEach((sprite) => {
         this.load.spritesheet(
           sprite.etiqueta,
           `${INFURA_GATEWAY}/ipfs/${sprite.uri}`,
@@ -139,11 +141,12 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         new RandomWalkerNPC(
           this,
           this.socket,
-          this.escena?.sprite?.[0]!,
+          this.escena?.sprites?.[0]!,
           this.location,
           seats,
           profound,
-          true
+          true,
+          this.sceneKey
         )
       );
     }

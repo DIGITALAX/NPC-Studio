@@ -8,7 +8,7 @@ import io, { Socket } from "socket.io-client";
 const useConfig = (chosenNpc: number) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [sceneIndex, setSceneIndex] = useState<number>(0);
+  const [sceneKey, setSceneKey] = useState<string>("oficina");
 
   useEffect(() => {
     if (!socket) {
@@ -29,7 +29,7 @@ const useConfig = (chosenNpc: number) => {
       setSocket(newSocket);
 
       newSocket.on("connect", () => {
-        newSocket.emit("enviarSceneIndex", sceneIndex);
+        newSocket.emit("enviarSceneIndex", sceneKey);
 
         if (
           typeof window !== "undefined" &&

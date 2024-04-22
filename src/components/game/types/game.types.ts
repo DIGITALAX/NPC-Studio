@@ -142,7 +142,7 @@ export interface Escena {
       all?: boolean;
     };
   }[];
-  sprite: Sprite[];
+  sprites: Sprite[];
 }
 
 export interface Sprite {

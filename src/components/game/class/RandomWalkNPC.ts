@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import { Socket } from "socket.io-client";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
+  private readonly sceneKey: string;
   private npc!: Phaser.Physics.Arcade.Sprite;
   private prof: Phaser.GameObjects.Image[];
   private seats: Phaser.GameObjects.Image[];
@@ -23,13 +24,15 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     location: { x: number; y: number },
     seats: Phaser.GameObjects.Image[],
     prof: Phaser.GameObjects.Image[],
-    cam: boolean
+    cam: boolean,
+    sceneKey: string
   ) {
     super(scene, sprite.x, sprite.y, sprite.etiqueta);
     this.scene.physics.world.enable(this);
     this.socket = socket;
     this.seats = seats;
     this.prof = prof;
+    this.sceneKey = sceneKey;
 
     this.configureSprite(sprite, cam, location);
   }
@@ -66,7 +69,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
   private actualizarAnimacion() {
     this.socket.on(
-      "direccionCambio",
+      this.sceneKey,
       (data: {
         direccion: Direccion;
         velocidadX: number;
