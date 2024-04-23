@@ -5,10 +5,9 @@ import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
 import io, { Socket } from "socket.io-client";
 
-const useConfig = (chosenNpc: number) => {
+const useConfig = (chosenNpc: string, sceneKey: string) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [sceneKey, setSceneKey] = useState<string>("oficina");
 
   useEffect(() => {
     if (!socket) {
@@ -50,7 +49,7 @@ const useConfig = (chosenNpc: number) => {
                 debugShowVelocity: true,
               },
             },
-            scene: [new NPCEnginePhaser(newSocket)],
+            scene: [new NPCEnginePhaser(newSocket, sceneKey)],
             parent: gameRef?.current,
           };
 

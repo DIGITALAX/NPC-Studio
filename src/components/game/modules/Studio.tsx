@@ -2,8 +2,8 @@
 
 import useConfig from "../hooks/useConfig";
 
-function Studio({ npc }: { npc: number }) {
-  const { gameRef } = useConfig(npc);
+function Studio({ npc, escena }: { npc: string; escena: string }) {
+  const { gameRef } = useConfig(npc, escena);
   return (
     <div
       ref={gameRef as any}

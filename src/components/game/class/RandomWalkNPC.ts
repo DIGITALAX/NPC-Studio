@@ -59,7 +59,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         .sprite(location.x, location.y, ops.etiqueta)
         .setScale(ops.escala.x, ops.escala.y)
         .setOrigin(ops.origen.x, ops.origen.y);
-      this.npc.body?.setSize(ops.displayWidth, ops.displayHeight, ops.centro);
+      this.npc.body?.setSize(ops.displayWidth, ops.displayHeight, true);
       this.configurarAnimaciones();
       this.actualizarAnimacion();
 
@@ -70,31 +70,39 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private actualizarAnimacion() {
     this.socket.on(
       this.sceneKey,
-      (data: {
-        direccion: Direccion;
-        velocidadX: number;
-        velocidadY: number;
-        npcX: number;
-        npcY: number;
-        randomSeat: Seat | null;
-      }) => {
-        this.direccionActual = {
-          x: data.npcX,
-          y: data.npcY,
-          anim: data.direccion,
-          vx: data.velocidadX,
-          vy: data.velocidadY,
-        };
+      (
+        data: {
+          direccion: Direccion;
+          velocidadX: number;
+          velocidadY: number;
+          npcX: number;
+          npcY: number;
+          randomSeat: Seat | null;
+          texture: string;
+        }[]
+      ) => {
+        const filtered = data?.find(
+          (item) => item.texture == this.npc.texture.key
+        );
+        if (filtered) {
+          this.direccionActual = {
+            x: filtered.npcX,
+            y: filtered.npcY,
+            anim: filtered.direccion,
+            vx: filtered.velocidadX,
+            vy: filtered.velocidadY,
+          };
 
-        this.anims.play(data.direccion, true);
-        this.npc.setPosition(data.npcX, data.npcY);
-        this.npc.setVelocity(data.velocidadX, data.velocidadY);
+          this.anims.play(filtered.direccion, true);
+          this.npc.setPosition(filtered.npcX, filtered.npcY);
+          this.npc.setVelocity(filtered.velocidadX, filtered.velocidadY);
 
-        if (
-          data.direccion == Direccion.Silla ||
-          data.direccion == Direccion.Sofa
-        ) {
-          this.goSit(data.randomSeat!);
+          if (
+            filtered.direccion == Direccion.Silla ||
+            filtered.direccion == Direccion.Sofa
+          ) {
+            this.goSit(filtered.randomSeat!);
+          }
         }
       }
     );
@@ -117,21 +125,23 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private manejarProfundidad() {
+    this.npc.depth = this.npc!.y + this.npc!.height / 4;
+
     this.prof
       .filter((ob) =>
         this.seatTaken?.depth
           ? ob.texture.key !== this.seatTaken?.obj.texture.key
-            ? true
-            : false
           : true
       )
-      .forEach((obj) => {
-        if (this.npc.y - this.height / 4 > obj.y) {
-          this.npc.setDepth(Math.max(this.npc.depth, obj.depth + 0.01));
-        } else {
-          this.npc.setDepth(Math.min(this.npc.depth, obj.depth - 0.01));
+      .forEach((item) => {
+        if (item) {
+          item.depth = item.y;
         }
       });
+
+    if (this.seatTaken?.depth) {
+      this.seatTaken?.obj.setDepth(this.npc.depth + 0.1);
+    }
   }
   private async configurarAnimaciones() {
     this.scene.anims.create({
@@ -238,3 +248,5 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
   }
 }
+
+

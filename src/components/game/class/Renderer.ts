@@ -10,7 +10,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   npcs: RandomWalkerNPC[] = [];
   socket: Socket;
   escena: Escena | null = null;
-  location!: { x: number; y: number };
+  locations: { x: number; y: number; texture: string }[] = [];
   readonly sceneKey: string;
 
   constructor(socket: Socket, sceneKey: string) {
@@ -33,14 +33,16 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           velocidadY: number;
           npcX: number;
           npcY: number;
+          texture: string;
           randomSeat: Seat | null;
-        };
+        }[];
       }) => {
         this.escena = data.scene;
-        this.location = {
-          x: data.state.npcX,
-          y: data.state.npcY,
-        };
+        this.locations = data.state.map((item) => ({
+          x: item.npcX,
+          y: item.npcY,
+          texture: item.texture,
+        }));
 
         if (this.escena) {
           this.preload();
@@ -95,28 +97,8 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       let seats: Phaser.GameObjects.Image[] = [];
       let profound: Phaser.GameObjects.Image[] = [];
       this.escena?.objects.forEach((obj) => {
-        let item;
-        if (obj.fisica) {
-          item = this.physics.add.staticImage(
-            obj.sitio.x,
-            obj.sitio.y,
-            obj.etiqueta
-          );
-
-          if (obj.avoid) {
-            item.body
-              .setSize(
-                obj.avoid.displayWidth,
-                obj.avoid.displayHeight,
-                obj.centro
-              )
-              .setOffset(obj.offset.x, obj.offset.y);
-          }
-        } else {
-          item = this.add.image(obj.sitio.x, obj.sitio.y, obj.etiqueta);
-        }
-
-        item
+        const item = this.add
+          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(obj.origen.x, obj.origen.y)
           .setScale(obj.escala.x, obj.escala.y)
           .setDepth(obj.depth);
@@ -137,18 +119,49 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.escena?.world?.height
       );
 
-      this.npcs.push(
-        new RandomWalkerNPC(
-          this,
-          this.socket,
-          this.escena?.sprites?.[0]!,
-          this.location,
-          seats,
-          profound,
-          true,
-          this.sceneKey
+      this.escena.sprites.forEach((sprite) =>
+        this.npcs.push(
+          new RandomWalkerNPC(
+            this,
+            this.socket,
+            sprite,
+            this.locations.find((item) => item.texture == sprite.etiqueta)!,
+            seats,
+            profound,
+            true,
+            this.sceneKey
+          )
         )
       );
+
+      this.escena.objects
+        .filter((item) => item.avoid !== null && item.avoid !== undefined)
+        .forEach((obstacle, index) => {
+          let color = Phaser.Display.Color.RandomRGB();
+          let hexColor = Phaser.Display.Color.GetColor(
+            color.red,
+            color.green,
+            color.blue
+          );
+
+          let topLeftX = obstacle.avoid!.x - obstacle.avoid!.displayWidth / 2;
+          let topLeftY = obstacle.avoid!.y - obstacle.avoid!.displayHeight / 2;
+
+          let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
+          graphics.fillRect(
+            topLeftX,
+            topLeftY,
+            obstacle.avoid!.displayWidth,
+            obstacle.avoid!.displayHeight
+          );
+          graphics.lineStyle(2, 0x000000);
+          graphics.strokeRect(
+            topLeftX,
+            topLeftY,
+            obstacle.avoid!.displayWidth,
+            obstacle.avoid!.displayHeight
+          );
+        });
     }
   }
 

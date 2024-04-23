@@ -45,7 +45,7 @@ export default function IndexPage() {
           className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
           id="studioParent"
         >
-          <Studio npc={npc} />
+          <Studio npc={npc} escena={escena} />
         </div>
       </div>
       <Scene

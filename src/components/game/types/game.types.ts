@@ -13,11 +13,11 @@ export type LogProps = {
 };
 
 export type SceneProps = {
-  escena: number;
+  escena: string;
   t: any;
-  setEscena: (e: SetStateAction<number>) => void;
-  npc: number;
-  setNpc: (e: SetStateAction<number>) => void;
+  setEscena: (e: SetStateAction<string>) => void;
+  npc: string;
+  setNpc: (e: SetStateAction<string>) => void;
 };
 
 export interface Message {
@@ -115,16 +115,10 @@ export interface Escena {
       x: number;
       y: number;
     };
-    offset: {
-      x: number;
-      y: number;
-    };
     talla: {
       x: number;
       y: number;
     };
-    centro: boolean;
-    fisica: boolean;
     depth: number;
     seatInfo?: {
       adjustedX: number;
@@ -165,5 +159,4 @@ export interface Sprite {
     x: number;
     y: number;
   };
-  centro: boolean;
 }
