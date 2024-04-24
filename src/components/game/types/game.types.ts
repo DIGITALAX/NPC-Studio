@@ -53,15 +53,6 @@ export type ChatProps = {
   open?: boolean;
 };
 
-export interface Seat {
-  obj: Phaser.GameObjects.Image;
-  anim: string;
-  depth: boolean;
-  adjustedX: number;
-  adjustedY: number;
-  texture: string;
-  depthCount: number | undefined;
-}
 export enum Direccion {
   Izquierda = "izquierda",
   Derecha = "derecha",
@@ -94,62 +85,74 @@ export interface Escena {
     width: number;
     height: number;
   };
-  fondo: {
-    etiqueta: string;
-    uri: string;
-    displayWidth: number;
-    displayHeight: number;
-    origen: {
-      x: number;
-      y: number;
-    };
-    sitio: {
-      x: number;
-      y: number;
-    };
-  };
   evitar: {
     x: number;
     y: number;
     displayHeight: number;
     displayWidth: number;
   }[];
-  profundidad: {
-    x: number;
-    y: number;
-    displayHeight: number;
-    displayWidth: number;
-  }[];
-  objects: {
-    uri: string;
+  profundidad: Articulo[];
+  sillas: Seat[];
+  fondo: {
     etiqueta: string;
+    uri: string;
+    displayWidth: number;
+    displayHeight: number;
     sitio: {
       x: number;
       y: number;
     };
-    origen: {
-      x: number;
-      y: number;
-    };
-    escala: {
-      x: number;
-      y: number;
-    };
-    talla: {
-      x: number;
-      y: number;
-    };
-    depth: number;
-    seatInfo?: {
-      adjustedX: number;
-      adjustedY: number;
-      depthCount: number;
-      anim: Direccion;
-      depth: boolean;
-    };
-    profound?: boolean;
-  }[];
+  };
+  objects: Articulo[];
   sprites: Sprite[];
+}
+
+export interface Articulo {
+  image: Phaser.GameObjects.Image;
+  uri: string;
+  etiqueta: string;
+  sitio: {
+    x: number;
+    y: number;
+  };
+  escala: {
+    x: number;
+    y: number;
+  };
+  talla: {
+    x: number;
+    y: number;
+  };
+  profundidad?: number;
+}
+
+export interface Objeto {
+  x: number;
+  y: number;
+  displayHeight: number;
+  displayWidth: number;
+}
+
+export interface Seat {
+  image: Phaser.GameObjects.Image;
+  adjustedX: number;
+  adjustedY: number;
+  profundidad: boolean;
+  anim: Direccion;
+  etiqueta: string;
+  sitio: {
+    x: number;
+    y: number;
+  };
+  talla: {
+    x: number;
+    y: number;
+  };
+  uri: string;
+  escala: {
+    x: number;
+    y: number;
+  };
 }
 
 export interface Sprite {
@@ -164,10 +167,6 @@ export interface Sprite {
   margin: number;
   startFrame: number;
   endFrame: number;
-  origen: {
-    x: number;
-    y: number;
-  };
   escala: {
     x: number;
     y: number;

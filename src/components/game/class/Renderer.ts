@@ -2,7 +2,7 @@ import RandomWalkerNPC from "./RandomWalkNPC";
 import { INFURA_GATEWAY, NPC_LIST } from "../../../../lib/constants";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
-import { Direccion, Escena, Seat } from "../types/game.types";
+import { Articulo, Direccion, Escena, Seat } from "../types/game.types";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
   frameCount: number;
@@ -60,6 +60,12 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.objects.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
+      this.escena?.sillas.forEach((obj) => {
+        this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
+      });
+      this.escena?.profundidad.forEach((obj) => {
+        this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
+      });
       this.escena?.sprites.forEach((sprite) => {
         this.load.spritesheet(
           sprite.etiqueta,
@@ -90,26 +96,48 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           this.escena?.fondo.sitio.y!,
           this.escena?.fondo.etiqueta!
         )
-        .setOrigin(this.escena?.fondo.origen.x!, this.escena?.fondo.origen.y!);
+        .setOrigin(0, 0)
+        .setDepth(0);
       fondo.displayWidth = this.escena?.fondo.displayWidth!;
       fondo.displayHeight = this.escena?.fondo.displayHeight!;
 
-      let seats: Phaser.GameObjects.Image[] = [];
-      let profound: Phaser.GameObjects.Image[] = [];
-      this.escena?.objects.forEach((obj) => {
+      let sillas: Seat[] = [];
+      let profundidad: (Articulo & { image: Phaser.GameObjects.Image })[] = [];
+
+      this.escena.objects.forEach((obj) => {
+        this.add
+          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setScale(obj.escala.x, obj.escala.y)
+          .setDepth(
+            obj?.profundidad !== undefined ? obj.profundidad : obj.sitio.y
+          );
+      });
+
+      this.escena.sillas.forEach((silla) => {
+        const item = this.add
+          .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setScale(silla.escala.x, silla.escala.y)
+          .setDepth(silla.sitio.y);
+
+        sillas.push({
+          ...silla,
+          image: item,
+        });
+      });
+
+      this.escena.profundidad.forEach((obj) => {
         const item = this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-          .setOrigin(obj.origen.x, obj.origen.y)
+          .setOrigin(0.5, 0.5)
           .setScale(obj.escala.x, obj.escala.y)
-          .setDepth(obj.depth);
+          .setDepth(obj.sitio.y);
 
-        if (obj?.seatInfo) {
-          seats.push(item);
-        }
-
-        if (obj?.profound) {
-          profound.push(item);
-        }
+        profundidad.push({
+          ...obj,
+          image: item,
+        });
       });
 
       this.cameras.main.setBounds(
@@ -126,40 +154,42 @@ export default class NPCEnginePhaser extends Phaser.Scene {
             this.socket,
             sprite,
             this.locations.find((item) => item.texture == sprite.etiqueta)!,
-            seats,
-            profound,
+            sillas,
+            profundidad,
             true,
             this.sceneKey
           )
         )
       );
 
-      this.escena.evitar.forEach((obstacle, index) => {
-        let color = Phaser.Display.Color.RandomRGB();
-        let hexColor = Phaser.Display.Color.GetColor(
-          color.red,
-          color.green,
-          color.blue
-        );
+      // this.escena.profundidad.forEach((obstacle) => {
+      //   let color = Phaser.Display.Color.RandomRGB();
+      //   let hexColor = Phaser.Display.Color.GetColor(
+      //     color.red,
+      //     color.green,
+      //     color.blue
+      //   );
 
-        let topLeftX = obstacle.x - obstacle.displayWidth / 2;
-        let topLeftY = obstacle.y - obstacle.displayHeight / 2;
+      //   let topLeftX = obstacle.sitio.x - obstacle.talla.x / 2;
+      //   let topLeftY = obstacle.sitio.y - obstacle.talla.y / 2;
 
-        let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
-        graphics.fillRect(
-          topLeftX,
-          topLeftY,
-          obstacle.displayWidth,
-          obstacle.displayHeight
-        );
-        graphics.lineStyle(2, 0x000000);
-        graphics.strokeRect(
-          topLeftX,
-          topLeftY,
-          obstacle.displayWidth,
-          obstacle.displayHeight
-        );
-      });
+      //   let graphics = this.add
+      //     .graphics({ fillStyle: { color: hexColor } })
+      //     .setDepth(1000);
+      //   graphics.fillRect(
+      //     topLeftX,
+      //     topLeftY,
+      //     obstacle.talla.x,
+      //     obstacle.talla.y
+      //   );
+      //   graphics.lineStyle(2, 0x000000);
+      //   graphics.strokeRect(
+      //     topLeftX,
+      //     topLeftY,
+      //     obstacle.talla.x,
+      //     obstacle.talla.y
+      //   );
+      // });
     }
   }
 
