@@ -71,6 +71,14 @@ export enum Direccion {
   IzquierdaAbajo = "izquierdaAbajo",
   DerechaArriba = "derechaArriba",
   DerechaAbajo = "derechaAbajo",
+  DerechaArribaDerecha = "derechaArriba",
+  ArribaArribaDerecha = "derechaArriba",
+  ArribaArribaIzquierda = "izquierdaArriba",
+  IzquierdaArribaIzquierda = "izquierdaArriba",
+  IzquierdaAbajoIzquierda = "izquierdaAbajo",
+  AbajoAbajoIzquierda = "izquierdaAbajo",
+  AbajoAbajoDerecha = "derechaAbajo",
+  DerechaAbajoDerecha = "derechaAbajo",
   Inactivo = "inactivo",
   Sofa = "sentadoSofa",
   Silla = "sentadoEscritorio",
@@ -100,6 +108,18 @@ export interface Escena {
       y: number;
     };
   };
+  evitar: {
+    x: number;
+    y: number;
+    displayHeight: number;
+    displayWidth: number;
+  }[];
+  profundidad: {
+    x: number;
+    y: number;
+    displayHeight: number;
+    displayWidth: number;
+  }[];
   objects: {
     uri: string;
     etiqueta: string;
@@ -128,13 +148,6 @@ export interface Escena {
       depth: boolean;
     };
     profound?: boolean;
-    avoid?: {
-      x: number;
-      y: number;
-      displayHeight: number;
-      displayWidth: number;
-      all?: boolean;
-    };
   }[];
   sprites: Sprite[];
 }

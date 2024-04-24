@@ -134,34 +134,32 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         )
       );
 
-      this.escena.objects
-        .filter((item) => item.avoid !== null && item.avoid !== undefined)
-        .forEach((obstacle, index) => {
-          let color = Phaser.Display.Color.RandomRGB();
-          let hexColor = Phaser.Display.Color.GetColor(
-            color.red,
-            color.green,
-            color.blue
-          );
+      this.escena.evitar.forEach((obstacle, index) => {
+        let color = Phaser.Display.Color.RandomRGB();
+        let hexColor = Phaser.Display.Color.GetColor(
+          color.red,
+          color.green,
+          color.blue
+        );
 
-          let topLeftX = obstacle.avoid!.x - obstacle.avoid!.displayWidth / 2;
-          let topLeftY = obstacle.avoid!.y - obstacle.avoid!.displayHeight / 2;
+        let topLeftX = obstacle.x - obstacle.displayWidth / 2;
+        let topLeftY = obstacle.y - obstacle.displayHeight / 2;
 
-          let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
-          graphics.fillRect(
-            topLeftX,
-            topLeftY,
-            obstacle.avoid!.displayWidth,
-            obstacle.avoid!.displayHeight
-          );
-          graphics.lineStyle(2, 0x000000);
-          graphics.strokeRect(
-            topLeftX,
-            topLeftY,
-            obstacle.avoid!.displayWidth,
-            obstacle.avoid!.displayHeight
-          );
-        });
+        let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
+        graphics.fillRect(
+          topLeftX,
+          topLeftY,
+          obstacle.displayWidth,
+          obstacle.displayHeight
+        );
+        graphics.lineStyle(2, 0x000000);
+        graphics.strokeRect(
+          topLeftX,
+          topLeftY,
+          obstacle.displayWidth,
+          obstacle.displayHeight
+        );
+      });
     }
   }
 

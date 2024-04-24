@@ -84,6 +84,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         const filtered = data?.find(
           (item) => item.texture == this.npc.texture.key
         );
+        console.log(filtered?.direccion);
         if (filtered) {
           this.direccionActual = {
             x: filtered.npcX,
@@ -248,5 +249,3 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
   }
 }
-
-
