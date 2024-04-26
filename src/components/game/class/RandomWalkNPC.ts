@@ -1,11 +1,10 @@
-import { Articulo, Direccion, Seat, Sprite } from "./../types/game.types";
+import { Direccion, Seat, Sprite } from "./../types/game.types";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private readonly sceneKey: string;
   private npc!: Phaser.Physics.Arcade.Sprite;
-  private prof: (Articulo & {})[];
   private seats: Seat[];
   private seatTaken: Seat | null = null;
   private socket: Socket;
@@ -23,7 +22,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     sprite: Sprite,
     location: { x: number; y: number },
     seats: Seat[],
-    prof: (Articulo & { image: Phaser.GameObjects.Image })[],
     cam: boolean,
     sceneKey: string
   ) {
@@ -31,7 +29,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.scene.physics.world.enable(this);
     this.socket = socket;
     this.seats = seats;
-    this.prof = prof;
     this.sceneKey = sceneKey;
 
     this.configureSprite(sprite, cam, location);
@@ -58,7 +55,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       this.npc = this.scene.physics.add
         .sprite(location.x, location.y, ops.etiqueta)
         .setScale(ops.escala.x, ops.escala.y)
-        .setOrigin(0.5, 0.5);
+        .setOrigin(0.5, 0.5)
+        .setDepth(location.y);
       this.npc.body?.setSize(ops.displayWidth, ops.displayHeight, true);
       this.configurarAnimaciones();
       this.actualizarAnimacion();
@@ -103,12 +101,11 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           ) {
             this.goSit(filtered.randomSeat!);
           } else if (this.seatTaken) {
-            console.log(this.seats);
             const found = this.seats.find(
               (seat) =>
                 seat.image.texture?.key == filtered?.randomSeat?.etiqueta
             );
-            found?.image.setDepth(found?.sitio.y);
+            found?.image.setDepth(found?.par?.y!);
             this.seatTaken = null;
           }
         }
@@ -124,15 +121,14 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       this.seatTaken = foundSeat;
 
       if (randomSeat?.profundidad && randomSeat?.par) {
-        console.log("in")
-        this.npc.setDepth(randomSeat?.par.depth + 10);
+        this.npc.setDepth(foundSeat?.par?.depth! + 10);
         foundSeat?.image?.setDepth(this.npc.depth + 10);
       }
     }
   }
 
   private manejarProfundidad() {
-    if (!this.seatTaken) this.npc.depth = this.npc!.y;
+    if (!this.seatTaken) this.npc.setDepth(this.npc!.y);
   }
   private async configurarAnimaciones() {
     this.scene.anims.create({
