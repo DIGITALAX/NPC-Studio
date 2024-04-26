@@ -103,8 +103,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           ) {
             this.goSit(filtered.randomSeat!);
           } else if (this.seatTaken) {
+            console.log(this.seats);
             const found = this.seats.find(
-              (seat) => seat.image.texture.key == filtered?.randomSeat?.etiqueta
+              (seat) =>
+                seat.image.texture?.key == filtered?.randomSeat?.etiqueta
             );
             found?.image.setDepth(found?.sitio.y);
             this.seatTaken = null;
@@ -116,19 +118,21 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
   private goSit(randomSeat: Seat) {
     const foundSeat = this.seats.find(
-      (seat) => seat.image.texture.key == randomSeat.etiqueta
+      (seat) => seat.image.texture?.key == randomSeat.etiqueta
     );
     if (foundSeat) {
       this.seatTaken = foundSeat;
 
-      if (randomSeat?.profundidad) {
-        foundSeat?.image?.setDepth(this.npc.depth + 0.1);
+      if (randomSeat?.profundidad && randomSeat?.par) {
+        console.log("in")
+        this.npc.setDepth(randomSeat?.par.depth + 10);
+        foundSeat?.image?.setDepth(this.npc.depth + 10);
       }
     }
   }
 
   private manejarProfundidad() {
-    this.npc.depth = this.npc!.y;
+    if (!this.seatTaken) this.npc.depth = this.npc!.y;
   }
   private async configurarAnimaciones() {
     this.scene.anims.create({

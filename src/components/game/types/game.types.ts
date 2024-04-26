@@ -85,11 +85,11 @@ export interface Escena {
     width: number;
     height: number;
   };
-  evitar: {
+  prohibited: {
     x: number;
     y: number;
-    displayHeight: number;
-    displayWidth: number;
+    width: number;
+    height: number;
   }[];
   profundidad: Articulo[];
   sillas: Seat[];
@@ -138,6 +138,8 @@ export interface Seat {
   adjustedX: number;
   adjustedY: number;
   profundidad: boolean;
+  depth?: number;
+  par?: Phaser.GameObjects.Image;
   anim: Direccion;
   etiqueta: string;
   sitio: {

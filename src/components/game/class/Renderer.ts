@@ -114,19 +114,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           );
       });
 
-      this.escena.sillas.forEach((silla) => {
-        const item = this.add
-          .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
-          .setOrigin(0.5, 0.5)
-          .setScale(silla.escala.x, silla.escala.y)
-          .setDepth(silla.sitio.y);
-
-        sillas.push({
-          ...silla,
-          image: item,
-        });
-      });
-
       this.escena.profundidad.forEach((obj) => {
         const item = this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
@@ -137,6 +124,35 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         profundidad.push({
           ...obj,
           image: item,
+        });
+      });
+
+      this.escena.sillas.forEach((silla) => {
+        const item = this.add
+          .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setScale(silla.escala.x, silla.escala.y)
+          .setDepth(
+            silla.depth
+              ? silla.depth
+              : silla.par
+              ? this.escena?.profundidad?.find(
+                  (item) => item.etiqueta == (silla.par as any)
+                )?.sitio.y!
+              : silla.sitio.y!
+          );
+
+        let par = undefined;
+        if (silla?.par) {
+          par = profundidad?.find(
+            (item) => item?.etiqueta == (silla?.par as any)
+          )?.image;
+        }
+
+        sillas.push({
+          ...silla,
+          image: item,
+          par,
         });
       });
 
@@ -162,34 +178,77 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         )
       );
 
-      // this.escena.profundidad.forEach((obstacle) => {
-      //   let color = Phaser.Display.Color.RandomRGB();
-      //   let hexColor = Phaser.Display.Color.GetColor(
-      //     color.red,
-      //     color.green,
-      //     color.blue
-      //   );
+      [
+        { x: 0, y: 0, height: 110, width: 1512 },
+        { x: 0, y: 0, height: 230, width: 250 },
+        { x: 1349, y: 670, height: 200, width: 163 },
+        { x: 357, y: 0, height: 180, width: 225 },
+        { x: 0, y: 0, height: 830, width: 80 },
+        {
+          x: 1122,
+          y: 590,
+          height: 50,
+          width: 390,
+        },
+        {
+          x: 1182,
+          y: 220,
+          height: 80,
+          width: 330,
+        },
+        {
+          x: 1205,
+          y: 350,
+          height: 80,
+          width: 330,
+        },
+        {
+          x: 859,
+          y: 220,
+          height: 80,
+          width: 330,
+        },
+        {
+          x: 865,
+          y: 360,
+          height: 80,
+          width: 350,
+        },
+        {
+          x: 645,
+          y: 0,
+          height: 130,
+          width: 350,
+        },
+        {
+          x: 1075,
+          y: 0,
+          height: 130,
+          width: 350,
+        },
+      ].forEach((obstacle) => {
+        let color = Phaser.Display.Color.RandomRGB();
+        let hexColor = Phaser.Display.Color.GetColor(
+          color.red,
+          color.green,
+          color.blue
+        );
 
-      //   let topLeftX = obstacle.sitio.x - obstacle.talla.x / 2;
-      //   let topLeftY = obstacle.sitio.y - obstacle.talla.y / 2;
+        let topLeftX = obstacle.x;
+        let topLeftY = obstacle.y;
 
-      //   let graphics = this.add
-      //     .graphics({ fillStyle: { color: hexColor } })
-      //     .setDepth(1000);
-      //   graphics.fillRect(
-      //     topLeftX,
-      //     topLeftY,
-      //     obstacle.talla.x,
-      //     obstacle.talla.y
-      //   );
-      //   graphics.lineStyle(2, 0x000000);
-      //   graphics.strokeRect(
-      //     topLeftX,
-      //     topLeftY,
-      //     obstacle.talla.x,
-      //     obstacle.talla.y
-      //   );
-      // });
+        let graphics = this.add
+          .graphics({ fillStyle: { color: hexColor } })
+    
+        graphics.fillRect(topLeftX, topLeftY, obstacle.width, obstacle.height);
+        graphics.lineStyle(2, 0x000000);
+        graphics.strokeRect(
+          topLeftX,
+          topLeftY,
+          obstacle.width,
+          obstacle.height
+        );
+      });
     }
   }
 
