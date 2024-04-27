@@ -7,18 +7,21 @@ import { Articulo, Direccion, Escena, Seat } from "../types/game.types";
 export default class NPCEnginePhaser extends Phaser.Scene {
   frameCount: number;
   prof: Phaser.GameObjects.Image[];
-  npcs: RandomWalkerNPC[] = [];
+  npcs: RandomWalkerNPC[];
   socket: Socket;
   escena: Escena | null = null;
   locations: { x: number; y: number; texture: string }[] = [];
   readonly sceneKey: string;
+  npcCamara: string;
 
-  constructor(socket: Socket, sceneKey: string) {
+  constructor(socket: Socket, sceneKey: string, chosenNpc: string) {
     super({ key: "NPCEnginePhaser" });
     this.frameCount = 0;
     this.prof = [];
     this.socket = socket;
+    this.npcs = [];
     this.sceneKey = sceneKey;
+    this.npcCamara = chosenNpc;
     this.configurarEscena();
   }
 
@@ -89,7 +92,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   }
 
   create() {
-    if (this.escena) {
+    if (this.escena && this.npcs.length < 1) {
       const fondo = this.add
         .image(
           this.escena?.fondo.sitio.x!,
@@ -133,7 +136,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           .setOrigin(0.5, 0.5)
           .setScale(silla.escala.x, silla.escala.y)
           .setDepth(
-            silla.depth
+            silla.depth !== undefined
               ? silla.depth
               : silla.par
               ? this.escena?.profundidad?.find(
@@ -167,86 +170,35 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.npcs.push(
           new RandomWalkerNPC(
             this,
-            this.socket,
             sprite,
             this.locations.find((item) => item.texture == sprite.etiqueta)!,
             sillas,
-            true,
-            this.sceneKey
+            sprite.etiqueta === this.npcCamara
           )
         )
       );
 
-      // [
-      //   { x: 0, y: 0, height: 110, width: 1512 },
-      //   { x: 0, y: 0, height: 230, width: 250 },
-      //   { x: 1349, y: 670, height: 200, width: 163 },
-      //   { x: 357, y: 0, height: 180, width: 225 },
-      //   { x: 0, y: 0, height: 830, width: 80 },
-      //   {
-      //     x: 1122,
-      //     y: 590,
-      //     height: 50,
-      //     width: 390,
-      //   },
-      //   {
-      //     x: 1182,
-      //     y: 220,
-      //     height: 80,
-      //     width: 330,
-      //   },
-      //   {
-      //     x: 1205,
-      //     y: 350,
-      //     height: 80,
-      //     width: 330,
-      //   },
-      //   {
-      //     x: 859,
-      //     y: 220,
-      //     height: 80,
-      //     width: 330,
-      //   },
-      //   {
-      //     x: 865,
-      //     y: 360,
-      //     height: 80,
-      //     width: 350,
-      //   },
-      //   {
-      //     x: 645,
-      //     y: 0,
-      //     height: 130,
-      //     width: 350,
-      //   },
-      //   {
-      //     x: 1075,
-      //     y: 0,
-      //     height: 130,
-      //     width: 350,
-      //   },
-      // ].forEach((obstacle) => {
-      //   let color = Phaser.Display.Color.RandomRGB();
-      //   let hexColor = Phaser.Display.Color.GetColor(
-      //     color.red,
-      //     color.green,
-      //     color.blue
-      //   );
-
-      //   let topLeftX = obstacle.x;
-      //   let topLeftY = obstacle.y;
-
-      //   let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
-
-      //   graphics.fillRect(topLeftX, topLeftY, obstacle.width, obstacle.height);
-      //   graphics.lineStyle(2, 0x000000).setDepth(10000);
-      //   graphics.strokeRect(
-      //     topLeftX,
-      //     topLeftY,
-      //     obstacle.width,
-      //     obstacle.height
-      //   );
-      // });
+      this.socket.on(
+        this.sceneKey,
+        (
+          data: {
+            direccion: Direccion;
+            velocidadX: number;
+            velocidadY: number;
+            npcX: number;
+            npcY: number;
+            randomSeat: Seat | null;
+            texture: string;
+          }[]
+        ) => {
+          this.npcs.forEach((npc, index) => {
+            const filtered = data?.find(
+              (item) => item.texture == npc.texture.key
+            );
+            npc.actualizarAnimacion(filtered!);
+          });
+        }
+      );
     }
   }
 

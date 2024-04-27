@@ -1,36 +1,31 @@
+import { configurarDireccion } from "../../../../lib/utils";
 import { Direccion, Seat, Sprite } from "./../types/game.types";
 import Phaser from "phaser";
-import { Socket } from "socket.io-client";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
-  private readonly sceneKey: string;
   private npc!: Phaser.Physics.Arcade.Sprite;
   private seats: Seat[];
-  private seatTaken: Seat | null = null;
-  private socket: Socket;
+  private seatTaken: Seat | null;
   private direccionActual: {
     x: number;
     y: number;
     anim: Direccion;
     vx: number;
     vy: number;
-  } | null = null;
+  } | null;
 
   constructor(
     scene: Phaser.Scene,
-    socket: Socket,
     sprite: Sprite,
     location: { x: number; y: number },
     seats: Seat[],
-    cam: boolean,
-    sceneKey: string
+    cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.etiqueta);
     this.scene.physics.world.enable(this);
-    this.socket = socket;
     this.seats = seats;
-    this.sceneKey = sceneKey;
-
+    this.seatTaken = null;
+    this.direccionActual = null;
     this.configureSprite(sprite, cam, location);
   }
 
@@ -59,58 +54,46 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         .setDepth(location.y);
       this.npc.body?.setSize(ops.displayWidth, ops.displayHeight, true);
       this.configurarAnimaciones();
-      this.actualizarAnimacion();
 
       cam && this.makeCameraFollow();
     }
   }
 
-  private actualizarAnimacion() {
-    this.socket.on(
-      this.sceneKey,
-      (
-        data: {
-          direccion: Direccion;
-          velocidadX: number;
-          velocidadY: number;
-          npcX: number;
-          npcY: number;
-          randomSeat: Seat | null;
-          texture: string;
-        }[]
-      ) => {
-        const filtered = data?.find(
-          (item) => item.texture == this.npc.texture.key
-        );
-        if (filtered) {
-          this.direccionActual = {
-            x: filtered.npcX,
-            y: filtered.npcY,
-            anim: filtered.direccion,
-            vx: filtered.velocidadX,
-            vy: filtered.velocidadY,
-          };
+  actualizarAnimacion(data: {
+    direccion: Direccion;
+    velocidadX: number;
+    velocidadY: number;
+    npcX: number;
+    npcY: number;
+    randomSeat: Seat | null;
+    texture: string;
+  }) {
+    this.direccionActual = {
+      x: data.npcX,
+      y: data.npcY,
+      anim: data.direccion,
+      vx: data.velocidadX,
+      vy: data.velocidadY,
+    };
 
-          this.anims.play(filtered.direccion, true);
-          this.npc.setPosition(filtered.npcX, filtered.npcY);
-          this.npc.setVelocity(filtered.velocidadX, filtered.velocidadY);
+    this.anims.play(data.direccion, true);
+    this.npc.setPosition(data.npcX, data.npcY);
+    this.npc.setVelocity(data.velocidadX, data.velocidadY);
 
-          if (
-            filtered.direccion == Direccion.Silla ||
-            filtered.direccion == Direccion.Sofa
-          ) {
-            this.goSit(filtered.randomSeat!);
-          } else if (this.seatTaken) {
-            const found = this.seats.find(
-              (seat) =>
-                seat.image.texture?.key == filtered?.randomSeat?.etiqueta
-            );
-            found?.image.setDepth(found?.par?.y!);
-            this.seatTaken = null;
-          }
-        }
-      }
-    );
+    if (
+      data.direccion ==
+        configurarDireccion(this.npc.texture.key, Direccion.Silla) ||
+      data.direccion ==
+        configurarDireccion(this.npc.texture.key, Direccion.Sofa)
+    ) {
+      this.goSit(data.randomSeat!);
+    } else if (this.seatTaken) {
+      const found = this.seats.find(
+        (seat) => seat.image.texture?.key == data?.randomSeat?.etiqueta
+      );
+      found?.image.setDepth(found?.par?.y!);
+      this.seatTaken = null;
+    }
   }
 
   private goSit(randomSeat: Seat) {
@@ -128,11 +111,12 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private manejarProfundidad() {
-    if (!this.seatTaken) this.npc.setDepth(this.npc!.y);
+    if (!this.seatTaken || !this.seatTaken.profundidad)
+      this.npc.setDepth(this.npc!.y);
   }
   private async configurarAnimaciones() {
     this.scene.anims.create({
-      key: Direccion.Inactivo,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Inactivo),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 132,
         end: 143,
@@ -141,7 +125,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Arriba,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Arriba),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 0,
         end: 11,
@@ -150,7 +134,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Izquierda,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Izquierda),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 24,
         end: 35,
@@ -159,7 +143,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Abajo,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Abajo),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 12,
         end: 23,
@@ -168,7 +152,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Derecha,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Derecha),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 36,
         end: 47,
@@ -177,7 +161,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.IzquierdaAbajo,
+      key: configurarDireccion(this.npc.texture.key, Direccion.IzquierdaAbajo),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 72,
         end: 83,
@@ -186,7 +170,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.IzquierdaArriba,
+      key: configurarDireccion(this.npc.texture.key, Direccion.IzquierdaArriba),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 48,
         end: 59,
@@ -195,7 +179,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.DerechaArriba,
+      key: configurarDireccion(this.npc.texture.key, Direccion.DerechaArriba),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 60,
         end: 71,
@@ -204,7 +188,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.DerechaAbajo,
+      key: configurarDireccion(this.npc.texture.key, Direccion.DerechaAbajo),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 84,
         end: 95,
@@ -213,7 +197,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Sofa,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Sofa),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 97,
         end: 108,
@@ -222,7 +206,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       repeat: -1,
     });
     this.scene.anims.create({
-      key: Direccion.Silla,
+      key: configurarDireccion(this.npc.texture.key, Direccion.Silla),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
         start: 108,
         end: 119,

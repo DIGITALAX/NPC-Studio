@@ -43,13 +43,13 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
               default: "arcade",
               arcade: {
                 gravity: { y: 0, x: 0 },
-                debug: true,
+                debug: false,
                 debugShowBody: true,
                 debugShowStaticBody: true,
                 debugShowVelocity: true,
               },
             },
-            scene: [new NPCEnginePhaser(newSocket, sceneKey)],
+            scene: [new NPCEnginePhaser(newSocket, sceneKey, chosenNpc)],
             parent: gameRef?.current,
           };
 
