@@ -9,5 +9,8 @@
   },
   "Nav": {
     "lan": "Elige Idioma"
+  },
+  "404": {
+    "nada": "Error 404: La página ha sido secuestrada por NPCs rebeldes. Estamos negociando su liberación."
   }
 }

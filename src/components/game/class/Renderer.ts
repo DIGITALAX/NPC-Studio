@@ -1,5 +1,5 @@
 import RandomWalkerNPC from "./RandomWalkNPC";
-import { INFURA_GATEWAY, NPC_LIST } from "../../../../lib/constants";
+import { INFURA_GATEWAY } from "../../../../lib/constants";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
 import { Articulo, Direccion, Escena, Seat } from "../types/game.types";
@@ -12,9 +12,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   escena: Escena | null = null;
   locations: { x: number; y: number; texture: string }[] = [];
   readonly sceneKey: string;
-  npcCamara: string;
+  npcCamara: number;
 
-  constructor(socket: Socket, sceneKey: string, chosenNpc: string) {
+  constructor(socket: Socket, sceneKey: string, chosenNpc: number) {
     super({ key: "NPCEnginePhaser" });
     this.frameCount = 0;
     this.prof = [];
@@ -173,7 +173,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
             sprite,
             this.locations.find((item) => item.texture == sprite.etiqueta)!,
             sillas,
-            sprite.etiqueta === this.npcCamara
+            sprite.etiqueta === this.escena?.sprites?.[this.npcCamara]?.etiqueta
           )
         )
       );
@@ -227,7 +227,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
 
   setCameraTarget(chosenNpc: number) {
     this.npcs.forEach((npc) => {
-      if (NPC_LIST[chosenNpc].texture === npc.texture.key) {
+      if (this.escena?.sprites?.[chosenNpc].etiqueta === npc.texture.key) {
         npc.makeCameraFollow();
       }
     });

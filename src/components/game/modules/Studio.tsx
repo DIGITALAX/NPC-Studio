@@ -2,7 +2,13 @@
 
 import useConfig from "../hooks/useConfig";
 
-function Studio({ npc, escena }: { npc: string; escena: string }) {
+function Studio({
+  npc,
+  escena,
+}: {
+  npc: number;
+  escena: string;
+}) {
   const { gameRef } = useConfig(npc, escena);
   return (
     <div

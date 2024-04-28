@@ -1,19 +1,15 @@
 import { FunctionComponent } from "react";
 import { PiArrowFatLinesLeft, PiArrowFatLinesRight } from "react-icons/pi";
 import { SceneProps } from "../types/game.types";
-import {
-  INFURA_GATEWAY,
-  NPC_LIST,
-  SCENE_LIST,
-} from "../../../../lib/constants";
+import { INFURA_GATEWAY, SCENE_LIST } from "../../../../lib/constants";
 import Image from "next/legacy/image";
 
 const Scene: FunctionComponent<SceneProps> = ({
   npc,
   setNpc,
   escena,
-  setEscena,
   t,
+  setEscena,
 }) => {
   return (
     <div className="relative flex flex-col gap-10 h-fit w-full items-center justify-start border-4 border-cielo rounded-md bg-black/80 p-4">
@@ -30,11 +26,14 @@ const Scene: FunctionComponent<SceneProps> = ({
           <div className="relative w-full h-full flex items-center justify-between flex-row gap-2">
             <div
               className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95"
-              // onClick={() =>
-              //   // setNpc((prev) =>
-              //   //   prev - 1 < 0 ? NPC_LIST.length - 1 : prev - 1
-              //   // )
-              // }
+              onClick={() =>
+                setNpc((prev) =>
+                  prev - 1 < 0
+                    ? SCENE_LIST?.find((es) => es?.key == escena)!?.sprites
+                        ?.length - 1
+                    : prev - 1
+                )
+              }
             >
               <PiArrowFatLinesLeft size={20} color="#2E91D4" />
             </div>
@@ -43,16 +42,24 @@ const Scene: FunctionComponent<SceneProps> = ({
                 draggable={false}
                 layout="fill"
                 objectFit="contain"
-                src={`${INFURA_GATEWAY}/ipfs/${NPC_LIST.find((item) => item.texture == npc)?.cover}`}
+                src={`${INFURA_GATEWAY}/ipfs/${
+                  SCENE_LIST?.find((es) => es?.key == escena)!?.sprites?.[npc]
+                    ?.cover
+                }`}
               />
             </div>
             <div
               className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95"
-              // onClick={() =>
-              //   // setNpc((prev) =>
-              //   //   prev + 1 > NPC_LIST.length - 1 ? 0 : prev + 1
-              //   // )
-              // }
+              onClick={() =>
+                setNpc((prev) =>
+                  prev + 1 >
+                  SCENE_LIST?.find((es) => es?.key == escena)!?.sprites
+                    ?.length -
+                    1
+                    ? 0
+                    : prev + 1
+                )
+              }
             >
               <PiArrowFatLinesRight size={20} color="#2E91D4" />
             </div>
@@ -65,11 +72,17 @@ const Scene: FunctionComponent<SceneProps> = ({
           <div className="relative w-full h-full flex items-center justify-between flex-row gap-2">
             <div
               className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95"
-              // onClick={() =>
-              //   setEscena((prev) =>
-              //     prev - 1 < 0 ? SCENE_LIST.length - 1 : prev - 1
-              //   )
-              // }
+              onClick={() =>
+                setEscena(() => {
+                  const index = SCENE_LIST.findIndex(
+                    (prev) => prev.key == escena
+                  );
+
+                  return index - 1 < 0
+                    ? SCENE_LIST[SCENE_LIST?.length - 1]?.key
+                    : SCENE_LIST[index - 1]?.key;
+                })
+              }
             >
               <PiArrowFatLinesLeft size={20} color="#2E91D4" />
             </div>
@@ -79,16 +92,24 @@ const Scene: FunctionComponent<SceneProps> = ({
                 layout="fill"
                 priority
                 objectFit="cover"
-                src={`${INFURA_GATEWAY}/ipfs/${SCENE_LIST.find((item) => item.key == escena)?.cover}`}
+                src={`${INFURA_GATEWAY}/ipfs/${
+                  SCENE_LIST?.find((es) => es?.key == escena)!?.cover
+                }`}
               />
             </div>
             <div
               className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95"
-              // onClick={() =>
-              //   setEscena((prev) =>
-              //     prev + 1 > SCENE_LIST.length - 1 ? 0 : prev + 1
-              //   )
-              // }
+              onClick={() =>
+                setEscena(() => {
+                  const index = SCENE_LIST.findIndex(
+                    (prev) => prev.key == escena
+                  );
+
+                  return index + 1 > SCENE_LIST?.length - 1
+                    ? SCENE_LIST[0]?.key
+                    : SCENE_LIST[index + 1]?.key;
+                })
+              }
             >
               <PiArrowFatLinesRight size={20} color="#2E91D4" />
             </div>

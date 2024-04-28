@@ -16,8 +16,8 @@ export type SceneProps = {
   escena: string;
   t: any;
   setEscena: (e: SetStateAction<string>) => void;
-  npc: string;
-  setNpc: (e: SetStateAction<string>) => void;
+  npc: number;
+  setNpc: (e: SetStateAction<number>) => void;
 };
 
 export interface Message {
@@ -77,6 +77,7 @@ export interface Escena {
     width: number;
     height: number;
   };
+  cover: string;
   prohibited: {
     x: number;
     y: number;
@@ -154,6 +155,7 @@ export interface Sprite {
   uri: string;
   x: number;
   y: number;
+  cover: string;
   displayHeight: number;
   displayWidth: number;
   frameWidth: number;

@@ -5,9 +5,49 @@ import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
 import io, { Socket } from "socket.io-client";
 
-const useConfig = (chosenNpc: string, sceneKey: string) => {
+const useConfig = (chosenNpc: number, sceneKey: string) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
+  const [juego, setJuego] = useState<Phaser.Game | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  const crearEscena = (newSocket: Socket) => {
+    try {
+      newSocket.emit("enviarSceneIndex", sceneKey);
+
+      if (
+        typeof window !== "undefined" &&
+        gameRef.current &&
+        newSocket?.connected
+      ) {
+        const config: Phaser.Types.Core.GameConfig = {
+          type: Phaser.AUTO,
+          width: gameRef.current?.clientWidth,
+          height: gameRef.current?.clientHeight,
+          physics: {
+            default: "arcade",
+            arcade: {
+              gravity: { y: 0, x: 0 },
+              debug: false,
+              debugShowBody: true,
+              debugShowStaticBody: true,
+              debugShowVelocity: true,
+            },
+          },
+          scene: [new NPCEnginePhaser(newSocket, sceneKey, chosenNpc)],
+          parent: gameRef?.current,
+        };
+
+        const game = new Phaser.Game(config);
+        setJuego(game);
+
+        return () => {
+          game.destroy(true);
+        };
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
     if (!socket) {
@@ -28,37 +68,7 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
       setSocket(newSocket);
 
       newSocket.on("connect", () => {
-        newSocket.emit("enviarSceneIndex", sceneKey);
-
-        if (
-          typeof window !== "undefined" &&
-          gameRef.current &&
-          newSocket?.connected
-        ) {
-          const config: Phaser.Types.Core.GameConfig = {
-            type: Phaser.AUTO,
-            width: gameRef.current?.clientWidth,
-            height: gameRef.current?.clientHeight,
-            physics: {
-              default: "arcade",
-              arcade: {
-                gravity: { y: 0, x: 0 },
-                debug: false,
-                debugShowBody: true,
-                debugShowStaticBody: true,
-                debugShowVelocity: true,
-              },
-            },
-            scene: [new NPCEnginePhaser(newSocket, sceneKey, chosenNpc)],
-            parent: gameRef?.current,
-          };
-
-          const game = new Phaser.Game(config);
-
-          return () => {
-            game.destroy(true);
-          };
-        }
+        crearEscena(newSocket);
       });
 
       return () => {
@@ -79,11 +89,11 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
   }, []);
 
   useEffect(() => {
-    if (gameRef.current && gameRef.current.game && gameRef.current.game.scene) {
-      const scenes = gameRef.current.game.scene.getScenes(true);
-      const customScene = scenes.find(
+    if (gameRef.current && juego?.scene) {
+      const customScene = juego?.scene?.scenes.find(
         (scene) => scene.scene.key === "NPCEnginePhaser"
       );
+
       if (customScene) {
         (customScene as any).setCameraTarget(chosenNpc);
       }
@@ -92,6 +102,7 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
 
   return {
     gameRef,
+    crearEscena,
   };
 };
 

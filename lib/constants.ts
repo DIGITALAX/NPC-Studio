@@ -2,23 +2,48 @@ export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
 export const SCENE_LIST: {
   key: string;
   cover: string;
+  sprites: { key: string; cover: string }[];
 }[] = [
   {
-    key: "oficina",
+    key: "estudio",
     cover: "Qmab76vqVsvmTeDFH3YTNRBijE7fujSkyqsEqDz4vH7quH",
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
   },
   {
-    key: "bolsaDeValores",
-    cover: "QmZR6JXmzwEUM1ouVh1LXoycYXWoZVtaRyWB7z28L8q2vV",
+    key: "bolsa",
+    cover: "Qmab76vqVsvmTeDFH3YTNRBijE7fujSkyqsEqDz4vH7quH",
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
   },
-  { key: "tienda", cover: "QmXz9Jggu7WBdqq22jX8dpsWkX4QwUzAej4ZhUYNPMjixD" },
-];
-export const NPC_LIST: {
-  texture: string;
-  cover: string;
-}[] = [
   {
-    texture: "muchacho",
-    cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+    key: "tienda",
+    cover: "QmXz9Jggu7WBdqq22jX8dpsWkX4QwUzAej4ZhUYNPMjixD",
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
   },
 ];

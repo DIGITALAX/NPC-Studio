@@ -1,9 +1,8 @@
 import { useState } from "react";
 
 const useManage = () => {
-  const [escena, setEscena] = useState<string>("oficina");
-  const [npc, setNpc] = useState<string>("muchacho");
-
+  const [escena, setEscena] = useState<string>("estudio");
+  const [npc, setNpc] = useState<number>(0);
   return {
     npc,
     setNpc,
