@@ -5,57 +5,81 @@ import { Socket } from "socket.io-client";
 import { Articulo, Direccion, Escena, Seat } from "../types/game.types";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
-  frameCount: number;
-  prof: Phaser.GameObjects.Image[];
-  npcs: RandomWalkerNPC[];
-  socket: Socket;
+  frameCount!: number;
+  prof!: Phaser.GameObjects.Image[];
+  npcs!: RandomWalkerNPC[];
+  socket!: Socket;
   escena: Escena | null = null;
   locations: { x: number; y: number; texture: string }[] = [];
-  readonly sceneKey: string;
-  npcCamara: number;
+  sceneKey!: string;
+  npcCamara!: number;
 
-  constructor(socket: Socket, sceneKey: string, chosenNpc: number) {
+  constructor() {
     super({ key: "NPCEnginePhaser" });
+  }
+
+  init() {
+    this.socket = this.game.registry.get("socket");
+    this.sceneKey = this.game.registry.get("sceneKey");
+    this.npcCamara = this.game.registry.get("chosenNpc");
+
+    if (this.load && this.load.isLoading()) {
+      this.load.reset();
+      this.load.removeAllListeners();
+    }
     this.frameCount = 0;
     this.prof = [];
-    this.socket = socket;
     this.npcs = [];
-    this.sceneKey = sceneKey;
-    this.npcCamara = chosenNpc;
     this.configurarEscena();
   }
 
   private configurarEscena() {
-    this.socket.on(
-      "configurarEscena",
-      (data: {
-        scene: Escena;
-        state: {
-          direccion: Direccion;
-          velocidadX: number;
-          velocidadY: number;
-          npcX: number;
-          npcY: number;
-          texture: string;
-          randomSeat: Seat | null;
-        }[];
-      }) => {
-        this.escena = data.scene;
-        this.locations = data.state.map((item) => ({
-          x: item.npcX,
-          y: item.npcY,
-          texture: item.texture,
-        }));
+    if (this.socket)
+      this.socket.on(
+        "configurarEscena",
 
-        if (this.escena) {
-          this.preload();
+        (data: {
+          scene: Escena;
+          state: {
+            direccion: Direccion;
+            velocidadX: number;
+            velocidadY: number;
+            npcX: number;
+            npcY: number;
+            texture: string;
+            randomSeat: Seat | null;
+          }[];
+        }) => {
+          this.escena = data.scene;
+          this.locations = data.state.map((item) => ({
+            x: item.npcX,
+            y: item.npcY,
+            texture: item.texture,
+          }));
+
+          if (
+            this.escena &&
+            this.escena?.key == this.sceneKey &&
+            this.escena?.fondo?.uri &&
+            this.escena.key &&
+            this.load &&
+            this.load.isReady()
+          ) {
+            this.preload();
+          }
         }
-      }
-    );
+      );
   }
 
   preload() {
-    if (this.escena) {
+    if (
+      this.escena &&
+      this.escena?.key == this.sceneKey &&
+      this.escena?.fondo?.uri &&
+      this.escena.key &&
+      this.load &&
+      this.load.isReady() && this.sys.isActive() && !this.load.isLoading()
+    ) {
       this.load.image(
         this.escena?.fondo.etiqueta!,
         `${INFURA_GATEWAY}/ipfs/${this.escena?.fondo.uri}`
@@ -82,17 +106,27 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           }
         );
       });
+
+      this.load.once("complete", this.cargarRecursos, this);
+      this.load.start();
     }
+  }
 
-    this.load.on("complete", () => {
+  cargarRecursos() {
+    if (this.scene.isActive()) {
       this.create();
-    });
-
-    this.load.start();
+    }
+    this.load.reset();
   }
 
   create() {
-    if (this.escena && this.npcs.length < 1) {
+    if (
+      this.escena &&
+      this.npcs.length < 1 &&
+      this.escena?.key == this.sceneKey &&
+      this.escena.key &&
+      this.load
+    ) {
       const fondo = this.add
         .image(
           this.escena?.fondo.sitio.x!,
@@ -199,11 +233,17 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           });
         }
       );
+
+      this.load.reset();
     }
   }
 
   update() {
-    if (this.npcs.length > 0) {
+    if (
+      this.npcs.length > 0 &&
+      this.escena?.key == this.sceneKey &&
+      this.escena?.key
+    ) {
       this.npcs.forEach((npc) => npc.update());
 
       if (this.frameCount % 10 === 0) {
@@ -231,5 +271,22 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         npc.makeCameraFollow();
       }
     });
+  }
+
+  destruir() {
+    this.npcs.forEach((npc) => {
+      npc.stop();
+      npc.destroy();
+    });
+    this.npcs = [];
+    this.load.off("complete", this.cargarRecursos, this);
+    this.sys.events.removeAllListeners();
+    this.sys.events.destroy();
+    if (this.load.isLoading()) {
+      this.load.reset();
+      this.load.removeAllListeners();
+    }
+    this.scene.stop("NPCEnginePhaser");
+    this.scene.remove("NPCEnginePhaser");
   }
 }

@@ -27,17 +27,23 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
             default: "arcade",
             arcade: {
               gravity: { y: 0, x: 0 },
-              debug: false,
-              debugShowBody: true,
-              debugShowStaticBody: true,
-              debugShowVelocity: true,
             },
           },
-          scene: [new NPCEnginePhaser(newSocket, sceneKey, chosenNpc)],
+          scene: NPCEnginePhaser,
           parent: gameRef?.current,
         };
 
+    
+
         const game = new Phaser.Game(config);
+        game.registry.set("socket", newSocket);
+        game.registry.set("sceneKey", sceneKey);
+        game.registry.set("chosenNpc", chosenNpc);
+
+        game.events.once("ready", () => {
+          game.scene.start("NPCEnginePhaser");
+        });
+
         setJuego(game);
 
         return () => {
@@ -78,17 +84,6 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
   }, []);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
     if (gameRef.current && juego?.scene) {
       const customScene = juego?.scene?.scenes.find(
         (scene) => scene.scene.key === "NPCEnginePhaser"
@@ -100,9 +95,33 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
     }
   }, [chosenNpc]);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socket?.active && juego?.scene) {
+      juego.scene.scenes.forEach((scene) => {
+        if (scene instanceof NPCEnginePhaser) {
+          scene.destruir();
+        }
+      });
+      juego.events.removeAllListeners();
+      juego.destroy(true);
+      setJuego(null);
+      crearEscena(socket);
+    }
+  }, [sceneKey]);
+
   return {
     gameRef,
-    crearEscena,
   };
 };
 
