@@ -5,8 +5,8 @@ export const SCENE_LIST: {
   sprites: { key: string; cover: string }[];
 }[] = [
   {
-    key: "estudio",
-    cover: "Qmab76vqVsvmTeDFH3YTNRBijE7fujSkyqsEqDz4vH7quH",
+    key: "estudio abierto de trabajo",
+    cover: "QmcWnwXob7yRrZg4gUJyqo3Vtsabk8jWL5eL7NEn5HhDe7",
     sprites: [
       {
         key: "muchacho",
@@ -19,8 +19,9 @@ export const SCENE_LIST: {
     ],
   },
   {
-    key: "bolsa",
+    key: "ático de comercio",
     cover: "Qmab76vqVsvmTeDFH3YTNRBijE7fujSkyqsEqDz4vH7quH",
+
     sprites: [
       {
         key: "muchacho",
@@ -33,8 +34,84 @@ export const SCENE_LIST: {
     ],
   },
   {
-    key: "tienda",
-    cover: "QmXz9Jggu7WBdqq22jX8dpsWkX4QwUzAej4ZhUYNPMjixD",
+    key: "lote de graffiti",
+    cover: "QmVA8di3khf9Fbb1a2JLDk21UdQ4zRoBPLEwRwEwtmQYyp",
+
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
+  },
+  {
+    key: "boutique de ropa callejera",
+    cover: "QmUBJqUtcHZQRsrGHr8sM4UoCuKQWTUuhrXrpuVPyZBsBc",
+
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
+  },
+  {
+    key: "microfábrica",
+    cover: "QmXvZeMcQMdEHkKZL9U2CLpocMaKJvrfq644Zcsaybu5Q2",
+
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
+  },
+  {
+    key: "agencia de llms",
+    cover: "QmTs6DvEjiMzJHuXmtJBR13t53wo9TedjkymcFAT88qX78",
+
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
+  },
+  {
+    key: "pub en ruinas",
+    cover: "QmWQMu5z5ho4prQv43Hdv27xtUtoUh78HukEPgCVEx3aLP",
+
+    sprites: [
+      {
+        key: "muchacho",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+      {
+        key: "chica",
+        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+      },
+    ],
+  },
+  {
+    key: "marketing de contenido",
+    cover: "Qmdriz9gdKL7riwkwagguFZLCZ56fPRo171i8MhvXuUAdx",
+
     sprites: [
       {
         key: "muchacho",

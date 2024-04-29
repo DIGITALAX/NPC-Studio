@@ -78,7 +78,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.fondo?.uri &&
       this.escena.key &&
       this.load &&
-      this.load.isReady() && this.sys.isActive() && !this.load.isLoading()
+      this.load.isReady() &&
+      this.sys.isActive() &&
+      !this.load.isLoading()
     ) {
       this.load.image(
         this.escena?.fondo.etiqueta!,
@@ -225,7 +227,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
             texture: string;
           }[]
         ) => {
-          this.npcs.forEach((npc, index) => {
+          this.npcs.forEach((npc) => {
             const filtered = data?.find(
               (item) => item.texture == npc.texture.key
             );
@@ -233,6 +235,48 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           });
         }
       );
+
+      // [
+      //   {
+      //     x: 0,
+      //     y: 0,
+      //     width: 1700,
+      //     height: 200,
+      //   },
+      //   {
+      //     x: 130,
+      //     y: 370,
+      //     width: 1500,
+      //     height: 150,
+      //   },
+      //   {
+      //     x: 150,
+      //     y: 570,
+      //     width: 1500,
+      //     height: 150,
+      //   },
+      // ].forEach((obstacle) => {
+      //   let color = Phaser.Display.Color.RandomRGB();
+      //   let hexColor = Phaser.Display.Color.GetColor(
+      //     color.red,
+      //     color.green,
+      //     color.blue
+      //   );
+
+      //   let topLeftX = obstacle.x;
+      //   let topLeftY = obstacle.y;
+
+      //   let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
+
+      //   graphics.fillRect(topLeftX, topLeftY, obstacle.width, obstacle.height);
+      //   graphics.lineStyle(2, 0x000000).setDepth(10000);
+      //   graphics.strokeRect(
+      //     topLeftX,
+      //     topLeftY,
+      //     obstacle.width,
+      //     obstacle.height
+      //   );
+      // });
 
       this.load.reset();
     }
