@@ -9,26 +9,26 @@ export const SCENE_LIST: {
     cover: "QmcWnwXob7yRrZg4gUJyqo3Vtsabk8jWL5eL7NEn5HhDe7",
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-estudio",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-estudio",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
   },
   {
-    key: "ático de comercio",
+    key: "ático de intercambio de varianza",
     cover: "Qmab76vqVsvmTeDFH3YTNRBijE7fujSkyqsEqDz4vH7quH",
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-ático",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-ático",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -39,11 +39,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-lote",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-lote",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -54,11 +54,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-boutique",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-boutique",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -69,11 +69,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-micro",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-micro",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -84,11 +84,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-agencia",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-agencia",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -99,11 +99,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-pub",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-pub",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],
@@ -114,11 +114,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho",
+        key: "muchacho-contenido",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
       {
-        key: "chica",
+        key: "chica-contenido",
         cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
       },
     ],

@@ -136,9 +136,15 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           this.escena?.fondo.etiqueta!
         )
         .setOrigin(0, 0)
+        .setSize(
+          this.escena?.fondo.displayWidth!,
+          this.escena?.fondo.displayHeight!
+        )
+        .setDisplaySize(
+          this.escena?.fondo.displayWidth!,
+          this.escena?.fondo.displayHeight!
+        )
         .setDepth(0);
-      fondo.displayWidth = this.escena?.fondo.displayWidth!;
-      fondo.displayHeight = this.escena?.fondo.displayHeight!;
 
       let sillas: Seat[] = [];
       let profundidad: (Articulo & { image: Phaser.GameObjects.Image })[] = [];
@@ -147,7 +153,10 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
+          .setSize(obj.talla.x, obj.talla.y)
           .setScale(obj.escala.x, obj.escala.y)
+          .setDisplaySize(obj.talla.x, obj.talla.y)
+
           .setDepth(
             obj?.profundidad !== undefined ? obj.profundidad : obj.sitio.y
           );
@@ -157,7 +166,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         const item = this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
+          .setSize(obj.talla.x, obj.talla.y)
           .setScale(obj.escala.x, obj.escala.y)
+          .setDisplaySize(obj.talla.x, obj.talla.y)
           .setDepth(obj.sitio.y);
 
         profundidad.push({
@@ -170,7 +181,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         const item = this.add
           .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
           .setOrigin(0.5, 0.5)
+          .setSize(silla.talla.x, silla.talla.y)
           .setScale(silla.escala.x, silla.escala.y)
+          .setDisplaySize(silla.talla.x, silla.talla.y)
           .setDepth(
             silla.depth !== undefined
               ? silla.depth
@@ -235,48 +248,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           });
         }
       );
-
-      // [
-      //   {
-      //     x: 0,
-      //     y: 0,
-      //     width: 1700,
-      //     height: 200,
-      //   },
-      //   {
-      //     x: 130,
-      //     y: 370,
-      //     width: 1500,
-      //     height: 150,
-      //   },
-      //   {
-      //     x: 150,
-      //     y: 570,
-      //     width: 1500,
-      //     height: 150,
-      //   },
-      // ].forEach((obstacle) => {
-      //   let color = Phaser.Display.Color.RandomRGB();
-      //   let hexColor = Phaser.Display.Color.GetColor(
-      //     color.red,
-      //     color.green,
-      //     color.blue
-      //   );
-
-      //   let topLeftX = obstacle.x;
-      //   let topLeftY = obstacle.y;
-
-      //   let graphics = this.add.graphics({ fillStyle: { color: hexColor } });
-
-      //   graphics.fillRect(topLeftX, topLeftY, obstacle.width, obstacle.height);
-      //   graphics.lineStyle(2, 0x000000).setDepth(10000);
-      //   graphics.strokeRect(
-      //     topLeftX,
-      //     topLeftY,
-      //     obstacle.width,
-      //     obstacle.height
-      //   );
-      // });
 
       this.load.reset();
     }
