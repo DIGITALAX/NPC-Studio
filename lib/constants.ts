@@ -16,6 +16,10 @@ export const SCENE_LIST: {
         key: "chica-estudio",
         cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
+      {
+        key: "dama-estudio",
+        cover: "QmWEDPFxBuCUm8Pur2TmjFm9uq8sqbN7vThHyfcW3pVDYu",
+      },
     ],
   },
   {
