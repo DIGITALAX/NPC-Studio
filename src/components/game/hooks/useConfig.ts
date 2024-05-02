@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
 import io, { Socket } from "socket.io-client";
-import jwt from "jsonwebtoken";
 
 const useConfig = (chosenNpc: number, sceneKey: string) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
@@ -56,7 +55,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
 
   useEffect(() => {
     if (!socket) {
-      const newSocket = io("https://npc-server.onrender.com:10000", {
+      const newSocket = io("https://npc-server.onrender.com", {
         transports: ["websocket"],
         port: 10000,
         reconnection: true,
@@ -64,11 +63,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
         reconnectionAttempts: 5,
         reconnectionDelay: 3000,
         autoConnect: true,
-        upgrade: false,
         withCredentials: true,
-        // extraHeaders: {
-        //   "my-custom-header": "header-value",
-        // },
       });
       newSocket.connect();
 
