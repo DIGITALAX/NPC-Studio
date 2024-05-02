@@ -58,6 +58,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
     if (!socket) {
       const newSocket = io("https://npc-server.onrender.com", {
         transports: ["websocket"],
+        port: 10000,
         reconnection: true,
         query: { key: process.env.RENDER_KEY },
         reconnectionAttempts: 5,
