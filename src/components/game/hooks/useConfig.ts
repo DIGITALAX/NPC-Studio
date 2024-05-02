@@ -84,7 +84,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
   }, []);
 
   useEffect(() => {
-    if (gameRef.current && juego?.scene) {
+    if (gameRef.current && juego?.scene && socket?.connected) {
       const customScene = juego?.scene?.scenes.find(
         (scene) => scene.scene.key === "NPCEnginePhaser"
       );
