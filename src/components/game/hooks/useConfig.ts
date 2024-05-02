@@ -79,7 +79,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
       });
 
       return () => {
-        if (newSocket !== null && newSocket.active) {
+        if (newSocket !== null && newSocket.active && newSocket.connected) {
           newSocket.close();
         }
       };
