@@ -50,9 +50,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
             randomSeat: Seat | null;
           }[];
         }) => {
-          if (data) {
+          if (data?.state) {
             this.escena = data.scene;
-            this.locations = data.state.map((item) => ({
+            this.locations = data?.state?.map((item) => ({
               x: item.npcX,
               y: item.npcY,
               texture: item.texture,
