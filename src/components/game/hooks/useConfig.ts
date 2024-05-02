@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
 import io, { Socket } from "socket.io-client";
+import jwt from "jsonwebtoken";
 
 const useConfig = (chosenNpc: number, sceneKey: string) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
@@ -33,8 +34,6 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
           parent: gameRef?.current,
         };
 
-    
-
         const game = new Phaser.Game(config);
         game.registry.set("socket", newSocket);
         game.registry.set("sceneKey", sceneKey);
@@ -57,17 +56,18 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
 
   useEffect(() => {
     if (!socket) {
-      const newSocket = io("ws://localhost:3000", {
+      const newSocket = io("https://npc-server.onrender.com", {
         transports: ["websocket"],
         reconnection: true,
+        query: { key: process.env.RENDER_KEY },
         reconnectionAttempts: 5,
         reconnectionDelay: 3000,
         autoConnect: true,
         upgrade: false,
         withCredentials: true,
-        extraHeaders: {
-          "my-custom-header": "header-value",
-        },
+        // extraHeaders: {
+        //   "my-custom-header": "header-value",
+        // },
       });
       newSocket.connect();
 

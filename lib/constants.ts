@@ -14,7 +14,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-estudio",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -29,7 +29,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-ático",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -59,7 +59,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-boutique",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-micro",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -89,7 +89,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-agencia",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -104,7 +104,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-pub",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
@@ -119,7 +119,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-contenido",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
       },
     ],
   },
