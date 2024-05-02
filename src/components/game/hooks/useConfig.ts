@@ -71,10 +71,13 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
       });
       newSocket.connect();
 
+      console.log({newSocket})
+
       setSocket(newSocket);
 
       newSocket.on("connect", () => {
         crearEscena(newSocket);
+        console.log("create")
       });
 
       return () => {
