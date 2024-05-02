@@ -56,7 +56,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
 
   useEffect(() => {
     if (!socket) {
-      const newSocket = io("https://npc-server.onrender.com", {
+      const newSocket = io("https://npc-server.onrender.com:10000", {
         transports: ["websocket"],
         port: 10000,
         reconnection: true,
