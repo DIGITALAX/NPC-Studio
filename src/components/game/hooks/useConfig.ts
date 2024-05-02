@@ -60,7 +60,7 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
         transports: ["websocket"],
         port: 10000,
         reconnection: true,
-        query: { key: process.env.RENDER_KEY },
+        query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
         reconnectionAttempts: 5,
         reconnectionDelay: 3000,
         autoConnect: true,
@@ -72,13 +72,10 @@ const useConfig = (chosenNpc: number, sceneKey: string) => {
       });
       newSocket.connect();
 
-      console.log({newSocket})
-
       setSocket(newSocket);
 
       newSocket.on("connect", () => {
         crearEscena(newSocket);
-        console.log("create")
       });
 
       return () => {
