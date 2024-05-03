@@ -2,17 +2,22 @@ import RandomWalkerNPC from "./RandomWalkNPC";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
-import { Articulo, Direccion, Escena, Seat } from "../types/game.types";
+import {
+  Articulo,
+  DatosServidor,
+  Direccion,
+  Escena,
+  Seat,
+} from "../types/game.types";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
-  frameCount!: number;
-  prof!: Phaser.GameObjects.Image[];
-  npcs!: RandomWalkerNPC[];
-  socket!: Socket;
-  escena: Escena | null = null;
-  locations: { x: number; y: number; texture: string }[] = [];
-  sceneKey!: string;
-  npcCamara!: number;
+  private frameCount!: number;
+  private npcs!: { [textureKey: string]: RandomWalkerNPC };
+  private socket!: Socket;
+  private escena: Escena | null = null;
+  private locations: { x: number; y: number; texture: string }[] = [];
+  private sceneKey!: string;
+  private npcCamara!: number;
 
   constructor() {
     super({ key: "NPCEnginePhaser" });
@@ -28,8 +33,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.load.removeAllListeners();
     }
     this.frameCount = 0;
-    this.prof = [];
-    this.npcs = [];
+    this.npcs = {};
     this.configurarEscena();
   }
 
@@ -126,7 +130,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   create() {
     if (
       this.escena &&
-      this.npcs.length < 1 &&
+      Object.values(this.npcs).length < 1 &&
       this.escena?.key == this.sceneKey &&
       this.escena.key &&
       this.load
@@ -217,39 +221,26 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.escena?.world?.height
       );
 
-      this.escena.sprites.forEach((sprite) =>
-        this.npcs.push(
-          new RandomWalkerNPC(
+      this.escena.sprites.forEach(
+        (sprite) =>
+          (this.npcs[sprite.etiqueta] = new RandomWalkerNPC(
             this,
             sprite,
             this.locations.find((item) => item.texture == sprite.etiqueta)!,
             sillas,
             sprite.etiqueta === this.escena?.sprites?.[this.npcCamara]?.etiqueta
-          )
-        )
+          ))
       );
 
-      this.socket.on(
-        this.sceneKey,
-        (
-          data: {
-            direccion: Direccion;
-            velocidadX: number;
-            velocidadY: number;
-            npcX: number;
-            npcY: number;
-            randomSeat: Seat | null;
-            texture: string;
-          }[]
-        ) => {
-          this.npcs.forEach((npc) => {
-            const filtered = data?.find(
-              (item) => item.texture == npc.texture.key
-            );
-            npc.actualizarAnimacion(filtered!);
+      this.socket.on(this.sceneKey, (frames: DatosServidor[][]) => {
+        frames?.forEach((frame) => {
+          frame.forEach((npcData) => {
+            if (this.npcs[npcData.texture]) {
+              this.npcs[npcData.texture].actualizarAnimacion(npcData!);
+            }
           });
-        }
-      );
+        });
+      });
 
       this.load.reset();
     }
@@ -257,11 +248,11 @@ export default class NPCEnginePhaser extends Phaser.Scene {
 
   update() {
     if (
-      this.npcs.length > 0 &&
+      Object.values(this.npcs).length > 0 &&
       this.escena?.key == this.sceneKey &&
       this.escena?.key
     ) {
-      this.npcs.forEach((npc) => npc.update());
+      Object.values(this.npcs).forEach((npc) => npc.update());
 
       if (this.frameCount % 10 === 0) {
         this.game.renderer.snapshot((snapshot: any) => {
@@ -283,7 +274,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   }
 
   setCameraTarget(chosenNpc: number) {
-    this.npcs.forEach((npc) => {
+    Object.values(this.npcs).forEach((npc) => {
       if (this.escena?.sprites?.[chosenNpc].etiqueta === npc.texture.key) {
         npc.makeCameraFollow();
       }
@@ -291,11 +282,11 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   }
 
   destruir() {
-    this.npcs.forEach((npc) => {
+    Object.values(this.npcs).forEach((npc) => {
       npc.stop();
       npc.destroy();
     });
-    this.npcs = [];
+    this.npcs = {};
     this.load.off("complete", this.cargarRecursos, this);
     this.sys.events.removeAllListeners();
     this.sys.events.destroy();

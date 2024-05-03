@@ -1,11 +1,12 @@
 import { configurarDireccion } from "../../../../lib/utils";
-import { Direccion, Seat, Sprite } from "./../types/game.types";
+import { DatosServidor, Direccion, Seat, Sprite } from "./../types/game.types";
 import Phaser from "phaser";
 
 export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private npc!: Phaser.Physics.Arcade.Sprite;
   private seats: Seat[];
   private seatTaken: Seat | null;
+  private stateQueue: DatosServidor[] = [];
   private direccionActual: {
     x: number;
     y: number;
@@ -26,6 +27,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.seats = seats;
     this.seatTaken = null;
     this.direccionActual = null;
+    this.stateQueue = [];
     this.configureSprite(sprite, cam, location);
   }
 
@@ -199,8 +201,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.scene.anims.create({
       key: configurarDireccion(this.npc.texture.key, Direccion.Sofa),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {
-        start: 97,
-        end: 108,
+        start: 96,
+        end: 107,
       }),
       frameRate: 0.3,
       repeat: -1,

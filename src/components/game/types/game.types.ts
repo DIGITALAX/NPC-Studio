@@ -168,3 +168,13 @@ export interface Sprite {
     y: number;
   };
 }
+
+export interface DatosServidor {
+  direccion: Direccion;
+  velocidadX: number;
+  velocidadY: number;
+  npcX: number;
+  npcY: number;
+  randomSeat: Seat | null;
+  texture: string;
+}
