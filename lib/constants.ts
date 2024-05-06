@@ -48,7 +48,7 @@ export const SCENE_LIST: {
       },
       {
         key: "chica-lote",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
