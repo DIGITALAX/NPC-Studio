@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
 import io, { Socket } from "socket.io-client";
+import { SCENE_LIST } from "../../../../lib/constants";
 
-const useConfig = (chosenNpc: string, sceneKey: string) => {
+const useConfig = (
+  chosenNpc: string,
+  sceneKey: string,
+  setNpc: (npc: SetStateAction<string>) => void
+) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const [juego, setJuego] = useState<Phaser.Game | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -32,11 +37,16 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
           scene: NPCEnginePhaser,
           parent: gameRef?.current,
         };
-
+        setNpc(
+          SCENE_LIST.find((clave) => clave.key == sceneKey)?.sprites[0]?.key!
+        );
         const game = new Phaser.Game(config);
         game.registry.set("socket", newSocket);
         game.registry.set("sceneKey", sceneKey);
-        game.registry.set("chosenNpc", chosenNpc);
+        game.registry.set(
+          "chosenNpc",
+          SCENE_LIST.find((clave) => clave.key == sceneKey)?.sprites[0]?.key!
+        );
 
         game.events.once("ready", () => {
           game.scene.start("NPCEnginePhaser");
@@ -56,11 +66,11 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
   useEffect(() => {
     if (!socket) {
       const newSocket = io(
-        // "https://npc-server.onrender.com",
-        "http://localhost:3000",
+        "https://npc-server.onrender.com",
+        // "http://localhost:3000",
         {
           transports: ["websocket"],
-          port: 3000,
+          port: 10000,
           reconnection: true,
           query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
           reconnectionAttempts: 5,
