@@ -70,14 +70,17 @@ function Log({
       </div>
       <div className="relative w-full h-fit flex items-center justify-center px-4 mb-0">
         <div
-          className={`relative w-full h-14 flex py-2 px-4 items-center justify-center font-at text-white bg-naranja rounded-md text-3xl border-4 border-frita  ${
-            !subscripcionCargando && "cursor-pointer hover:opacity-90"
-          }`}
-          onClick={
-            !connected
-              ? openConnectModal
-              : () => !subscripcionCargando && handleNotify()
-          }
+          className={`relative w-full h-14 flex py-2 px-4 items-center justify-center font-at text-white bg-naranja rounded-md text-3xl border-4 border-frita  
+ 
+          `}
+          // ${
+          //   !subscripcionCargando && "cursor-pointer hover:opacity-90"
+          // }
+          // onClick={
+          //   !connected
+          //     ? openConnectModal
+          //     : () => !subscripcionCargando && handleNotify()
+          // }
         >
           <div
             className={`relative w-fit h-fit flex items-center justify-center ${

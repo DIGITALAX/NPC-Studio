@@ -37,7 +37,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.seatTaken = null;
     this.sitting = false;
     this.idle = false;
-    console.log({ caminoInicial });
     this.camino = caminoInicial;
     this.configureSprite(sprite, cam);
   }
