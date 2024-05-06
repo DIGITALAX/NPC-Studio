@@ -98,6 +98,8 @@ div::-webkit-scrollbar-thumb:active {
   cursor: pointer;
 }
 
-.scroll-container {
-  min-width: calc(13rem * 10);
+@media (min-width: 640px) {
+  .scroll-container {
+    min-width: calc(13rem * 10);
+  }
 }

@@ -55,7 +55,7 @@ const Scene: FunctionComponent<SceneProps> = ({
                             draggable={false}
                           />
                         </div>
-                        <div className="absolute w-full h-[80%] flex items-center justify-center">
+                        <div className="absolute top-1.5 left-2 w-[91%] h-[87%] flex items-center justify-center">
                           <Image
                             layout="fill"
                             draggable={false}
@@ -84,7 +84,7 @@ const Scene: FunctionComponent<SceneProps> = ({
               </div>
             </div>
             <div className="relative w-full h-fit flex items-start justify-start overflow-x-auto">
-              <div className="relative sm:scroll-container h-fit flex items-start justify-start gap-4">
+              <div className="relative scroll-container h-fit flex items-start justify-start gap-4">
                 {SCENE_LIST.map(
                   (
                     cuarto: {

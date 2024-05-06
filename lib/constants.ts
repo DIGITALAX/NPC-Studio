@@ -10,15 +10,15 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-estudio",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-estudio",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
       {
         key: "dama-estudio",
-        cover: "QmWEDPFxBuCUm8Pur2TmjFm9uq8sqbN7vThHyfcW3pVDYu",
+        cover: "QmZW3DWmPRT65ctLHzpsBkFR8wUkSfD7z6twDtyhHCusg7",
       },
     ],
   },
@@ -29,11 +29,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-ático",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-ático",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
@@ -44,11 +44,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-lote",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-lote",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
     ],
   },
@@ -59,11 +59,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-boutique",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-boutique",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
@@ -74,11 +74,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-micro",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-micro",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
@@ -89,11 +89,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-agencia",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-agencia",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
@@ -104,11 +104,11 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-pub",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-pub",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
@@ -119,19 +119,12 @@ export const SCENE_LIST: {
     sprites: [
       {
         key: "muchacho-contenido",
-        cover: "QmZ4HicnNtbAV4HPikPFrnsWcREFVTa6q5cYQ1AoV3Qhp9",
+        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
         key: "chica-contenido",
-        cover: "QmRYp7QpXb5tZNZwvRsmV1sSCiwCQwhNYAw8RaHVunEU5B",
+        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],
   },
-];
-
-export const FONDOS: string[] = [
-  "QmVTuD3vBQpZJqt1UxPwjyvubeCTYCbGTrmTWmYPeePQhA",
-  "QmdNo6FMsjxrTo64SjbedK9CdHwPnDAHH2nMSneQbYUSgX",
-  "QmYbcWPxnabzXawqZSxjxth8YmyqVwGXZDzNRyeK2nNXGk",
-  "QmeCrdRGrqUvmSaH98HwJwpKyWMK9EnSwydkcBNo4apku7",
 ];
