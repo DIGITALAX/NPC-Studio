@@ -128,3 +128,10 @@ export const SCENE_LIST: {
     ],
   },
 ];
+
+export const FONDOS: string[] = [
+  "QmVTuD3vBQpZJqt1UxPwjyvubeCTYCbGTrmTWmYPeePQhA",
+  "QmdNo6FMsjxrTo64SjbedK9CdHwPnDAHH2nMSneQbYUSgX",
+  "QmYbcWPxnabzXawqZSxjxth8YmyqVwGXZDzNRyeK2nNXGk",
+  "QmeCrdRGrqUvmSaH98HwJwpKyWMK9EnSwydkcBNo4apku7",
+];

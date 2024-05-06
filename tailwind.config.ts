@@ -19,12 +19,17 @@ const config: Config = {
         frita: "#D76645",
         viola: "#F700DB",
         lime: "#10FF90",
+        amarillo: "#F8FF6F",
       },
       fontFamily: {
         rain: "Internal Rainbows",
         mana: "Manaspace",
         at: "at01",
         leco: "Leco",
+        abad: "Abaddon",
+      },
+      backgroundImage: {
+        esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,
       },
     },
   },

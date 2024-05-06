@@ -2,22 +2,18 @@ import RandomWalkerNPC from "./RandomWalkNPC";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
-import {
-  Articulo,
-  DatosServidor,
-  Direccion,
-  Escena,
-  Seat,
-} from "../types/game.types";
+import { Articulo, Escena, Estado, Seat } from "../types/game.types";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
   private frameCount!: number;
   private npcs!: { [textureKey: string]: RandomWalkerNPC };
   private socket!: Socket;
   private escena: Escena | null = null;
-  private locations: { x: number; y: number; texture: string }[] = [];
   private sceneKey!: string;
   private npcCamara!: number;
+  private caminosInciales: {
+    [textureKey: string]: Estado[];
+  } = {};
 
   constructor() {
     super({ key: "NPCEnginePhaser" });
@@ -41,26 +37,13 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     if (this.socket)
       this.socket.on(
         "configurarEscena",
-
-        (data: {
-          scene: Escena;
-          state: {
-            direccion: Direccion;
-            velocidadX: number;
-            velocidadY: number;
-            npcX: number;
-            npcY: number;
-            texture: string;
-            randomSeat: Seat | null;
-          }[];
-        }) => {
+        (data: { scene: Escena; state: Estado[][] }) => {
           if (data?.state) {
             this.escena = data.scene;
-            this.locations = data?.state?.map((item) => ({
-              x: item.npcX,
-              y: item.npcY,
-              texture: item.texture,
-            }));
+            data?.state?.forEach((estado) => {
+              if (estado?.length > 0)
+                this.caminosInciales[estado[0].npcEtiqueta] = estado;
+            });
 
             if (
               this.escena &&
@@ -226,19 +209,16 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           (this.npcs[sprite.etiqueta] = new RandomWalkerNPC(
             this,
             sprite,
-            this.locations.find((item) => item.texture == sprite.etiqueta)!,
             sillas,
+            this.caminosInciales[sprite.etiqueta],
             sprite.etiqueta === this.escena?.sprites?.[this.npcCamara]?.etiqueta
           ))
       );
 
-      this.socket.on(this.sceneKey, (frames: DatosServidor[][]) => {
-        frames?.forEach((frame) => {
-          frame.forEach((npcData) => {
-            if (this.npcs[npcData.texture]) {
-              this.npcs[npcData.texture].actualizarAnimacion(npcData!);
-            }
-          });
+      this.socket.on(this.sceneKey, (npcs: Estado[][]) => {
+        npcs?.forEach((npcData) => {
+          if (npcData?.length > 0)
+            this.npcs[npcData?.[0].npcEtiqueta].camino.push(...npcData);
         });
       });
 
@@ -273,9 +253,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     }
   }
 
-  setCameraTarget(chosenNpc: number) {
+  setCameraTarget(chosenNpc: string) {
     Object.values(this.npcs).forEach((npc) => {
-      if (this.escena?.sprites?.[chosenNpc].etiqueta === npc.texture.key) {
+      if (chosenNpc === npc.texture.key) {
         npc.makeCameraFollow();
       }
     });

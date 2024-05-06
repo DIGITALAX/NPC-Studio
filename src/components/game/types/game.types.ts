@@ -16,8 +16,8 @@ export type SceneProps = {
   escena: string;
   t: any;
   setEscena: (e: SetStateAction<string>) => void;
-  npc: number;
-  setNpc: (e: SetStateAction<number>) => void;
+  npc: string;
+  setNpc: (e: SetStateAction<string>) => void;
 };
 
 export interface Message {
@@ -169,12 +169,16 @@ export interface Sprite {
   };
 }
 
-export interface DatosServidor {
-  direccion: Direccion;
-  velocidadX: number;
-  velocidadY: number;
-  npcX: number;
-  npcY: number;
-  randomSeat: Seat | null;
-  texture: string;
+export interface Estado {
+  estado: Movimiento;
+  puntosDeCamino: { x: number; y: number }[];
+  duracion?: number;
+  npcEtiqueta: string;
+  randomSeat?: string;
+}
+
+export enum Movimiento {
+  Move,
+  Sit,
+  Idle,
 }

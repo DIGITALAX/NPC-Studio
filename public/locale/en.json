@@ -3,9 +3,9 @@
     "title": "NPC STUDIO",
     "notify": "Notify Me",
     "chat": "CHAT\nLOG",
-    "npc": "Follow NPC",
-    "scene": "Select Workshop",
-    "config": "Manage Config"
+    "select": "select",
+    "player": "player",
+    "scene": "scene"
   },
   "Nav": {
     "lan": "Choose Language"

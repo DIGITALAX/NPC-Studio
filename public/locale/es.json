@@ -3,9 +3,9 @@
     "title": "EL ESTUDIO NPC",
     "notify": "Notify Me",
     "chat": "REGISTRO\nDE CHAT",
-    "npc": "Seguir NPC",
-    "scene": "Elegir Taller",
-    "config": "Gestionar Configuración"
+    "select": "seleccionar",
+    "player": "jugador",
+    "scene": "escena"
   },
   "Nav": {
     "lan": "Elige Idioma"

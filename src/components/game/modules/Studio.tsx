@@ -6,7 +6,7 @@ function Studio({
   npc,
   escena,
 }: {
-  npc: number;
+  npc: string;
   escena: string;
 }) {
   const { gameRef } = useConfig(npc, escena);

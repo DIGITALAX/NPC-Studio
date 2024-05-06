@@ -15,6 +15,12 @@
 }
 
 @font-face {
+  font-family: "Abaddon";
+  font-weight: 400;
+  src: url("/fonts/abaddon.ttf");
+}
+
+@font-face {
   font-family: "at01";
   font-weight: 400;
   src: url("/fonts/at01.ttf");
@@ -90,4 +96,8 @@ div::-webkit-scrollbar-thumb:active {
   height: fit-content;
   margin-left: auto;
   cursor: pointer;
+}
+
+.scroll-container {
+  min-width: calc(13rem * 10);
 }
