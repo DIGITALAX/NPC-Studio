@@ -56,11 +56,11 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
   useEffect(() => {
     if (!socket) {
       const newSocket = io(
-        // "https://npc-server.onrender.com", 
-        "http://localhost:3000", 
+        "https://npc-server.onrender.com", 
+        // "http://localhost:3000", 
         {
         transports: ["websocket"],
-        port: 3000,
+        port: 10000,
         reconnection: true,
         query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
         reconnectionAttempts: 5,
