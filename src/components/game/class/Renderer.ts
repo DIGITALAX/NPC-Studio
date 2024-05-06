@@ -10,7 +10,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private socket!: Socket;
   private escena: Escena | null = null;
   private sceneKey!: string;
-  private npcCamara!: number;
+  private npcCamara!: string;
   private caminosInciales: {
     [textureKey: string]: Estado[];
   } = {};
@@ -204,16 +204,19 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.escena?.world?.height
       );
 
-      this.escena.sprites.forEach(
-        (sprite) =>
-          (this.npcs[sprite.etiqueta] = new RandomWalkerNPC(
-            this,
-            sprite,
-            sillas,
-            this.caminosInciales[sprite.etiqueta],
-            sprite.etiqueta === this.escena?.sprites?.[this.npcCamara]?.etiqueta
-          ))
-      );
+      this.escena.sprites.forEach((sprite) => {
+        this.npcs[sprite.etiqueta] = new RandomWalkerNPC(
+          this,
+          sprite,
+          sillas,
+          this.caminosInciales[sprite.etiqueta],
+          sprite.etiqueta === this.npcCamara
+        );
+
+        if (sprite.etiqueta === this.npcCamara) {
+          this.npcs[sprite.etiqueta].makeCameraFollow();
+        }
+      });
 
       this.socket.on(this.sceneKey, (npcs: Estado[][]) => {
         npcs?.forEach((npcData) => {
@@ -232,7 +235,12 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.key == this.sceneKey &&
       this.escena?.key
     ) {
-      Object.values(this.npcs).forEach((npc) => npc.update());
+      Object.values(this.npcs).forEach((npc) => {
+        npc.update();
+        if (npc.camino.length < 10) {
+          this.socket.emit("datosDeEscena", this.sceneKey);
+        }
+      });
 
       if (this.frameCount % 10 === 0) {
         this.game.renderer.snapshot((snapshot: any) => {

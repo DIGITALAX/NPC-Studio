@@ -56,18 +56,19 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
   useEffect(() => {
     if (!socket) {
       const newSocket = io(
-        "https://npc-server.onrender.com", 
-        // "http://localhost:3000", 
+        // "https://npc-server.onrender.com",
+        "http://localhost:3000",
         {
-        transports: ["websocket"],
-        port: 10000,
-        reconnection: true,
-        query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
-        reconnectionAttempts: 5,
-        reconnectionDelay: 3000,
-        autoConnect: true,
-        withCredentials: true,
-      });
+          transports: ["websocket"],
+          port: 3000,
+          reconnection: true,
+          query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
+          reconnectionAttempts: 5,
+          reconnectionDelay: 3000,
+          autoConnect: true,
+          withCredentials: true,
+        }
+      );
       newSocket.connect();
 
       setSocket(newSocket);
@@ -85,16 +86,15 @@ const useConfig = (chosenNpc: string, sceneKey: string) => {
   }, []);
 
   useEffect(() => {
-    if (gameRef.current && juego?.scene) {
+    if (gameRef.current && juego?.scene?.scenes) {
       const customScene = juego?.scene?.scenes.find(
         (scene) => scene.scene.key === "NPCEnginePhaser"
       );
-
       if (customScene) {
         (customScene as any).setCameraTarget(chosenNpc);
       }
     }
-  }, [chosenNpc]);
+  }, [chosenNpc, juego?.scene?.scenes, gameRef.current, socket]);
 
   useEffect(() => {
     const script = document.createElement("script");

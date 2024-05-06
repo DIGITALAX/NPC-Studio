@@ -122,8 +122,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private goIdle() {
-    this.velocidad = { x: 0, y: 0 };
     this.idle = true;
+    this.velocidad = { x: 0, y: 0 };
+
     this.npc.anims.play(
       configurarDireccion(this.npc.texture.key, Direccion.Inactivo),
       true
@@ -140,7 +141,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private encontrarDireccion() {
-    if (this.idle) {
+    if (
+      this.idle ||
+      this.camino[this.caminoIndice]?.estado === Movimiento.Idle
+    ) {
       this.npc.anims.play(
         configurarDireccion(this.npc.texture.key, Direccion.Inactivo),
         true
@@ -156,7 +160,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
     const dx = this.velocidad.x!;
     const dy = this.velocidad.y!;
-    console.log({ dx, dy });
     let direccion: string | null = null;
     let angulo = Math.atan2(dy, dx) * (180 / Math.PI);
     if (angulo < 0) angulo += 360;
