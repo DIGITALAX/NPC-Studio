@@ -32,12 +32,12 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     this.seats = seats;
     this.currentPathIndex = 0;
     this.caminoIndice = -1;
+    this.velocidad = { x: 0, y: 0 };
     this.currentPath = [];
     this.seatTaken = null;
     this.sitting = false;
     this.idle = false;
-    this.velocidad = { x: 0, y: 0 };
-    console.log({caminoInicial})
+    console.log({ caminoInicial });
     this.camino = caminoInicial;
     this.configureSprite(sprite, cam);
   }
@@ -59,7 +59,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       }
 
       this.encontrarDireccion();
-
       this.manejarProfundidad();
     }
   }
@@ -83,18 +82,16 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private empezarProximoCamino() {
-    const estado = this.camino[++this.caminoIndice];
+    this.caminoIndice++;
+    const estado = this.camino[this.caminoIndice];
     this.currentPath = estado?.puntosDeCamino;
-    console.log(this.currentPath.length);
     this.currentPathIndex = 0;
     switch (estado?.estado) {
       case Movimiento.Idle:
-        console.log("idle");
         this.goIdle();
         break;
       case Movimiento.Sit:
       case Movimiento.Move:
-        console.log("move");
         const found = this.seats?.find(
           (seat) => seat.image.texture?.key == estado?.randomSeat
         );
@@ -107,11 +104,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private goSit(randomSeat: string) {
+    this.velocidad = { x: 0, y: 0 };
     const foundSeat = this.seats.find(
       (seat) => seat.image.texture?.key == randomSeat
     );
-    console.log({ foundSeat });
-    console.log(this.camino[this.caminoIndice], "sit");
     if (foundSeat) {
       this.seatTaken = foundSeat;
 
@@ -119,18 +115,19 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         this.npc.setDepth(foundSeat?.par?.depth! + 10);
         foundSeat?.image?.setDepth(this.npc.depth + 10);
       }
+
+      this.npc.x = foundSeat?.adjustedX;
+      this.npc.y = foundSeat?.adjustedY;
     }
   }
 
   private goIdle() {
+    this.velocidad = { x: 0, y: 0 };
     this.idle = true;
-    this.velocidad = new Phaser.Math.Vector2();
-    this.npc.setVelocity(0, 0);
     this.npc.anims.play(
       configurarDireccion(this.npc.texture.key, Direccion.Inactivo),
       true
     );
-    console.log(this.camino[this.caminoIndice], "idle");
     this.scene.time.delayedCall(
       this.camino[this.caminoIndice]?.duracion!,
       () => {
@@ -157,8 +154,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       return;
     }
 
-    const dx = this.npc.body?.velocity.x!;
-    const dy = this.npc.body?.velocity.y!;
+    const dx = this.velocidad.x!;
+    const dy = this.velocidad.y!;
+    console.log({ dx, dy });
     let direccion: string | null = null;
     let angulo = Math.atan2(dy, dx) * (180 / Math.PI);
     if (angulo < 0) angulo += 360;
@@ -206,17 +204,26 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       this.currentPathIndex < this.currentPath.length
     ) {
       const point = this.currentPath[this.currentPathIndex];
-      if (Math.hypot(point.x - this.npc.x, point.y - this.npc.y) < 50) {
-        this.currentPathIndex++;
-        this.moveToNextPoint(point);
-        console.log("punto");
-      }
-    } else {
+      this.currentPathIndex++;
+
+      const dx = point.x - this.npc.x;
+      const dy = point.y - this.npc.y;
+      const angulo = Math.atan2(dy, dx);
+      this.velocidad = {
+        x: Math.cos(angulo) * 60,
+        y: Math.sin(angulo) * 60,
+      };
+      this.npc.x = point.x;
+      this.npc.y = point.y;
+      this.encontrarDireccion();
+    } else if (
+      this.currentPath.length > 0 &&
+      this.currentPathIndex == this.currentPath.length
+    ) {
       if (
         !this.sitting &&
         this.camino[this.caminoIndice]?.estado === Movimiento.Sit
       ) {
-        console.log("sit");
         this.goSit(this.camino[this.caminoIndice]?.randomSeat!);
         this.sitting = true;
 
@@ -229,6 +236,14 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           this.camino[this.caminoIndice]?.duracion!,
           () => {
             this.seatTaken = null;
+            this.npc.x =
+              this.camino[this.caminoIndice]?.puntosDeCamino[
+                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+              ]?.x;
+            this.npc.y =
+              this.camino[this.caminoIndice]?.puntosDeCamino[
+                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+              ]?.y;
             this.sitting = false;
             this.empezarProximoCamino();
           },
@@ -236,22 +251,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
           this
         );
       }
-      this.velocidad = new Phaser.Math.Vector2();
-      this.npc.setVelocity(0, 0);
+      this.currentPath = [];
     }
-  }
-
-  private moveToNextPoint(target: { x: number; y: number }): void {
-    const dx = target.x - this.npc.x;
-    const dy = target.y - this.npc.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    this.npc.x += target.x;
-    this.npc.y +=  target.y;
-    if (distance < 10) return;
-    const angulo = Math.atan2(dy, dx);
-    this.velocidad = { x: Math.cos(angulo) * 60, y: Math.sin(angulo) * 60 };
-    this.npc.setVelocity(this.velocidad.x, this.velocidad.y);
-    this.encontrarDireccion();
   }
 
   private manejarProfundidad() {
