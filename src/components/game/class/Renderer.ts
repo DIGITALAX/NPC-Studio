@@ -8,9 +8,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private frameCount!: number;
   private npcs!: { [textureKey: string]: RandomWalkerNPC };
   private socket!: Socket;
-  private escena: Escena | null = null;
+  private escena: Escena | null;
   private sceneKey!: string;
-  private seatsTaken: Seat[] = [];
+  private seatsTaken: Seat[];
   private npcCamara!: string;
   private caminosInciales: {
     [textureKey: string]: Estado[];
@@ -18,6 +18,8 @@ export default class NPCEnginePhaser extends Phaser.Scene {
 
   constructor() {
     super({ key: "NPCEnginePhaser" });
+    this.seatsTaken = [];
+    this.escena = null;
   }
 
   init() {
@@ -248,15 +250,17 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.game.renderer.snapshot((snapshot: any) => {
           const mapaDiv = document.getElementById("mapa");
 
-          if (mapaDiv?.firstChild) {
-            mapaDiv.replaceChild(snapshot, mapaDiv.firstChild);
-          } else {
-            mapaDiv?.appendChild(snapshot);
+          if (mapaDiv) {
+            if (mapaDiv?.firstChild) {
+              mapaDiv.replaceChild(snapshot, mapaDiv.firstChild);
+            } else {
+              mapaDiv?.appendChild(snapshot);
+            }
+            snapshot.draggable = false;
+            mapaDiv!.style.overflow = "hidden";
+            mapaDiv!.style.width = "100%";
+            mapaDiv!.style.height = "100%";
           }
-          snapshot.draggable = false;
-          mapaDiv!.style.overflow = "hidden";
-          mapaDiv!.style.width = "100%";
-          mapaDiv!.style.height = "100%";
         });
       }
       this.frameCount++;

@@ -15,6 +15,7 @@ function Log({
   handleCompletarTyping,
   indiceConversacionActual,
   contenedorMensajesRef,
+  cargando,
 }: LogProps) {
   const { handleSubscripcion, subscripcionCargando, handleNotify } = usePush();
   return (
@@ -62,10 +63,22 @@ function Log({
         </div>
         <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">
           <div
-            id="mapa"
-            className="relative w-full h-full rounded-md flex object-cover bg-cover items-start justify-start"
+            className={`relative w-full h-full rounded-md flex object-cover bg-cover items-start justify-start ${
+              cargando && "animate-pulse opacity-90"
+            }`}
             draggable={false}
-          ></div>
+            id="mapa"
+          >
+            {cargando && (
+              <Image
+                src={`${INFURA_GATEWAY}/ipfs/QmT5jkuAxfjuV8p4v7vRDGm6FsZt1WCWHdj4TEvGJZMcYr`}
+                draggable={false}
+                objectFit="cover"
+                layout="fill"
+                className="z-50"
+              />
+            )}
+          </div>
         </div>
       </div>
       <div className="relative w-full h-fit flex items-center justify-center px-4 mb-0">

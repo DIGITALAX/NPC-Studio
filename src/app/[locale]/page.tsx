@@ -16,7 +16,7 @@ export default function IndexPage() {
   const t = useTranslations("Home");
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { npc, setNpc, setEscena, escena } = useManage();
+  const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
   const {
     indiceMensajeActual,
     handleCompletarTyping,
@@ -40,12 +40,19 @@ export default function IndexPage() {
           handleCompletarTyping={handleCompletarTyping}
           indiceConversacionActual={indiceConversacionActual}
           contenedorMensajesRef={contenedorMensajesRef}
+          cargando={cargando}
         />
         <div
           className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
           id="studioParent"
         >
-          <Studio npc={npc} escena={escena} setNpc={setNpc} />
+          <Studio
+            npc={npc}
+            escena={escena}
+            setNpc={setNpc}
+            setCargando={setCargando}
+            cargando={cargando}
+          />
         </div>
       </div>
       <Scene

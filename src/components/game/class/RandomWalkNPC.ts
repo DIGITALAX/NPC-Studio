@@ -172,43 +172,85 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
 
     const dx = this.velocidad.x!;
     const dy = this.velocidad.y!;
-    let direccion: string | null = null;
+
+    const direccion = this.devolverDireccion(dx, dy);
+
+    if (
+      direccion &&
+      direccion !== this.npc.anims.currentAnim?.key &&
+      this.debeCambiarDireccion(direccion)
+    ) {
+      this.npc.anims.play(direccion, true);
+    }
+  }
+
+  private debeCambiarDireccion(nuevaDireccion: string): boolean {
+    const direcciones = [nuevaDireccion];
+
+    if (this.currentPath.length - this.currentPathIndex <= 6) {
+      return true;
+    }
+
+    for (let i = 1; i <= 6; i++) {
+      const proximoIndice = this.currentPathIndex + i;
+      if (proximoIndice >= this.currentPath.length) break;
+
+      const point = this.currentPath[proximoIndice];
+      const dx = point.x - this.npc.x;
+      const dy = point.y - this.npc.y;
+      const direccion = this.devolverDireccion(dx, dy);
+      if (direccion) direcciones.push(direccion);
+    }
+
+    return direcciones.every((d) => d === nuevaDireccion);
+  }
+
+  private devolverDireccion(dx: number, dy: number): string | null {
     let angulo = Math.atan2(dy, dx) * (180 / Math.PI);
+    let proximaDireccion: string | null = null;
     if (angulo < 0) angulo += 360;
     if (angulo >= 337.5 || angulo < 22.5) {
-      direccion = configurarDireccion(this.npc.texture.key, Direccion.Derecha);
+      proximaDireccion = configurarDireccion(
+        this.npc.texture.key,
+        Direccion.Derecha
+      );
     } else if (angulo >= 22.5 && angulo < 67.5) {
-      direccion = configurarDireccion(
+      proximaDireccion = configurarDireccion(
         this.npc.texture.key,
         Direccion.DerechaAbajo
       );
     } else if (angulo >= 67.5 && angulo < 112.5) {
-      direccion = configurarDireccion(this.npc.texture.key, Direccion.Abajo);
+      proximaDireccion = configurarDireccion(
+        this.npc.texture.key,
+        Direccion.Abajo
+      );
     } else if (angulo >= 112.5 && angulo < 157.5) {
-      direccion = configurarDireccion(
+      proximaDireccion = configurarDireccion(
         this.npc.texture.key,
         Direccion.IzquierdaAbajo
       );
     } else if (angulo >= 157.5 && angulo < 202.5) {
-      direccion = configurarDireccion(
+      proximaDireccion = configurarDireccion(
         this.npc.texture.key,
         Direccion.Izquierda
       );
     } else if (angulo >= 202.5 && angulo < 247.5) {
-      direccion = configurarDireccion(
+      proximaDireccion = configurarDireccion(
         this.npc.texture.key,
         Direccion.IzquierdaArriba
       );
     } else if (angulo >= 247.5 && angulo < 292.5) {
-      direccion = configurarDireccion(this.npc.texture.key, Direccion.Arriba);
+      proximaDireccion = configurarDireccion(
+        this.npc.texture.key,
+        Direccion.Arriba
+      );
     } else if (angulo >= 292.5 && angulo < 337.5) {
-      direccion = configurarDireccion(
+      proximaDireccion = configurarDireccion(
         this.npc.texture.key,
         Direccion.DerechaArriba
       );
     }
-
-    if (direccion) this.npc.anims.play(direccion, true);
+    return proximaDireccion;
   }
 
   private seguirCamino() {
@@ -238,44 +280,40 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     ) {
       if (
         !this.sitting &&
-        this.camino[this.caminoIndice]?.estado === Movimiento.Sit
+        this.camino[this.caminoIndice]?.estado === Movimiento.Sit &&
+        !this.seatsTaken.find(
+          (seat) => seat.etiqueta == this.camino[this.caminoIndice]?.randomSeat
+        )
       ) {
-        if (
-          this.seatsTaken.find(
-            (item) =>
-              item.etiqueta !== this.camino[this.caminoIndice]?.randomSeat
-          ) == undefined
-        ) {
-          this.sitting = true;
-          this.goSit(this.camino[this.caminoIndice]?.randomSeat!);
+        this.sitting = true;
+        this.goSit(this.camino[this.caminoIndice]?.randomSeat!);
 
-          this.npc.anims.play(
-            configurarDireccion(this.npc.texture.key, this.seatTaken?.anim!),
-            true
-          );
-          this.scene.time.delayedCall(
-            this.camino[this.caminoIndice]?.duracion!,
-            () => {
-              this.seatsTaken = this.seatsTaken.filter(
-                (item) => item.etiqueta !== this.seatTaken?.etiqueta
-              );
-              this.seatTaken = null;
-              this.npc.x =
-                this.camino[this.caminoIndice]?.puntosDeCamino[
-                  this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
-                ]?.x;
-              this.npc.y =
-                this.camino[this.caminoIndice]?.puntosDeCamino[
-                  this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
-                ]?.y;
-              this.sitting = false;
+        this.npc.anims.play(
+          configurarDireccion(this.npc.texture.key, this.seatTaken?.anim!),
+          true
+        );
+        this.scene.time.delayedCall(
+          this.camino[this.caminoIndice]?.duracion!,
+          () => {
+            this.seatsTaken = this.seatsTaken.filter(
+              (item) => item.etiqueta !== this.seatTaken?.etiqueta
+            );
+            this.seatTaken = null;
+            this.npc.x =
+              this.camino[this.caminoIndice]?.puntosDeCamino[
+                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+              ]?.x;
+            this.npc.y =
+              this.camino[this.caminoIndice]?.puntosDeCamino[
+                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+              ]?.y;
+            this.sitting = false;
 
-              this.empezarProximoCamino();
-            },
-            [],
-            this
-          );
-        }
+            this.empezarProximoCamino();
+          },
+          [],
+          this
+        );
       }
       this.currentPathIndex = 0;
       this.currentPath = [];

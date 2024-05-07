@@ -10,6 +10,7 @@ export type LogProps = {
   handleCompletarTyping: () => void;
   indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
+  cargando: boolean
 };
 
 export type SceneProps = {

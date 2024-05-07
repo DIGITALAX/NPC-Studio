@@ -9,13 +9,16 @@ import { SCENE_LIST } from "../../../../lib/constants";
 const useConfig = (
   chosenNpc: string,
   sceneKey: string,
-  setNpc: (npc: SetStateAction<string>) => void
+  setNpc: (npc: SetStateAction<string>) => void,
+  setCargando: (e: SetStateAction<boolean>) => void
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
   const [juego, setJuego] = useState<Phaser.Game | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const crearEscena = (newSocket: Socket) => {
+    setCargando(true);
     try {
       newSocket.emit("enviarSceneIndex", sceneKey);
 
@@ -50,6 +53,13 @@ const useConfig = (
         );
 
         game.events.once("ready", () => {
+          game.scene.scenes.forEach((scene) => {
+            if (scene instanceof NPCEnginePhaser) {
+              scene.events.once("render", () =>
+                setTimeout(() => setCargando(false), 2000)
+              );
+            }
+          });
           game.scene.start("NPCEnginePhaser");
         });
 
@@ -110,13 +120,19 @@ const useConfig = (
   }, [chosenNpc, juego?.scene?.scenes, gameRef.current, socket]);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js";
-    script.async = true;
-    document.body.appendChild(script);
+    if (!scriptRef.current) {
+      const script = document.createElement("script");
+      script.src = "//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js";
+      script.async = true;
+      scriptRef.current = script;
+      document.body.appendChild(script);
+    }
 
     return () => {
-      document.body.removeChild(script);
+      if (scriptRef.current) {
+        document.body.removeChild(scriptRef.current);
+        scriptRef.current = null;
+      }
     };
   }, []);
 
