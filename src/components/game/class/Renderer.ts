@@ -10,6 +10,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private socket!: Socket;
   private escena: Escena | null = null;
   private sceneKey!: string;
+  private seatsTaken: Seat[] = [];
   private npcCamara!: string;
   private caminosInciales: {
     [textureKey: string]: Estado[];
@@ -209,6 +210,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           this,
           sprite,
           sillas,
+          this.seatsTaken,
           this.caminosInciales[sprite.etiqueta],
           sprite.etiqueta === this.npcCamara
         );
@@ -237,7 +239,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     ) {
       Object.values(this.npcs).forEach((npc) => {
         npc.update();
-        if (npc.camino.length < 10) {
+        if (npc.camino.length < 15) {
           this.socket.emit("datosDeEscena", this.sceneKey);
         }
       });

@@ -12,6 +12,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private npc!: Phaser.Physics.Arcade.Sprite;
   private seats: Seat[];
   private seatTaken: Seat | null;
+  private seatsTaken: Seat[];
   private caminoIndice: number;
   private sitting: boolean;
   private idle: boolean;
@@ -24,12 +25,14 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     scene: Phaser.Scene,
     sprite: Sprite,
     seats: Seat[],
+    seatsTaken: Seat[],
     caminoInicial: Estado[],
     cam: boolean
   ) {
     super(scene, sprite.x, sprite.y, sprite.etiqueta);
     this.scene.physics.world.enable(this);
     this.seats = seats;
+    this.seatsTaken = seatsTaken;
     this.currentPathIndex = 0;
     this.caminoIndice = -1;
     this.velocidad = { x: 0, y: 0 };
@@ -46,15 +49,16 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       if (
         this.currentPath.length > 0 &&
         !this.sitting &&
-        this.camino[this.caminoIndice]?.estado !== Movimiento.Idle
+        this.camino[this.caminoIndice]?.estado !== Movimiento.Idle &&
+        this.currentPath.length !== 1
       ) {
         this.seguirCamino();
       } else if (
         this.caminoIndice < this.camino.length - 1 &&
-        this.currentPath?.length < 1
+        this.currentPath?.length < 1 &&
+        !this.sitting
       ) {
         this.empezarProximoCamino();
-        this.cleanOldPaths();
       }
 
       this.encontrarDireccion();
@@ -81,10 +85,17 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private empezarProximoCamino() {
+    if (this.sitting) return;
     this.caminoIndice++;
     const estado = this.camino[this.caminoIndice];
     this.currentPath = estado?.puntosDeCamino;
     this.currentPathIndex = 0;
+
+    if (this.caminoIndice > 0) {
+      this.camino.splice(0, this.caminoIndice);
+      this.caminoIndice = 0;
+    }
+
     switch (estado?.estado) {
       case Movimiento.Idle:
         this.goIdle();
@@ -107,9 +118,10 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     const foundSeat = this.seats.find(
       (seat) => seat.image.texture?.key == randomSeat
     );
+
     if (foundSeat) {
       this.seatTaken = foundSeat;
-
+      this.seatsTaken.push(foundSeat);
       if (foundSeat?.profundidad && foundSeat?.par) {
         this.npc.setDepth(foundSeat?.par?.depth! + 10);
         foundSeat?.image?.setDepth(this.npc.depth + 10);
@@ -142,7 +154,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   private encontrarDireccion() {
     if (
       this.idle ||
-      this.camino[this.caminoIndice]?.estado === Movimiento.Idle
+      this.camino[this.caminoIndice]?.estado === Movimiento.Idle ||
+      this.currentPath.length === 1
     ) {
       this.npc.anims.play(
         configurarDireccion(this.npc.texture.key, Direccion.Inactivo),
@@ -199,11 +212,12 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
 
   private seguirCamino() {
-    if (this.caminoIndice >= this.camino.length) return;
+    if (this.caminoIndice >= this.camino.length || this.sitting) return;
 
     if (
       this.currentPath.length > 0 &&
-      this.currentPathIndex < this.currentPath.length
+      this.currentPathIndex < this.currentPath.length &&
+      !this.sitting
     ) {
       const point = this.currentPath[this.currentPathIndex];
       this.currentPathIndex++;
@@ -226,33 +240,44 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         !this.sitting &&
         this.camino[this.caminoIndice]?.estado === Movimiento.Sit
       ) {
-        this.goSit(this.camino[this.caminoIndice]?.randomSeat!);
-        this.sitting = true;
+        if (
+          this.seatsTaken.find(
+            (item) =>
+              item.etiqueta !== this.camino[this.caminoIndice]?.randomSeat
+          ) == undefined
+        ) {
+          this.sitting = true;
+          this.goSit(this.camino[this.caminoIndice]?.randomSeat!);
 
-        this.npc.anims.play(
-          configurarDireccion(this.npc.texture.key, this.seatTaken?.anim!),
-          true
-        );
+          this.npc.anims.play(
+            configurarDireccion(this.npc.texture.key, this.seatTaken?.anim!),
+            true
+          );
+          this.scene.time.delayedCall(
+            this.camino[this.caminoIndice]?.duracion!,
+            () => {
+              this.seatsTaken = this.seatsTaken.filter(
+                (item) => item.etiqueta !== this.seatTaken?.etiqueta
+              );
+              this.seatTaken = null;
+              this.npc.x =
+                this.camino[this.caminoIndice]?.puntosDeCamino[
+                  this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+                ]?.x;
+              this.npc.y =
+                this.camino[this.caminoIndice]?.puntosDeCamino[
+                  this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
+                ]?.y;
+              this.sitting = false;
 
-        this.scene.time.delayedCall(
-          this.camino[this.caminoIndice]?.duracion!,
-          () => {
-            this.seatTaken = null;
-            this.npc.x =
-              this.camino[this.caminoIndice]?.puntosDeCamino[
-                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
-              ]?.x;
-            this.npc.y =
-              this.camino[this.caminoIndice]?.puntosDeCamino[
-                this.camino[this.caminoIndice]?.puntosDeCamino.length - 1
-              ]?.y;
-            this.sitting = false;
-            this.empezarProximoCamino();
-          },
-          [],
-          this
-        );
+              this.empezarProximoCamino();
+            },
+            [],
+            this
+          );
+        }
       }
+      this.currentPathIndex = 0;
       this.currentPath = [];
     }
   }
@@ -364,8 +389,5 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   }
   makeCameraFollow() {
     this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
-  }
-  private cleanOldPaths() {
-    this.camino = this.camino.slice(-15);
   }
 }
