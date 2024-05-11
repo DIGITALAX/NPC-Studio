@@ -76,7 +76,7 @@ const useConfig = (
       const newSocket = new WebSocket(
         // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
 
-        `wss://npc-rust-engine.onrender.com=10000?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+        `wss://npc-rust-engine.onrender.com:10000?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
 
       setSocket(newSocket);
