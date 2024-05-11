@@ -1,17 +1,17 @@
 import RandomWalkerNPC from "./RandomWalkNPC";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
 import Phaser from "phaser";
-import { Socket } from "socket.io-client";
 import { Articulo, Escena, Estado, Seat } from "../types/game.types";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
   private frameCount!: number;
   private npcs!: { [textureKey: string]: RandomWalkerNPC };
-  private socket!: Socket;
+  private socket!: WebSocket;
   private escena: Escena | null;
   private sceneKey!: string;
   private seatsTaken: Seat[];
   private npcCamara!: string;
+  private esperandoRespuesta: boolean;
   private caminosInciales: {
     [textureKey: string]: Estado[];
   } = {};
@@ -20,6 +20,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     super({ key: "NPCEnginePhaser" });
     this.seatsTaken = [];
     this.escena = null;
+    this.esperandoRespuesta = false;
   }
 
   init() {
@@ -38,37 +39,46 @@ export default class NPCEnginePhaser extends Phaser.Scene {
 
   private configurarEscena() {
     if (this.socket)
-      this.socket.on(
-        "configurarEscena",
-        (data: { scene: Escena; state: Estado[][] }) => {
-          if (data?.state) {
-            this.escena = data.scene;
-            data?.state?.forEach((estado) => {
-              if (estado?.length > 0)
-                this.caminosInciales[estado[0].npcEtiqueta] = estado;
-            });
+      this.socket.onmessage = (evento) => {
+        const datos = JSON.parse(evento.data);
+        const nombre = datos.nombre;
+        const valores = datos.datos;
+        
+        if (nombre === "configurarEscena") {
+          if (valores?.estados) {
+            this.escena = valores.escena;
+            if (valores?.estados?.length > 0)
+              valores?.estados?.forEach((estado: Estado[]) => {
+                this.caminosInciales[estado[0]?.npc_etiqueta] = estado;
+              });
 
             if (
               this.escena &&
-              this.escena?.key == this.sceneKey &&
+              this.escena?.clave == this.sceneKey &&
               this.escena?.fondo?.uri &&
-              this.escena.key &&
+              this.escena?.clave &&
               this.load &&
               this.load.isReady()
             ) {
               this.preload();
             }
           }
+        } else if (nombre === this.sceneKey) {
+          this.esperandoRespuesta = false;
+          valores?.forEach((npcData: Estado[]) => {
+            if (npcData?.length > 0)
+              this.npcs[npcData?.[0].npc_etiqueta].camino.push(...npcData);
+          });
         }
-      );
+      };
   }
 
   preload() {
     if (
       this.escena &&
-      this.escena?.key == this.sceneKey &&
+      this.escena?.clave == this.sceneKey &&
       this.escena?.fondo?.uri &&
-      this.escena.key &&
+      this.escena.clave &&
       this.load &&
       this.load.isReady() &&
       this.sys.isActive() &&
@@ -78,7 +88,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.escena?.fondo.etiqueta!,
         `${INFURA_GATEWAY}/ipfs/${this.escena?.fondo.uri}`
       );
-      this.escena?.objects.forEach((obj) => {
+      this.escena?.objetos.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
       this.escena?.sillas.forEach((obj) => {
@@ -92,11 +102,11 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           sprite.etiqueta,
           `${INFURA_GATEWAY}/ipfs/${sprite.uri}`,
           {
-            frameWidth: sprite.frameWidth,
-            frameHeight: sprite.frameHeight,
-            margin: sprite.margin,
-            startFrame: sprite.startFrame,
-            endFrame: sprite.endFrame,
+            frameWidth: sprite.anchura_borde,
+            frameHeight: sprite.altura_borde,
+            margin: sprite.margen,
+            startFrame: sprite.marco_inicio,
+            endFrame: sprite.marco_final,
           }
         );
       });
@@ -117,31 +127,25 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     if (
       this.escena &&
       Object.values(this.npcs).length < 1 &&
-      this.escena?.key == this.sceneKey &&
-      this.escena.key &&
+      this.escena?.clave == this.sceneKey &&
+      this.escena.clave &&
       this.load
     ) {
-      const fondo = this.add
+      this.add
         .image(
           this.escena?.fondo.sitio.x!,
           this.escena?.fondo.sitio.y!,
           this.escena?.fondo.etiqueta!
         )
         .setOrigin(0, 0)
-        .setSize(
-          this.escena?.fondo.displayWidth!,
-          this.escena?.fondo.displayHeight!
-        )
-        .setDisplaySize(
-          this.escena?.fondo.displayWidth!,
-          this.escena?.fondo.displayHeight!
-        )
+        .setSize(this.escena?.fondo.anchura!, this.escena?.fondo.altura!)
+        .setDisplaySize(this.escena?.fondo.anchura!, this.escena?.fondo.altura!)
         .setDepth(0);
 
       let sillas: Seat[] = [];
       let profundidad: (Articulo & { image: Phaser.GameObjects.Image })[] = [];
 
-      this.escena.objects.forEach((obj) => {
+      this.escena.objetos.forEach((obj) => {
         this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
@@ -150,7 +154,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           .setDisplaySize(obj.talla.x, obj.talla.y)
 
           .setDepth(
-            obj?.profundidad !== undefined ? obj.profundidad : obj.sitio.y
+            obj?.profundidad !== undefined && profundidad !== null
+              ? obj.profundidad
+              : obj.sitio.y
           );
       });
 
@@ -177,7 +183,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           .setScale(silla.escala.x, silla.escala.y)
           .setDisplaySize(silla.talla.x, silla.talla.y)
           .setDepth(
-            silla.depth !== undefined
+            silla.depth !== undefined && silla.depth !== null
               ? silla.depth
               : silla.par
               ? this.escena?.profundidad?.find(
@@ -203,8 +209,8 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.cameras.main.setBounds(
         0,
         0,
-        this.escena?.world?.width,
-        this.escena?.world?.height
+        this.escena?.mundo?.anchura,
+        this.escena?.mundo?.altura
       );
 
       this.escena.sprites.forEach((sprite) => {
@@ -222,13 +228,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         }
       });
 
-      this.socket.on(this.sceneKey, (npcs: Estado[][]) => {
-        npcs?.forEach((npcData) => {
-          if (npcData?.length > 0)
-            this.npcs[npcData?.[0].npcEtiqueta].camino.push(...npcData);
-        });
-      });
-
       this.load.reset();
     }
   }
@@ -236,30 +235,39 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   update() {
     if (
       Object.values(this.npcs).length > 0 &&
-      this.escena?.key == this.sceneKey &&
-      this.escena?.key
+      this.escena?.clave == this.sceneKey &&
+      this.escena?.clave &&
+      this.socket.readyState == WebSocket.OPEN
     ) {
-      Object.values(this.npcs).forEach((npc) => {
-        npc.update();
-        if (npc.camino.length < 15) {
-          this.socket.emit("datosDeEscena", this.sceneKey);
-        }
-      });
+      Object.values(this.npcs).forEach((npc) => npc.update());
+
+      if (
+        Object.values(this.npcs).every((npc) => npc.camino.length < 15) &&
+        !this.esperandoRespuesta
+      ) {
+        this.esperandoRespuesta = true;
+        this.socket.send(
+          JSON.stringify({ tipo: "datosDeEscena", clave: this.sceneKey })
+        );
+      }
 
       if (this.frameCount % 10 === 0) {
         this.game.renderer.snapshot((snapshot: any) => {
           const mapaDiv = document.getElementById("mapa");
 
           if (mapaDiv) {
-            if (mapaDiv?.firstChild) {
-              mapaDiv.replaceChild(snapshot, mapaDiv.firstChild);
-            } else {
-              mapaDiv?.appendChild(snapshot);
+            if (mapaDiv) {
+              const existingSnapshot = mapaDiv.querySelector("canvas");
+              if (existingSnapshot) {
+                mapaDiv.replaceChild(snapshot, existingSnapshot);
+              } else {
+                mapaDiv.appendChild(snapshot);
+              }
+              snapshot.draggable = false;
+              mapaDiv.style.overflow = "hidden";
+              mapaDiv.style.width = "100%";
+              mapaDiv.style.height = "100%";
             }
-            snapshot.draggable = false;
-            mapaDiv!.style.overflow = "hidden";
-            mapaDiv!.style.width = "100%";
-            mapaDiv!.style.height = "100%";
           }
         });
       }

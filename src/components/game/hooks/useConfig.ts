@@ -3,7 +3,6 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
-import io, { Socket } from "socket.io-client";
 import { SCENE_LIST } from "../../../../lib/constants";
 
 const useConfig = (
@@ -15,18 +14,16 @@ const useConfig = (
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
   const [juego, setJuego] = useState<Phaser.Game | null>(null);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  const crearEscena = (newSocket: Socket) => {
+  const crearEscena = (newSocket: WebSocket) => {
     setCargando(true);
     try {
-      newSocket.emit("enviarSceneIndex", sceneKey);
+      newSocket.send(
+        JSON.stringify({ tipo: "indiceDeEscena", clave: sceneKey })
+      );
 
-      if (
-        typeof window !== "undefined" &&
-        gameRef.current &&
-        newSocket?.connected
-      ) {
+      if (typeof window !== "undefined" && gameRef.current && newSocket?.OPEN) {
         const config: Phaser.Types.Core.GameConfig = {
           type: Phaser.AUTO,
           width: gameRef.current?.clientWidth,
@@ -76,31 +73,32 @@ const useConfig = (
 
   useEffect(() => {
     if (!socket) {
-      const newSocket = io(
-        "https://npc-server.onrender.com",
-        // "http://localhost:3000",
-        {
-          transports: ["websocket"],
-          port: 10000,
-          // port: 3000,
-          reconnection: true,
-          query: { key: process.env.NEXT_PUBLIC_RENDER_KEY },
-          reconnectionAttempts: 5,
-          reconnectionDelay: 3000,
-          autoConnect: true,
-          withCredentials: true,
-        }
+      const newSocket = new WebSocket(
+        // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+
+        `https://npc-server.onrender.com=10000?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
-      newSocket.connect();
 
       setSocket(newSocket);
 
-      newSocket.on("connect", () => {
+      newSocket.onopen = () => {
         crearEscena(newSocket);
-      });
+      };
+
+      newSocket.onerror = (error) => {
+        console.error(error);
+      };
+
+      const closeWebSocket = () => {
+        newSocket.close();
+      };
+
+      window.addEventListener("beforeunload", closeWebSocket);
 
       return () => {
-        if (newSocket !== null && newSocket.active && newSocket.connected) {
+        window.removeEventListener("beforeunload", closeWebSocket);
+
+        if (newSocket.readyState === WebSocket.OPEN) {
           newSocket.close();
         }
       };
@@ -137,7 +135,7 @@ const useConfig = (
   }, []);
 
   useEffect(() => {
-    if (socket?.active && juego?.scene) {
+    if (socket?.OPEN && juego?.scene) {
       juego.scene.scenes.forEach((scene) => {
         if (scene instanceof NPCEnginePhaser) {
           scene.destruir();

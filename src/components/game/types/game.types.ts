@@ -10,7 +10,7 @@ export type LogProps = {
   handleCompletarTyping: () => void;
   indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
-  cargando: boolean
+  cargando: boolean;
 };
 
 export type SceneProps = {
@@ -73,31 +73,31 @@ export interface PhaserGameElement extends HTMLElement {
 }
 
 export interface Escena {
-  key: string;
-  world: {
-    width: number;
-    height: number;
+  clave: string;
+  mundo: {
+    anchura: number;
+    altura: number;
   };
-  cover: string;
-  prohibited: {
+  imagen: string;
+  prohibido: {
     x: number;
     y: number;
-    width: number;
-    height: number;
+    anchura: number;
+    altura: number;
   }[];
   profundidad: Articulo[];
   sillas: Seat[];
   fondo: {
     etiqueta: string;
     uri: string;
-    displayWidth: number;
-    displayHeight: number;
+    anchura: number;
+    altura: number;
     sitio: {
       x: number;
       y: number;
     };
   };
-  objects: Articulo[];
+  objetos: Articulo[];
   sprites: Sprite[];
 }
 
@@ -156,14 +156,14 @@ export interface Sprite {
   uri: string;
   x: number;
   y: number;
-  cover: string;
-  displayHeight: number;
-  displayWidth: number;
-  frameWidth: number;
-  frameHeight: number;
-  margin: number;
-  startFrame: number;
-  endFrame: number;
+  tapa: string;
+  altura: number;
+  anchura: number;
+  anchura_borde: number;
+  altura_borde: number;
+  margen: number;
+  marco_inicio: number;
+  marco_final: number;
   escala: {
     x: number;
     y: number;
@@ -172,14 +172,14 @@ export interface Sprite {
 
 export interface Estado {
   estado: Movimiento;
-  puntosDeCamino: { x: number; y: number }[];
+  puntos_de_camino: { x: number; y: number }[];
   duracion?: number;
-  npcEtiqueta: string;
-  randomSeat?: string;
+  npc_etiqueta: string;
+  silla_aleatoria?: string;
 }
 
 export enum Movimiento {
-  Move,
-  Sit,
-  Idle,
+  Move = "Move",
+  Sit = "Sit",
+  Idle = "Idle",
 }
