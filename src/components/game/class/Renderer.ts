@@ -228,11 +228,19 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         }
       });
 
+      this.game.events.on("hidden", () => {
+        this.scene.pause();
+      });
+
+      this.game.events.on("visible", () => {
+        this.scene.resume();
+      });
+
       this.load.reset();
     }
   }
 
-  update() {
+  update(time: number) {
     if (
       Object.values(this.npcs).length > 0 &&
       this.escena?.clave == this.sceneKey &&
