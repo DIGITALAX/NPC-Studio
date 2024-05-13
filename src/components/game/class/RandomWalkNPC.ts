@@ -127,8 +127,8 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         foundSeat?.image?.setDepth(this.npc.depth + 10);
       }
 
-      this.npc.x = foundSeat?.adjustedX;
-      this.npc.y = foundSeat?.adjustedY;
+      this.npc.x = foundSeat?.x_adjustado;
+      this.npc.y = foundSeat?.y_adjustado;
     }
   }
 
@@ -284,13 +284,14 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         !this.seatsTaken.find(
           (seat) =>
             seat.etiqueta == this.camino[this.caminoIndice]?.silla_aleatoria
-        )
+        ) &&
+        this.seatTaken == null
       ) {
         this.sitting = true;
         this.goSit(this.camino[this.caminoIndice]?.silla_aleatoria!);
 
         this.npc.anims.play(
-          configurarDireccion(this.npc.texture.key, this.seatTaken?.anim!),
+          configurarDireccion(this.npc.texture.key, this.seatTaken!?.anim!),
           true
         );
         this.scene.time.delayedCall(
@@ -299,7 +300,9 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
             this.seatsTaken = this.seatsTaken.filter(
               (item) => item.etiqueta !== this.seatTaken?.etiqueta
             );
+
             this.seatTaken = null;
+            this.sitting = false;
             this.npc.x =
               this.camino[this.caminoIndice]?.puntos_de_camino[
                 this.camino[this.caminoIndice]?.puntos_de_camino?.length - 1
@@ -308,7 +311,6 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
               this.camino[this.caminoIndice]?.puntos_de_camino[
                 this.camino[this.caminoIndice]?.puntos_de_camino?.length - 1
               ]?.y;
-            this.sitting = false;
 
             this.empezarProximoCamino();
           },

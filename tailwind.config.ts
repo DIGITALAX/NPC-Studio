@@ -31,6 +31,9 @@ const config: Config = {
       backgroundImage: {
         esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,
       },
+      zIndex: {
+        "100": "100",
+      },
     },
   },
   plugins: [],

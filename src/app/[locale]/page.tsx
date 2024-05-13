@@ -16,7 +16,14 @@ export default function IndexPage() {
   const t = useTranslations("Home");
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
+  const {
+    npc,
+    setNpc,
+    setEscena,
+    escena,
+    setCargando,
+    cargando,
+  } = useManage();
   const {
     indiceMensajeActual,
     handleCompletarTyping,

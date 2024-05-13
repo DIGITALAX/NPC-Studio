@@ -75,7 +75,7 @@ function Log({
                 draggable={false}
                 objectFit="cover"
                 layout="fill"
-                className="z-50"
+                className="z-100"
               />
             )}
           </div>

@@ -129,8 +129,8 @@ export interface Objeto {
 
 export interface Seat {
   image: Phaser.GameObjects.Image;
-  adjustedX: number;
-  adjustedY: number;
+  x_adjustado: number;
+  y_adjustado: number;
   profundidad: boolean;
   depth?: number;
   par?: Phaser.GameObjects.Image;

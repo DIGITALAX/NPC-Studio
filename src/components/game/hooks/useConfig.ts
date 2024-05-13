@@ -53,7 +53,7 @@ const useConfig = (
           game.scene.scenes.forEach((scene) => {
             if (scene instanceof NPCEnginePhaser) {
               scene.events.once("render", () =>
-                setTimeout(() => setCargando(false), 2000)
+                setTimeout(() => setCargando(false), 3000)
               );
             }
           });

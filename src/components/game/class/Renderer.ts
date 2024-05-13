@@ -43,7 +43,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         const datos = JSON.parse(evento.data);
         const nombre = datos.nombre;
         const valores = datos.datos;
-        
+
         if (nombre === "configurarEscena") {
           if (valores?.estados) {
             this.escena = valores.escena;
@@ -252,24 +252,25 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       }
 
       if (this.frameCount % 10 === 0) {
-        this.game.renderer.snapshot((snapshot: any) => {
-          const mapaDiv = document.getElementById("mapa");
-
-          if (mapaDiv) {
+        this.game.renderer.snapshot(
+          (snapshot: HTMLImageElement | Phaser.Display.Color) => {
+            const mapaDiv = document.getElementById("mapa");
             if (mapaDiv) {
-              const existingSnapshot = mapaDiv.querySelector("canvas");
-              if (existingSnapshot) {
-                mapaDiv.replaceChild(snapshot, existingSnapshot);
-              } else {
-                mapaDiv.appendChild(snapshot);
+              let snapshotImage = mapaDiv.querySelector("img");
+              if (!snapshotImage) {
+                snapshotImage = document.createElement("img");
+                mapaDiv.appendChild(snapshotImage);
               }
-              snapshot.draggable = false;
+
+              snapshotImage.src = (snapshot as HTMLImageElement).currentSrc;
+              snapshotImage.id = (snapshot as HTMLImageElement).currentSrc;
+              (snapshot as HTMLImageElement).draggable = false;
               mapaDiv.style.overflow = "hidden";
               mapaDiv.style.width = "100%";
               mapaDiv.style.height = "100%";
             }
           }
-        });
+        );
       }
       this.frameCount++;
     }
