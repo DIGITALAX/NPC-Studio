@@ -1,14 +1,16 @@
 {
   "Home": {
     "title": "EL ESTUDIO NPC",
-    "notify": "Notify Me",
+    "notify": "Mintear",
     "chat": "REGISTRO\nDE CHAT",
     "select": "seleccionar",
     "player": "jugador",
-    "scene": "escena"
+    "scene": "escena",
+    "auth": "Autorización de Artistas",
+    "mint": "Verifique Para Mintear"
   },
   "Nav": {
-    "lan": "Elige Idioma"
+    "lan": "Elija Idioma"
   },
   "404": {
     "nada": "Error 404: La página ha sido secuestrada por NPCs rebeldes. Estamos negociando su liberación."

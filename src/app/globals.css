@@ -32,6 +32,12 @@
   src: url("/fonts/leco.ttf");
 }
 
+@font-face {
+  font-family: "Arcade Classic";
+  font-weight: 400;
+  src: url("/fonts/ArcadeClassic.ttf");
+}
+
 html {
   padding: 0;
   margin: 0;

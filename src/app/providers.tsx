@@ -11,6 +11,7 @@ import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, mainnet } from "wagmi/chains";
 import messages from "./../../public/locale/en.json";
+import { SetStateAction, createContext, useState } from "react";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -26,7 +27,17 @@ const config = getDefaultConfig({
 
 const queryClient = new QueryClient();
 
+export const ModalContext = createContext<
+  | {
+      artists: number;
+      setArtists: (e: SetStateAction<number>) => void;
+    }
+  | undefined
+>(undefined);
+
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const [artists, setArtists] = useState<number>(0);
+
   return (
     <NextIntlClientProvider
       locale="en"
@@ -36,7 +47,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            <Provider store={store}>{children}</Provider>
+            <ModalContext.Provider value={{ artists, setArtists }}>
+              <Provider store={store}>{children}</Provider>
+            </ModalContext.Provider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

@@ -11,6 +11,19 @@ export type LogProps = {
   indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   cargando: boolean;
+  setArtists: (e: SetStateAction<number>) => void;
+};
+
+export type MintProps = {
+  setArtists: (e: SetStateAction<number>) => void;
+  artists: number;
+  t: any;
+};
+
+export type ProcessProps = {
+  setArtists: (e: SetStateAction<number>) => void;
+  artists: number;
+  t: any;
 };
 
 export type SceneProps = {

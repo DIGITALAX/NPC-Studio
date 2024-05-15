@@ -1,11 +1,13 @@
 {
   "Home": {
     "title": "NPC STUDIO",
-    "notify": "Notify Me",
+    "notify": "Mint",
     "chat": "CHAT\nLOG",
     "select": "select",
     "player": "player",
-    "scene": "scene"
+    "scene": "scene",
+    "auth": "Artist Authorization",
+    "mint": "Verify to Mint"
   },
   "Nav": {
     "lan": "Choose Language"

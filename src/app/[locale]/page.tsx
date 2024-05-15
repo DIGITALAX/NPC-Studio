@@ -8,22 +8,19 @@ import Scene from "@/components/game/modules/Scene";
 import useManage from "@/components/game/hooks/useManage";
 import useDialog from "@/components/game/hooks/useDialog";
 import dynamic from "next/dynamic";
+import { useContext } from "react";
+import { ModalContext } from "../providers";
+import Mint from "@/components/game/modules/Mint";
 const Studio = dynamic(() => import("@/components/game/modules/Studio"), {
   ssr: false,
 });
 
 export default function IndexPage() {
   const t = useTranslations("Home");
+  const context = useContext(ModalContext);
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const {
-    npc,
-    setNpc,
-    setEscena,
-    escena,
-    setCargando,
-    cargando,
-  } = useManage();
+  const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
   const {
     indiceMensajeActual,
     handleCompletarTyping,
@@ -37,9 +34,10 @@ export default function IndexPage() {
   } = useDialog();
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
-      <div className="relative w-full xl:h-[692px] h-fit flex items-center justify-center flex-col xl:flex-row gap-6">
+      <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
           t={t}
+          setArtists={context?.setArtists!}
           connected={isConnected}
           openConnectModal={openConnectModal}
           setDragDialog={setDragDialog}
@@ -79,6 +77,13 @@ export default function IndexPage() {
           setIndiceMensajeActual={setIndiceMensajeActual}
           contenedorMensajesRef={contenedorMensajesRef}
           wrapperRef={wrapperRef}
+        />
+      )}
+      {Number(context?.artists) > 0 && (
+        <Mint
+          setArtists={context?.setArtists!}
+          artists={Number(context?.artists)}
+          t={t}
         />
       )}
     </div>
