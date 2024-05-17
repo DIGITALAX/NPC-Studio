@@ -9,9 +9,9 @@ import useDialog from "../../game/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { useContext } from "react";
 import Mint from "../../game/modules/Mint";
-import { Dictionary } from "../../app/dictionaries";
 import { ModalContext } from "../../../app/providers";
 import useMint from "../../game/hooks/useMint";
+import { Dictionary } from "@/components/game/types/game.types";
 const Studio = dynamic(() => import("../../game/modules/Studio"), {
   ssr: false,
 });
