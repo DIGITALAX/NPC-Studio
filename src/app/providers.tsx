@@ -1,16 +1,12 @@
 "use client";
 
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import pick from "lodash/pick";
-import { NextIntlClientProvider } from "next-intl";
-import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
-import { store } from "./../../redux/store";
+import { store } from "../redux/store";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, mainnet } from "wagmi/chains";
-import messages from "./../../public/locale/en.json";
 import { SetStateAction, createContext, useState } from "react";
 
 const config = getDefaultConfig({
@@ -35,15 +31,11 @@ export const ModalContext = createContext<
   | undefined
 >(undefined);
 
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [artists, setArtists] = useState<number>(0);
 
   return (
-    <NextIntlClientProvider
-      locale="en"
-      messages={pick(messages, ["Nav", "Home"])}
-      timeZone="America/New_York"
-    >
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
@@ -53,6 +45,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    </NextIntlClientProvider>
   );
 }

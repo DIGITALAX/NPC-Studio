@@ -4,7 +4,7 @@ import Draggable from "react-draggable";
 export type LogProps = {
   connected: boolean;
   openConnectModal: (() => void) | undefined;
-  t: any;
+
   setDragDialog: (e: SetStateAction<boolean>) => void;
   indiceMensajeActual: number;
   handleCompletarTyping: () => void;
@@ -12,23 +12,28 @@ export type LogProps = {
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   cargando: boolean;
   setArtists: (e: SetStateAction<number>) => void;
+  dict: Dictionary;
 };
 
 export type MintProps = {
   setArtists: (e: SetStateAction<number>) => void;
   artists: number;
-  t: any;
+  dict: Dictionary;
+  manejarMintear: () => Promise<void>;
+  mintCargando: boolean;
 };
 
 export type ProcessProps = {
   setArtists: (e: SetStateAction<number>) => void;
   artists: number;
-  t: any;
+  dict: Dictionary;
+  manejarMintear: () => Promise<void>;
+  mintCargando: boolean;
 };
 
 export type SceneProps = {
   escena: string;
-  t: any;
+  dict: Dictionary;
   setEscena: (e: SetStateAction<string>) => void;
   npc: string;
   setNpc: (e: SetStateAction<string>) => void;
@@ -196,3 +201,27 @@ export enum Movimiento {
   Sit = "Sit",
   Idle = "Idle",
 }
+
+
+export type Dictionary = {
+  Home: {
+    title: string;
+    notify: string;
+    chat: string;
+    select: string;
+    player: string;
+    scene: string;
+    auth: string;
+    mint: string;
+    cat: string;
+    again: string;
+    exit: string;
+    comp: string;
+  };
+  Nav: {
+    lan: string;
+  };
+  "404": {
+    nada: string;
+  };
+};

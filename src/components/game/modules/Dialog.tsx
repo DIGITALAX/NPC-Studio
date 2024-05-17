@@ -1,5 +1,5 @@
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "../../../../lib/constants";
+import { INFURA_GATEWAY } from "../../../lib/constants";
 import messages from "./../../../../public/conversation.json";
 import Draggable from "react-draggable";
 import { FunctionComponent } from "react";

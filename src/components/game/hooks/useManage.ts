@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SCENE_LIST } from "../../../../lib/constants";
+import { SCENE_LIST } from "../../../lib/constants";
 
 const useManage = () => {
   const [escena, setEscena] = useState<string>(SCENE_LIST[0]?.key);

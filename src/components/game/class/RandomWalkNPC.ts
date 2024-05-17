@@ -1,4 +1,4 @@
-import { configurarDireccion } from "../../../../lib/utils";
+import { configurarDireccion } from "../../../lib/utils";
 import {
   Direccion,
   Estado,

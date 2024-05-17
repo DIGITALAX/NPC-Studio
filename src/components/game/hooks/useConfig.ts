@@ -3,7 +3,7 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
 import { PhaserGameElement } from "../types/game.types";
-import { SCENE_LIST } from "../../../../lib/constants";
+import { SCENE_LIST } from "../../../lib/constants";
 
 const useConfig = (
   chosenNpc: string,

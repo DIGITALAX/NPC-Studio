@@ -7,7 +7,11 @@
     "player": "player",
     "scene": "scene",
     "auth": "Artist Authorization",
-    "mint": "Verify to Mint"
+    "mint": "Verify to Mint",
+    "cat": "Mint To Catalog",
+    "again": "Mint Again",
+    "exit": "Exit",
+    "comp": "Mint Completed!"
   },
   "Nav": {
     "lan": "Choose Language"

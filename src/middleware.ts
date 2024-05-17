@@ -1,13 +1,31 @@
-import createMiddleware from "next-intl/middleware";
-import { pathnames, locales, localePrefix } from "./config";
+import { match } from "@formatjs/intl-localematcher";
+import Negotiator from "negotiator";
+import { NextRequest, NextResponse } from "next/server";
 
-export default createMiddleware({
-  defaultLocale: "en",
-  locales,
-  pathnames,
-  localePrefix,
-});
+let locales = ["en", "es"];
+let defaultLocale = "en";
+
+function getLocale(request: NextRequest) {
+  let headers = {
+    "accept-language": request.headers.get("accept-language") || "en",
+  };
+  let languages = new Negotiator({ headers }).languages();
+  return match(languages, locales, defaultLocale);
+}
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (pathnameHasLocale) return;
+
+  const locale = getLocale(request);
+  request.nextUrl.pathname = `/${locale}${pathname}`;
+  return NextResponse.redirect(request.nextUrl);
+}
 
 export const config = {
-  matcher: ["/", "/(en|es)/:path*", "/((?!_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!_next|favicon.ico|fonts).*)"],
 };

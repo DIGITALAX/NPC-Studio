@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withNextIntl = require("next-intl/plugin")();
 const allowedOrigins = ["https://thedial.infura-ipfs.io"];
 
 const nextConfig = {
@@ -60,4 +59,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextIntl(nextConfig);
+module.exports = nextConfig;

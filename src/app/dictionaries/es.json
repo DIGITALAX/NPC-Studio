@@ -7,7 +7,11 @@
     "player": "jugador",
     "scene": "escena",
     "auth": "Autorización de Artistas",
-    "mint": "Verifique Para Mintear"
+    "mint": "Verifique Para Mintear",
+    "cat": "Mintear Al Catálogo",
+    "again": "Mintear De Nuevo",
+    "exit": "Salir",
+    "comp": "Mint Completado!"
   },
   "Nav": {
     "lan": "Elija Idioma"

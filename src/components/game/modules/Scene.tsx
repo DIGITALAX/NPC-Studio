@@ -1,13 +1,13 @@
 import { FunctionComponent } from "react";
 import { SceneProps } from "../types/game.types";
-import { INFURA_GATEWAY, SCENE_LIST } from "../../../../lib/constants";
+import { INFURA_GATEWAY, SCENE_LIST } from "../../../lib/constants";
 import Image from "next/legacy/image";
 
 const Scene: FunctionComponent<SceneProps> = ({
   npc,
   setNpc,
   escena,
-  t,
+  dict,
   setEscena,
 }) => {
   return (
@@ -71,15 +71,15 @@ const Scene: FunctionComponent<SceneProps> = ({
           </div>
           <div className="relative w-full h-fit flex items-start justify-start gap-5 flex-col sm:flex-row bottom-0">
             <div className="relative w-fit h-fit flex items-center justify-center">
-              <div className="relative w-32 h-fit flex items-center justify-center font-abad text-2xl flex-col gap-2">
+              <div className="relative w-36 h-fit flex items-center justify-center font-abad text-2xl flex-col gap-2">
                 <div className="relative w-fit h-fit flex items-center justify-center text-[#E9C5BC]">
-                  {t("select")}
+                  {dict.Home.select}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center text-[#FC6D0E]">
-                  {`< ${t("player")} >`}
+                  {`< ${dict.Home.player} >`}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center text-[#FFDE0E]">
-                  {`< ${t("scene")} >`}
+                  {`< ${dict.Home.scene} >`}
                 </div>
               </div>
             </div>

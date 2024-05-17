@@ -1,5 +1,5 @@
 import RandomWalkerNPC from "./RandomWalkNPC";
-import { INFURA_GATEWAY } from "../../../../lib/constants";
+import { INFURA_GATEWAY } from "../../../lib/constants";
 import Phaser from "phaser";
 import { Articulo, Escena, Estado, Seat } from "../types/game.types";
 

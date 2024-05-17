@@ -2,7 +2,7 @@
 import Image from "next/legacy/image";
 import { ReactElement } from "react";
 import { BsTwitter } from "react-icons/bs";
-import { INFURA_GATEWAY } from "../../../../lib/constants";
+import { INFURA_GATEWAY } from "../../../lib/constants";
 
 function Footer() {
   return (

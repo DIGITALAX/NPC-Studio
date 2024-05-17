@@ -1,22 +1,22 @@
 "use client";
-import { useTranslations } from "next-intl";
-import Dialog from "@/components/game/modules/Dialog";
-import Log from "@/components/game/modules/Log";
+import Dialog from "../../game/modules/Dialog";
+import Log from "../../game/modules/Log";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import Scene from "@/components/game/modules/Scene";
-import useManage from "@/components/game/hooks/useManage";
-import useDialog from "@/components/game/hooks/useDialog";
+import Scene from "../../game/modules/Scene";
+import useManage from "../../game/hooks/useManage";
+import useDialog from "../../game/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { useContext } from "react";
-import { ModalContext } from "../providers";
-import Mint from "@/components/game/modules/Mint";
-const Studio = dynamic(() => import("@/components/game/modules/Studio"), {
+import Mint from "../../game/modules/Mint";
+import { Dictionary } from "../../app/dictionaries";
+import { ModalContext } from "../../../app/providers";
+import useMint from "../../game/hooks/useMint";
+const Studio = dynamic(() => import("../../game/modules/Studio"), {
   ssr: false,
 });
 
-export default function IndexPage() {
-  const t = useTranslations("Home");
+export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -32,11 +32,11 @@ export default function IndexPage() {
     dragDialog,
     setDragDialog,
   } = useDialog();
+  const { manejarMintear, mintCargando } = useMint(context?.setArtists!);
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
-          t={t}
           setArtists={context?.setArtists!}
           connected={isConnected}
           openConnectModal={openConnectModal}
@@ -46,6 +46,7 @@ export default function IndexPage() {
           indiceConversacionActual={indiceConversacionActual}
           contenedorMensajesRef={contenedorMensajesRef}
           cargando={cargando}
+          dict={dict}
         />
         <div
           className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
@@ -61,9 +62,9 @@ export default function IndexPage() {
         </div>
       </div>
       <Scene
+        dict={dict}
         npc={npc}
         setNpc={setNpc}
-        t={t}
         escena={escena}
         setEscena={setEscena}
       />
@@ -83,7 +84,9 @@ export default function IndexPage() {
         <Mint
           setArtists={context?.setArtists!}
           artists={Number(context?.artists)}
-          t={t}
+          manejarMintear={manejarMintear}
+          mintCargando={mintCargando}
+          dict={dict}
         />
       )}
     </div>
