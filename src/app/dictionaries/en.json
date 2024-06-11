@@ -1,7 +1,10 @@
 {
   "Home": {
     "title": "NPC STUDIO",
-    "notify": "Mint",
+    "create": "Create",
+    "orders": "Orders",
+    "connect": "Connect",
+    "studio": "Studio",
     "chat": "CHAT\nLOG",
     "select": "select",
     "player": "player",
@@ -11,7 +14,8 @@
     "cat": "Mint To Catalog",
     "again": "Mint Again",
     "exit": "Exit",
-    "comp": "Mint Completed!"
+    "comp": "Mint Completed!",
+    "notif": "Active as an Artist on Lens? Eager to mint? Send us a message!"
   },
   "Nav": {
     "lan": "Choose Language"

@@ -4,16 +4,20 @@ import { ProcessProps } from "../types/game.types";
 import { AiOutlineLoading } from "react-icons/ai";
 
 function Process({
-  artists,
-  setArtists,
+  mint,
+  setMint,
   dict,
   manejarMintear,
   mintCargando,
+  esArtista,
+  openConnectModal,
+  setMostrarNotificacion,
+  isConnected,
 }: ProcessProps) {
-  switch (artists) {
+  switch (mint) {
     case 1:
       return (
-        <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-fit max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center">
           <Image
             src={`${INFURA_GATEWAY}/ipfs/QmanpFJZmunhedHndu398hbgkB1z48EH1iX3gK5nVZnoaC`}
             draggable={false}
@@ -22,14 +26,14 @@ function Process({
           />
           <div
             className="flex justify-end bottom-2 right-0 absolute items-end cursor-pointer w-28 h-6"
-            onClick={() => setArtists(2)}
+            onClick={() => setMint(2)}
           ></div>
         </div>
       );
 
     case 2:
       return (
-        <div className="relative w-[100vw] sm:w-[90vw] h-[90vh] flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
@@ -53,7 +57,13 @@ function Process({
               </div>
               <div
                 className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-md cursor-pointer active:scale-95 px-1.5 py-1"
-                onClick={() => setArtists(3)}
+                onClick={
+                  esArtista
+                    ? () => setMint(3)
+                    : isConnected
+                    ? () => setMostrarNotificacion(true)
+                    : openConnectModal
+                }
               >
                 {dict.Home.mint}
               </div>
@@ -86,7 +96,7 @@ function Process({
 
     case 3:
       return (
-        <div className="relative w-[100vw] sm:w-[90vw] h-[90vh] flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
@@ -112,7 +122,7 @@ function Process({
 
     case 4:
       return (
-        <div className="relative w-[100vw] sm:w-[90vw] h-[90vh] flex items-center justify-center">
+        <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
@@ -128,7 +138,7 @@ function Process({
             <div className="relative w-full h-fit flex items-center justify-center flex-row gap-4">
               <div
                 className="relative w-32 h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-md cursor-pointer active:scale-95 px-1.5 py-1 text-xs"
-                onClick={() => setArtists(3)}
+                onClick={() => setMint(3)}
               >
                 {!mintCargando ? (
                   dict.Home.again
@@ -138,7 +148,7 @@ function Process({
               </div>
               <div
                 className="relative w-32 h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-md cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
-                onClick={() => setArtists(0)}
+                onClick={() => setMint(1)}
               >
                 {!mintCargando ? (
                   dict.Home.exit

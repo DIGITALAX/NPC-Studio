@@ -1,7 +1,10 @@
 {
   "Home": {
     "title": "EL ESTUDIO NPC",
-    "notify": "Mintear",
+    "create": "Cree",
+    "orders": "Pedidos",
+    "connect": "Connéctese",
+    "studio": "Estudio",
     "chat": "REGISTRO\nDE CHAT",
     "select": "seleccionar",
     "player": "jugador",
@@ -11,7 +14,8 @@
     "cat": "Mintear Al Catálogo",
     "again": "Mintear De Nuevo",
     "exit": "Salir",
-    "comp": "Mint Completado!"
+    "comp": "Mint Completado!",
+    "notif": "¿Usted está activo como un artista en Lens? ¿Le gustaría mintear? Envíeles un mensaje!"
   },
   "Nav": {
     "lan": "Elija Idioma"

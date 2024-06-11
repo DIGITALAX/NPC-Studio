@@ -1,12 +1,12 @@
 import { SetStateAction, useState } from "react";
 
-const useMint = (setArtists: (e: SetStateAction<number>) => void) => {
+const useMint = (setMint: (e: SetStateAction<number>) => void) => {
   const [mintCargando, setMintCargando] = useState<boolean>(false);
 
   const manejarMintear = async () => {
     setMintCargando(true);
     try {
-      setArtists(4);
+      setMint(4);
     } catch (err: any) {
       console.error(err.message);
     }

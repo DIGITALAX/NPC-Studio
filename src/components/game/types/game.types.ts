@@ -3,32 +3,40 @@ import Draggable from "react-draggable";
 
 export type LogProps = {
   connected: boolean;
+  lensConectado: boolean;
   openConnectModal: (() => void) | undefined;
-
+  manejarSalir: () => void;
+  manejarLens: () => Promise<void>;
+  lensCargando: boolean;
   setDragDialog: (e: SetStateAction<boolean>) => void;
   indiceMensajeActual: number;
   handleCompletarTyping: () => void;
   indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   cargando: boolean;
-  setArtists: (e: SetStateAction<number>) => void;
+  setMint: (e: SetStateAction<number>) => void;
   dict: Dictionary;
+  setPantalla: (e: SetStateAction<number>) => void;
 };
 
 export type MintProps = {
-  setArtists: (e: SetStateAction<number>) => void;
-  artists: number;
+  setMint: (e: SetStateAction<number>) => void;
+  mint: number;
   dict: Dictionary;
   manejarMintear: () => Promise<void>;
   mintCargando: boolean;
 };
 
 export type ProcessProps = {
-  setArtists: (e: SetStateAction<number>) => void;
-  artists: number;
+  setMint: (e: SetStateAction<number>) => void;
+  mint: number;
   dict: Dictionary;
+  isConnected: boolean;
   manejarMintear: () => Promise<void>;
   mintCargando: boolean;
+  esArtista: boolean;
+  openConnectModal: (() => void) | undefined;
+  setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
 };
 
 export type SceneProps = {
@@ -202,11 +210,13 @@ export enum Movimiento {
   Idle = "Idle",
 }
 
-
 export type Dictionary = {
   Home: {
     title: string;
-    notify: string;
+    create: string;
+    orders: string;
+    connect: string;
+    studio: string;
     chat: string;
     select: string;
     player: string;
@@ -217,6 +227,7 @@ export type Dictionary = {
     again: string;
     exit: string;
     comp: string;
+    notif: string;
   };
   Nav: {
     lan: string;
@@ -224,4 +235,22 @@ export type Dictionary = {
   "404": {
     nada: string;
   };
+};
+
+export type PantallaCambioProps = {
+  npc: string;
+  escena: string;
+  setNpc: (e: SetStateAction<string>) => void;
+  setCargando: (e: SetStateAction<boolean>) => void;
+  cargando: boolean;
+  pantalla: number;
+  setMint: (e: SetStateAction<number>) => void;
+  mint: number;
+  dict: Dictionary;
+  manejarMintear: () => Promise<void>;
+  mintCargando: boolean;
+  isConnected: boolean;
+  esArtista: boolean;
+  openConnectModal: (() => void) | undefined;
+  setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
 };

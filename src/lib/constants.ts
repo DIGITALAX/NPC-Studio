@@ -128,3 +128,12 @@ export const SCENE_LIST: {
     ],
   },
 ];
+
+export const LENS_HUB_PROXY: `0x${string}` =
+  "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d";
+
+export const AUTOGRAPH_DATA: `0x${string}` =
+  "0x0B54B514b5aECc77C67A66e643CEDFd54B4411f0";
+
+export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
+  "0xe57438297515C4B7c62FE13957413085A7e1763c";
