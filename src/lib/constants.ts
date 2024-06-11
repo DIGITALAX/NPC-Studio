@@ -137,3 +137,6 @@ export const AUTOGRAPH_DATA: `0x${string}` =
 
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
   "0xe57438297515C4B7c62FE13957413085A7e1763c";
+
+export const DIGITALAX_ADDRESS: `0x${string}` =
+  "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";

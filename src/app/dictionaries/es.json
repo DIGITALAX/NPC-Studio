@@ -15,7 +15,10 @@
     "again": "Mintear De Nuevo",
     "exit": "Salir",
     "comp": "Mint Completado!",
-    "notif": "¿Usted está activo como un artista en Lens? ¿Le gustaría mintear? Envíeles un mensaje!"
+    "notif": "¿Usted está activo como un artista en Lens? ¿Le gustaría mintear? Envíeles un mensaje!",
+    "send": "Envíelo",
+    "message": "Escriba, Cifre, Envie.",
+    "sent": "¡Mensaje enviado! Le contactaremos pronto."
   },
   "Nav": {
     "lan": "Elija Idioma"

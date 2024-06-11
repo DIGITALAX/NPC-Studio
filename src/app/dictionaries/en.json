@@ -15,7 +15,10 @@
     "again": "Mint Again",
     "exit": "Exit",
     "comp": "Mint Completed!",
-    "notif": "Active as an Artist on Lens? Eager to mint? Send us a message!"
+    "notif": "Active as an Artist on Lens? Eager to mint? Send us a message!",
+    "send": "Send It",
+    "message": "Write, Encrypt, Send.",
+    "sent": "Message sent! We'll be in touch shortly."
   },
   "Nav": {
     "lan": "Choose Language"

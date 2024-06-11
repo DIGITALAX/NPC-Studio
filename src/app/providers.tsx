@@ -8,6 +8,7 @@ import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, polygonAmoy } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
+import { XMTPProvider } from "@xmtp/react-sdk";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -54,22 +55,24 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <ModalContext.Provider
-            value={{
-              mint,
-              setMint,
-              pantalla,
-              setPantalla,
-              esArtista,
-              setEsArtista,
-              mostrarNotificacion,
-              setMostrarNotificacion,
-              lensConectado,
-              setLensConectado,
-            }}
-          >
-            <Provider store={store}>{children}</Provider>
-          </ModalContext.Provider>
+          <XMTPProvider dbVersion={2}>
+            <ModalContext.Provider
+              value={{
+                mint,
+                setMint,
+                pantalla,
+                setPantalla,
+                esArtista,
+                setEsArtista,
+                mostrarNotificacion,
+                setMostrarNotificacion,
+                lensConectado,
+                setLensConectado,
+              }}
+            >
+              <Provider store={store}>{children}</Provider>
+            </ModalContext.Provider>
+          </XMTPProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

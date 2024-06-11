@@ -22,7 +22,11 @@ const config: Config = {
         lime: "#10FF90",
         amarillo: "#F8FF6F",
         dorado: "#F5C652",
-        offNegro: "#0F1015"
+        offNegro: "#0F1015",
+
+      },
+      fontSize: {
+        xxs: "0.6rem",
       },
       fontFamily: {
         rain: "Internal Rainbows",
@@ -31,6 +35,7 @@ const config: Config = {
         leco: "Leco",
         abad: "Abaddon",
         arc: "Arcade Classic",
+        vcr: "Vcr",
       },
       backgroundImage: {
         esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,

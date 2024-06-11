@@ -9,6 +9,12 @@
 }
 
 @font-face {
+  font-family: "Vcr";
+  font-weight: 400;
+  src: url("/fonts/Vcr.ttf");
+}
+
+@font-face {
   font-family: "Internal Rainbows";
   font-weight: 400;
   src: url("/fonts/InternalRainbows.otf");

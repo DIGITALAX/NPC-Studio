@@ -216,9 +216,12 @@ export type Dictionary = {
     create: string;
     orders: string;
     connect: string;
+    message: string;
     studio: string;
     chat: string;
+    sent: string;
     select: string;
+    send: string;
     player: string;
     scene: string;
     auth: string;

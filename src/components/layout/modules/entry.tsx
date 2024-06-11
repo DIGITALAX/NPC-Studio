@@ -29,13 +29,22 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   const { openAccountModal } = useAccountModal();
   const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
   console.log(context?.mostrarNotificacion);
-  const { lensCargando, manejarLens, manejarSalir } = useAccountInternal(
+  const {
+    lensCargando,
+    manejarLens,
+    manejarSalir,
+    manejarEnviarMensaje,
+    mensaje,
+    mensajeCargando,
+    setMensaje,
+  } = useAccountInternal(
     isConnected,
     context?.setEsArtista!,
     context?.setLensConectado!,
     openAccountModal,
     address,
-    publicClient
+    publicClient,
+    dict
   );
   const {
     indiceMensajeActual,
@@ -115,6 +124,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         <Notificacion
           dict={dict}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
+          mensajeCargando={mensajeCargando}
+          manejarEnviarMensaje={manejarEnviarMensaje}
+          setMensaje={setMensaje}
+          mensaje={mensaje}
         />
       )}
     </div>

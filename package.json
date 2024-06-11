@@ -30,7 +30,9 @@
     "react-typist": "^2.0.5",
     "redux": "^4.2.1",
     "viem": "^2.13.8",
-    "wagmi": "^2.9.11"
+    "wagmi": "^2.9.11",
+    "@xmtp/react-sdk": "4.0.0",
+    "@xmtp/xmtp-js": "11.3.5"
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^1.9.5",
