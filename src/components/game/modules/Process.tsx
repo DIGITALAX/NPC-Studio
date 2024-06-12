@@ -121,7 +121,7 @@ function Process({
               priority
             />
           </div>
-          <div className="relative w-full h-full flex flex-col gap-4 items-start justify-start text-white font-vcr p-32">
+          <div className="relative w-full h-full flex flex-col gap-4 items-start justify-start text-white font-vcr px-32 pt-24 pb-32">
             <div className="relative w-full h-fit flex items-start justify-between text-xl flex-row gap-3">
               <div className="relative w-fit h-fit flex items-start justify-start">
                 {dict.Home.gCreate}
@@ -149,12 +149,29 @@ function Process({
                 </div>
               </div>
             </div>
+            <input
+              className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52"
+              placeholder={dict.Home.gTitulo}
+              value={coleccionActual?.galeria || ""}
+              onChange={(e) => {
+                setColeccionActual((prev) => ({
+                  ...prev,
+                  galeria: e.target.value,
+                }));
+                setColecciones((prev) => {
+                  return prev.map((el) => ({
+                    ...el,
+                    galeria: e.target.value,
+                  }));
+                });
+              }}
+            />
             <div className="relative w-full h-fit flex items-start justify-start flex-row gap-8">
               <div className="relative w-fit h-full flex items-center justify-between flex-col gap-6 text-sm px-3">
                 <div className="relative w-fit h-fit flex items-center justify-center">
                   {dict.Home.gCol}
                 </div>
-                <div className="relative w-full h-72 flex items-start justify-start overflow-y-scroll py-3">
+                <div className="relative w-full h-64 flex items-start justify-start overflow-y-scroll py-3">
                   <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-col">
                     {colecciones?.map((elemento: Coleccion, indice) => {
                       return (
@@ -206,7 +223,10 @@ function Process({
                       npcIdiomas: "",
                       npcInstrucciones: "",
                       npcs: "",
-                      galeria: "",
+                      galeria:
+                        coleccionActual?.galeria?.trim() !== ""
+                          ? coleccionActual?.galeria
+                          : colecciones?.[0]?.galeria || "",
                     })
                   }
                 >
@@ -638,7 +658,10 @@ function Process({
                         npcIdiomas: "",
                         npcInstrucciones: "",
                         npcs: "",
-                        galeria: "",
+                        galeria:
+                          coleccionActual?.galeria?.trim() !== ""
+                            ? coleccionActual?.galeria
+                            : colecciones?.[0]?.galeria || "",
                       });
                     }}
                   >

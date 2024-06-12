@@ -31,7 +31,8 @@
     "add": "Add Collection",
     "gMint": "Mint Gallery",
     "gCreate": "Create New Gallery",
-    "tipo": "Type"
+    "tipo": "Type",
+    "gTitulo": "Gallery Title"
   },
   "Nav": {
     "lan": "Choose Language"

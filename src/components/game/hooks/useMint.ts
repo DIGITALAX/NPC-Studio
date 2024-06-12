@@ -1,4 +1,4 @@
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
 import { AutographType, Coleccion } from "../types/game.types";
 import { polygonAmoy } from "viem/chains";
@@ -38,7 +38,7 @@ const useMint = (
     npcIdiomas: "",
     npcInstrucciones: "",
     npcs: "",
-    galeria: "",
+    galeria:  "",
   });
 
   const manejarMintear = async () => {
@@ -124,7 +124,7 @@ const useMint = (
         npcInstrucciones: "",
         npcs: "",
         galeria: "",
-        id: 0
+        id: 0,
       });
       setDropDown({
         npcsAbiertos: false,
@@ -133,6 +133,7 @@ const useMint = (
         npcsTexto: "",
         idiomasTexto: "",
       });
+      localStorage.removeItem("coleccionesGaleria");
       setColecciones([]);
 
       setMint(4);
@@ -186,10 +187,20 @@ const useMint = (
 
   const manejarAhorar = async (): Promise<void> => {
     try {
+      localStorage.setItem("coleccionesGaleria", JSON.stringify(colecciones));
     } catch (err: any) {
       console.error(err.message);
     }
   };
+
+  useEffect(() => {
+    if (colecciones?.length < 1) {
+      const coleccionesGuardadas = localStorage.getItem("colecciones");
+      if (coleccionesGuardadas) {
+        setColecciones(JSON.parse(coleccionesGuardadas));
+      }
+    }
+  }, []);
 
   return {
     manejarMintear,

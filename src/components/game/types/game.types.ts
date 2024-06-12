@@ -236,6 +236,7 @@ export type Dictionary = {
   Home: {
     title: string;
     create: string;
+    gTitulo: string;
     orders: string;
     connect: string;
     message: string;

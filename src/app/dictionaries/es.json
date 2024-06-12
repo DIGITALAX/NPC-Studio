@@ -31,7 +31,8 @@
     "add": "Añada Colección",
     "gMint": "Mintee La Galería",
     "gCreate": "Cree Nueva Galería",
-    "tipo": "Type"
+    "tipo": "Type",
+    "gTitulo": "Título de La Galería"
   },
   "Nav": {
     "lan": "Elija Idioma"
