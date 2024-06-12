@@ -1,8 +1,9 @@
 import "@rainbow-me/rainbowkit/styles.css";
-import './../../globals.css';
+import "./../../globals.css";
 import type { Metadata } from "next";
 import Footer from "./../../components/layout/modules/Footer";
 import Providers from "../providers";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.npcstudio.xyz"),

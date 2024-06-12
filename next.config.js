@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const CopyPlugin = require("copy-webpack-plugin");
 const allowedOrigins = ["https://thedial.infura-ipfs.io"];
 
 const nextConfig = {
@@ -22,14 +23,42 @@ const nextConfig = {
     unoptimized: true,
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    if (isServer) {
+      config.plugins.push(
+        new CopyPlugin({
+          patterns: [
+            {
+              from: "node_modules/@xmtp/user-preferences-bindings-wasm/dist/node",
+              to: "chunks/[name][ext]",
+              filter: (resourcePath) => resourcePath.endsWith(".wasm"),
+            },
+          ],
+        })
+      );
+    }
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /^phaser3spectorjs$/,
       })
     );
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "asset/resource",
+    });
+
+    config.experiments = {
+      asyncWebAssembly: true,
+      syncWebAssembly: true,
+      layers: true,
+    };
+
+    if (!isServer) {
+      config.output.webassemblyModuleFilename = "static/wasm/[modulehash].wasm";
+    }
 
     return config;
   },
+
   trailingSlash: true,
   async headers() {
     let headersConfig = [];

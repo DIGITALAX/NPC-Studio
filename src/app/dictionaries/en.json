@@ -18,7 +18,19 @@
     "notif": "Active as an Artist on Lens? Eager to mint? Send us a message!",
     "send": "Send It",
     "message": "Write, Encrypt, Send.",
-    "sent": "Message sent! We'll be in touch shortly."
+    "sent": "Message sent! We'll be in touch shortly.",
+    "des": "Description",
+    "tit": "Title",
+    "gCol": "Gallery Collections",
+    "new": "New Collection",
+    "amount": "Amount",
+    "price": "Price",
+    "tokens": "Accepted Tokens",
+    "tags": "Tags",
+    "npcL": "NPC Languages",
+    "add": "Add Collection",
+    "gMint": "Mint Gallery",
+    "gCreate": "Create New Gallery"
   },
   "Nav": {
     "lan": "Choose Language"

@@ -115,7 +115,7 @@ function Process({
           <div className="relative w-full h-full flex flex-col gap-4 items-start justify-start text-white font-vcr p-32">
             <div className="relative w-full h-fit flex items-start justify-between text-xl flex-row gap-3">
               <div className="relative w-fit h-fit flex items-start justify-start">
-                Create New Gallery
+                {dict.Home.gCreate}
               </div>
               <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-end">
                 <div
@@ -133,7 +133,7 @@ function Process({
                   onClick={() => !mintCargando && manejarMintear()}
                 >
                   {!mintCargando ? (
-                    "Mintee Colección"
+                    dict.Home.gMint
                   ) : (
                     <AiOutlineLoading size={15} color="white" />
                   )}
@@ -143,7 +143,7 @@ function Process({
             <div className="relative w-full h-fit flex items-start justify-start flex-row gap-8">
               <div className="relative w-fit h-full flex items-center justify-between flex-col gap-6 text-sm px-3">
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  Gallery Collections
+                  {dict.Home.gCol}
                 </div>
                 <div className="relative w-full h-72 flex items-start justify-start overflow-y-scroll py-3">
                   <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-col">
@@ -162,16 +162,16 @@ function Process({
                           />
                           <div
                             className="absolute rounded-full w-fit h-fit border border-white bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
-                            onClick={(e) =>
-                           {   e.stopPropagation();
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setColecciones((prev) =>
                                 prev.filter(
                                   (el) =>
                                     JSON.stringify(el) !==
                                     JSON.stringify(elemento)
                                 )
-                              )}
-                            }
+                              );
+                            }}
                           >
                             <RxCrossCircled color="white" size={15} />
                           </div>
@@ -199,14 +199,14 @@ function Process({
                     })
                   }
                 >
-                  Nueva Colección
+                  {dict.Home.new}
                 </div>
               </div>
               <div className="relative w-fit h-full flex items-start justify-start flex-row gap-4">
                 <div className="relative w-fit h-full flex items-center justify-start flex-col gap-4">
                   <div className="flex flex-col items-start justify-start w-fit h-fit gap-1 font-aust text-white">
                     <div className="relative w-fit h-fit text-sm">
-                      Título de Colección
+                      {dict.Home.tit}
                     </div>
                     <input
                       className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52"
@@ -246,7 +246,7 @@ function Process({
                   </label>
                   <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1">
                     <div className="relative w-fit h-fit flex text-white font-aust text-sm">
-                      Amount
+                      {dict.Home.amount}
                     </div>
                     <input
                       type="number"
@@ -267,7 +267,7 @@ function Process({
                 <div className="relative flex flex-col items-start justify-start gap-4">
                   <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1">
                     <div className="relative w-fit h-fit text-sm break-words">
-                      Descripción
+                      {dict.Home.des}
                     </div>
                     <textarea
                       value={coleccionActual?.descripcion || ""}
@@ -285,7 +285,7 @@ function Process({
                   </div>
                   <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1">
                     <div className="relative w-fit h-fit flex text-white font-aust text-sm">
-                      Price {`( USD )`}
+                      {dict.Home.price} {`( USD )`}
                     </div>
                     <input
                       type="number"
@@ -304,7 +304,7 @@ function Process({
                   </div>
                   <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1">
                     <div className="relative w-fit h-fit flex text-white font-aust text-sm">
-                      Tokenes Aceptados
+                      {dict.Home.tokens}
                     </div>
                     <div className="relative flex flex-row flex-wrap items-start justify-start gap-5 w-full h-fit">
                       {ACCEPTED_TOKENS_AMOY?.map(
@@ -354,7 +354,7 @@ function Process({
                 <div className="relative flex flex-col items-start justify-start gap-4">
                   <div className="flex flex-col items-start justify-start w-fit h-fit gap-1 relative">
                     <div className="relative w-fit h-fit text-sm break-words">
-                      Etiquetas
+                      {dict.Home.tags}
                     </div>
                     <input
                       value={coleccionActual?.etiquetas}
@@ -390,7 +390,7 @@ function Process({
                   </div>
                   <div className="flex flex-col items-start justify-start w-fit h-fit gap-1 relative">
                     <div className="relative w-fit h-fit text-sm break-words">
-                      Idiomas de NPCs
+                      {dict.Home.npcL}
                     </div>
                     <input
                       value={coleccionActual?.npcIdiomas}
@@ -425,7 +425,7 @@ function Process({
                       });
                     }}
                   >
-                    Añada Colección
+                    {dict.Home.add}
                   </div>
                 </div>
               </div>

@@ -18,7 +18,19 @@
     "notif": "¿Usted está activo como un artista en Lens? ¿Le gustaría mintear? Envíeles un mensaje!",
     "send": "Envíelo",
     "message": "Escriba, Cifre, Envie.",
-    "sent": "¡Mensaje enviado! Le contactaremos pronto."
+    "sent": "¡Mensaje enviado! Le contactaremos pronto.",
+    "des": "Descripción",
+    "tit": "Título",
+    "gCol": "Colecciones de Galería",
+    "new": "Nueva Colección",
+    "amount": "Cantidad",
+    "price": "Precio",
+    "tokens": "Tokenes Aceptados",
+    "tags": "Etiquetas",
+    "npcL": "Idiomas de NPCs",
+    "add": "Añada Colección",
+    "gMint": "Mintee La Galería",
+    "gCreate": "Cree Nueva Galería"
   },
   "Nav": {
     "lan": "Elija Idioma"

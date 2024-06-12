@@ -42,7 +42,7 @@ export type ProcessProps = {
   colecciones: Coleccion[];
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
-  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) =>  void;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type SceneProps = {
@@ -237,6 +237,18 @@ export type Dictionary = {
     exit: string;
     comp: string;
     notif: string;
+    des: string;
+    tit: string;
+    gCol: string;
+    new: string;
+    amount: string;
+    price: string;
+    tokens: string;
+    tags: string;
+    npcL: string;
+    add: string;
+    gMint: string;
+    gCreate: string;
   };
   Nav: {
     lan: string;
