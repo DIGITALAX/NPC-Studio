@@ -17,6 +17,7 @@
     "@xmtp/content-type-remote-attachment": "^1.1.8",
     "@xmtp/content-type-reply": "^1.1.9",
     "@xmtp/react-sdk": "^6.0.1",
+    "ipfs-http-client": "60.0.1",
     "@xmtp/xmtp-js": "^11.6.3",
     "ajv": "^8.16.0",
     "ajv-keywords": "^5.1.0",
