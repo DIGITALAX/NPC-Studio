@@ -105,7 +105,12 @@ function Process({
               priority
             />
           </div>
-          <div className="relative w-full h-fit flex flex-col gap-4 items-center justify-center">
+          <div className="relative w-full h-fit flex flex-col gap-4 items-center justify-center text-white font-vcr">
+            <div className="relative w-fit h-fit flex items-center justify-center">Create New Gallery</div>
+            <div className="relative w-full h-fit flex items-center justify-center flex-row gap-3">
+              <div >Create Item</div>
+
+            </div>
             <div
               className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-md cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
               onClick={() => !mintCargando && manejarMintear()}
