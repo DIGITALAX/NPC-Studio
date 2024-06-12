@@ -28,7 +28,6 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
-  console.log(context?.mostrarNotificacion);
   const {
     lensCargando,
     manejarLens,
@@ -66,7 +65,9 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     coleccionActual,
     manejarArchivo,
     manejarAhorar,
-  } = useMint(context?.setMint!, publicClient);
+    setDropDown,
+    dropDown,
+  } = useMint(context?.setMint!, publicClient, address);
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -113,6 +114,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             setMostrarNotificacion={context?.setMostrarNotificacion!}
             openConnectModal={openConnectModal}
             esArtista={context?.esArtista!}
+            setDropDown={setDropDown}
+            dropDown={dropDown}
           />
         </div>
       </div>

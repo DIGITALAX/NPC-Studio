@@ -43,6 +43,22 @@ export type ProcessProps = {
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
+  dropDown: {
+    npcsAbiertos: boolean;
+    idiomasAbiertos: boolean;
+    tiposAbiertos: boolean;
+    npcsTexto: string;
+    idiomasTexto: string;
+  };
+  setDropDown: (
+    e: SetStateAction<{
+      npcsAbiertos: boolean;
+      idiomasAbiertos: boolean;
+      tiposAbiertos: boolean;
+      npcsTexto: string;
+      idiomasTexto: string;
+    }>
+  ) => void;
 };
 
 export type SceneProps = {
@@ -249,6 +265,7 @@ export type Dictionary = {
     add: string;
     gMint: string;
     gCreate: string;
+    tipo: string;
   };
   Nav: {
     lan: string;
@@ -280,10 +297,28 @@ export type PantallaCambioProps = {
   esArtista: boolean;
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
+  dropDown: {
+    npcsAbiertos: boolean;
+    idiomasAbiertos: boolean;
+    tiposAbiertos: boolean;
+    npcsTexto: string;
+    idiomasTexto: string;
+  };
+  setDropDown: (
+    e: SetStateAction<{
+      npcsAbiertos: boolean;
+      tiposAbiertos: boolean;
+      idiomasAbiertos: boolean;
+      npcsTexto: string;
+      idiomasTexto: string;
+    }>
+  ) => void;
 };
 
 export interface Coleccion {
+  galeria: string;
   imagen: string;
+  id: number;
   cantidad: number;
   tokenes: `0x${string}`[];
   precio: number;
@@ -300,6 +335,4 @@ export enum AutographType {
   NFT,
   Hoodie,
   Shirt,
-  Catalog,
-  Mix,
 }

@@ -30,7 +30,8 @@
     "npcL": "NPC Languages",
     "add": "Add Collection",
     "gMint": "Mint Gallery",
-    "gCreate": "Create New Gallery"
+    "gCreate": "Create New Gallery",
+    "tipo": "Type"
   },
   "Nav": {
     "lan": "Choose Language"

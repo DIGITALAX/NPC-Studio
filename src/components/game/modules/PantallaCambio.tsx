@@ -27,12 +27,16 @@ function PantallaCambio({
   coleccionActual,
   manejarArchivo,
   manejarAhorar,
-  setColecciones
+  setColecciones,
+  setDropDown,
+  dropDown,
 }: PantallaCambioProps) {
   switch (pantalla) {
     case 1:
       return (
         <Process
+          setDropDown={setDropDown}
+          dropDown={dropDown}
           setMint={setMint!}
           mint={Number(mint)}
           manejarMintear={manejarMintear}

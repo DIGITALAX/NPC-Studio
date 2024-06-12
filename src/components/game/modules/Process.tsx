@@ -1,8 +1,15 @@
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "../../../lib/constants";
+import {
+  ACCEPTED_TOKENS_AMOY,
+  IDIOMAS,
+  INFURA_GATEWAY,
+  SCENE_LIST,
+} from "../../../lib/constants";
 import { AutographType, Coleccion, ProcessProps } from "../types/game.types";
 import { AiOutlineLoading } from "react-icons/ai";
 import { RxCrossCircled } from "react-icons/rx";
+import DropDown from "@/components/common/modules/DropDown";
+import { ChangeEvent } from "react";
 
 function Process({
   mint,
@@ -20,6 +27,8 @@ function Process({
   manejarArchivo,
   manejarAhorar,
   setColecciones,
+  dropDown,
+  setDropDown,
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -189,13 +198,15 @@ function Process({
                       cantidad: 1,
                       tokenes: [],
                       precio: 0,
-                      tipo: AutographType.NFT,
+                      id: colecciones.length,
+                      tipo: "NFT" as any,
                       titulo: "",
                       descripcion: "",
                       etiquetas: "",
                       npcIdiomas: "",
                       npcInstrucciones: "",
                       npcs: "",
+                      galeria: "",
                     })
                   }
                 >
@@ -321,18 +332,18 @@ function Process({
                               key={indice}
                               onClick={() => {
                                 setColeccionActual((prev) => {
-                                  const newAcceptedTokens =
-                                    prev?.tokenes?.includes(
+                                  return {
+                                    ...prev,
+                                    tokenes: prev?.tokenes?.includes(
                                       elemento[2] as `0x${string}`
                                     )
                                       ? prev.tokenes.filter(
                                           (token) => token !== elemento[2]
                                         )
-                                      : [...(prev?.tokenes || []), elemento[2]];
-
-                                  return {
-                                    ...prev,
-                                    acceptedTokens: newAcceptedTokens,
+                                      : ([
+                                          ...(prev?.tokenes || []),
+                                          elemento[2],
+                                        ] as `0x${string}`[]),
                                   };
                                 });
                               }}
@@ -370,58 +381,264 @@ function Process({
                       }}
                     />
                   </div>
-                  <div className="flex flex-col items-start justify-start w-fit h-fit gap-1 relative">
-                    <div className="relative w-fit h-fit text-sm break-words">
-                      NPCs
-                    </div>
-                    <input
-                      value={coleccionActual?.npcs}
-                      onChange={(e) =>
-                        setColeccionActual((prev) => ({
-                          ...prev,
-                          npcs: e.target.value,
-                        }))
+                  <DropDown
+                    valores={Array.from(
+                      SCENE_LIST.reduce((acc, item) => {
+                        item.sprites.forEach((sprite) => {
+                          if (
+                            (sprite.key
+                              .toLowerCase()
+                              .includes(
+                                dropDown.npcsTexto
+                                  .split(",")
+                                  .filter(Boolean)
+                                  .pop()
+                                  ?.trim()
+                                  .toLowerCase() || ""
+                              ) &&
+                              !coleccionActual.npcs
+                                .split(",")
+                                .map((npc) => npc.trim().toLowerCase())
+                                .includes(sprite.key.toLowerCase())) ||
+                            SCENE_LIST.map((col) => col.sprites).filter(
+                              (sprite) =>
+                                sprite.filter(
+                                  (s) =>
+                                    dropDown.npcsTexto
+                                      .split(",")
+                                      .filter(Boolean)
+                                      .pop()
+                                      ?.trim()
+                                      .toLowerCase() == s.key.toLowerCase()
+                                ).length > 0
+                            ).length > 0
+                          ) {
+                            acc.set(sprite.key, sprite);
+                          }
+                        });
+                        return acc;
+                      }, new Map()).values()
+                    )}
+                    titulo={"NPCs"}
+                    valor={dropDown.npcsTexto || ""}
+                    manejarCambio={(e: ChangeEvent) => {
+                      const searchTerm = (e.target as HTMLInputElement).value
+                        .trim()
+                        .toLowerCase();
+                      setColeccionActual((prev) => ({
+                        ...prev,
+                        npcs: prev.npcs
+                          .split(",")
+                          .filter((valor) =>
+                            valor.toLowerCase().includes(searchTerm)
+                          )
+                          .join(","),
+                      }));
+
+                      setDropDown({
+                        ...dropDown,
+                        npcsAbiertos: true,
+                        npcsTexto: searchTerm,
+                      });
+                    }}
+                    estaAbierto={dropDown?.npcsAbiertos}
+                    setEstaAbierto={() => {
+                      setDropDown({
+                        ...dropDown,
+                        npcsAbiertos: !dropDown.npcsAbiertos,
+                      });
+                    }}
+                    manejarElegir={(value: string) => {
+                      let npcs: string;
+                      setColeccionActual((prev) => {
+                        const npcsArray = prev.npcs
+                          ? prev.npcs.split(",").filter(Boolean)
+                          : [];
+                        if (npcsArray.includes(value)) {
+                          npcs = npcsArray
+                            .filter((npc) => npc !== value)
+                            .join(",");
+                          return {
+                            ...prev,
+                            npcs,
+                          };
+                        } else {
+                          npcs = [...npcsArray, value].join(",");
+                          return {
+                            ...prev,
+                            npcs,
+                          };
+                        }
+                      });
+
+                      setDropDown((prev) => ({
+                        ...prev,
+                        npcsTexto: npcs,
+                      }));
+                    }}
+                  />
+                  <DropDown
+                    valores={IDIOMAS.filter((id) => {
+                      if (
+                        (id.key
+                          .toLowerCase()
+                          .includes(
+                            dropDown.idiomasTexto
+                              .split(",")
+                              .filter(Boolean)
+                              .pop()
+                              ?.trim()
+                              .toLowerCase() || ""
+                          ) &&
+                          !coleccionActual.npcIdiomas
+                            .split(",")
+                            .map((npc) => npc.trim().toLowerCase())
+                            .includes(id.key.toLowerCase())) ||
+                        IDIOMAS.filter(
+                          (i) =>
+                            dropDown.idiomasTexto
+                              .split(",")
+                              .filter(Boolean)
+                              .pop()
+                              ?.trim()
+                              .toLowerCase() == i.key.toLowerCase()
+                        ).length > 0
+                      ) {
+                        return id;
                       }
-                      className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52 max-w-[15rem]"
-                      style={{
-                        resize: "none",
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col items-start justify-start w-fit h-fit gap-1 relative">
-                    <div className="relative w-fit h-fit text-sm break-words">
-                      {dict.Home.npcL}
-                    </div>
-                    <input
-                      value={coleccionActual?.npcIdiomas}
-                      onChange={(e) =>
-                        setColeccionActual((prev) => ({
-                          ...prev,
-                          npcIdiomas: e.target.value,
+                    })}
+                    titulo={dict.Home.npcL}
+                    valor={dropDown.idiomasTexto || ""}
+                    manejarCambio={(e: ChangeEvent) => {
+                      const searchTerm = (e.target as HTMLInputElement).value
+                        .trim()
+                        .toLowerCase();
+                      setColeccionActual((prev) => ({
+                        ...prev,
+                        npcIdiomas: prev.npcIdiomas
+                          .split(",")
+                          .filter((valor) =>
+                            valor.toLowerCase().includes(searchTerm)
+                          )
+                          .join(","),
+                      }));
+
+                      setDropDown({
+                        ...dropDown,
+                        idiomasAbiertos: true,
+                        idiomasTexto: searchTerm,
+                      });
+                    }}
+                    estaAbierto={dropDown?.idiomasAbiertos}
+                    setEstaAbierto={() => {
+                      setDropDown({
+                        ...dropDown,
+                        idiomasAbiertos: !dropDown.idiomasAbiertos,
+                      });
+                    }}
+                    manejarElegir={(value: string) => {
+                      let npcIdiomas: string;
+                      setColeccionActual((prev) => {
+                        const npcsArray = prev.npcIdiomas
+                          ? prev.npcIdiomas.split(",").filter(Boolean)
+                          : [];
+                        if (npcsArray.includes(value)) {
+                          npcIdiomas = npcsArray
+                            .filter((npc) => npc !== value)
+                            .join(",");
+                          return {
+                            ...prev,
+                            npcIdiomas,
+                          };
+                        } else {
+                          npcIdiomas = [...npcsArray, value].join(",");
+                          return {
+                            ...prev,
+                            npcIdiomas,
+                          };
+                        }
+                      });
+
+                      setDropDown((prev) => ({
+                        ...prev,
+                        idiomasTexto: npcIdiomas,
+                      }));
+                    }}
+                  />
+
+                  <DropDown
+                    valores={Array.from(
+                      Object.values(AutographType)
+                        .map((item, indice) => ({
+                          key: item.toString(),
+                          cover:
+                            indice === 0
+                              ? "QmUADJfzGsFgp9n4XUZD66inxTCijJ9fwMXeUkjuKjHVzs"
+                              : indice === 1
+                              ? "QmRMWKP63xaJQsspfnLL9Fhou484LEb2VbTWFyfYsJ1aep"
+                              : indice === 2
+                              ? "QmVbePRht5te5J9JzGGrnMocPZkSWnqGPEaNMZTSjFoYDr"
+                              : "",
                         }))
-                      }
-                      className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52 max-w-[15rem]"
-                      style={{
-                        resize: "none",
-                      }}
-                    />
-                  </div>
+                        .filter((item) => item.cover !== "")
+                    )}
+                    titulo={dict.Home.tipo}
+                    valor={coleccionActual.tipo.toString() || ""}
+                    manejarElegir={(value: string) => {
+                      setColeccionActual((prev) => ({
+                        ...prev,
+                        tipo: value as any,
+                      }));
+                    }}
+                    estaAbierto={dropDown?.tiposAbiertos}
+                    setEstaAbierto={() => {
+                      setDropDown({
+                        ...dropDown,
+                        tiposAbiertos: !dropDown.tiposAbiertos,
+                      });
+                    }}
+                  />
                   <div
                     className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                     onClick={() => {
-                      setColecciones((prev) => [...prev, coleccionActual]);
+                      setColecciones((prev) => {
+                        const exists = prev.some(
+                          (item) => item.id === coleccionActual.id
+                        );
+
+                        if (exists) {
+                          return prev.map((item) =>
+                            item.id === coleccionActual.id
+                              ? coleccionActual
+                              : item
+                          );
+                        } else {
+                          return [...prev, coleccionActual];
+                        }
+                      });
+
+                      setDropDown({
+                        npcsAbiertos: false,
+                        npcsTexto: "",
+                        idiomasAbiertos: false,
+                        idiomasTexto: "",
+                        tiposAbiertos: false,
+                      });
+
                       setColeccionActual({
                         imagen: "",
                         cantidad: 1,
                         tokenes: [],
                         precio: 0,
-                        tipo: AutographType.NFT,
+                        id: colecciones.length + 1,
+                        tipo: "NFT" as any,
                         titulo: "",
                         descripcion: "",
                         etiquetas: "",
                         npcIdiomas: "",
                         npcInstrucciones: "",
                         npcs: "",
+                        galeria: "",
                       });
                     }}
                   >
