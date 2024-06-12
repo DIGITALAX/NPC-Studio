@@ -44,8 +44,8 @@ export const ModalContext = createContext<
 >(undefined);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [mint, setMint] = useState<number>(1);
-  const [pantalla, setPantalla] = useState<number>(0);
+  const [mint, setMint] = useState<number>(3);
+  const [pantalla, setPantalla] = useState<number>(1);
   const [esArtista, setEsArtista] = useState<boolean>(false);
   const [mostrarNotificacion, setMostrarNotificacion] =
     useState<boolean>(false);

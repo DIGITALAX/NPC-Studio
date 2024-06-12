@@ -22,6 +22,12 @@ function PantallaCambio({
   esArtista,
   isConnected,
   openConnectModal,
+  colecciones,
+  setColeccionActual,
+  coleccionActual,
+  manejarArchivo,
+  manejarAhorar,
+  setColecciones
 }: PantallaCambioProps) {
   switch (pantalla) {
     case 1:
@@ -36,6 +42,12 @@ function PantallaCambio({
           esArtista={esArtista}
           isConnected={isConnected}
           openConnectModal={openConnectModal}
+          colecciones={colecciones}
+          setColeccionActual={setColeccionActual}
+          coleccionActual={coleccionActual}
+          manejarArchivo={manejarArchivo}
+          manejarAhorar={manejarAhorar}
+          setColecciones={setColecciones}
         />
       );
 

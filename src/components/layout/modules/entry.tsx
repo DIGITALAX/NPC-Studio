@@ -57,7 +57,16 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     dragDialog,
     setDragDialog,
   } = useDialog();
-  const { manejarMintear, mintCargando } = useMint(context?.setMint!);
+  const {
+    manejarMintear,
+    mintCargando,
+    colecciones,
+    setColecciones,
+    setColeccionActual,
+    coleccionActual,
+    manejarArchivo,
+    manejarAhorar,
+  } = useMint(context?.setMint!, publicClient);
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -86,6 +95,12 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             npc={npc}
             isConnected={isConnected}
             escena={escena}
+            colecciones={colecciones}
+            setColeccionActual={setColeccionActual}
+            coleccionActual={coleccionActual}
+            manejarArchivo={manejarArchivo}
+            manejarAhorar={manejarAhorar}
+            setColecciones={setColecciones}
             setNpc={setNpc}
             setCargando={setCargando}
             cargando={cargando}

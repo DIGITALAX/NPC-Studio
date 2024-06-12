@@ -1,4 +1,4 @@
-import { MutableRefObject, SetStateAction } from "react";
+import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
 
 export type LogProps = {
@@ -33,10 +33,16 @@ export type ProcessProps = {
   dict: Dictionary;
   isConnected: boolean;
   manejarMintear: () => Promise<void>;
+  manejarAhorar: () => Promise<void>;
   mintCargando: boolean;
   esArtista: boolean;
+  setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
+  colecciones: Coleccion[];
+  setColeccionActual: (e: SetStateAction<Coleccion>) => void;
+  coleccionActual: Coleccion;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) =>  void;
 };
 
 export type SceneProps = {
@@ -243,6 +249,12 @@ export type Dictionary = {
 export type PantallaCambioProps = {
   npc: string;
   escena: string;
+  colecciones: Coleccion[];
+  setColecciones: (e: SetStateAction<Coleccion[]>) => void;
+  setColeccionActual: (e: SetStateAction<Coleccion>) => void;
+  coleccionActual: Coleccion;
+  manejarAhorar: () => Promise<void>;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
   setNpc: (e: SetStateAction<string>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
@@ -257,3 +269,25 @@ export type PantallaCambioProps = {
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
 };
+
+export interface Coleccion {
+  imagen: string;
+  cantidad: number;
+  tokenes: `0x${string}`[];
+  precio: number;
+  tipo: AutographType;
+  titulo: string;
+  descripcion: string;
+  etiquetas: string;
+  npcIdiomas: string;
+  npcInstrucciones: string;
+  npcs: string;
+}
+
+export enum AutographType {
+  NFT,
+  Hoodie,
+  Shirt,
+  Catalog,
+  Mix,
+}
