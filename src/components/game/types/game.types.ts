@@ -254,7 +254,7 @@ export type PantallaCambioProps = {
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   manejarAhorar: () => Promise<void>;
-  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
   setNpc: (e: SetStateAction<string>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
