@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const CopyPlugin = require("copy-webpack-plugin");
+const path = require("path");
 const allowedOrigins = ["https://thedial.infura-ipfs.io"];
 
 const nextConfig = {
@@ -28,14 +29,14 @@ const nextConfig = {
         new CopyPlugin({
           patterns: [
             {
-              from: "node_modules/@xmtp/user-preferences-bindings-wasm/dist/node",
-              to: "chunks/[name][ext]",
-              filter: (resourcePath) => resourcePath.endsWith(".wasm"),
+              from: path.resolve(__dirname, 'node_modules/@xmtp/user-preferences-bindings-wasm/dist/node/*.wasm'),
+              to: path.resolve(__dirname, '.next/server/vendor-chunks/[name][ext]'),
             },
           ],
         })
       );
     }
+
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /^phaser3spectorjs$/,

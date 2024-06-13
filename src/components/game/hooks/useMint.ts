@@ -120,8 +120,8 @@ const useMint = (
       const uris: string[] = [];
 
       await Promise.all(
-        (colecciones.filter((col) => !col.galeriaId).length > 0
-          ? colecciones.filter((col) => col.galeriaId)
+        (colecciones.filter((col) => col.galeriaId).length > 0
+          ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
         ).map(async (col: Coleccion) => {
           let image = col.imagen;
