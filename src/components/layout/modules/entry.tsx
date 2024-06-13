@@ -12,7 +12,8 @@ import { ModalContext } from "../../../app/providers";
 import useMint from "../../game/hooks/useMint";
 import { Dictionary } from "@/components/game/types/game.types";
 import PantallaCambio from "@/components/game/modules/PantallaCambio";
-import Notificacion from "@/components/game/modules/Notificacion";
+import Notificacion from "@/components/common/modules/Notificacion";
+import { Notificacion as NotificacionType } from "@/components/common/types/common.types";
 import { polygon } from "viem/chains";
 import { createPublicClient } from "viem";
 
@@ -67,7 +68,19 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     manejarAhorar,
     setDropDown,
     dropDown,
-  } = useMint(context?.setMint!, publicClient, address);
+    mostrarGalerias,
+    setMostrarGalerias,
+    cargandoGalerias,
+    todasLasGalerias,
+    borrarColeccion,
+    borrarGaleria,
+    cargandoBorrar
+  } = useMint(
+    context?.setMint!,
+    publicClient,
+    address,
+    context?.setMostrarNotificacion!
+  );
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -94,6 +107,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         >
           <PantallaCambio
             npc={npc}
+            mostrarGalerias={mostrarGalerias}
+            setMostrarGalerias={setMostrarGalerias}
             isConnected={isConnected}
             escena={escena}
             colecciones={colecciones}
@@ -103,6 +118,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             manejarAhorar={manejarAhorar}
             setColecciones={setColecciones}
             setNpc={setNpc}
+            cargandoBorrar={cargandoBorrar}
             setCargando={setCargando}
             cargando={cargando}
             pantalla={context?.pantalla!}
@@ -116,6 +132,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             esArtista={context?.esArtista!}
             setDropDown={setDropDown}
             dropDown={dropDown}
+            cargandoGalerias={cargandoGalerias}
+            todasLasGalerias={todasLasGalerias}
+            borrarColeccion={borrarColeccion}
+            borrarGaleria={borrarGaleria}
           />
         </div>
       </div>
@@ -138,9 +158,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           wrapperRef={wrapperRef}
         />
       )}
-      {context?.mostrarNotificacion && (
+      {context?.mostrarNotificacion !== NotificacionType.Inactivo && (
         <Notificacion
           dict={dict}
+          tipo={context?.mostrarNotificacion!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
           mensajeCargando={mensajeCargando}
           manejarEnviarMensaje={manejarEnviarMensaje}

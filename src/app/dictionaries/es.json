@@ -29,10 +29,18 @@
     "tags": "Etiquetas",
     "npcL": "Idiomas de NPCs",
     "add": "Añada Colección",
+    "delete": "Borre Colección",
     "gMint": "Mintee La Galería",
     "gCreate": "Cree Nueva Galería",
     "tipo": "Type",
-    "gTitulo": "Título de La Galería"
+    "gTitulo": "Título de La Galería",
+    "save": "Ahore La Galería",
+    "all": "Todas Las Galerias",
+    "back": "Regresar",
+    "añadido": "¡Hecho! Tu colección ha sido añadida en-cadena.",
+    "coleccionEliminada": "Hecho. Tu colección ha sido borrada de la galería.",
+    "creado": "¡Hecho! Tu galería ahora está en-cadena.",
+    "galeriaEliminada": "Hecho. Tu galería ha sido borrada del cadena."
   },
   "Nav": {
     "lan": "Elija Idioma"

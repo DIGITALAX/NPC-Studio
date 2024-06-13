@@ -1,5 +1,6 @@
 import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
+import { Notificacion } from "./../../common/types/common.types";
 
 export type LogProps = {
   connected: boolean;
@@ -31,14 +32,17 @@ export type ProcessProps = {
   setMint: (e: SetStateAction<number>) => void;
   mint: number;
   dict: Dictionary;
+  borrarColeccion: () => Promise<void>;
+  borrarGaleria: (galeriaId: number) => Promise<void>;
   isConnected: boolean;
   manejarMintear: () => Promise<void>;
   manejarAhorar: () => Promise<void>;
   mintCargando: boolean;
   esArtista: boolean;
+  cargandoBorrar: boolean;
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   openConnectModal: (() => void) | undefined;
-  setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   colecciones: Coleccion[];
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
@@ -50,6 +54,10 @@ export type ProcessProps = {
     npcsTexto: string;
     idiomasTexto: string;
   };
+  mostrarGalerias: boolean;
+  setMostrarGalerias: (e: SetStateAction<boolean>) => void;
+  todasLasGalerias: Galeria[];
+  cargandoGalerias: boolean;
   setDropDown: (
     e: SetStateAction<{
       npcsAbiertos: boolean;
@@ -237,6 +245,13 @@ export type Dictionary = {
     title: string;
     create: string;
     gTitulo: string;
+    añadido: string;
+    coleccionEliminada: string;
+    creado: string;
+    galeriaEliminada: string;
+    save: string;
+    all: string;
+    back: string;
     orders: string;
     connect: string;
     message: string;
@@ -264,6 +279,7 @@ export type Dictionary = {
     tags: string;
     npcL: string;
     add: string;
+    delete: string;
     gMint: string;
     gCreate: string;
     tipo: string;
@@ -283,12 +299,15 @@ export type PantallaCambioProps = {
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
+  mostrarGalerias: boolean;
+  setMostrarGalerias: (e: SetStateAction<boolean>) => void;
   manejarAhorar: () => Promise<void>;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
   setNpc: (e: SetStateAction<string>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
   pantalla: number;
+  cargandoBorrar: boolean;
   setMint: (e: SetStateAction<number>) => void;
   mint: number;
   dict: Dictionary;
@@ -297,7 +316,9 @@ export type PantallaCambioProps = {
   isConnected: boolean;
   esArtista: boolean;
   openConnectModal: (() => void) | undefined;
-  setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  todasLasGalerias: Galeria[];
+  cargandoGalerias: boolean;
   dropDown: {
     npcsAbiertos: boolean;
     idiomasAbiertos: boolean;
@@ -305,6 +326,8 @@ export type PantallaCambioProps = {
     npcsTexto: string;
     idiomasTexto: string;
   };
+  borrarColeccion: () => Promise<void>;
+  borrarGaleria: (galeriaId: number) => Promise<void>;
   setDropDown: (
     e: SetStateAction<{
       npcsAbiertos: boolean;
@@ -315,6 +338,12 @@ export type PantallaCambioProps = {
     }>
   ) => void;
 };
+
+export interface Galeria {
+  galleryId: string;
+  collectionIds: string[];
+  colecciones: Coleccion[];
+}
 
 export interface Coleccion {
   galeria: string;
@@ -330,6 +359,9 @@ export interface Coleccion {
   npcIdiomas: string;
   npcInstrucciones: string;
   npcs: string;
+  tokenesMinteados: [];
+  galeriaId?: number;
+  coleccionId?: number;
 }
 
 export enum AutographType {

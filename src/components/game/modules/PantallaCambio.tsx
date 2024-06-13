@@ -22,6 +22,7 @@ function PantallaCambio({
   esArtista,
   isConnected,
   openConnectModal,
+  cargandoBorrar,
   colecciones,
   setColeccionActual,
   coleccionActual,
@@ -30,12 +31,24 @@ function PantallaCambio({
   setColecciones,
   setDropDown,
   dropDown,
+  mostrarGalerias,
+  setMostrarGalerias,
+  cargandoGalerias,
+  todasLasGalerias,
+  borrarColeccion,
+  borrarGaleria,
 }: PantallaCambioProps) {
   switch (pantalla) {
     case 1:
       return (
         <Process
+          borrarColeccion={borrarColeccion}
+          borrarGaleria={borrarGaleria}
+          mostrarGalerias={mostrarGalerias}
+          setMostrarGalerias={setMostrarGalerias}
           setDropDown={setDropDown}
+          cargandoGalerias={cargandoGalerias}
+          todasLasGalerias={todasLasGalerias}
           dropDown={dropDown}
           setMint={setMint!}
           mint={Number(mint)}
@@ -51,6 +64,7 @@ function PantallaCambio({
           coleccionActual={coleccionActual}
           manejarArchivo={manejarArchivo}
           manejarAhorar={manejarAhorar}
+          cargandoBorrar={cargandoBorrar}
           setColecciones={setColecciones}
         />
       );

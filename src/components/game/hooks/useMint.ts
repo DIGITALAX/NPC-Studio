@@ -1,17 +1,30 @@
 import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { AutographType, Coleccion } from "../types/game.types";
+import { Coleccion, Galeria } from "../types/game.types";
 import { polygonAmoy } from "viem/chains";
-import { AUTOGRAPH_COLLECTION, autographTypeToNumber } from "@/lib/constants";
+import {
+  AUTOGRAPH_COLLECTION,
+  INFURA_GATEWAY,
+  autographTypeToNumber,
+  numberToAutograph,
+} from "@/lib/constants";
 import AutographCollection from "./../../../../abis/AutographCollection.json";
+import convertirArchido from "@/lib/helpers/convertirArchivo";
+import { getGalleries } from "../../../../graphql/autograph/queries/getGalleries";
+import { Notificacion } from "@/components/common/types/common.types";
 
 const useMint = (
   setMint: (e: SetStateAction<number>) => void,
   publicClient: PublicClient,
-  address: `0x${string}` | undefined
+  address: `0x${string}` | undefined,
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void
 ) => {
   const [mintCargando, setMintCargando] = useState<boolean>(false);
+  const [cargandoGalerias, setCargandoGalerias] = useState<boolean>(false);
+  const [cargandoBorrar, setCargandoBorrar] = useState<boolean>(false);
+  const [todasLasGalerias, setTodasLasGalerias] = useState<Galeria[]>([]);
   const [colecciones, setColecciones] = useState<Coleccion[]>([]);
+  const [mostrarGalerias, setMostrarGalerias] = useState<boolean>(false);
   const [dropDown, setDropDown] = useState<{
     npcsAbiertos: boolean;
     idiomasAbiertos: boolean;
@@ -38,35 +51,94 @@ const useMint = (
     npcIdiomas: "",
     npcInstrucciones: "",
     npcs: "",
-    galeria:  "",
+    galeria: "",
+    tokenesMinteados: [],
   });
 
+  const llamarTodasLasGalerias = async () => {
+    setCargandoGalerias(true);
+    try {
+      const data = await getGalleries(address!);
+
+      const gals = await Promise.all(
+        data?.data?.galleryCreateds.map(async (gal: any) => {
+          return {
+            galleryId: gal.galleryId,
+            collectionIds: gal.collectionIds,
+            colecciones: await Promise.all(
+              gal.collections.map(async (col: any) => {
+                if (!col.collectionMetadata) {
+                  const cadena = await fetch(
+                    `${INFURA_GATEWAY}/ipfs/${col.uri.split("ipfs://")?.[1]}`
+                  );
+                  col.collectionMetadata = await cadena.json();
+                }
+
+                return {
+                  galeria: col.collectionMetadata.gallery,
+                  imagen: col.collectionMetadata.image,
+                  id: col.collectionId,
+                  cantidad: col.amount,
+                  tokenes: col.acceptedTokens,
+                  tokenesMinteados: col.mintedTokens,
+                  precio: col.price,
+                  tipo: numberToAutograph[Number(col.type)],
+                  titulo: col.collectionMetadata.title,
+                  descripcion: col.collectionMetadata.description,
+                  etiquetas: col.collectionMetadata.tags,
+                  npcIdiomas: col.collectionMetadata.locales,
+                  npcInstrucciones: col.collectionMetadata.instructions,
+                  npcs: col.collectionMetadata.npcs,
+                };
+              })
+            ),
+          };
+        })
+      );
+
+      setTodasLasGalerias(gals);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setCargandoGalerias(false);
+  };
+
   const manejarMintear = async () => {
-    setMintCargando(true);
     try {
       if (
-        colecciones?.map((el) => el.titulo.trim() == "").length > 0 ||
-        colecciones?.map((el) => el.descripcion.trim() == "").length > 0 ||
-        colecciones?.map((el) => el.imagen.trim() == "").length > 0 ||
-        colecciones?.map((el) => el.tokenes.length < 1).length > 0 ||
-        colecciones?.map((el) => el.precio < 1).length > 0 ||
-        colecciones?.map((el) => el.tipo.toString().trim() == "").length > 0
+        colecciones?.filter((el) => el.titulo.trim() == "").length > 0 ||
+        colecciones?.filter((el) => el.descripcion.trim() == "").length > 0 ||
+        colecciones?.filter((el) => el.imagen.trim() == "").length > 0 ||
+        colecciones?.filter((el) => el.tokenes.length < 1).length > 0 ||
+        colecciones?.filter((el) => el.precio < 1).length > 0 ||
+        colecciones?.filter((el) => el.tipo.toString().trim() == "").length > 0
       )
         return;
+
+      setMintCargando(true);
 
       const uris: string[] = [];
 
       await Promise.all(
-        colecciones.map(async (col: Coleccion) => {
-          const imagen = await fetch("/api/ipfs", {
-            method: "POST",
-            body: col.imagen,
-          });
-          const res = await imagen.json();
-          const image = "ipfs://" + res?.cid;
+        (colecciones.filter((col) => !col.galeriaId).length > 0
+          ? colecciones.filter((col) => col.galeriaId)
+          : colecciones
+        ).map(async (col: Coleccion) => {
+          let image = col.imagen;
+          if (!image.includes("ipfs://")) {
+            const imagen = await fetch(`/api/ipfs`, {
+              method: "POST",
+              body: convertirArchido(col.imagen, "image/png"),
+            });
+            const res = await imagen.json();
+            image = "ipfs://" + res?.cid;
+          }
 
           const response = await fetch("/api/ipfs", {
             method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
             body: JSON.stringify({
               title: col.titulo,
               description: col.descripcion,
@@ -90,26 +162,60 @@ const useMint = (
         transport: custom((window as any).ethereum),
       });
 
-      const { request } = await publicClient.simulateContract({
-        address: AUTOGRAPH_COLLECTION,
-        abi: AutographCollection,
-        functionName: "createGallery",
-        chain: polygonAmoy,
-        args: [
-          {
-            uris,
-            amounts: colecciones.map((col) => col.cantidad),
-            prices: colecciones.map((col) => col.precio * 10 ** 18),
-            acceptedTokens: colecciones.map((col) => col.tokenes),
-            collectionTypes: colecciones.map(
-              (col) => autographTypeToNumber[col.tipo]
-            ),
-          },
-        ],
-        account: address,
-      });
+      if (colecciones.filter((col) => col.galeriaId).length > 0) {
+        const { request } = await publicClient.simulateContract({
+          address: AUTOGRAPH_COLLECTION,
+          abi: AutographCollection,
+          functionName: "addCollections",
+          chain: polygonAmoy,
+          args: [
+            {
+              uris,
+              amounts: colecciones
+                .filter((col) => !col.galeriaId)
+                .map((col) => col.cantidad),
+              prices: colecciones
+                .filter((col) => !col.galeriaId)
+                .map((col) => col.precio * 10 ** 18),
+              acceptedTokens: colecciones
+                .filter((col) => !col.galeriaId)
+                .map((col) => col.tokenes),
+              collectionTypes: colecciones
+                .filter((col) => !col.galeriaId)
+                .map((col) => autographTypeToNumber[col.tipo]),
+            },
+            colecciones.map((col) => col.galeriaId)[0],
+          ],
+          account: address,
+        });
 
-      await clientWallet.writeContract(request);
+        await clientWallet.writeContract(request);
+
+        setMostrarNotificacion(Notificacion.Añadido);
+      } else {
+        const { request } = await publicClient.simulateContract({
+          address: AUTOGRAPH_COLLECTION,
+          abi: AutographCollection,
+          functionName: "createGallery",
+          chain: polygonAmoy,
+          args: [
+            {
+              uris,
+              amounts: colecciones.map((col) => col.cantidad),
+              prices: colecciones.map((col) => col.precio * 10 ** 18),
+              acceptedTokens: colecciones.map((col) => col.tokenes),
+              collectionTypes: colecciones.map(
+                (col) => autographTypeToNumber[col.tipo]
+              ),
+            },
+          ],
+          account: address,
+        });
+
+        await clientWallet.writeContract(request);
+
+        setMostrarNotificacion(Notificacion.Creado);
+      }
 
       setColeccionActual({
         imagen: "",
@@ -125,6 +231,7 @@ const useMint = (
         npcs: "",
         galeria: "",
         id: 0,
+        tokenesMinteados: [],
       });
       setDropDown({
         npcsAbiertos: false,
@@ -143,31 +250,88 @@ const useMint = (
     setMintCargando(false);
   };
 
-  const anadirCollecion = async () => {
-    setMintCargando(true);
+  const borrarColeccion = async () => {
+    setCargandoBorrar(true);
     try {
+      const clientWallet = createWalletClient({
+        chain: polygonAmoy,
+        transport: custom((window as any).ethereum),
+      });
+
+      const { request } = await publicClient.simulateContract({
+        address: AUTOGRAPH_COLLECTION,
+        abi: AutographCollection,
+        functionName: "deleteCollection",
+        chain: polygonAmoy,
+        args: [coleccionActual.coleccionId, coleccionActual.galeriaId],
+        account: address,
+      });
+
+      await clientWallet.writeContract(request);
+
+      setMostrarNotificacion(Notificacion.ColeccionEliminada);
+
+      setColecciones((prev) =>
+        prev.filter(
+          (item) => JSON.stringify(item) !== JSON.stringify(coleccionActual)
+        )
+      );
+      setColeccionActual({
+        imagen: "",
+        cantidad: 1,
+        tokenes: [],
+        precio: 0,
+        id: 0,
+        tipo: "NFT" as any,
+        titulo: "",
+        descripcion: "",
+        etiquetas: "",
+        npcIdiomas: "",
+        npcInstrucciones: "",
+        npcs: "",
+        galeria: "",
+        tokenesMinteados: [],
+      });
+      setDropDown({
+        npcsAbiertos: false,
+        idiomasAbiertos: false,
+        tiposAbiertos: false,
+        npcsTexto: "",
+        idiomasTexto: "",
+      });
     } catch (err: any) {
       console.error(err.message);
     }
-    setMintCargando(false);
+    setCargandoBorrar(false);
   };
 
-  const borrarCollecion = async () => {
-    setMintCargando(true);
+  const borrarGaleria = async (galeriaId: number) => {
+    setCargandoBorrar(true);
     try {
-    } catch (err: any) {
-      console.error(err.message);
-    }
-    setMintCargando(false);
-  };
+      const clientWallet = createWalletClient({
+        chain: polygonAmoy,
+        transport: custom((window as any).ethereum),
+      });
 
-  const borrarGalleria = async () => {
-    setMintCargando(true);
-    try {
+      const { request } = await publicClient.simulateContract({
+        address: AUTOGRAPH_COLLECTION,
+        abi: AutographCollection,
+        functionName: "deleteGallery",
+        chain: polygonAmoy,
+        args: [galeriaId],
+        account: address,
+      });
+
+      await clientWallet.writeContract(request);
+
+      setMostrarNotificacion(Notificacion.GaleriaEliminada);
+      setTodasLasGalerias((prev) =>
+        prev.filter((item) => Number(item.galleryId) !== galeriaId)
+      );
     } catch (err: any) {
       console.error(err.message);
     }
-    setMintCargando(false);
+    setCargandoBorrar(false);
   };
 
   const manejarArchivo = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -195,12 +359,18 @@ const useMint = (
 
   useEffect(() => {
     if (colecciones?.length < 1) {
-      const coleccionesGuardadas = localStorage.getItem("colecciones");
+      const coleccionesGuardadas = localStorage.getItem("coleccionesGaleria");
       if (coleccionesGuardadas) {
         setColecciones(JSON.parse(coleccionesGuardadas));
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (mostrarGalerias && address) {
+      llamarTodasLasGalerias();
+    }
+  }, [mostrarGalerias, address]);
 
   return {
     manejarMintear,
@@ -213,6 +383,13 @@ const useMint = (
     manejarAhorar,
     dropDown,
     setDropDown,
+    mostrarGalerias,
+    setMostrarGalerias,
+    cargandoGalerias,
+    todasLasGalerias,
+    borrarColeccion,
+    borrarGaleria,
+    cargandoBorrar,
   };
 };
 

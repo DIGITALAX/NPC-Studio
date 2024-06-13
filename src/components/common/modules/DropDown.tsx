@@ -11,6 +11,7 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
   setEstaAbierto,
   valores,
   manejarElegir,
+  disabled
 }): JSX.Element => {
   return (
     <div className="relative flex items-center justify-center flex-col w-52 h-fit">
@@ -21,7 +22,7 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
         <div className="relative bg-black flex flex-row w-full h-full justify-start items-center p-2 gap-2">
           <div
             className={`relative flex items-center justify-center cursor-pointer w-4 h-3 `}
-            onClick={() => setEstaAbierto()}
+            onClick={() => !disabled && setEstaAbierto()}
           >
             <Image
               layout="fill"
@@ -32,8 +33,9 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
           <input
             className={`relative w-full h-full p-1.5 bg-black flex items-center justify-center text-white text-sm`}
             value={valor}
-            disabled={!manejarCambio ? true : false}
-            onChange={(e) => manejarCambio && manejarCambio(e)}
+            
+            disabled={!manejarCambio || disabled ? true : false}
+            onChange={(e) =>  manejarCambio && manejarCambio(e)}
           />
         </div>
       </div>

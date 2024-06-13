@@ -143,10 +143,10 @@ export const SCENE_LIST: {
 ];
 
 export const LENS_HUB_PROXY: `0x${string}` =
-  "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d";
+  "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
 
 export const AUTOGRAPH_DATA: `0x${string}` =
-  "0x0B54B514b5aECc77C67A66e643CEDFd54B4411f0";
+  "0x883a24A5315c0E4Ff4451E6E2B760338FDC8faE8";
 
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
   "0xe57438297515C4B7c62FE13957413085A7e1763c";
@@ -184,27 +184,33 @@ export const ACCEPTED_TOKENS_AMOY: string[][] = [
   [
     "QmYYUQ8nGDnyuk8jQSung1WmTksvLEQBXjnCctdRrKtsNk",
     "WMATIC",
-    "0x3cf7283c025d82390e86d2feb96eda32a393036b",
+    "0x1f83476ed25e5ca2e32df06b8d1e59da38f25cca",
   ],
   [
     "QmZRhUgjK6bJM8fC7uV145yf66q2e7vGeT7CLosw1SdMdN",
     "WETH",
-    "0x566d63f1cc7f45bfc9b2bdc785ffcc6f858f0997",
+    "0xc4414eba4caa899f52463aa232e451ac31d00ed3",
   ],
   [
     "QmS6f8vrNZok9j4pJttUuWpNrjsf4vP9RD5mRL36z6UdaL",
     "MONA",
-    "0xf87b6343c172720ac9cc7d1c9465d63454a8ef30",
+    "0x5dd9a1636b221b45043b040a72f4229f8d66e40d",
   ],
   [
     "QmSbpsDRwxSCPBWPkwWvcb49jViSxzmNHjYy3AcGF3qM2x",
     "USDT",
-    "0x07b722856369f6b923e1f276abca58dd3d15243d",
+    "0x29244d4cb549c35a9e634b262e62a49aa7a14b80",
   ],
 ];
 
-export const autographTypeToNumber: { [key in AutographType]: number } = {
-  [AutographType.NFT]: 0,
-  [AutographType.Hoodie]: 1,
-  [AutographType.Shirt]: 2,
+export const autographTypeToNumber: { [key in string]: number } = {
+  ["NFT"]: 0,
+  ["Hoodie"]: 1,
+  ["Shirt"]: 2,
+};
+
+export const numberToAutograph: { [key in number]: string } = {
+  [0]: "NFT",
+  [1]: "Hoodie",
+  [2]: "Shirt",
 };

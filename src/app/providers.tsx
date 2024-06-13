@@ -9,6 +9,7 @@ import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, polygonAmoy } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
+import { Notificacion } from "@/components/common/types/common.types";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -37,8 +38,8 @@ export const ModalContext = createContext<
       setEsArtista: (e: SetStateAction<boolean>) => void;
       lensConectado: boolean;
       setLensConectado: (e: SetStateAction<boolean>) => void;
-      mostrarNotificacion: boolean;
-      setMostrarNotificacion: (e: SetStateAction<boolean>) => void;
+      mostrarNotificacion: Notificacion;
+      setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
     }
   | undefined
 >(undefined);
@@ -48,7 +49,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [pantalla, setPantalla] = useState<number>(1);
   const [esArtista, setEsArtista] = useState<boolean>(false);
   const [mostrarNotificacion, setMostrarNotificacion] =
-    useState<boolean>(false);
+    useState<Notificacion>(Notificacion.Inactivo);
   const [lensConectado, setLensConectado] = useState<boolean>(false);
 
   return (

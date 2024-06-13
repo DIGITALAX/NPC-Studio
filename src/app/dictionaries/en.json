@@ -29,10 +29,18 @@
     "tags": "Tags",
     "npcL": "NPC Languages",
     "add": "Add Collection",
+    "delete": "Delete Collection",
     "gMint": "Mint Gallery",
     "gCreate": "Create New Gallery",
     "tipo": "Type",
-    "gTitulo": "Gallery Title"
+    "gTitulo": "Gallery Title",
+    "save": "Save Gallery",
+    "all": "All Galleries",
+    "back": "Return",
+    "añadido": "¡Minted! Your collection has been added succesfully.",
+    "coleccionEliminada": "Your collection has been succesfully removed from the gallery.",
+    "creado": "¡Minted! Your gallery has been stored on-chain.",
+    "galeriaEliminada": "Your collection has been deleted from the chain."
   },
   "Nav": {
     "lan": "Choose Language"
