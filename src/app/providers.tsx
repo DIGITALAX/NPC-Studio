@@ -2,14 +2,14 @@
 
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Provider } from "react-redux";
-import { store } from "../redux/store";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { polygon, polygonAmoy } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
-import { Notificacion } from "@/components/common/types/common.types";
+import { Indexar, Notificacion } from "@/components/common/types/common.types";
+import { Profile } from "../../graphql/generated";
+import { OracleData } from "@/components/game/types/game.types";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -36,21 +36,31 @@ export const ModalContext = createContext<
       setPantalla: (e: SetStateAction<number>) => void;
       esArtista: boolean;
       setEsArtista: (e: SetStateAction<boolean>) => void;
-      lensConectado: boolean;
-      setLensConectado: (e: SetStateAction<boolean>) => void;
+      lensConectado: Profile | undefined;
+      setLensConectado: (e: SetStateAction<Profile | undefined>) => void;
       mostrarNotificacion: Notificacion;
       setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+      oracles: OracleData[];
+      setOracles: (e: SetStateAction<OracleData[]>) => void;
+      indexar: Indexar;
+      setIndexar: (e: SetStateAction<Indexar>) => void;
+      errorInteraccion: boolean;
+      setErrorInteraccion: (e: SetStateAction<boolean>) => void;
     }
   | undefined
 >(undefined);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [mint, setMint] = useState<number>(3);
-  const [pantalla, setPantalla] = useState<number>(1);
+  const [mint, setMint] = useState<number>(1);
+  const [pantalla, setPantalla] = useState<number>(0);
   const [esArtista, setEsArtista] = useState<boolean>(false);
-  const [mostrarNotificacion, setMostrarNotificacion] =
-    useState<Notificacion>(Notificacion.Inactivo);
-  const [lensConectado, setLensConectado] = useState<boolean>(false);
+  const [mostrarNotificacion, setMostrarNotificacion] = useState<Notificacion>(
+    Notificacion.Inactivo
+  );
+  const [lensConectado, setLensConectado] = useState<Profile | undefined>();
+  const [oracles, setOracles] = useState<OracleData[]>([]);
+  const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
+  const [indexar, setIndexar] = useState<Indexar>(Indexar.Inactivo);
 
   return (
     <WagmiProvider config={config}>
@@ -69,10 +79,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setMostrarNotificacion,
                 lensConectado,
                 setLensConectado,
+                setOracles,
+                oracles,
+                errorInteraccion,
+                setErrorInteraccion,
+                indexar,
+                setIndexar,
               }}
-            >
-              <Provider store={store}>{children}</Provider>
-            </ModalContext.Provider>
+            >{children}</ModalContext.Provider>
           </XMTPProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

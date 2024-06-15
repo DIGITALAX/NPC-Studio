@@ -13,6 +13,11 @@ export type DropDownProps = {
   disabled: boolean;
 };
 
+export type ErrorProps = {
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  dict: Dictionary;
+}
+
 export type NotificacionProps = {
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   dict: Dictionary;
@@ -23,6 +28,12 @@ export type NotificacionProps = {
   tipo: Notificacion;
 };
 
+export type IndexProps = {
+  dict: Dictionary;
+  tipo: Indexar;
+};
+
+
 export enum Notificacion {
   Diseñador,
   Inactivo,
@@ -30,6 +41,13 @@ export enum Notificacion {
   Añadido,
   GaleriaEliminada,
   ColeccionEliminada,
+  Perfil,
+}
+
+export enum Indexar {
+  Inactivo = "inactivo",
+  Exito = "success",
+  Indexando = "indexing"
 }
 
 export type NotificacionCambioProps = {
@@ -39,4 +57,9 @@ export type NotificacionCambioProps = {
   mensajeCargando: boolean;
   setMensaje: (e: string) => void;
   mensaje: string;
+};
+
+export type PantallaComprarProps = {
+  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void;
+  manejarMostrarArticulo: string | undefined;
 };

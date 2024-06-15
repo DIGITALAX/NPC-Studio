@@ -9,7 +9,8 @@ const useConfig = (
   chosenNpc: string,
   sceneKey: string,
   setNpc: (npc: SetStateAction<string>) => void,
-  setCargando: (e: SetStateAction<boolean>) => void
+  setCargando: (e: SetStateAction<boolean>) => void,
+  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
@@ -47,6 +48,10 @@ const useConfig = (
         game.registry.set(
           "chosenNpc",
           SCENE_LIST.find((clave) => clave.key == sceneKey)?.sprites[0]?.key!
+        );
+        game.registry.set(
+          "setManejarMostrarArticulo",
+          setManejarMostrarArticulo
         );
 
         game.events.once("ready", () => {

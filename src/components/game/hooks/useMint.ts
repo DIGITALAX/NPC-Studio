@@ -9,7 +9,7 @@ import {
   numberToAutograph,
 } from "@/lib/constants";
 import AutographCollection from "./../../../../abis/AutographCollection.json";
-import convertirArchido from "@/lib/helpers/convertirArchivo";
+import convertirArchivo from "@/lib/helpers/convertirArchivo";
 import { getGalleries } from "../../../../graphql/autograph/queries/getGalleries";
 import { Notificacion } from "@/components/common/types/common.types";
 
@@ -128,7 +128,7 @@ const useMint = (
           if (!image.includes("ipfs://")) {
             const imagen = await fetch(`/api/ipfs`, {
               method: "POST",
-              body: convertirArchido(col.imagen, "image/png"),
+              body: convertirArchivo(col.imagen, "image/png"),
             });
             const res = await imagen.json();
             image = "ipfs://" + res?.cid;

@@ -13,9 +13,14 @@ import useMint from "../../game/hooks/useMint";
 import { Dictionary } from "@/components/game/types/game.types";
 import PantallaCambio from "@/components/game/modules/PantallaCambio";
 import Notificacion from "@/components/common/modules/Notificacion";
-import { Notificacion as NotificacionType } from "@/components/common/types/common.types";
+import {
+  Indexar,
+  Notificacion as NotificacionType,
+} from "@/components/common/types/common.types";
 import { polygon } from "viem/chains";
 import { createPublicClient } from "viem";
+import Index from "@/components/common/modules/Index";
+import Error from "@/components/common/modules/Error";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -28,7 +33,16 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   });
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
-  const { npc, setNpc, setEscena, escena, setCargando, cargando } = useManage();
+  const {
+    npc,
+    setNpc,
+    setEscena,
+    escena,
+    setCargando,
+    cargando,
+    manejarMostrarArticulo,
+    setManejarMostrarArticulo,
+  } = useManage();
   const {
     lensCargando,
     manejarLens,
@@ -42,21 +56,38 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.setEsArtista!,
     context?.setLensConectado!,
     openAccountModal,
+    context?.setMostrarNotificacion!,
     address,
     publicClient,
-    dict
+    dict,
+    context?.lensConectado,
+    context?.oracles!,
+    context?.setOracles!
   );
   const {
-    indiceMensajeActual,
-    handleCompletarTyping,
     setIndiceConversacionActual,
     indiceConversacionActual,
-    setIndiceMensajeActual,
     contenedorMensajesRef,
     wrapperRef,
     dragDialog,
     setDragDialog,
-  } = useDialog();
+    setPerfilesAbiertos,
+    setMencionarPerfiles,
+    setCaretCoord,
+    setComentarPublicar,
+    perfilesAbiertos,
+    caretCoord,
+    comentarPublicar,
+    mencionarPerfiles,
+    publicacionCargando,
+    manejarPublicar,
+  } = useDialog(
+    address,
+    publicClient,
+    context?.setIndexar!,
+    context?.setErrorInteraccion!,
+    escena
+  );
   const {
     manejarMintear,
     mintCargando,
@@ -74,7 +105,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     todasLasGalerias,
     borrarColeccion,
     borrarGaleria,
-    cargandoBorrar
+    cargandoBorrar,
   } = useMint(
     context?.setMint!,
     publicClient,
@@ -85,7 +116,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
-          setMint={context?.setMint!}
+          manejarPublicar={manejarPublicar}
           connected={isConnected}
           lensConectado={context?.lensConectado!}
           manejarSalir={manejarSalir}
@@ -93,13 +124,19 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           manejarLens={manejarLens}
           openConnectModal={openConnectModal}
           setDragDialog={setDragDialog}
-          indiceMensajeActual={indiceMensajeActual}
-          handleCompletarTyping={handleCompletarTyping}
-          indiceConversacionActual={indiceConversacionActual}
           contenedorMensajesRef={contenedorMensajesRef}
           cargando={cargando}
           dict={dict}
           setPantalla={context?.setPantalla!}
+          setPerfilesAbiertos={setPerfilesAbiertos}
+          setMencionarPerfiles={setMencionarPerfiles}
+          setCaretCoord={setCaretCoord}
+          setComentarPublicar={setComentarPublicar}
+          perfilesAbiertos={perfilesAbiertos[0]}
+          caretCoord={caretCoord}
+          comentarPublicar={comentarPublicar[0]}
+          mencionarPerfiles={mencionarPerfiles}
+          publicacionCargando={publicacionCargando}
         />
         <div
           className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
@@ -107,6 +144,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         >
           <PantallaCambio
             npc={npc}
+            manejarMostrarArticulo={manejarMostrarArticulo}
+            setManejarMostrarArticulo={setManejarMostrarArticulo}
             mostrarGalerias={mostrarGalerias}
             setMostrarGalerias={setMostrarGalerias}
             isConnected={isConnected}
@@ -148,14 +187,23 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          manejarPublicar={manejarPublicar}
           setDragDialog={setDragDialog}
-          indiceMensajeActual={indiceMensajeActual}
-          handleCompletarTyping={handleCompletarTyping}
-          setIndiceConversacionActual={setIndiceConversacionActual}
-          indiceConversacionActual={indiceConversacionActual}
-          setIndiceMensajeActual={setIndiceMensajeActual}
           contenedorMensajesRef={contenedorMensajesRef}
           wrapperRef={wrapperRef}
+          setIndiceConversacionActual={setIndiceConversacionActual}
+          indiceConversacionActual={indiceConversacionActual}
+          setPerfilesAbiertos={setPerfilesAbiertos}
+          setMencionarPerfiles={setMencionarPerfiles}
+          setCaretCoord={setCaretCoord}
+          setComentarPublicar={setComentarPublicar}
+          perfilesAbiertos={perfilesAbiertos[0]}
+          caretCoord={caretCoord}
+          comentarPublicar={comentarPublicar[0]}
+          mencionarPerfiles={mencionarPerfiles}
+          lensConectado={context?.lensConectado!}
+          dict={dict}
+          publicacionCargando={publicacionCargando}
         />
       )}
       {context?.mostrarNotificacion !== NotificacionType.Inactivo && (
@@ -167,6 +215,15 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           manejarEnviarMensaje={manejarEnviarMensaje}
           setMensaje={setMensaje}
           mensaje={mensaje}
+        />
+      )}
+      {context?.indexar !== Indexar.Inactivo && (
+        <Index dict={dict} tipo={context?.indexar!} />
+      )}
+      {context?.errorInteraccion && (
+        <Error
+          dict={dict}
+          setErrorInteraccion={context?.setErrorInteraccion!}
         />
       )}
     </div>

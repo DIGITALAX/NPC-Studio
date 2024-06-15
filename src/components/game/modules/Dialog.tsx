@@ -9,27 +9,45 @@ import { IoIosCloseCircle } from "react-icons/io";
 
 const Dialog: FunctionComponent<DialogProps> = ({
   setDragDialog,
-  indiceMensajeActual,
-  handleCompletarTyping,
   setIndiceConversacionActual,
-  indiceConversacionActual,
-  setIndiceMensajeActual,
   contenedorMensajesRef,
   wrapperRef,
+  setPerfilesAbiertos,
+  setMencionarPerfiles,
+  setCaretCoord,
+  setComentarPublicar,
+  perfilesAbiertos,
+  caretCoord,
+  comentarPublicar,
+  mencionarPerfiles,
+  lensConectado,
+  dict,
+  publicacionCargando,
+  manejarPublicar,
 }) => {
   return (
     <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
-      <div className="absolute w-72 h-fit flex flex-col items-start justify-start p-2 rounded-md border-4 border-white bg-black/80 cursor-grab active:cursor-grabbing">
+      <div className="absolute w-96 h-fit flex flex-col items-start justify-start p-2 rounded-md border-4 border-white bg-black/80 cursor-grab active:cursor-grabbing gap-6">
         <div className="relative w-full h-fit flex items-start justify-start flex-col gap-3">
           <div className="close" onClick={() => setDragDialog(false)}>
             <IoIosCloseCircle size={20} color="white" />
           </div>
           <Chat
-            indiceMensajeActual={indiceMensajeActual}
-            handleCompletarTyping={handleCompletarTyping}
-            indiceConversacionActual={indiceConversacionActual}
+            manejarPublicar={manejarPublicar}
             contenedorMensajesRef={contenedorMensajesRef}
             open
+            dict={dict}
+            publicacionCargando={publicacionCargando}
+            lensConectado={lensConectado}
+            indice={0}
+            setPerfilesAbiertos={setPerfilesAbiertos}
+            setMencionarPerfiles={setMencionarPerfiles}
+            setCaretCoord={setCaretCoord}
+            setComentarPublicar={setComentarPublicar}
+            perfilesAbiertos={perfilesAbiertos}
+            caretCoord={caretCoord}
+            comentarPublicar={comentarPublicar}
+            mencionarPerfiles={mencionarPerfiles}
           />
         </div>
         <div className="relative w-full h-fit flex items-end justify-end">
@@ -41,7 +59,6 @@ const Dialog: FunctionComponent<DialogProps> = ({
                   setIndiceConversacionActual((prev) =>
                     prev - 1 >= 0 ? prev - 1 : messages.length - 1
                   );
-                  setIndiceMensajeActual(0);
                 },
               },
               {
@@ -50,7 +67,6 @@ const Dialog: FunctionComponent<DialogProps> = ({
                   setIndiceConversacionActual((prev) =>
                     prev + 1 < messages.length ? prev + 1 : 0
                   );
-                  setIndiceMensajeActual(0);
                 },
               },
             ].map(

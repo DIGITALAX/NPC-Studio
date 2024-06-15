@@ -5,6 +5,9 @@ const useManage = () => {
   const [escena, setEscena] = useState<string>(SCENE_LIST[0]?.key);
   const [npc, setNpc] = useState<string>(SCENE_LIST[0]?.sprites?.[0]?.key);
   const [cargando, setCargando] = useState<boolean>(false);
+  const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<
+    string | undefined
+  >();
 
   return {
     npc,
@@ -13,6 +16,8 @@ const useManage = () => {
     setEscena,
     cargando,
     setCargando,
+    setManejarMostrarArticulo,
+    manejarMostrarArticulo
   };
 };
 

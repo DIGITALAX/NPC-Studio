@@ -1,7 +1,5 @@
-/** @type {import('next').NextConfig} */
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
-const allowedOrigins = ["https://thedial.infura-ipfs.io"];
 
 const nextConfig = {
   reactStrictMode: false,
@@ -30,7 +28,8 @@ const nextConfig = {
           patterns: [
             {
               from: path.resolve(__dirname, 'node_modules/@xmtp/user-preferences-bindings-wasm/dist/node/*.wasm'),
-              to: path.resolve(__dirname, '.next/server/vendor-chunks/[name][ext]'),
+              to: path.resolve(__dirname, '.next/server/vendor-chunks/'),
+              noErrorOnMissing: true,
             },
           ],
         })
@@ -42,15 +41,11 @@ const nextConfig = {
         resourceRegExp: /^phaser3spectorjs$/,
       })
     );
-    config.module.rules.push({
-      test: /\.wasm$/,
-      type: "asset/resource",
-    });
-
+   
     config.experiments = {
-      asyncWebAssembly: true,
+      asyncWebAssembly: true,      
       syncWebAssembly: true,
-      layers: true,
+      layers: true
     };
 
     if (!isServer) {
@@ -64,6 +59,7 @@ const nextConfig = {
   async headers() {
     let headersConfig = [];
 
+    const allowedOrigins = ["https://thedial.infura-ipfs.io"];
     allowedOrigins.forEach((origin) => {
       headersConfig.push({
         source: "/(.*)",

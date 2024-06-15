@@ -1,23 +1,38 @@
 import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
 import { Notificacion } from "./../../common/types/common.types";
+import { Profile, SimpleCollectOpenActionModuleInput } from "../../../../graphql/generated";
 
 export type LogProps = {
   connected: boolean;
-  lensConectado: boolean;
+  lensConectado: Profile | undefined;
   openConnectModal: (() => void) | undefined;
   manejarSalir: () => void;
   manejarLens: () => Promise<void>;
   lensCargando: boolean;
   setDragDialog: (e: SetStateAction<boolean>) => void;
-  indiceMensajeActual: number;
-  handleCompletarTyping: () => void;
-  indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   cargando: boolean;
-  setMint: (e: SetStateAction<number>) => void;
   dict: Dictionary;
   setPantalla: (e: SetStateAction<number>) => void;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  perfilesAbiertos: boolean;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  setCaretCoord: (
+    e: SetStateAction<{
+      x: number;
+      y: number;
+    }>
+  ) => void;
+  comentarPublicar: ComentarPublicar;
+  mencionarPerfiles: Profile[];
+  publicacionCargando: boolean;
+  manejarPublicar: () => Promise<void>
 };
 
 export type MintProps = {
@@ -92,23 +107,69 @@ export interface Waypoint {
 }
 
 export type DialogProps = {
-  indiceMensajeActual: number;
-  handleCompletarTyping: () => void;
   setIndiceConversacionActual: (e: SetStateAction<number>) => void;
-  setIndiceMensajeActual: (e: SetStateAction<number>) => void;
   indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   wrapperRef: MutableRefObject<Draggable | null>;
   setDragDialog: (e: SetStateAction<boolean>) => void;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  perfilesAbiertos: boolean;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  setCaretCoord: (
+    e: SetStateAction<{
+      x: number;
+      y: number;
+    }>
+  ) => void;
+  comentarPublicar: ComentarPublicar;
+  mencionarPerfiles: Profile[];
+  lensConectado: Profile | undefined;
+  dict: Dictionary;
+  manejarPublicar: () => Promise<void>
+  publicacionCargando: boolean;
 };
 
 export type ChatProps = {
-  indiceMensajeActual: number;
-  handleCompletarTyping: () => void;
-  indiceConversacionActual: number;
   contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   open?: boolean;
+  lensConectado: Profile | undefined;
+  indice: number;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  perfilesAbiertos: boolean;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  manejarPublicar: () => Promise<void>
+  setCaretCoord: (
+    e: SetStateAction<{
+      x: number;
+      y: number;
+    }>
+  ) => void;
+  comentarPublicar: ComentarPublicar;
+  mencionarPerfiles: Profile[];
+  dict: Dictionary;
+  publicacionCargando: boolean;
 };
+
+export interface ComentarPublicar {
+  contenido: string | undefined;
+  imagenes: {
+    media: string;
+    tipo: string;
+  }[];
+  videos: string[];
+  gifs: string[]
+  coleccionar?: SimpleCollectOpenActionModuleInput | undefined;
+}
 
 export enum Direccion {
   Izquierda = "izquierda",
@@ -143,6 +204,7 @@ export interface Escena {
   }[];
   profundidad: Articulo[];
   sillas: Seat[];
+  interactivos: Articulo[];
   fondo: {
     etiqueta: string;
     uri: string;
@@ -245,6 +307,7 @@ export type Dictionary = {
     title: string;
     create: string;
     gTitulo: string;
+    error: string;
     añadido: string;
     coleccionEliminada: string;
     creado: string;
@@ -296,6 +359,8 @@ export type PantallaCambioProps = {
   npc: string;
   escena: string;
   colecciones: Coleccion[];
+  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void;
+  manejarMostrarArticulo: string | undefined;
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
@@ -368,4 +433,10 @@ export enum AutographType {
   NFT,
   Hoodie,
   Shirt,
+}
+
+export interface OracleData {
+  currency: string;
+  rate: string;
+  wei: string;
 }

@@ -1,6 +1,6 @@
-import { AutographType } from "@/components/game/types/game.types";
-
 export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
+export const BASE_URL: string = "https://api-v2.lens.dev/";
+export const IPFS_REGEX: RegExp = /\b(Qm[1-9A-Za-z]{44}|ba[A-Za-z2-7]{57})\b/;
 
 export const IDIOMAS: { cover: string; key: string }[] = [
   { key: "א", cover: "Qmdyd6iUPYNruEi5BJaYnoJ8H4FDwqxJF4EAzLvYZfxgXE" },
@@ -41,11 +41,11 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-ático",
+        key: "muchacho-atico",
         cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
       },
       {
-        key: "chica-ático",
+        key: "chica-atico",
         cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
       },
     ],

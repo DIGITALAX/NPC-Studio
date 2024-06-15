@@ -37,6 +37,8 @@ function PantallaCambio({
   todasLasGalerias,
   borrarColeccion,
   borrarGaleria,
+  manejarMostrarArticulo,
+  setManejarMostrarArticulo
 }: PantallaCambioProps) {
   switch (pantalla) {
     case 1:
@@ -77,6 +79,8 @@ function PantallaCambio({
         <Studio
           npc={npc}
           escena={escena}
+          manejarMostrarArticulo={manejarMostrarArticulo}
+          setManejarMostrarArticulo={setManejarMostrarArticulo}
           setNpc={setNpc}
           setCargando={setCargando}
           cargando={cargando}

@@ -40,7 +40,10 @@
     "añadido": "¡Hecho! Tu colección ha sido añadida en-cadena.",
     "coleccionEliminada": "Hecho. Tu colección ha sido borrada de la galería.",
     "creado": "¡Hecho! Tu galería ahora está en-cadena.",
-    "galeriaEliminada": "Hecho. Tu galería ha sido borrada del cadena."
+    "galeriaEliminada": "Hecho. Tu galería ha sido borrada del cadena.",
+     "success": "Interación Exitosa",
+    "indexing": "Interación Indexando",
+    "error": "Algo salió mal al indexar su interacción. ¿Inténtelo de nuevo?"
   },
   "Nav": {
     "lan": "Elija Idioma"

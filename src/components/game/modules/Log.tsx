@@ -9,18 +9,24 @@ function Log({
   connected,
   openConnectModal,
   setDragDialog,
-  indiceMensajeActual,
-  handleCompletarTyping,
-  indiceConversacionActual,
   contenedorMensajesRef,
   cargando,
-  setMint,
   dict,
   manejarSalir,
   manejarLens,
   lensCargando,
   setPantalla,
   lensConectado,
+  setPerfilesAbiertos,
+  setMencionarPerfiles,
+  setCaretCoord,
+  setComentarPublicar,
+  perfilesAbiertos,
+  caretCoord,
+  comentarPublicar,
+  mencionarPerfiles,
+  manejarPublicar,
+  publicacionCargando,
 }: LogProps) {
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
@@ -104,15 +110,21 @@ function Log({
             )}
           </div>
         </div>
-        <div className="relative w-full h-96 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-row p-2 gap-4">
-          <div className="relative w-fit h-full flex flex-col items-center justify-between">
-            <div className="absolute font-at text-4xl text-white items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5 top-1">
+        <div className="relative w-full h-96 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-col py-1 px-2 gap-3">
+          <div className="relative w-full h-fit flex flex-row items-center justify-between">
+            <div className="absolute font-at text-3xl text-white items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5 top-1">
               {dict.Home.chat}
             </div>
-            <div className="relative font-at text-4xl text-viola items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5">
+            <div className="relative font-at text-3xl text-viola items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5">
               {dict.Home.chat}
             </div>
-            <div className="relative w-20 h-20 flex items-center justify-center border-black border-2">
+            <div
+              className="relative w-fit cursor-pointer h-fit flex items-center justify-center active:scale-95 mr-0"
+              onClick={() => setDragDialog((prev) => !prev)}
+            >
+              <PiArrowSquareInBold size={15} color="white" />
+            </div>
+            {/* <div className="relative w-20 h-20 flex items-center justify-center border-black border-2">
               <Image
                 src={`${INFURA_GATEWAY}/ipfs/QmbNktia71Ec2wKsDxL5BeJrDWTrQX9xpMSQs5AUZCaryi`}
                 draggable={false}
@@ -120,23 +132,25 @@ function Log({
                 layout="fill"
                 priority
               />
-            </div>
+            </div> */}
           </div>
-          <div className="relative w-full h-full flex items-center justify-center gap-1.5 flex-col py-2 px-1">
-            <div className="relative w-full h-fit flex items-end justify-end">
-              <div
-                className="relative w-fit cursor-pointer h-fit flex items-center justify-center active:scale-95 mr-0"
-                onClick={() => setDragDialog((prev) => !prev)}
-              >
-                <PiArrowSquareInBold size={15} color="white" />
-              </div>
-            </div>
-            <div className="relative w-full h-full flex items-center justify-center p-2 bg-black/80 border-lime rounded-md border-2">
+          <div className="relative w-full h-full flex items-center justify-center gap-1.5 flex-col">
+            <div className="relative w-full h-full flex items-center justify-center p-1">
               <Chat
-                indiceMensajeActual={indiceMensajeActual}
-                handleCompletarTyping={handleCompletarTyping}
-                indiceConversacionActual={indiceConversacionActual}
+                manejarPublicar={manejarPublicar}
+                publicacionCargando={publicacionCargando}
+                dict={dict}
                 contenedorMensajesRef={contenedorMensajesRef}
+                lensConectado={lensConectado}
+                indice={0}
+                setPerfilesAbiertos={setPerfilesAbiertos}
+                setMencionarPerfiles={setMencionarPerfiles}
+                setCaretCoord={setCaretCoord}
+                setComentarPublicar={setComentarPublicar}
+                perfilesAbiertos={perfilesAbiertos}
+                caretCoord={caretCoord}
+                comentarPublicar={comentarPublicar}
+                mencionarPerfiles={mencionarPerfiles}
               />
             </div>
           </div>

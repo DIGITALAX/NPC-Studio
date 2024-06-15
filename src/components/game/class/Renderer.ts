@@ -11,6 +11,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private sceneKey!: string;
   private seatsTaken: Seat[];
   private npcCamara!: string;
+  private setManejarMostrarArticulo!: (etiqueta: string) => void;
   private esperandoRespuesta: boolean;
   private caminosInciales: {
     [textureKey: string]: Estado[];
@@ -27,6 +28,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     this.socket = this.game.registry.get("socket");
     this.sceneKey = this.game.registry.get("sceneKey");
     this.npcCamara = this.game.registry.get("chosenNpc");
+    this.setManejarMostrarArticulo = this.game.registry.get(
+      "setManejarMostrarArticulo"
+    );
 
     if (this.load && this.load.isLoading()) {
       this.load.reset();
@@ -89,6 +93,9 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         `${INFURA_GATEWAY}/ipfs/${this.escena?.fondo.uri}`
       );
       this.escena?.objetos.forEach((obj) => {
+        this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
+      });
+      this.escena?.interactivos.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
       this.escena?.sillas.forEach((obj) => {
@@ -206,6 +213,38 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
+      this.escena.interactivos.forEach((obj) => {
+        const interactivo = this.physics.add
+          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setSize(obj.talla.x, obj.talla.y)
+          .setScale(obj.escala.x, obj.escala.y)
+          .setDisplaySize(obj.talla.x, obj.talla.y)
+          .setDepth(
+            obj?.profundidad !== undefined && profundidad !== null
+              ? obj.profundidad
+              : obj.sitio.y
+          );
+        interactivo.setInteractive();
+        interactivo.on("pointerdown", () => {
+          this.setManejarMostrarArticulo(obj.etiqueta);
+        });
+        interactivo.on("pointerover", () => {
+          this.game.canvas.style.cursor = "pointer";
+        });
+        interactivo.on("pointerout", () => {
+          this.game.canvas.style.cursor = "default";
+        });
+        this.tweens.add({
+          targets: interactivo,
+          y: interactivo.y + 20,
+          yoyo: true,
+          repeat: -1,
+          duration: 1000,
+          ease: "Sine.easeInOut",
+        });
+      });
+
       this.cameras.main.setBounds(
         0,
         0,
@@ -240,7 +279,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     }
   }
 
-  update(time: number) {
+  update() {
     if (
       Object.values(this.npcs).length > 0 &&
       this.escena?.clave == this.sceneKey &&

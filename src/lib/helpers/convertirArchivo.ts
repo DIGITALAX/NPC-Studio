@@ -1,4 +1,4 @@
-const convertirArchido = (base64: string, mimeType: string) => {
+const convertirArchivo = (base64: string, mimeType: string) => {
   const byteString = atob(base64.split(",")[1]);
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
@@ -10,4 +10,4 @@ const convertirArchido = (base64: string, mimeType: string) => {
   return new Blob([ab], { type: mimeType });
 };
 
-export default convertirArchido;
+export default convertirArchivo;
