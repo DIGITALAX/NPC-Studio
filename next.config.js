@@ -23,13 +23,42 @@ const nextConfig = {
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (isServer) {
+      // config.plugins.push(
+      //   new CopyPlugin({
+      //     patterns: [
+      //       {
+      //         from: path.resolve(__dirname, 'node_modules/@xmtp/user-preferences-bindings-wasm/dist/node/*.wasm'),
+      //         to: path.join(__dirname, '.next/server/chunks/'),
+      //         noErrorOnMissing: true,
+      //       },
+      //     ],
+      //   })
+      // );
+
       config.plugins.push(
         new CopyPlugin({
           patterns: [
             {
-              from: path.resolve(__dirname, 'node_modules/@xmtp/user-preferences-bindings-wasm/dist/node/*.wasm'),
-              to: path.join(__dirname, '.next/server/chunks/'),
-              noErrorOnMissing: true,
+              context: ".next/server",
+              to: "./app/[name][ext]",
+              from: path.resolve(
+                __dirname,
+                "node_modules/@xmtp/user-preferences-bindings-wasm/dist/node"
+              ),
+              filter: (resourcePath) => resourcePath.endsWith(".wasm"),
+            },
+          ],
+        }),
+        new CopyPlugin({
+          patterns: [
+            {
+              context: ".next/server",
+              to: "./chunks/[name][ext]",
+              from: path.resolve(
+                __dirname,
+                "node_modules/@xmtp/user-preferences-bindings-wasm/dist/node"
+              ),
+              filter: (resourcePath) => resourcePath.endsWith(".wasm"),
             },
           ],
         })
