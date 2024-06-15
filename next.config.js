@@ -28,7 +28,7 @@ const nextConfig = {
           patterns: [
             {
               from: path.resolve(__dirname, 'node_modules/@xmtp/user-preferences-bindings-wasm/dist/node/*.wasm'),
-              to: path.resolve(__dirname, '.next/server/vendor-chunks/'),
+              to: path.join(__dirname, '.next/server/chunks/'),
               noErrorOnMissing: true,
             },
           ],
@@ -41,11 +41,11 @@ const nextConfig = {
         resourceRegExp: /^phaser3spectorjs$/,
       })
     );
-   
+
     config.experiments = {
-      asyncWebAssembly: true,      
+      asyncWebAssembly: true,
       syncWebAssembly: true,
-      layers: true
+      layers: true,
     };
 
     if (!isServer) {

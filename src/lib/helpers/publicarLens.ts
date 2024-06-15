@@ -1,7 +1,13 @@
 import { omit } from "lodash";
 import LensHubProxy from "./../../../abis/LensHubProxy.json";
-import { OpenActionModuleInput, InputMaybe } from "../../../graphql/generated";
-import { polygon } from "viem/chains";
+import {
+  OpenActionModuleInput,
+  InputMaybe,
+  CreateOnchainCommentTypedDataMutation,
+  CreateOnchainPostTypedDataMutation,
+  CreateOnchainCommentEip712TypedDataValue,
+} from "../../../graphql/generated";
+import { polygonAmoy } from "viem/chains";
 import { PublicClient, WalletClient } from "viem";
 import postOnChain from "../../../graphql/lens/mutations/post";
 import broadcast from "../../../graphql/lens/mutations/broadcast";
@@ -11,6 +17,7 @@ import limpiarColeccion from "./limpiarColeccion";
 import { SetStateAction } from "react";
 import { Indexar } from "@/components/common/types/common.types";
 import validateMetadata from "../../../graphql/lens/queries/validate";
+import commentPost from "../../../graphql/lens/mutations/comment";
 
 const publicarLens = async (
   contentURI: string,
@@ -20,8 +27,7 @@ const publicarLens = async (
   publicClient: PublicClient,
   setIndexar: (e: SetStateAction<Indexar>) => void,
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
-  closeBox?: () => void,
-  create?: boolean
+  comentario?: string
 ): Promise<void> => {
   if (
     openActionModules &&
@@ -32,7 +38,7 @@ const publicarLens = async (
     openActionModules?.[0]?.collectOpenAction?.simpleCollectOpenAction
   ) {
     openActionModules = limpiarColeccion(openActionModules);
-  } else if (!create) {
+  } else {
     openActionModules = [
       {
         collectOpenAction: {
@@ -53,30 +59,43 @@ const publicarLens = async (
     return;
   }
 
-  const data = await postOnChain({
-    contentURI,
-    openActionModules,
-  });
+  const data = comentario
+    ? await commentPost({
+        commentOn: comentario,
+        contentURI: contentURI,
+        openActionModules,
+      })
+    : await postOnChain({
+        contentURI,
+        openActionModules,
+      });
 
-  const typedData = data?.data?.createOnchainPostTypedData?.typedData;
+  const typedData = comentario
+    ? (data?.data as CreateOnchainCommentTypedDataMutation)
+        ?.createOnchainCommentTypedData?.typedData
+    : (data?.data as CreateOnchainPostTypedDataMutation)
+        ?.createOnchainPostTypedData?.typedData;
 
   const signature = await clientWallet.signTypedData({
     domain: omit(typedData?.domain, ["__typename"]),
     types: omit(typedData?.types, ["__typename"]),
-    primaryType: "Post",
-    message: omit(typedData?.value, ["__typename"]),
+    primaryType: comentario ? "Comment" : ("Post" as any),
+    message: omit(typedData?.value, ["__typename"]) as any,
     account: address as `0x${string}`,
   });
 
   const broadcastResult = await broadcast({
-    id: data?.data?.createOnchainPostTypedData?.id,
+    id: comentario
+      ? (data?.data as CreateOnchainCommentTypedDataMutation)
+          ?.createOnchainCommentTypedData?.id
+      : (data?.data as CreateOnchainPostTypedDataMutation)
+          ?.createOnchainPostTypedData?.id,
     signature,
   });
 
   if (broadcastResult?.data?.broadcastOnchain?.__typename === "RelaySuccess") {
     setIndexar(Indexar.Indexando);
 
-    closeBox && closeBox();
     await handleIndexCheck(
       {
         forTxId: broadcastResult?.data?.broadcastOnchain?.txId,
@@ -88,24 +107,48 @@ const publicarLens = async (
     const { request } = await publicClient.simulateContract({
       address: LENS_HUB_PROXY,
       abi: LensHubProxy,
-      functionName: "post",
-      chain: polygon,
+      functionName: comentario ? "comment" : "post",
+      chain: polygonAmoy,
       args: [
-        {
-          profileId: parseInt(typedData?.value.profileId, 16),
-          contentURI: typedData?.value.contentURI,
-          actionModules: typedData?.value?.actionModules,
-          actionModulesInitDatas: typedData?.value?.actionModulesInitDatas,
-          referenceModule: typedData?.value?.referenceModule,
-          referenceModuleInitData: typedData?.value?.referenceModuleInitData,
-        },
+        comentario
+          ? {
+              profileId: typedData?.value.profileId,
+              contentURI: typedData?.value.contentURI,
+              pointedProfileId: (
+                typedData?.value as CreateOnchainCommentEip712TypedDataValue
+              ).pointedProfileId,
+              pointedPubId: (
+                typedData?.value as CreateOnchainCommentEip712TypedDataValue
+              ).pointedPubId,
+              referrerProfileIds: (
+                typedData?.value as CreateOnchainCommentEip712TypedDataValue
+              ).referrerProfileIds,
+              referrerPubIds: (
+                typedData?.value as CreateOnchainCommentEip712TypedDataValue
+              ).referrerPubIds,
+              referenceModuleData: (
+                typedData?.value as CreateOnchainCommentEip712TypedDataValue
+              ).referenceModuleData,
+              actionModules: typedData?.value.actionModules,
+              actionModulesInitDatas: typedData?.value.actionModulesInitDatas,
+              referenceModule: typedData?.value.referenceModule,
+              referenceModuleInitData: typedData?.value.referenceModuleInitData,
+            }
+          : {
+              profileId: parseInt(typedData?.value.profileId, 16),
+              contentURI: typedData?.value.contentURI,
+              actionModules: typedData?.value?.actionModules,
+              actionModulesInitDatas: typedData?.value?.actionModulesInitDatas,
+              referenceModule: typedData?.value?.referenceModule,
+              referenceModuleInitData:
+                typedData?.value?.referenceModuleInitData,
+            },
       ],
       account: address,
     });
 
     const res = await clientWallet.writeContract(request);
     setIndexar(Indexar.Indexando);
-    closeBox && closeBox();
     const tx = await publicClient.waitForTransactionReceipt({ hash: res });
     await handleIndexCheck(
       {

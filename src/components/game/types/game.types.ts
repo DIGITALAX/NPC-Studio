@@ -1,7 +1,16 @@
 import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
-import { Notificacion } from "./../../common/types/common.types";
-import { Profile, SimpleCollectOpenActionModuleInput } from "../../../../graphql/generated";
+import { Indexar, Notificacion } from "./../../common/types/common.types";
+import {
+  Comment,
+  Mirror,
+  OpenActionModule,
+  Post,
+  Profile,
+  Quote,
+  SimpleCollectOpenActionModuleInput,
+} from "../../../../graphql/generated";
+import { PublicClient } from "viem";
 
 export type LogProps = {
   connected: boolean;
@@ -11,28 +20,36 @@ export type LogProps = {
   manejarLens: () => Promise<void>;
   lensCargando: boolean;
   setDragDialog: (e: SetStateAction<boolean>) => void;
-  contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   cargando: boolean;
+  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
   dict: Dictionary;
   setPantalla: (e: SetStateAction<number>) => void;
-  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
-  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
-  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
-  perfilesAbiertos: boolean;
-  caretCoord: {
-    x: number;
-    y: number;
-  };
-  setCaretCoord: (
+  address: `0x${string}` | undefined;
+  publicClient: PublicClient;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  escena: string;
+  setVerImagen: (
     e: SetStateAction<{
-      x: number;
-      y: number;
+      abierto: boolean;
+      tipo: string;
+      url: string;
     }>
   ) => void;
-  comentarPublicar: ComentarPublicar;
-  mencionarPerfiles: Profile[];
-  publicacionCargando: boolean;
-  manejarPublicar: () => Promise<void>
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: OpenActionModule;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
 };
 
 export type MintProps = {
@@ -108,66 +125,75 @@ export interface Waypoint {
 
 export type DialogProps = {
   setIndiceConversacionActual: (e: SetStateAction<number>) => void;
-  indiceConversacionActual: number;
-  contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   wrapperRef: MutableRefObject<Draggable | null>;
   setDragDialog: (e: SetStateAction<boolean>) => void;
-  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
-  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
-  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
-  perfilesAbiertos: boolean;
-  caretCoord: {
-    x: number;
-    y: number;
-  };
-  setCaretCoord: (
-    e: SetStateAction<{
-      x: number;
-      y: number;
-    }>
-  ) => void;
-  comentarPublicar: ComentarPublicar;
-  mencionarPerfiles: Profile[];
   lensConectado: Profile | undefined;
   dict: Dictionary;
-  manejarPublicar: () => Promise<void>
-  publicacionCargando: boolean;
+  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  address: `0x${string}` | undefined;
+  publicClient: PublicClient;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  escena: string;
+  setVerImagen: (e: SetStateAction<{
+    abierto: boolean;
+    tipo: string;
+    url: string;
+}>) => void
+  setSeguirColeccionar: (
+    e: SetStateAction<{
+      tipo: string;
+      collecionar: {
+        id: string;
+        stats: number;
+        item: OpenActionModule;
+      };
+      seguidor: Profile;
+    } | undefined>
+  ) => void;
 };
 
 export type ChatProps = {
-  contenedorMensajesRef: MutableRefObject<HTMLDivElement | null>;
   open?: boolean;
-  lensConectado: Profile | undefined;
-  indice: number;
-  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
-  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
-  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
-  perfilesAbiertos: boolean;
-  caretCoord: {
-    x: number;
-    y: number;
-  };
-  manejarPublicar: () => Promise<void>
-  setCaretCoord: (
+  dict: Dictionary;
+  address: `0x${string}` | undefined;
+  publicClient: PublicClient;
+  setVerImagen: (
     e: SetStateAction<{
-      x: number;
-      y: number;
+      abierto: boolean;
+      tipo: string;
+      url: string;
     }>
   ) => void;
-  comentarPublicar: ComentarPublicar;
-  mencionarPerfiles: Profile[];
-  dict: Dictionary;
-  publicacionCargando: boolean;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: OpenActionModule;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  escena: string;
+  lensConectado: Profile | undefined;
+  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
 };
 
 export interface ComentarPublicar {
   contenido: string | undefined;
   imagenes: {
-    media: string;
+    medios: string;
     tipo: string;
   }[];
   videos: string[];
-  gifs: string[]
+  gifs: string[];
   coleccionar?: SimpleCollectOpenActionModuleInput | undefined;
 }
 
@@ -308,6 +334,9 @@ export type Dictionary = {
     create: string;
     gTitulo: string;
     error: string;
+    mirror: string;
+    comment: string;
+    quote: string;
     añadido: string;
     coleccionEliminada: string;
     creado: string;

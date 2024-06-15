@@ -1,145 +1,145 @@
 import { FunctionComponent, useRef } from "react";
 import { ChatProps } from "../types/game.types";
-import Image from "next/legacy/image";
-import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { Profile } from "../../../../graphql/generated";
-import manejarBuscarPerfiles from "@/lib/helpers/manejarBuscarPerfiles";
-import { AiOutlineLoading } from "react-icons/ai";
+import { Comment, Mirror, Post, Quote } from "../../../../graphql/generated";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Publicacion from "@/components/common/modules/Publicacion";
+import Comentario from "@/components/common/modules/Comentario";
+import useInteracciones from "@/components/common/hooks/useInteracciones";
+import useDialog from "../hooks/useDialog";
+import useFeed from "@/components/common/hooks/useFeed";
 
 const Chat: FunctionComponent<ChatProps> = ({
-  contenedorMensajesRef,
   open,
   lensConectado,
-  indice,
-  setPerfilesAbiertos,
-  setMencionarPerfiles,
-  setCaretCoord,
-  setComentarPublicar,
-  perfilesAbiertos,
-  caretCoord,
-  comentarPublicar,
-  mencionarPerfiles,
   dict,
-  publicacionCargando,
-  manejarPublicar
+  address,
+  publicClient,
+  setIndexar,
+  setErrorInteraccion,
+  escena,
+  setAbrirCita,
+  setSeguirColeccionar,
+  setVerImagen
 }): JSX.Element => {
-  const elementoTexto = useRef<HTMLTextAreaElement | null>(null);
+  const {
+    feedCargando,
+    feedActual,
+    setFeedActual,
+    tieneMasFeed,
+    masFeedCargando,
+    llamarMasFeed,
+  } = useFeed(lensConectado, escena);
+
+  const {
+    comentariosAbiertos,
+    setComentariosAbiertos,
+    abrirMirrorEleccion,
+    setAbrirMirrorEleccion,
+    cargandoInteracciones,
+    manejarMeGusta,
+    manejarMirror,
+    manejarColeccionar,
+  } = useInteracciones(
+    lensConectado,
+    setErrorInteraccion,
+    feedActual,
+    setFeedActual,
+    address,
+    publicClient,
+    setIndexar
+  );
+  const {
+    contenedorMensajesRef,
+    setPerfilesAbiertos,
+    setMencionarPerfiles,
+    setCaretCoord,
+    setComentarPublicar,
+    perfilesAbiertos,
+    caretCoord,
+    comentarPublicar,
+    mencionarPerfiles,
+    publicacionCargando,
+    manejarPublicar,
+  } = useDialog(address, publicClient, setIndexar, setErrorInteraccion, escena);
+  const elementoTexto = useRef(null);
   return (
     <div
-      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 max-w-full text-white break-all ${
-        open ? "h-96 overflow-y-scroll" : "h-full"
+      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 max-w-full text-white break-all gap-6 ${
+        open ? "h-96 overflow-y-scroll" : "h-80 max-h-full"
       }`}
       ref={contenedorMensajesRef}
     >
-      <div className="relative w-full h-full flex items-start justify-center"></div>
-      <div className="relative w-full text-white font-aust bg-black/80 border-lime border-2 flex items-center justify-center text-left rounded-md h-40 bottom-0">
-        <textarea
-          className="bg-black/80 relative w-full text-sm h-full p-1 flex rounded-md"
-          style={{ resize: "none" }}
-          value={comentarPublicar?.contenido}
-          onChange={(e) => {
-            setComentarPublicar((prev) => {
-              const arr = [...prev];
-              arr[indice] = {
-                ...arr[indice],
-                contenido: e.target.value,
-              };
-              return arr;
-            });
-            manejarBuscarPerfiles(
-              e,
-              setPerfilesAbiertos,
-              setMencionarPerfiles,
-              indice,
-              lensConectado,
-              setCaretCoord,
-              elementoTexto
-            );
-          }}
-          ref={elementoTexto}
-          disabled={publicacionCargando}
-        ></textarea>
-        <div
-          className={`absolute font-vcr bottom-2 right-2 flex items-center justify-center border border-white rounded-md w-14 text-xxs h-7 ${
-            !publicacionCargando && "cursor-pointer active:scale-95"
-          }`}
-          onClick={() => manejarPublicar()}
+      <div
+        className={`relative h-full flex items-center justify-start overflow-y-scroll max-w-full flex-col w-full`}
+      >
+        <InfiniteScroll
+          dataLength={feedActual?.length}
+          loader={<></>}
+          hasMore={tieneMasFeed}
+          next={llamarMasFeed}
+          className="w-full h-fit items-start justify-start flex flex-col gap-4"
         >
-          {publicacionCargando ? (
-            <div
-              className={`relative w-fit h-fit flex items-center justify-center ${
-                publicacionCargando && "animate-spin"
-              }`}
-            >
-              <AiOutlineLoading size={15} color="white" />
-            </div>
-          ) : (
-            dict.Home.send
-          )}
-        </div>
-        {mencionarPerfiles?.length > 0 && perfilesAbiertos && (
-          <div
-            className={`absolute w-40 border border-white max-h-40 h-fit flex flex-col overflow-y-auto items-start justify-start z-100`}
-            style={{
-              top: caretCoord.y + 30,
-              left: caretCoord.x,
-            }}
-          >
-            {mencionarPerfiles?.map((user: Profile, indexTwo: number) => {
-              const profileImage = createProfilePicture(
-                user?.metadata?.picture
-              );
-              return (
-                <div
-                  key={indexTwo}
-                  className={`relative border-y border-white w-full h-10 px-3 py-2 bg-black flex flex-row gap-3 cursor-pointer items-center justify-center`}
-                  onClick={() => {
-                    setPerfilesAbiertos((prev) => {
-                      const arr = [...prev];
-                      arr[indice] = false;
-                      return arr;
-                    });
-
-                    setComentarPublicar((prev) => {
-                      const arr = [...prev];
-                      arr[indice] = {
-                        ...arr[indice],
-                        contenido:
-                          comentarPublicar?.contenido?.substring(
-                            0,
-                            comentarPublicar?.contenido?.lastIndexOf("@")
-                          ) + `${user?.handle?.suggestedFormatted?.localName}`,
-                      };
-                      return arr;
-                    });
-                  }}
-                >
-                  <div className="relative flex flex-row w-full h-full text-white font-aust items-center justify-center gap-2">
-                    <div
-                      className={`relative rounded-full flex bg-black w-3 h-3 items-center justify-center`}
-                      id="pfp"
-                    >
-                      {profileImage && (
-                        <Image
-                          src={profileImage}
-                          objectFit="cover"
-                          alt="pfp"
-                          layout="fill"
-                          className="relative w-fit h-fit rounded-full items-center justify-center flex"
-                          draggable={false}
-                        />
-                      )}
-                    </div>
-                    <div className="relative items-center justify-center w-fit h-fit text-xs flex">
-                      {user?.handle?.suggestedFormatted?.localName}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+          {feedCargando
+            ? Array.from({ length: 10 }).map((_, indice: number) => {
+                return (
+                  <div
+                    key={indice}
+                    className={`relative rounded-sm h-32 px-1 py-3 sm:py-2 sm:px-2 flex flex-col gap-4 sm:gap-2 border-2 publicacions-center justify-between border-white w-full animate-pulse bg-black/70`}
+                  ></div>
+                );
+              })
+            : feedActual?.map(
+                (elemento: Post | Quote | Mirror | Comment, indice: number) => {
+                  return (
+                    <Publicacion
+                      key={indice}
+                      setCaretCoord={setCaretCoord}
+                      caretCoord={caretCoord}
+                      indice={indice + 1}
+                      dict={dict}
+                      publicacion={elemento}
+                      comentariosAbiertos={comentariosAbiertos}
+                      setComentariosAbiertos={setComentariosAbiertos}
+                      abrirMirrorEleccion={abrirMirrorEleccion}
+                      setAbrirMirrorEleccion={setAbrirMirrorEleccion}
+                      cargandoInteracciones={cargandoInteracciones[indice]}
+                      setAbrirCita={setAbrirCita}
+                      manejarMeGusta={manejarMeGusta}
+                      manejarMirror={manejarMirror}
+                      manejarColeccionar={manejarColeccionar}
+                      setSeguirColeccionar={setSeguirColeccionar}
+                      setComentarPublicar={setComentarPublicar}
+                      setMencionarPerfiles={setMencionarPerfiles}
+                      setPerfilesAbiertos={setPerfilesAbiertos}
+                      comentarPublicar={comentarPublicar}
+                      perfilesAbiertos={perfilesAbiertos}
+                      publicacionCargando={publicacionCargando[indice]}
+                      manejarPublicar={manejarPublicar}
+                      mencionarPerfiles={mencionarPerfiles}
+                      lensConectado={lensConectado}
+                      setVerImagen={setVerImagen}
+                    />
+                  );
+                }
+              )}
+        </InfiniteScroll>
       </div>
+      <Comentario
+        elementoTexto={elementoTexto}
+        caretCoord={caretCoord}
+        setCaretCoord={setCaretCoord}
+        setPerfilesAbiertos={setPerfilesAbiertos}
+        setMencionarPerfiles={setMencionarPerfiles}
+        indice={0}
+        lensConectado={lensConectado}
+        publicacionCargando={publicacionCargando[0]}
+        manejarPublicar={manejarPublicar}
+        dict={dict}
+        mencionarPerfiles={mencionarPerfiles}
+        perfilesAbiertos={perfilesAbiertos}
+        comentarPublicar={comentarPublicar}
+        setComentarPublicar={setComentarPublicar}
+      />
     </div>
   );
 };

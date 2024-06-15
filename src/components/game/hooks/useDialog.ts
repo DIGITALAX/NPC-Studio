@@ -1,5 +1,4 @@
 import { SetStateAction, useRef, useState } from "react";
-import Draggable from "react-draggable";
 import { ComentarPublicar } from "../types/game.types";
 import { Profile } from "../../../../graphql/generated";
 import { PublicClient, createWalletClient, custom } from "viem";
@@ -15,35 +14,32 @@ const useDialog = (
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
   sceneKey: string
 ) => {
-  const wrapperRef = useRef<Draggable | null>(null);
   const contenedorMensajesRef = useRef<HTMLDivElement | null>(null);
-  const [dragDialog, setDragDialog] = useState<boolean>(false);
-  const [indiceConversacionActual, setIndiceConversacionActual] =
-    useState<number>(0);
-  const [caretCoord, setCaretCoord] = useState<{
-    x: number;
-    y: number;
-  }>({
-    x: 0,
-    y: 0,
-  });
+  const [caretCoord, setCaretCoord] = useState<
+    {
+      x: number;
+      y: number;
+    }[]
+  >([]);
   const [perfilesAbiertos, setPerfilesAbiertos] = useState<boolean[]>([]);
   const [mencionarPerfiles, setMencionarPerfiles] = useState<Profile[]>([]);
   const [comentarPublicar, setComentarPublicar] = useState<ComentarPublicar[]>(
     []
   );
-  const [publicacionCargando, setPublicacionCargando] =
-    useState<boolean>(false);
+  const [publicacionCargando, setPublicacionCargando] = useState<boolean[]>([]);
 
-  const manejarPublicar = async () => {
+  const manejarPublicar = async (indice: number, comentarioId?: string) => {
     if (
       !comentarPublicar[0]?.contenido &&
       !comentarPublicar[0]?.imagenes &&
       !comentarPublicar[0]?.videos
     )
       return;
-    setPublicacionCargando(true);
-
+    setPublicacionCargando((prev) => {
+      const updatedArray = [...prev];
+      updatedArray[indice] = true;
+      return updatedArray;
+    });
     try {
       const contentURI = await subirContenido(
         comentarPublicar[0]?.contenido?.trim() == ""
@@ -75,7 +71,8 @@ const useDialog = (
         clientWallet,
         publicClient,
         setIndexar,
-        setErrorInteraccion
+        setErrorInteraccion,
+        comentarioId
       );
       setComentarPublicar([
         {
@@ -100,16 +97,15 @@ const useDialog = (
         }, 3000);
       }
     }
-    setPublicacionCargando(false);
+    setPublicacionCargando((prev) => {
+      const updatedArray = [...prev];
+      updatedArray[indice] = false;
+      return updatedArray;
+    });
   };
 
   return {
-    setIndiceConversacionActual,
-    indiceConversacionActual,
     contenedorMensajesRef,
-    wrapperRef,
-    dragDialog,
-    setDragDialog,
     setPerfilesAbiertos,
     setMencionarPerfiles,
     setCaretCoord,

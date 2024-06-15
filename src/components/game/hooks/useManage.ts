@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SCENE_LIST } from "../../../lib/constants";
+import Draggable from "react-draggable";
 
 const useManage = () => {
   const [escena, setEscena] = useState<string>(SCENE_LIST[0]?.key);
@@ -8,6 +9,10 @@ const useManage = () => {
   const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<
     string | undefined
   >();
+  const wrapperRef = useRef<Draggable | null>(null);
+  const [dragDialog, setDragDialog] = useState<boolean>(false);
+  const [indiceConversacionActual, setIndiceConversacionActual] =
+    useState<number>(0);
 
   return {
     npc,
@@ -17,7 +22,12 @@ const useManage = () => {
     cargando,
     setCargando,
     setManejarMostrarArticulo,
-    manejarMostrarArticulo
+    manejarMostrarArticulo,
+    wrapperRef,
+    dragDialog,
+    setDragDialog,
+    indiceConversacionActual,
+    setIndiceConversacionActual,
   };
 };
 

@@ -5,7 +5,7 @@ import convertirArchivo from "./convertirArchivo";
 const subirContenido = async (
   contentText: string | undefined,
   images: {
-    media: string;
+    medios: string;
     tipo: string;
   }[],
   videos: string[],
@@ -24,14 +24,14 @@ const subirContenido = async (
     const cleanedGifs = images
       ?.map((item) => {
         if (item.tipo !== "image/png") {
-          return item.media;
+          return item.medios;
         }
       })
       ?.filter(Boolean);
     const cleanedImages = images
       ?.map((item) => {
         if (item?.tipo !== "image/gif") {
-          return item.media;
+          return item.medios;
         }
       })
       ?.filter(Boolean);
@@ -60,20 +60,20 @@ const subirContenido = async (
       ?.filter((item) => item.item);
 
     const uploads = await Promise.all(
-      mediaWithKeys.map(async (media) => {
+      mediaWithKeys.map(async (medios) => {
         if (
-          typeof media?.item == "string" &&
-          ((media?.item as String)?.includes("ipfs://") ||
-            (media?.item as String)?.includes("https://media.tenor.com"))
+          typeof medios?.item == "string" &&
+          ((medios?.item as String)?.includes("ipfs://") ||
+            (medios?.item as String)?.includes("https://media.tenor.com"))
         ) {
-          return { type: media?.type, item: media?.item };
+          return { type: medios?.type, item: medios?.item };
         } else {
           const response = await fetch("/api/ipfs", {
             method: "POST",
-            body: media.item,
+            body: medios.item,
           });
           const responseJSON = await response.json();
-          return { type: media?.type, item: "ipfs://" + responseJSON.cid };
+          return { type: medios?.type, item: "ipfs://" + responseJSON.cid };
         }
       })
     );
@@ -95,7 +95,7 @@ const subirContenido = async (
     }
 
     const attachments = uploads.filter(
-      (media) => media.item !== primaryMedia.item
+      (medios) => medios.item !== primaryMedia.item
     );
 
     if (attachments?.length > 0) {

@@ -10,20 +10,17 @@ import { IoIosCloseCircle } from "react-icons/io";
 const Dialog: FunctionComponent<DialogProps> = ({
   setDragDialog,
   setIndiceConversacionActual,
-  contenedorMensajesRef,
   wrapperRef,
-  setPerfilesAbiertos,
-  setMencionarPerfiles,
-  setCaretCoord,
-  setComentarPublicar,
-  perfilesAbiertos,
-  caretCoord,
-  comentarPublicar,
-  mencionarPerfiles,
   lensConectado,
   dict,
-  publicacionCargando,
-  manejarPublicar,
+  address,
+  publicClient,
+  setIndexar,
+  setErrorInteraccion,
+  escena,
+  setAbrirCita,
+  setSeguirColeccionar,
+  setVerImagen
 }) => {
   return (
     <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
@@ -33,21 +30,17 @@ const Dialog: FunctionComponent<DialogProps> = ({
             <IoIosCloseCircle size={20} color="white" />
           </div>
           <Chat
-            manejarPublicar={manejarPublicar}
-            contenedorMensajesRef={contenedorMensajesRef}
             open
+            setSeguirColeccionar={setSeguirColeccionar}
+            setAbrirCita={setAbrirCita}
             dict={dict}
-            publicacionCargando={publicacionCargando}
+            setVerImagen={setVerImagen}
             lensConectado={lensConectado}
-            indice={0}
-            setPerfilesAbiertos={setPerfilesAbiertos}
-            setMencionarPerfiles={setMencionarPerfiles}
-            setCaretCoord={setCaretCoord}
-            setComentarPublicar={setComentarPublicar}
-            perfilesAbiertos={perfilesAbiertos}
-            caretCoord={caretCoord}
-            comentarPublicar={comentarPublicar}
-            mencionarPerfiles={mencionarPerfiles}
+            address={address}
+            publicClient={publicClient}
+            setIndexar={setIndexar}
+            setErrorInteraccion={setErrorInteraccion}
+            escena={escena}
           />
         </div>
         <div className="relative w-full h-fit flex items-end justify-end">

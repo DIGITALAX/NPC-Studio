@@ -43,7 +43,10 @@
     "galeriaEliminada": "Your collection has been deleted from the chain.",
     "success": "Interaction Successful",
     "indexing": "Indexing Interaction",
-    "error": "Something Went Wrong Indexing Your Interaction. Try Again?"
+    "error": "Something Went Wrong Indexing Your Interaction. Try Again?",
+    "comment": "Comentario de",
+    "mirror": "Mirror de",
+    "quote": "Cita de"
   },
   "Nav": {
     "lan": "Choose Language"

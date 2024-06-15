@@ -9,7 +9,6 @@ function Log({
   connected,
   openConnectModal,
   setDragDialog,
-  contenedorMensajesRef,
   cargando,
   dict,
   manejarSalir,
@@ -17,16 +16,14 @@ function Log({
   lensCargando,
   setPantalla,
   lensConectado,
-  setPerfilesAbiertos,
-  setMencionarPerfiles,
-  setCaretCoord,
-  setComentarPublicar,
-  perfilesAbiertos,
-  caretCoord,
-  comentarPublicar,
-  mencionarPerfiles,
-  manejarPublicar,
-  publicacionCargando,
+  address,
+  publicClient,
+  setIndexar,
+  setErrorInteraccion,
+  escena,
+  setAbrirCita,
+  setSeguirColeccionar,
+  setVerImagen,
 }: LogProps) {
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
@@ -134,25 +131,19 @@ function Log({
               />
             </div> */}
           </div>
-          <div className="relative w-full h-full flex items-center justify-center gap-1.5 flex-col">
-            <div className="relative w-full h-full flex items-center justify-center p-1">
-              <Chat
-                manejarPublicar={manejarPublicar}
-                publicacionCargando={publicacionCargando}
-                dict={dict}
-                contenedorMensajesRef={contenedorMensajesRef}
-                lensConectado={lensConectado}
-                indice={0}
-                setPerfilesAbiertos={setPerfilesAbiertos}
-                setMencionarPerfiles={setMencionarPerfiles}
-                setCaretCoord={setCaretCoord}
-                setComentarPublicar={setComentarPublicar}
-                perfilesAbiertos={perfilesAbiertos}
-                caretCoord={caretCoord}
-                comentarPublicar={comentarPublicar}
-                mencionarPerfiles={mencionarPerfiles}
-              />
-            </div>
+          <div className="relative w-full h-full flex items-center justify-center p-1">
+            <Chat
+              setVerImagen={setVerImagen}
+              setSeguirColeccionar={setSeguirColeccionar}
+              dict={dict}
+              lensConectado={lensConectado}
+              address={address}
+              publicClient={publicClient}
+              setIndexar={setIndexar}
+              setErrorInteraccion={setErrorInteraccion}
+              escena={escena}
+              setAbrirCita={setAbrirCita}
+            />
           </div>
         </div>
         <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">

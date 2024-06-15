@@ -43,7 +43,10 @@
     "galeriaEliminada": "Hecho. Tu galería ha sido borrada del cadena.",
      "success": "Interación Exitosa",
     "indexing": "Interación Indexando",
-    "error": "Algo salió mal al indexar su interacción. ¿Inténtelo de nuevo?"
+    "error": "Algo salió mal al indexar su interacción. ¿Inténtelo de nuevo?",
+    "comment": "Comment on",
+    "mirror": "Mirror on",
+    "quote": "Quote on"
   },
   "Nav": {
     "lan": "Elija Idioma"

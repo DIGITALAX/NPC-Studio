@@ -9,7 +9,7 @@ const manejarBuscarPerfiles = async (
   setMentionProfiles: (e: SetStateAction<Profile[]>) => void,
   index: number,
   lensConnected: Profile | undefined,
-  setCaretCoord: (e: SetStateAction<{ x: number; y: number }>) => void,
+  setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void,
   textElement: RefObject<HTMLTextAreaElement>
 ): Promise<void> => {
   try {
@@ -24,7 +24,11 @@ const manejarBuscarPerfiles = async (
         arr[index] = true;
         return arr;
       });
-      setCaretCoord(getCaretPos(e, textElement));
+      setCaretCoord((prev) => {
+        const arr = [...prev];
+        arr[index] = getCaretPos(e, textElement);
+        return arr;
+      });
     }
     if (
       e.target.value.split(" ")[e.target.value.split(" ")?.length - 1][0] ===

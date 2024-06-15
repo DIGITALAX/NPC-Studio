@@ -8,7 +8,7 @@ import { polygon, polygonAmoy } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { Indexar, Notificacion } from "@/components/common/types/common.types";
-import { Profile } from "../../graphql/generated";
+import { OpenActionModule, Profile, Quote } from "../../graphql/generated";
 import { OracleData } from "@/components/game/types/game.types";
 
 const config = getDefaultConfig({
@@ -46,6 +46,45 @@ export const ModalContext = createContext<
       setIndexar: (e: SetStateAction<Indexar>) => void;
       errorInteraccion: boolean;
       setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+      abrirCita: Quote | undefined;
+      setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+      seguirColeccionar:
+        | {
+            tipo: string;
+            collecionar: {
+              id: string;
+              stats: number;
+              item: OpenActionModule;
+            };
+            seguidor: Profile;
+          }
+        | undefined;
+      setSeguirColeccionar: (
+        e: SetStateAction<
+          | {
+              tipo: string;
+              collecionar: {
+                id: string;
+                stats: number;
+                item: OpenActionModule;
+              };
+              seguidor: Profile;
+            }
+          | undefined
+        >
+      ) => void;
+      verImagen: {
+        abierto: boolean;
+        tipo: string;
+        url: string;
+      };
+      setVerImagen: (
+        e: SetStateAction<{
+          abierto: boolean;
+          tipo: string;
+          url: string;
+        }>
+      ) => void;
     }
   | undefined
 >(undefined);
@@ -61,6 +100,28 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [oracles, setOracles] = useState<OracleData[]>([]);
   const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
   const [indexar, setIndexar] = useState<Indexar>(Indexar.Inactivo);
+  const [verImagen, setVerImagen] = useState<{
+    abierto: boolean;
+    tipo: string;
+    url: string;
+  }>({
+    abierto: false,
+    tipo: "",
+    url: "",
+  });
+  const [abrirCita, setAbrirCita] = useState<Quote | undefined>();
+  const [seguirColeccionar, setSeguirColeccionar] = useState<
+    | {
+        tipo: string;
+        collecionar: {
+          id: string;
+          stats: number;
+          item: OpenActionModule;
+        };
+        seguidor: Profile;
+      }
+    | undefined
+  >();
 
   return (
     <WagmiProvider config={config}>
@@ -71,6 +132,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               value={{
                 mint,
                 setMint,
+                verImagen,
+                setVerImagen,
                 pantalla,
                 setPantalla,
                 esArtista,
@@ -85,8 +148,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setErrorInteraccion,
                 indexar,
                 setIndexar,
+                abrirCita,
+                setAbrirCita,
+                seguirColeccionar,
+                setSeguirColeccionar,
               }}
-            >{children}</ModalContext.Provider>
+            >
+              {children}
+            </ModalContext.Provider>
           </XMTPProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
