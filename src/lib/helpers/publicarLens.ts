@@ -27,7 +27,9 @@ const publicarLens = async (
   publicClient: PublicClient,
   setIndexar: (e: SetStateAction<Indexar>) => void,
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
-  comentario?: string
+  setCargando: () => void,
+  comentario?: string,
+  creacion?: boolean
 ): Promise<void> => {
   if (
     openActionModules &&
@@ -38,7 +40,7 @@ const publicarLens = async (
     openActionModules?.[0]?.collectOpenAction?.simpleCollectOpenAction
   ) {
     openActionModules = limpiarColeccion(openActionModules);
-  } else {
+  } else if (!creacion) {
     openActionModules = [
       {
         collectOpenAction: {
@@ -56,6 +58,7 @@ const publicarLens = async (
 
   if (!metadata?.data?.validatePublicationMetadata.valid) {
     setErrorInteraccion(true);
+    setCargando();
     return;
   }
 

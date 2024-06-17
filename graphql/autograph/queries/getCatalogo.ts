@@ -1,20 +1,31 @@
 import { autographClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
-const ORACULO = `
-  query {
-    currencyAddeds {
-        currency
-        rate
-        wei
-      }
+const CATALOGO = gql(
+  `query {
+   autographCreateds(first: 1) {
+    id
+    uri
+    amount
+    price
+    mintedTokens
+    pageCount
+    profileId
+    pubId
+    designer
+    acceptedTokens
+    pages
+    transactionHash
+    blockTimestamp
+    blockNumber
   }
-`;
+  }`
+);
 
-export const getOracleData = async (): Promise<FetchResult | void> => {
+export const getCatalogo = async (): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
   const queryPromise = autographClient.query({
-    query: gql(ORACULO),
+    query: CATALOGO,
     fetchPolicy: "no-cache",
     errorPolicy: "all",
   });
@@ -22,11 +33,13 @@ export const getOracleData = async (): Promise<FetchResult | void> => {
   const timeoutPromise = new Promise((resolve) => {
     timeoutId = setTimeout(() => {
       resolve({ timedOut: true });
-    }, 60000); // 1 minute timeout
+    }, 60000);
   });
 
   const result: any = await Promise.race([queryPromise, timeoutPromise]);
+
   timeoutId && clearTimeout(timeoutId);
+
   if (result.timedOut) {
     return;
   } else {

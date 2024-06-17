@@ -72,6 +72,12 @@ const useDialog = (
         publicClient,
         setIndexar,
         setErrorInteraccion,
+        () =>
+          setPublicacionCargando((prev) => {
+            const updatedArray = [...prev];
+            updatedArray[indice] = false;
+            return updatedArray;
+          }),
         comentarioId
       );
       setComentarPublicar([

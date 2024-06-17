@@ -10,7 +10,7 @@ const subirContenido = async (
   }[],
   videos: string[],
   gifs: string[],
-  sceneKey: string
+  sceneKey?: string
 ): Promise<string | undefined> => {
   let $schema: string,
     mainContentFocus: PublicationMetadataMainFocusType,
@@ -127,7 +127,7 @@ const subirContenido = async (
           id: uuidv4(),
           hideFromFeed: false,
           locale: "en",
-          tags: ["npcStudio", sceneKey],
+          tags: ["npcStudio", sceneKey].filter(Boolean),
         },
       }),
     });

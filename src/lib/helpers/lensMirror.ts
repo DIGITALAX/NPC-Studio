@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import LensHubProxy from "./../../../abis/LensHubProxy.json";
-import { polygon } from "viem/chains";
+import { polygonAmoy } from "viem/chains";
 import { PublicClient, WalletClient } from "viem";
 import broadcast from "../../../graphql/lens/mutations/broadcast";
 import mirrorPost from "../../../graphql/lens/mutations/mirror";
@@ -50,7 +50,7 @@ const lensMirror = async (
       address: LENS_HUB_PROXY,
       abi: LensHubProxy,
       functionName: "mirror",
-      chain: polygon,
+      chain: polygonAmoy,
       args: [
         {
           profileId: typedData?.value.profileId,

@@ -11,6 +11,12 @@ import {
   SimpleCollectOpenActionModuleInput,
 } from "../../../../graphql/generated";
 import { PublicClient } from "viem";
+import {
+  Catalogo,
+  Compra,
+  Mezcla,
+} from "@/components/compras/types/compras.types";
+import { LitNodeClient } from "@lit-protocol/lit-node-client";
 
 export type LogProps = {
   connected: boolean;
@@ -68,7 +74,7 @@ export type ProcessProps = {
   borrarGaleria: (galeriaId: number) => Promise<void>;
   isConnected: boolean;
   manejarMintear: () => Promise<void>;
-  manejarAhorar: () => Promise<void>;
+  manejarAhorar: () => void;
   mintCargando: boolean;
   esArtista: boolean;
   cargandoBorrar: boolean;
@@ -79,6 +85,7 @@ export type ProcessProps = {
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
+  setConectarPub: (e: SetStateAction<boolean>) => void;
   dropDown: {
     npcsAbiertos: boolean;
     idiomasAbiertos: boolean;
@@ -135,21 +142,26 @@ export type DialogProps = {
   setIndexar: (e: SetStateAction<Indexar>) => void;
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   escena: string;
-  setVerImagen: (e: SetStateAction<{
-    abierto: boolean;
-    tipo: string;
-    url: string;
-}>) => void
-  setSeguirColeccionar: (
+  setVerImagen: (
     e: SetStateAction<{
+      abierto: boolean;
       tipo: string;
-      collecionar: {
-        id: string;
-        stats: number;
-        item: OpenActionModule;
-      };
-      seguidor: Profile;
-    } | undefined>
+      url: string;
+    }>
+  ) => void;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: OpenActionModule;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
   ) => void;
 };
 
@@ -230,7 +242,7 @@ export interface Escena {
   }[];
   profundidad: Articulo[];
   sillas: Seat[];
-  interactivos: Articulo[];
+  interactivos: Interactivo[];
   fondo: {
     etiqueta: string;
     uri: string;
@@ -249,6 +261,27 @@ export interface Articulo {
   image: Phaser.GameObjects.Image;
   uri: string;
   etiqueta: string;
+  sitio: {
+    x: number;
+    y: number;
+  };
+  escala: {
+    x: number;
+    y: number;
+  };
+  talla: {
+    x: number;
+    y: number;
+  };
+  profundidad?: number;
+}
+
+export interface Interactivo {
+  image: Phaser.GameObjects.Image;
+  uri: string;
+  etiqueta: string;
+  disenador: string;
+  tipo: AutographType;
   sitio: {
     x: number;
     y: number;
@@ -331,11 +364,21 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     title: string;
+    comprado: string;
+    aprobar: string;
+    gNew: string;
+    cump: string;
     create: string;
+    gUpdate: string;
+    agotado: string;
+    cart: string;
+    pub: string;
     gTitulo: string;
     error: string;
     mirror: string;
     comment: string;
+    addCart: string;
+    pubCompra: string;
     quote: string;
     añadido: string;
     coleccionEliminada: string;
@@ -375,6 +418,11 @@ export type Dictionary = {
     gMint: string;
     gCreate: string;
     tipo: string;
+    nombre: string;
+    ciudad: string;
+    direccion: string;
+    estado: string;
+    pais: string;
   };
   Nav: {
     lan: string;
@@ -388,29 +436,39 @@ export type PantallaCambioProps = {
   npc: string;
   escena: string;
   colecciones: Coleccion[];
-  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void;
-  manejarMostrarArticulo: string | undefined;
+  setManejarMostrarArticulo: (
+    e: SetStateAction<
+      | {
+          etiqueta: string;
+          disenador: string;
+          tipo: AutographType;
+        }
+      | undefined
+    >
+  ) => void;
+  manejarMostrarArticulo:
+    | {
+        etiqueta: string;
+        disenador: string;
+        tipo: AutographType;
+      }
+    | undefined;
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   mostrarGalerias: boolean;
   setMostrarGalerias: (e: SetStateAction<boolean>) => void;
-  manejarAhorar: () => Promise<void>;
+  manejarAhorar: () => void;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
   setNpc: (e: SetStateAction<string>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
-  pantalla: number;
   cargandoBorrar: boolean;
-  setMint: (e: SetStateAction<number>) => void;
-  mint: number;
   dict: Dictionary;
   manejarMintear: () => Promise<void>;
   mintCargando: boolean;
   isConnected: boolean;
-  esArtista: boolean;
   openConnectModal: (() => void) | undefined;
-  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   todasLasGalerias: Galeria[];
   cargandoGalerias: boolean;
   dropDown: {
@@ -431,6 +489,9 @@ export type PantallaCambioProps = {
       idiomasTexto: string;
     }>
   ) => void;
+  publicClient: PublicClient;
+  address: `0x${string}` | undefined;
+  setConectarPub: (e: SetStateAction<boolean>) => void;
 };
 
 export interface Galeria {
@@ -447,24 +508,29 @@ export interface Coleccion {
   tokenes: `0x${string}`[];
   precio: number;
   tipo: AutographType;
+  profile: Profile | undefined;
   titulo: string;
   descripcion: string;
   etiquetas: string;
   npcIdiomas: string;
   npcInstrucciones: string;
   npcs: string;
-  tokenesMinteados: [];
+  tokenesMinteados: number[];
   galeriaId?: number;
   coleccionId?: number;
+  profileIds: string[];
+  pubIds: string[];
 }
 
 export enum AutographType {
-  NFT,
-  Hoodie,
-  Shirt,
+  NFT = "NFT",
+  Hoodie = "Hoodie",
+  Shirt = "Shirt",
+  Catalog = "Catalog",
+  Mix = "Mix",
 }
 
-export interface OracleData {
+export interface DatosOraculos {
   currency: string;
   rate: string;
   wei: string;

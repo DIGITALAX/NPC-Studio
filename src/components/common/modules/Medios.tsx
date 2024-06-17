@@ -15,7 +15,7 @@ const Medios: FunctionComponent<MediosProps> = ({
         <div
           className={`relative w-full h-fit max-h-[12rem] font-aust  text-left items-start justify-start break-all flex overflow-y-scroll p-3 text-sm whitespace-preline ${
             metadata?.__typename === "ImageMetadataV3"
-              ? "bg-offBlack text-white"
+              ? "bg-black text-white"
               : metadata?.__typename === "VideoMetadataV3"
               ? "bg-viol text-black"
               : "bg-nuba text-black"
@@ -42,7 +42,7 @@ const Medios: FunctionComponent<MediosProps> = ({
                 return (
                   <div
                     key={indice}
-                    className={`w-60 relative border border-white rounded-sm h-60 flex items-center justify-center bg-offBlack ${
+                    className={`w-60 relative border border-white rounded-sm h-60 flex items-center justify-center bg-black ${
                       media?.url && "cursor-pointer"
                     }`}
                     onClick={() =>

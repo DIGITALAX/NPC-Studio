@@ -9,7 +9,9 @@ import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { Indexar, Notificacion } from "@/components/common/types/common.types";
 import { OpenActionModule, Profile, Quote } from "../../graphql/generated";
-import { OracleData } from "@/components/game/types/game.types";
+import { DatosOraculos } from "@/components/game/types/game.types";
+import { Compra } from "@/components/compras/types/compras.types";
+import { LitNodeClient } from "@lit-protocol/lit-node-client";
 
 const config = getDefaultConfig({
   appName: "NPC Studio",
@@ -40,13 +42,14 @@ export const ModalContext = createContext<
       setLensConectado: (e: SetStateAction<Profile | undefined>) => void;
       mostrarNotificacion: Notificacion;
       setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
-      oracles: OracleData[];
-      setOracles: (e: SetStateAction<OracleData[]>) => void;
+      oraculos: DatosOraculos[];
+      setOraculos: (e: SetStateAction<DatosOraculos[]>) => void;
       indexar: Indexar;
       setIndexar: (e: SetStateAction<Indexar>) => void;
       errorInteraccion: boolean;
       setErrorInteraccion: (e: SetStateAction<boolean>) => void;
       abrirCita: Quote | undefined;
+      cliente: LitNodeClient;
       setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
       seguirColeccionar:
         | {
@@ -85,11 +88,22 @@ export const ModalContext = createContext<
           url: string;
         }>
       ) => void;
+      carrito: {
+        compras: Compra[];
+        abierto: boolean;
+      };
+      setCarrito: (
+        e: SetStateAction<{
+          compras: Compra[];
+          abierto: boolean;
+        }>
+      ) => void;
     }
   | undefined
 >(undefined);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const cliente = new LitNodeClient({ litNetwork: "cayenne", debug: false });
   const [mint, setMint] = useState<number>(1);
   const [pantalla, setPantalla] = useState<number>(0);
   const [esArtista, setEsArtista] = useState<boolean>(false);
@@ -97,7 +111,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     Notificacion.Inactivo
   );
   const [lensConectado, setLensConectado] = useState<Profile | undefined>();
-  const [oracles, setOracles] = useState<OracleData[]>([]);
+  const [oraculos, setOraculos] = useState<DatosOraculos[]>([]);
   const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
   const [indexar, setIndexar] = useState<Indexar>(Indexar.Inactivo);
   const [verImagen, setVerImagen] = useState<{
@@ -108,6 +122,13 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     abierto: false,
     tipo: "",
     url: "",
+  });
+  const [carrito, setCarrito] = useState<{
+    compras: Compra[];
+    abierto: boolean;
+  }>({
+    compras: [],
+    abierto: false,
   });
   const [abrirCita, setAbrirCita] = useState<Quote | undefined>();
   const [seguirColeccionar, setSeguirColeccionar] = useState<
@@ -142,8 +163,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setMostrarNotificacion,
                 lensConectado,
                 setLensConectado,
-                setOracles,
-                oracles,
+                setOraculos,
+                oraculos,
                 errorInteraccion,
                 setErrorInteraccion,
                 indexar,
@@ -152,6 +173,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setAbrirCita,
                 seguirColeccionar,
                 setSeguirColeccionar,
+                carrito,
+                setCarrito,
+                cliente,
               }}
             >
               {children}

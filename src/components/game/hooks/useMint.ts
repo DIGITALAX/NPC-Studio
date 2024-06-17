@@ -1,9 +1,16 @@
-import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { Coleccion, Galeria } from "../types/game.types";
+import { AutographType, Coleccion, Galeria } from "../types/game.types";
 import { polygonAmoy } from "viem/chains";
 import {
   AUTOGRAPH_COLLECTION,
+  AUTOGRAPH_OPEN_ACTION,
   INFURA_GATEWAY,
   autographTypeToNumber,
   numberToAutograph,
@@ -11,20 +18,29 @@ import {
 import AutographCollection from "./../../../../abis/AutographCollection.json";
 import convertirArchivo from "@/lib/helpers/convertirArchivo";
 import { getGalleries } from "../../../../graphql/autograph/queries/getGalleries";
-import { Notificacion } from "@/components/common/types/common.types";
+import { Indexar, Notificacion } from "@/components/common/types/common.types";
+import { Profile } from "../../../../graphql/generated";
+import publicarLens from "@/lib/helpers/publicarLens";
+import subirContenido from "@/lib/helpers/subirContenido";
+import { ethers } from "ethers";
 
 const useMint = (
   setMint: (e: SetStateAction<number>) => void,
   publicClient: PublicClient,
   address: `0x${string}` | undefined,
-  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void,
+  lensConectado: Profile | undefined,
+  setIndexar: (e: SetStateAction<Indexar>) => void,
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void
 ) => {
+  const coder = new ethers.AbiCoder();
   const [mintCargando, setMintCargando] = useState<boolean>(false);
   const [cargandoGalerias, setCargandoGalerias] = useState<boolean>(false);
   const [cargandoBorrar, setCargandoBorrar] = useState<boolean>(false);
   const [todasLasGalerias, setTodasLasGalerias] = useState<Galeria[]>([]);
   const [colecciones, setColecciones] = useState<Coleccion[]>([]);
   const [mostrarGalerias, setMostrarGalerias] = useState<boolean>(false);
+  const [conectarPub, setConectarPub] = useState<boolean>(false);
   const [dropDown, setDropDown] = useState<{
     npcsAbiertos: boolean;
     idiomasAbiertos: boolean;
@@ -38,6 +54,7 @@ const useMint = (
     npcsTexto: "",
     idiomasTexto: "",
   });
+  const [cargandoConexion, setCargandoConexion] = useState<boolean>(false);
   const [coleccionActual, setColeccionActual] = useState<Coleccion>({
     imagen: "",
     cantidad: 1,
@@ -53,15 +70,28 @@ const useMint = (
     npcs: "",
     galeria: "",
     tokenesMinteados: [],
+    profileIds: [],
+    pubIds: [],
+    profile: lensConectado,
   });
+  const [caretCoord, setCaretCoord] = useState<
+    {
+      x: number;
+      y: number;
+    }[]
+  >([]);
+  const [perfilesAbiertos, setPerfilesAbiertos] = useState<boolean[]>([]);
+  const [mencionarPerfiles, setMencionarPerfiles] = useState<Profile[]>([]);
+  const elementoTexto = useRef<HTMLTextAreaElement | null>(null);
+  const [descripcion, setDescripcion] = useState<string>("");
 
   const llamarTodasLasGalerias = async () => {
     setCargandoGalerias(true);
     try {
-      const data = await getGalleries(address!);
+      const datos = await getGalleries(address!);
 
       const gals = await Promise.all(
-        data?.data?.galleryCreateds.map(async (gal: any) => {
+        datos?.data?.galleryCreateds.map(async (gal: any) => {
           return {
             galleryId: gal.galleryId,
             collectionIds: gal.collectionIds,
@@ -189,7 +219,8 @@ const useMint = (
           account: address,
         });
 
-        await clientWallet.writeContract(request);
+        const res = await clientWallet.writeContract(request);
+        await publicClient.waitForTransactionReceipt({ hash: res });
 
         setMostrarNotificacion(Notificacion.Añadido);
       } else {
@@ -212,7 +243,8 @@ const useMint = (
           account: address,
         });
 
-        await clientWallet.writeContract(request);
+        const res = await clientWallet.writeContract(request);
+        await publicClient.waitForTransactionReceipt({ hash: res });
 
         setMostrarNotificacion(Notificacion.Creado);
       }
@@ -232,6 +264,9 @@ const useMint = (
         galeria: "",
         id: 0,
         tokenesMinteados: [],
+        profile: lensConectado,
+        profileIds: [],
+        pubIds: [],
       });
       setDropDown({
         npcsAbiertos: false,
@@ -267,8 +302,8 @@ const useMint = (
         account: address,
       });
 
-      await clientWallet.writeContract(request);
-
+      const res = await clientWallet.writeContract(request);
+      await publicClient.waitForTransactionReceipt({ hash: res });
       setMostrarNotificacion(Notificacion.ColeccionEliminada);
 
       setColecciones((prev) =>
@@ -291,6 +326,9 @@ const useMint = (
         npcs: "",
         galeria: "",
         tokenesMinteados: [],
+        profileIds: [],
+        pubIds: [],
+        profile: lensConectado,
       });
       setDropDown({
         npcsAbiertos: false,
@@ -322,7 +360,8 @@ const useMint = (
         account: address,
       });
 
-      await clientWallet.writeContract(request);
+      const res = await clientWallet.writeContract(request);
+      await publicClient.waitForTransactionReceipt({ hash: res });
 
       setMostrarNotificacion(Notificacion.GaleriaEliminada);
       setTodasLasGalerias((prev) =>
@@ -349,12 +388,73 @@ const useMint = (
     }
   };
 
-  const manejarAhorar = async (): Promise<void> => {
+  const manejarAhorar = () => {
+    localStorage.setItem("coleccionesGaleria", JSON.stringify(colecciones));
+  };
+
+  const hacerPublicacion = async (): Promise<void> => {
+    setCargandoConexion(true);
+
     try {
-      localStorage.setItem("coleccionesGaleria", JSON.stringify(colecciones));
+      const contentURI = await subirContenido(
+        descripcion,
+        [
+          {
+            medios: coleccionActual?.imagen,
+            tipo: "image/png",
+          },
+        ],
+        [],
+        []
+      );
+
+      const clientWallet = createWalletClient({
+        chain: polygonAmoy,
+        transport: custom((window as any).ethereum),
+      });
+
+      await publicarLens(
+        contentURI!,
+        [
+          {
+            unknownOpenAction: {
+              address: AUTOGRAPH_OPEN_ACTION,
+              data: coder.encode(
+                [
+                  "tuple(string[] pages, address[] acceptedTokens, string uri,uint8 autographType, uint256 collectionId, uint256 price, uint16 galleryId, uint16 amount, uint8 pageCount)",
+                ],
+                [
+                  {
+                    autographType: autographTypeToNumber[coleccionActual.tipo],
+                    price: 0,
+                    acceptedTokens: [],
+                    uri: "",
+                    amount: 0,
+                    pages: [],
+                    pageCount: 0,
+                    collectionId: coleccionActual.coleccionId,
+                    galleryId: coleccionActual.galeriaId,
+                  },
+                ]
+              ),
+            },
+          },
+        ],
+        address as `0x${string}`,
+        clientWallet,
+        publicClient,
+        setIndexar,
+        setErrorInteraccion,
+        () => setCargandoConexion(false),
+        undefined,
+        true
+      );
+      setDescripcion("");
+      setConectarPub(false);
     } catch (err: any) {
       console.error(err.message);
     }
+    setCargandoConexion(false);
   };
 
   useEffect(() => {
@@ -390,6 +490,19 @@ const useMint = (
     borrarColeccion,
     borrarGaleria,
     cargandoBorrar,
+    cargandoConexion,
+    conectarPub,
+    hacerPublicacion,
+    setConectarPub,
+    caretCoord,
+    setCaretCoord,
+    perfilesAbiertos,
+    setPerfilesAbiertos,
+    mencionarPerfiles,
+    setMencionarPerfiles,
+    elementoTexto,
+    descripcion,
+    setDescripcion,
   };
 };
 

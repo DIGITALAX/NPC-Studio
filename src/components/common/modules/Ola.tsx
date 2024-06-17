@@ -99,7 +99,7 @@ const Ola: FunctionComponent<OlaProps> = ({
 
   return (
     <div
-      className={`absolute right-0 bottom-0 w-full h-10 flex flex-row gap-1.5 items-center justify-between bg-offBlack px-1 border border-white z-1 ${
+      className={`absolute right-0 bottom-0 w-full h-10 flex flex-row gap-1.5 items-center justify-between bg-black px-1 border border-white z-1 ${
         waveLoading && "animate-pulse opacity-90"
       }`}
     >

@@ -11,21 +11,16 @@ import { ModalContext } from "../../../app/providers";
 import useMint from "../../game/hooks/useMint";
 import { Dictionary } from "@/components/game/types/game.types";
 import PantallaCambio from "@/components/game/modules/PantallaCambio";
-import Notificacion from "@/components/common/modules/Notificacion";
-import {
-  Indexar,
-  Notificacion as NotificacionType,
-} from "@/components/common/types/common.types";
-import { polygon } from "viem/chains";
+import { polygonAmoy } from "viem/chains";
 import { createPublicClient } from "viem";
-import Index from "@/components/common/modules/Index";
-import Error from "@/components/common/modules/Error";
+import Carrito from "@/components/compras/modules/Carrito";
+import Modals from "@/components/common/modules/Modals";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
   const { address, isConnected } = useAccount();
   const publicClient = createPublicClient({
-    chain: polygon,
+    chain: polygonAmoy,
     transport: http(
       `https://polygon-amoy.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_AMOY_KEY}`
     ),
@@ -64,8 +59,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     publicClient,
     dict,
     context?.lensConectado,
-    context?.oracles!,
-    context?.setOracles!
+    context?.oraculos!,
+    context?.setOraculos!
   );
   const {
     manejarMintear,
@@ -85,12 +80,29 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     borrarColeccion,
     borrarGaleria,
     cargandoBorrar,
+    conectarPub,
+    hacerPublicacion,
+    setConectarPub,
+    caretCoord,
+    setCaretCoord,
+    perfilesAbiertos,
+    setPerfilesAbiertos,
+    mencionarPerfiles,
+    setMencionarPerfiles,
+    elementoTexto,
+    descripcion,
+    cargandoConexion,
+    setDescripcion,
   } = useMint(
     context?.setMint!,
     publicClient,
     address,
-    context?.setMostrarNotificacion!
+    context?.setMostrarNotificacion!,
+    context?.lensConectado,
+    context?.setIndexar!,
+    context?.setErrorInteraccion!
   );
+
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -120,6 +132,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         >
           <PantallaCambio
             npc={npc}
+            setConectarPub={setConectarPub}
             manejarMostrarArticulo={manejarMostrarArticulo}
             setManejarMostrarArticulo={setManejarMostrarArticulo}
             mostrarGalerias={mostrarGalerias}
@@ -136,21 +149,18 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             cargandoBorrar={cargandoBorrar}
             setCargando={setCargando}
             cargando={cargando}
-            pantalla={context?.pantalla!}
-            setMint={context?.setMint!}
-            mint={Number(context?.mint)}
             manejarMintear={manejarMintear}
             mintCargando={mintCargando}
             dict={dict}
-            setMostrarNotificacion={context?.setMostrarNotificacion!}
             openConnectModal={openConnectModal}
-            esArtista={context?.esArtista!}
             setDropDown={setDropDown}
             dropDown={dropDown}
             cargandoGalerias={cargandoGalerias}
             todasLasGalerias={todasLasGalerias}
             borrarColeccion={borrarColeccion}
             borrarGaleria={borrarGaleria}
+            publicClient={publicClient}
+            address={address}
           />
         </div>
       </div>
@@ -178,26 +188,40 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           setSeguirColeccionar={context?.setSeguirColeccionar!}
         />
       )}
-      {context?.mostrarNotificacion !== NotificacionType.Inactivo && (
-        <Notificacion
-          dict={dict}
-          tipo={context?.mostrarNotificacion!}
-          setMostrarNotificacion={context?.setMostrarNotificacion!}
-          mensajeCargando={mensajeCargando}
-          manejarEnviarMensaje={manejarEnviarMensaje}
-          setMensaje={setMensaje}
-          mensaje={mensaje}
-        />
-      )}
-      {context?.indexar !== Indexar.Inactivo && (
-        <Index dict={dict} tipo={context?.indexar!} />
-      )}
-      {context?.errorInteraccion && (
-        <Error
-          dict={dict}
-          setErrorInteraccion={context?.setErrorInteraccion!}
-        />
-      )}
+      <Carrito
+        setCarrito={context?.setCarrito!}
+        carrito={context?.carrito!}
+        dict={dict}
+      />
+      <Modals
+        setConectarPub={setConectarPub}
+        conectarPub={conectarPub}
+        hacerPublicacion={hacerPublicacion}
+        indexar={context?.indexar!}
+        errorInteraccion={context?.errorInteraccion!}
+        mostrarNotificacion={context?.mostrarNotificacion!}
+        cargandoConexion={cargandoConexion}
+        dict={dict}
+        setPerfilesAbiertos={setPerfilesAbiertos}
+        setMencionarPerfiles={setMencionarPerfiles}
+        lensConectado={context?.lensConectado!}
+        setCaretCoord={setCaretCoord}
+        elementoTexto={elementoTexto}
+        descripcion={descripcion}
+        setDescripcion={setDescripcion}
+        caretCoord={caretCoord}
+        perfilesAbiertos={perfilesAbiertos}
+        mencionarPerfiles={mencionarPerfiles}
+        setErrorInteraccion={context?.setErrorInteraccion!}
+        setVerImagen={context?.setVerImagen!}
+        coleccionActual={coleccionActual}
+        verImagen={context?.verImagen!}
+        setMostrarNotificacion={context?.setMostrarNotificacion!}
+        mensajeCargando={mensajeCargando}
+        manejarEnviarMensaje={manejarEnviarMensaje}
+        setMensaje={setMensaje}
+        mensaje={mensaje}
+      />
     </div>
   );
 }

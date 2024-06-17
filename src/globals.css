@@ -121,3 +121,13 @@ div::-webkit-scrollbar-thumb:active {
   display: flex;
   justify-content: center;
 }
+
+
+#cartAnim {
+  transform: scale(1.1);
+  animation: shake 1s ease;
+}
+
+#lcm-modal-overlay {
+  z-index: 200;
+}

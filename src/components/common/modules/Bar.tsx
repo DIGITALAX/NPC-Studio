@@ -20,6 +20,7 @@ const Bar: FunctionComponent<BarProps> = ({
   manejarMirror,
   manejarColeccionar,
   setSeguirColeccionar,
+ 
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))

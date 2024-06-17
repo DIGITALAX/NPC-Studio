@@ -1,7 +1,14 @@
 import RandomWalkerNPC from "./RandomWalkNPC";
 import { INFURA_GATEWAY } from "../../../lib/constants";
 import Phaser from "phaser";
-import { Articulo, Escena, Estado, Seat } from "../types/game.types";
+import {
+  Articulo,
+  AutographType,
+  Escena,
+  Estado,
+  Seat,
+} from "../types/game.types";
+import { SetStateAction } from "react";
 
 export default class NPCEnginePhaser extends Phaser.Scene {
   private frameCount!: number;
@@ -11,7 +18,13 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private sceneKey!: string;
   private seatsTaken: Seat[];
   private npcCamara!: string;
-  private setManejarMostrarArticulo!: (etiqueta: string) => void;
+  private setManejarMostrarArticulo!: (
+    e: SetStateAction<{
+      etiqueta: string;
+      disenador: string;
+      tipo: AutographType;
+    }>
+  ) => void;
   private esperandoRespuesta: boolean;
   private caminosInciales: {
     [textureKey: string]: Estado[];
@@ -182,6 +195,38 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
+      this.escena.interactivos.forEach((obj) => {
+        const interactivo = this.physics.add
+          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setSize(obj.talla.x, obj.talla.y)
+          .setScale(obj.escala.x, obj.escala.y)
+          .setDisplaySize(obj.talla.x, obj.talla.y)
+          .setDepth(obj.sitio.y);
+        interactivo.setInteractive();
+        interactivo.on("pointerdown", () => {
+          this.setManejarMostrarArticulo({
+            etiqueta: obj.etiqueta,
+            disenador: obj.disenador,
+            tipo: obj.tipo,
+          });
+        });
+        interactivo.on("pointerover", () => {
+          this.game.canvas.style.cursor = "pointer";
+        });
+        interactivo.on("pointerout", () => {
+          this.game.canvas.style.cursor = "default";
+        });
+        this.tweens.add({
+          targets: interactivo,
+          y: interactivo.y + 20,
+          yoyo: true,
+          repeat: -1,
+          duration: 1000,
+          ease: "Sine.easeInOut",
+        });
+      });
+
       this.escena.sillas.forEach((silla) => {
         const item = this.add
           .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
@@ -213,44 +258,34 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
-      this.escena.interactivos.forEach((obj) => {
-        const interactivo = this.physics.add
-          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-          .setOrigin(0.5, 0.5)
-          .setSize(obj.talla.x, obj.talla.y)
-          .setScale(obj.escala.x, obj.escala.y)
-          .setDisplaySize(obj.talla.x, obj.talla.y)
-          .setDepth(
-            obj?.profundidad !== undefined && profundidad !== null
-              ? obj.profundidad
-              : obj.sitio.y
-          );
-        interactivo.setInteractive();
-        interactivo.on("pointerdown", () => {
-          this.setManejarMostrarArticulo(obj.etiqueta);
-        });
-        interactivo.on("pointerover", () => {
-          this.game.canvas.style.cursor = "pointer";
-        });
-        interactivo.on("pointerout", () => {
-          this.game.canvas.style.cursor = "default";
-        });
-        this.tweens.add({
-          targets: interactivo,
-          y: interactivo.y + 20,
-          yoyo: true,
-          repeat: -1,
-          duration: 1000,
-          ease: "Sine.easeInOut",
-        });
-      });
-
       this.cameras.main.setBounds(
         0,
         0,
         this.escena?.mundo?.anchura,
         this.escena?.mundo?.altura
       );
+      this.input.on("pointerdown", () => {
+        this.game.canvas.style.cursor = "grab";
+        this.cameras.main.stopFollow();
+        Object.values(this.npcs).forEach((npc) => {
+          npc.stopCameraFollow();
+        });
+      });
+      this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
+        if (pointer.isDown) {
+          const deltaX =
+            (pointer.prevPosition.x - pointer.position.x) *
+            (1 / this.cameras.main.zoom);
+          const deltaY =
+            (pointer.prevPosition.y - pointer.position.y) *
+            (1 / this.cameras.main.zoom);
+          this.cameras.main.scrollX -= deltaX * 0.8;
+          this.cameras.main.scrollY -= deltaY * 0.8;
+        }
+      });
+      this.input.on("pointerup", () => {
+        this.game.canvas.style.cursor = "default";
+      });
 
       this.escena.sprites.forEach((sprite) => {
         this.npcs[sprite.etiqueta] = new RandomWalkerNPC(

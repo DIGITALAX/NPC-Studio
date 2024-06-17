@@ -1,9 +1,9 @@
 import { AUTOGRAPH_ACCESS_CONTROLS, DIGITALAX_ADDRESS } from "@/lib/constants";
 import { SetStateAction, useEffect, useState } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { Dictionary, OracleData } from "../types/game.types";
+import { Dictionary, DatosOraculos } from "../types/game.types";
 import { Client } from "@xmtp/xmtp-js";
-import { polygon } from "viem/chains";
+import { polygonAmoy } from "viem/chains";
 import {
   getAuthenticationToken,
   isAuthExpired,
@@ -29,8 +29,8 @@ const useAccount = (
   publicClient: PublicClient,
   dict: Dictionary,
   lensConectado: Profile | undefined,
-  oracles: OracleData[],
-  setOracles: (e: SetStateAction<OracleData[]>) => void,
+  oraculos: DatosOraculos[],
+  setOraculos: (e: SetStateAction<DatosOraculos[]>) => void
 ) => {
   const { signMessageAsync } = useSignMessage();
   const [lensCargando, setLensCargando] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const useAccount = (
     try {
       const clientWallet = createWalletClient({
         account: address,
-        chain: polygon,
+        chain: polygonAmoy,
         transport: custom((window as any).ethereum),
       });
 
@@ -125,6 +125,7 @@ const useAccount = (
         },
         lensConectado?.id
       );
+
       if (profile?.data?.defaultProfile?.id) {
         const challengeResponse = await generateChallenge({
           for: profile?.data?.defaultProfile?.id,
@@ -160,7 +161,7 @@ const useAccount = (
         lensConectado?.id
       );
       if (profile?.data?.defaultProfile) {
-       setLensConectado(profile?.data?.defaultProfile as Profile);
+        setLensConectado(profile?.data?.defaultProfile as Profile);
       } else {
         removeAuthenticationToken();
       }
@@ -169,11 +170,11 @@ const useAccount = (
     }
   };
 
-  const manejarOracles = async (): Promise<void> => {
+  const manejarOraculos = async (): Promise<void> => {
     try {
-      const data = await getOracleData();
+      const datos = await getOracleData();
 
-      setOracles(data?.data?.currencyAddeds);
+      setOraculos(datos?.data?.currencyAddeds);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -212,8 +213,8 @@ const useAccount = (
   }, [isConnected, address]);
 
   useEffect(() => {
-    if (oracles?.length < 1) {
-      manejarOracles();
+    if (oraculos?.length < 1) {
+      manejarOraculos();
     }
   }, []);
 

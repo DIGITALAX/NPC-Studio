@@ -44,7 +44,11 @@ function Log({
                 titulo: "Lens",
                 imagen: "QmcAH8o2iNCrfTMDFRJbd1f9hAgYbbCwkygB9bdbrR9uFx",
                 llama: () =>
-                  !lensConectado ? manejarLens() : () => manejarSalir(),
+                  !connected
+                    ? {}
+                    : !lensConectado && connected
+                    ? manejarLens()
+                    : () => manejarSalir(),
                 cargando: lensCargando,
               },
               {

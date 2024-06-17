@@ -5,6 +5,8 @@ const Studio = dynamic(() => import("../../game/modules/Studio"), {
 import dynamic from "next/dynamic";
 import Pedidos from "./Pedidos";
 import Process from "./Process";
+import { useContext } from "react";
+import { ModalContext } from "@/app/providers";
 
 function PantallaCambio({
   npc,
@@ -12,14 +14,9 @@ function PantallaCambio({
   setNpc,
   setCargando,
   cargando,
-  pantalla,
-  mint,
   dict,
-  setMint,
   manejarMintear,
   mintCargando,
-  setMostrarNotificacion,
-  esArtista,
   isConnected,
   openConnectModal,
   cargandoBorrar,
@@ -38,12 +35,18 @@ function PantallaCambio({
   borrarColeccion,
   borrarGaleria,
   manejarMostrarArticulo,
-  setManejarMostrarArticulo
+  setManejarMostrarArticulo,
+  publicClient,
+  address,
+  setConectarPub,
 }: PantallaCambioProps) {
-  switch (pantalla) {
+  const context = useContext(ModalContext);
+
+  switch (context?.pantalla) {
     case 1:
       return (
         <Process
+          setConectarPub={setConectarPub}
           borrarColeccion={borrarColeccion}
           borrarGaleria={borrarGaleria}
           mostrarGalerias={mostrarGalerias}
@@ -52,13 +55,13 @@ function PantallaCambio({
           cargandoGalerias={cargandoGalerias}
           todasLasGalerias={todasLasGalerias}
           dropDown={dropDown}
-          setMint={setMint!}
-          mint={Number(mint)}
+          setMint={context?.setMint!}
+          mint={Number(context?.mint)}
           manejarMintear={manejarMintear}
           mintCargando={mintCargando}
           dict={dict}
-          setMostrarNotificacion={setMostrarNotificacion}
-          esArtista={esArtista}
+          setMostrarNotificacion={context?.setMostrarNotificacion!}
+          esArtista={context?.esArtista}
           isConnected={isConnected}
           openConnectModal={openConnectModal}
           colecciones={colecciones}
@@ -78,12 +81,24 @@ function PantallaCambio({
       return (
         <Studio
           npc={npc}
+          dict={dict}
           escena={escena}
           manejarMostrarArticulo={manejarMostrarArticulo}
           setManejarMostrarArticulo={setManejarMostrarArticulo}
           setNpc={setNpc}
           setCargando={setCargando}
           cargando={cargando}
+          publicClient={publicClient}
+          cliente={context?.cliente!}
+          setMostrarNotificacion={context?.setMostrarNotificacion!}
+          address={address}
+          lensConectado={context?.lensConectado!}
+          setCarrito={context?.setCarrito!}
+          setErrorInteraccion={context?.setErrorInteraccion!}
+          setIndexar={context?.setIndexar!}
+          setVerImagen={context?.setVerImagen!}
+          carrito={context?.carrito!}
+          datosOraculos={context?.oraculos!}
         />
       );
   }

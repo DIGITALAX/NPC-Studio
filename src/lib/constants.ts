@@ -1,5 +1,5 @@
 export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
-export const BASE_URL: string = "https://api-v2.lens.dev/";
+export const BASE_URL: string = "	https://api-v2-amoy.lens.dev";
 export const IPFS_REGEX: RegExp = /\b(Qm[1-9A-Za-z]{44}|ba[A-Za-z2-7]{57})\b/;
 
 export const IDIOMAS: { cover: string; key: string }[] = [
@@ -151,11 +151,17 @@ export const AUTOGRAPH_DATA: `0x${string}` =
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
   "0xe57438297515C4B7c62FE13957413085A7e1763c";
 
+  export const AUTOGRAPH_MARKET: `0x${string}` =
+  "0xb1931e410FC5Abe6581E3308018c9d6b173c16BF";
+
 export const AUTOGRAPH_COLLECTION: `0x${string}` =
   "0xB6142a3C7A9b92D1501Ff6Cc4d3A83159D1751c9";
 
 export const DIGITALAX_ADDRESS: `0x${string}` =
   "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";
+
+  export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
+  "0xf9d12a756e9c97619099cfacba21f0020caf25bf";
 
 export const ACCEPTED_TOKENS: string[][] = [
   [
@@ -207,10 +213,14 @@ export const autographTypeToNumber: { [key in string]: number } = {
   ["NFT"]: 0,
   ["Hoodie"]: 1,
   ["Shirt"]: 2,
+  ["Catalog"]: 3,
+  ["Mix"]: 4,
 };
 
 export const numberToAutograph: { [key in number]: string } = {
   [0]: "NFT",
   [1]: "Hoodie",
   [2]: "Shirt",
+  [3]: "Catalog",
+  [4]: "Mix",
 };

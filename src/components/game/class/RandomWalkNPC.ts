@@ -431,4 +431,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
   makeCameraFollow() {
     this.scene.cameras.main.startFollow(this.npc, true, 0.05, 0.05);
   }
+  stopCameraFollow() {
+    this.scene.cameras.main.stopFollow();
+  }
 }

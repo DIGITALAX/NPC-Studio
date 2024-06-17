@@ -37,6 +37,7 @@ function Process({
   borrarColeccion,
   borrarGaleria,
   cargandoBorrar,
+  setConectarPub,
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -216,6 +217,37 @@ function Process({
                     >
                       {dict.Home.all}
                     </div>
+                    {colecciones.filter((col) => col.galeriaId).length > 0 && (
+                      <div
+                        className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                        onClick={() => {
+                          if (!mintCargando) {
+                            setColecciones([]);
+                            setColeccionActual({
+                              imagen: "",
+                              cantidad: 1,
+                              tokenes: [],
+                              precio: 0,
+                              id: colecciones.length + 1,
+                              tipo: "NFT" as any,
+                              titulo: "",
+                              descripcion: "",
+                              etiquetas: "",
+                              npcIdiomas: "",
+                              npcInstrucciones: "",
+                              npcs: "",
+                              galeria: "",
+                              tokenesMinteados: [],
+                              profile: undefined,
+                              profileIds: [],
+                              pubIds: [],
+                            });
+                          }
+                        }}
+                      >
+                        {dict.Home.gNew}
+                      </div>
+                    )}
                     <div
                       className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                       onClick={() => !mintCargando && manejarAhorar()}
@@ -227,7 +259,12 @@ function Process({
                       onClick={() => !mintCargando && manejarMintear()}
                     >
                       {!mintCargando ? (
-                        dict.Home.gMint
+                        colecciones.filter((col) => col.galeriaId).length >
+                        0 ? (
+                          dict.Home.gUpdate
+                        ) : (
+                          dict.Home.gMint
+                        )
                       ) : (
                         <div
                           className={`relative w-fit h-fit flex items-center justify-center animate-spin`}
@@ -336,6 +373,9 @@ function Process({
                                 ? coleccionActual?.galeria
                                 : colecciones?.[0]?.galeria || "",
                             tokenesMinteados: [],
+                            profile: undefined,
+                            profileIds: [],
+                            pubIds: [],
                           });
                         }
                         setDropDown({
@@ -549,23 +589,20 @@ function Process({
                                 (sprite.key
                                   .toLowerCase()
                                   .includes(
-                                    dropDown.npcsTexto
-                                      .split(",")
+                                    (dropDown.npcsTexto.split(",") || "")
                                       .filter(Boolean)
                                       .pop()
                                       ?.trim()
                                       .toLowerCase() || ""
                                   ) &&
-                                  !coleccionActual.npcs
-                                    .split(",")
+                                  !(coleccionActual.npcs.split(",") || "")
                                     .map((npc) => npc.trim().toLowerCase())
                                     .includes(sprite.key.toLowerCase())) ||
                                 SCENE_LIST.map((col) => col.sprites).filter(
                                   (sprite) =>
                                     sprite.filter(
                                       (s) =>
-                                        dropDown.npcsTexto
-                                          .split(",")
+                                        (dropDown.npcsTexto.split(",") || "")
                                           .filter(Boolean)
                                           .pop()
                                           ?.trim()
@@ -589,8 +626,7 @@ function Process({
                             .toLowerCase();
                           setColeccionActual((prev) => ({
                             ...prev,
-                            npcs: prev.npcs
-                              .split(",")
+                            npcs: (prev.npcs.split(",") || "")
                               .filter((valor) =>
                                 valor.toLowerCase().includes(searchTerm)
                               )
@@ -646,21 +682,18 @@ function Process({
                             (id.key
                               .toLowerCase()
                               .includes(
-                                dropDown.idiomasTexto
-                                  .split(",")
+                                (dropDown.idiomasTexto.split(",") || "")
                                   .filter(Boolean)
                                   .pop()
                                   ?.trim()
                                   .toLowerCase() || ""
                               ) &&
-                              !coleccionActual.npcIdiomas
-                                .split(",")
+                              !(coleccionActual.npcIdiomas.split(",") || "")
                                 .map((npc) => npc.trim().toLowerCase())
                                 .includes(id.key.toLowerCase())) ||
                             IDIOMAS.filter(
                               (i) =>
-                                dropDown.idiomasTexto
-                                  .split(",")
+                                (dropDown.idiomasTexto.split(",") || "")
                                   .filter(Boolean)
                                   .pop()
                                   ?.trim()
@@ -680,8 +713,7 @@ function Process({
                             .toLowerCase();
                           setColeccionActual((prev) => ({
                             ...prev,
-                            npcIdiomas: prev.npcIdiomas
-                              .split(",")
+                            npcIdiomas: (prev.npcIdiomas.split(",") || "")
                               .filter((valor) =>
                                 valor.toLowerCase().includes(searchTerm)
                               )
@@ -705,7 +737,9 @@ function Process({
                           let npcIdiomas: string;
                           setColeccionActual((prev) => {
                             const npcsArray = prev.npcIdiomas
-                              ? prev.npcIdiomas.split(",").filter(Boolean)
+                              ? (prev.npcIdiomas.split(",") || "").filter(
+                                  Boolean
+                                )
                               : [];
                             if (npcsArray.includes(value)) {
                               npcIdiomas = npcsArray
@@ -764,74 +798,87 @@ function Process({
                           });
                         }}
                       />
-                      <div
-                        className="relative w-32 h-8 flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
-                        onClick={() => {
-                          if (coleccionActual?.galeriaId) {
-                            if (
-                              colecciones?.filter(
-                                (col) => col.tokenesMinteados.length > 0
-                              ).length < 1
-                            ) {
-                              borrarColeccion();
-                            }
-                          } else {
-                            setColecciones((prev) => {
-                              const exists = prev.some(
-                                (item) => item.id === coleccionActual.id
-                              );
-
-                              if (exists) {
-                                return prev.map((item) =>
-                                  item.id === coleccionActual.id
-                                    ? coleccionActual
-                                    : item
-                                );
-                              } else {
-                                return [...prev, coleccionActual];
+                      <div className="relative w-fit h-fit flex flex-row gap-3">
+                        <div
+                          className="relative w-32 h-8 flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                          onClick={() => {
+                            if (coleccionActual?.galeriaId) {
+                              if (
+                                colecciones?.filter(
+                                  (col) => col.tokenesMinteados.length > 0
+                                ).length < 1
+                              ) {
+                                borrarColeccion();
                               }
-                            });
+                            } else {
+                              setColecciones((prev) => {
+                                const exists = prev.some(
+                                  (item) => item.id === coleccionActual.id
+                                );
 
-                            setDropDown({
-                              npcsAbiertos: false,
-                              npcsTexto: "",
-                              idiomasAbiertos: false,
-                              idiomasTexto: "",
-                              tiposAbiertos: false,
-                            });
+                                if (exists) {
+                                  return prev.map((item) =>
+                                    item.id === coleccionActual.id
+                                      ? coleccionActual
+                                      : item
+                                  );
+                                } else {
+                                  return [...prev, coleccionActual];
+                                }
+                              });
 
-                            setColeccionActual({
-                              imagen: "",
-                              cantidad: 1,
-                              tokenes: [],
-                              precio: 0,
-                              id: colecciones.length + 1,
-                              tipo: "NFT" as any,
-                              titulo: "",
-                              descripcion: "",
-                              etiquetas: "",
-                              npcIdiomas: "",
-                              npcInstrucciones: "",
-                              npcs: "",
-                              galeria:
-                                coleccionActual?.galeria?.trim() !== ""
-                                  ? coleccionActual?.galeria
-                                  : colecciones?.[0]?.galeria || "",
-                              tokenesMinteados: [],
-                            });
-                          }
-                        }}
-                      >
-                        {cargandoBorrar ? (
+                              setDropDown({
+                                npcsAbiertos: false,
+                                npcsTexto: "",
+                                idiomasAbiertos: false,
+                                idiomasTexto: "",
+                                tiposAbiertos: false,
+                              });
+
+                              setColeccionActual({
+                                imagen: "",
+                                cantidad: 1,
+                                tokenes: [],
+                                precio: 0,
+                                id: colecciones.length + 1,
+                                tipo: "NFT" as any,
+                                titulo: "",
+                                descripcion: "",
+                                etiquetas: "",
+                                npcIdiomas: "",
+                                npcInstrucciones: "",
+                                npcs: "",
+                                galeria:
+                                  coleccionActual?.galeria?.trim() !== ""
+                                    ? coleccionActual?.galeria
+                                    : colecciones?.[0]?.galeria || "",
+                                tokenesMinteados: [],
+                                profile: undefined,
+                                profileIds: [],
+                                pubIds: [],
+                              });
+                            }
+                          }}
+                        >
+                          {cargandoBorrar ? (
+                            <div
+                              className={`animate-spin relative relative flex items-center justify-center w-fit h-fit`}
+                            >
+                              <AiOutlineLoading color="white" size={15} />
+                            </div>
+                          ) : coleccionActual?.galeriaId ? (
+                            dict.Home.delete
+                          ) : (
+                            dict.Home.add
+                          )}
+                        </div>
+                        {coleccionActual?.galeriaId && (
                           <div
-                            className={`animate-spin relative relative flex items-center justify-center w-fit h-fit`}
+                            className="relative w-32 h-8 flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                            onClick={() => setConectarPub(true)}
                           >
-                            <AiOutlineLoading color="white" size={15} />
+                            {dict.Home.pub}
                           </div>
-                        ) : coleccionActual?.galeriaId ? (
-                          dict.Home.delete
-                        ) : (
-                          dict.Home.add
                         )}
                       </div>
                     </div>

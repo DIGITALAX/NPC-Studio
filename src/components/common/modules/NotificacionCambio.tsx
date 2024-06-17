@@ -10,6 +10,12 @@ function NotificacionCambio({
   mensaje,
 }: NotificacionCambioProps) {
   switch (tipo) {
+    case Notificacion.Comprado:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-lg text-center">
+          {dict.Home.comprado}
+        </div>
+      );
     case Notificacion.Añadido:
       return (
         <div className="relative w-3/4 h-fit flex items-center justify-center text-lg text-center">

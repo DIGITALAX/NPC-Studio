@@ -1,5 +1,8 @@
 import {
+  AutographType,
+  Coleccion,
   ComentarPublicar,
+  DatosOraculos,
   Dictionary,
 } from "@/components/game/types/game.types";
 import { ChangeEvent, RefObject, SetStateAction } from "react";
@@ -16,6 +19,12 @@ import {
   TextOnlyMetadataV3,
   VideoMetadataV3,
 } from "../../../../graphql/generated";
+import {
+  Catalogo,
+  Compra,
+  Details,
+  Mezcla,
+} from "@/components/compras/types/compras.types";
 
 export type DropDownProps = {
   titulo: string;
@@ -57,6 +66,7 @@ export enum Notificacion {
   GaleriaEliminada,
   ColeccionEliminada,
   Perfil,
+  Comprado,
 }
 
 export enum Indexar {
@@ -75,8 +85,62 @@ export type NotificacionCambioProps = {
 };
 
 export type PantallaComprarProps = {
-  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void;
-  manejarMostrarArticulo: string | undefined;
+  setManejarMostrarArticulo: (
+    e: SetStateAction<
+      | {
+          etiqueta: string;
+          disenador: string;
+          tipo: AutographType;
+        }
+      | undefined
+    >
+  ) => void;
+  manejarMostrarArticulo:
+    | {
+        etiqueta: string;
+        disenador: string;
+        tipo: AutographType;
+      }
+    | undefined;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  comprarPublicacion: (articulo: Compra) => Promise<void>;
+  carritoCargando: boolean;
+  articuloCargando: boolean;
+  dict: Dictionary;
+  aprobarCargando: boolean;
+  cumplimiento: Details;
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
+  carrito: {
+    compras: Compra[];
+    abierto: boolean;
+  };
+  datosOraculos: DatosOraculos[];
+  gastosAprobados: { token: string; aprobado: boolean }[];
+  articuloIndice: number;
+  setCumplimiento: (e: SetStateAction<Details>) => void;
+  setArticuloIndice: (e: SetStateAction<number>) => void;
+  aprobarGastos: (
+    token: string,
+    precio: number,
+    indice: number
+  ) => Promise<void>;
+  articulosActuales: Catalogo[] | Coleccion[] | undefined;
+  articuloSeleccionado: Compra[];
+  setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
+  comprarCarrito: () => Promise<void>;
+  pagina: number;
+  setPagina: (e: SetStateAction<number>) => void;
 };
 
 export type PublicacionProps = {
@@ -244,7 +308,7 @@ export type ComentarioProps = {
     x: number;
     y: number;
   }[];
-  elementoTexto: RefObject<HTMLTextAreaElement>
+  elementoTexto: RefObject<HTMLTextAreaElement>;
   comentarioId?: string;
   manejarPublicar: (indice: number, comentarioId?: string) => Promise<void>;
   setCaretCoord: (
@@ -259,4 +323,103 @@ export type ComentarioProps = {
   mencionarPerfiles: Profile[];
   dict: Dictionary;
   publicacionCargando: boolean;
+};
+
+export type CarritoAbiertoProps = {
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  carrito: {
+    compras: Compra[];
+    abierto: boolean;
+  };
+  comprarCarrito: () => Promise<void>;
+  dict: Dictionary;
+  setCumplimiento: (e: SetStateAction<Details>) => void;
+  cumplimiento: Details;
+  datosOraculos: DatosOraculos[];
+  carritoCargando: boolean;
+  aprobarCargando: boolean;
+  gastosAprobados: { token: string; aprobado: boolean }[];
+  aprobarGastos: (
+    token: string,
+    precio: number,
+    indice: number
+  ) => Promise<void>;
+};
+
+export type VerMediosProps = {
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
+  verImagen: {
+    abierto: boolean;
+    tipo: string;
+    url: string;
+  };
+};
+
+export type ModalsProps = {
+  dict: Dictionary;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
+  verImagen: {
+    abierto: boolean;
+    tipo: string;
+    url: string;
+  };
+  coleccionActual: Coleccion;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  mensajeCargando: boolean;
+  manejarEnviarMensaje: () => Promise<void>;
+  setMensaje: (e: SetStateAction<string>) => void;
+  mensaje: string;
+  errorInteraccion: boolean;
+  indexar: Indexar;
+  hacerPublicacion: () => Promise<void>;
+  conectarPub: boolean;
+  mostrarNotificacion: Notificacion;
+  setConectarPub: (e: SetStateAction<boolean>) => void;
+  cargandoConexion: boolean;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  lensConectado: Profile | undefined;
+  setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void;
+  elementoTexto: RefObject<HTMLTextAreaElement>;
+  descripcion: string;
+  setDescripcion: (e: SetStateAction<string>) => void;
+  caretCoord: { x: number; y: number }[];
+  perfilesAbiertos: boolean[];
+  mencionarPerfiles: Profile[];
+};
+
+export type PublicacionConectadaProps = {
+  setConectarPub: (e: SetStateAction<boolean>) => void;
+  hacerPublicacion: () => Promise<void>;
+  coleccionActual: Coleccion;
+  cargandoConexion: boolean;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  lensConectado: Profile | undefined;
+  setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void;
+  elementoTexto: RefObject<HTMLTextAreaElement>;
+  dict: Dictionary;
+  descripcion: string;
+  setDescripcion: (e: SetStateAction<string>) => void;
+  caretCoord: { x: number; y: number }[];
+  perfilesAbiertos: boolean[];
+  mencionarPerfiles: Profile[];
 };

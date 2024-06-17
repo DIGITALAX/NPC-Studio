@@ -2,7 +2,7 @@
 
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
-import { PhaserGameElement } from "../types/game.types";
+import { AutographType, PhaserGameElement } from "../types/game.types";
 import { SCENE_LIST } from "../../../lib/constants";
 
 const useConfig = (
@@ -10,7 +10,13 @@ const useConfig = (
   sceneKey: string,
   setNpc: (npc: SetStateAction<string>) => void,
   setCargando: (e: SetStateAction<boolean>) => void,
-  setManejarMostrarArticulo: (e: SetStateAction<string | undefined>) => void
+  setManejarMostrarArticulo: (
+    e: SetStateAction<{
+      etiqueta: string;
+      disenador: string;
+      tipo: AutographType;
+    } | undefined>
+  ) => void
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
