@@ -31,7 +31,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
   setCumplimiento,
   comprarCarrito,
   pagina,
-  setPagina
+  setPagina,
 }): JSX.Element => {
   switch (manejarMostrarArticulo?.tipo) {
     case AutographType.Hoodie:
@@ -87,12 +87,9 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
           setCarrito={setCarrito}
           carritoCargando={carritoCargando}
           carrito={carrito}
-          gastosAprobados={gastosAprobados}
           setVerImagen={setVerImagen}
-          aprobarGastos={aprobarGastos}
-          articuloIndice={articuloIndice}
-          setArticuloIndice={setArticuloIndice}
-          comprarPublicacion={comprarPublicacion}
+          setArticuloSeleccionado={setArticuloSeleccionado}
+          articulos={articulosActuales as Coleccion[]}
         />
       );
 

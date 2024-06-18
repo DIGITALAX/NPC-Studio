@@ -194,10 +194,10 @@ const useCompras = (
         functionName: "buyTokens",
         chain: polygonAmoy,
         args: [
-          carrito.compras?.map((com) => [
-            Number((com.elemento as Coleccion)?.coleccionId) || 0,
-          ]),
           carrito.compras?.map((com) => com.token),
+          carrito.compras?.map(
+            (com) => Number((com.elemento as Coleccion)?.coleccionId) || 0
+          ),
           carrito.compras?.map((com) =>
             Number((com.elemento as Mezcla)?.maximo)
               ? Number((com.elemento as Mezcla)?.maximo) * 10 ** 18
@@ -337,6 +337,7 @@ const useCompras = (
             : val
         )
       );
+
     } catch (err: any) {
       console.error(err.message);
     }
@@ -345,6 +346,12 @@ const useCompras = (
 
   const comprobarAprobado = async () => {
     try {
+      if (
+        !carrito?.abierto &&
+        articuloSeleccionado?.[0]?.tipo === AutographType.Mix
+      )
+        return;
+
       let aprobados: { token: string; aprobado: boolean }[] = [];
       await Promise.all(
         (carrito?.abierto
@@ -356,18 +363,18 @@ const useCompras = (
                 if (existingToken) {
                   existingToken.precio +=
                     Number(
-                      (el.elemento as Coleccion)?.precio > 0
+                      Number((el.elemento as Coleccion)?.precio) > 0
                         ? (el.elemento as Coleccion)?.precio
-                        : (el?.elemento as Mezcla)?.maximo
+                        : (el?.elemento as Mezcla)?.maximo * 10 ** 18
                     ) * el.cantidad;
                 } else {
                   acc.push({
                     token: el.token,
                     precio:
                       Number(
-                        (el.elemento as Coleccion)?.precio > 0
+                        Number((el.elemento as Coleccion)?.precio) > 0
                           ? (el.elemento as Coleccion)?.precio
-                          : (el?.elemento as Mezcla)?.maximo
+                          : (el?.elemento as Mezcla)?.maximo * 10 ** 18
                       ) * el.cantidad,
                   });
                 }
@@ -379,9 +386,9 @@ const useCompras = (
               token: el.token,
               precio:
                 Number(
-                  (el.elemento as Coleccion)?.precio > 0
+                  Number((el.elemento as Coleccion)?.precio) > 0
                     ? (el.elemento as Coleccion)?.precio
-                    : (el?.elemento as Mezcla)?.maximo
+                    : (el?.elemento as Mezcla)?.maximo * 10 ** 18
                 ) * el.cantidad,
             }))
         )?.map(async (elemento) => {
@@ -419,7 +426,6 @@ const useCompras = (
           });
 
           if (address) {
-            console.log(data,  elemento.precio)
             if (
               Number((data as any)?.toString()) /
                 Number(
@@ -452,9 +458,8 @@ const useCompras = (
           }
         })
       );
-
-      setGastosAprobados(aprobados);
       console.log({aprobados})
+      setGastosAprobados(aprobados);
     } catch (err: any) {
       console.error(err.message);
     }

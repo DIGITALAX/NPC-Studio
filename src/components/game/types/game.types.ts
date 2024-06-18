@@ -368,6 +368,7 @@ export type Dictionary = {
     aprobar: string;
     gNew: string;
     cump: string;
+    random: string;
     create: string;
     gUpdate: string;
     agotado: string;

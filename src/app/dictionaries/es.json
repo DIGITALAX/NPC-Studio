@@ -61,7 +61,8 @@
     "direccion": "Dirección",
     "estado": "Estado",
     "pais": "País",
-    "comprado": "Elementos Comprados! Vuelva pronto para ver tus pedidos."
+    "comprado": "Elementos Comprados! Vuelva pronto para ver tus pedidos.",
+    "random": "Elija Una Mezcla Aleatoria"
   },
   "Nav": {
     "lan": "Elija Idioma"

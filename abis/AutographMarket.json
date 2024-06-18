@@ -93,14 +93,14 @@
     "name": "buyTokens",
     "inputs": [
       {
-        "name": "_collectionIds",
-        "type": "uint256[][]",
-        "internalType": "uint256[][]"
-      },
-      {
         "name": "_currencies",
         "type": "address[]",
         "internalType": "address[]"
+      },
+      {
+        "name": "_collectionIds",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
       },
       {
         "name": "_maxAmount",

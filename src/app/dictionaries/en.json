@@ -61,7 +61,8 @@
     "direccion": "Address",
     "estado": "State",
     "pais": "Country",
-    "comprado": "Items Purchased! Check back to Orders shortly."
+    "comprado": "Items Purchased! Check back to Orders shortly.",
+    "random": "Choose A Random Mix"
   },
   "Nav": {
     "lan": "Choose Language"

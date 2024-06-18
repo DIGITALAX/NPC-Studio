@@ -21,6 +21,7 @@ function CarritoAbierto({
   gastosAprobados,
   aprobarGastos,
 }: CarritoAbiertoProps) {
+  console.log({gastosAprobados})
   return (
     <div
       className="inset-0 justify-center fixed z-30 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
@@ -92,16 +93,19 @@ function CarritoAbierto({
                               ? (
                                   elemento.elemento as Catalogo
                                 )?.paginas[0]?.split("ipfs://")?.[1]
-                              : ""
+                              : "QmbNPRomMwXfAd6m7eseA48DhfizuGVKCvMBViQLe9BsLs"
                           }`}
                         />
                       </div>
                       <div className="relative w-fit h-fit flex items-center justify-center">
                         {`${Number(
                           (
-                            ((elemento?.elemento as Catalogo)?.precio
+                            ((Number((elemento?.elemento as Catalogo)?.precio) >
+                            0
                               ? (elemento?.elemento as Catalogo)?.precio
-                              : (elemento?.elemento as Mezcla)?.maximo) /
+                              : Number((elemento?.elemento as Mezcla)?.maximo) *
+                                10 ** 18) *
+                              Number(elemento?.cantidad)) /
                             Number(
                               datosOraculos?.find(
                                 (oraculo) =>
@@ -167,11 +171,12 @@ function CarritoAbierto({
                                 (sum, el) =>
                                   sum +
                                   Number(
-                                    ((el.elemento as Mezcla).maximo
-                                      ? (el.elemento as Mezcla).maximo
-                                      : (el.elemento as Catalogo).precio) *
-                                      el.cantidad
-                                  ),
+                                    (el.elemento as Mezcla).maximo > 0
+                                      ? Number((el.elemento as Mezcla).maximo) *
+                                          10 ** 18
+                                      : (el.elemento as Catalogo).precio
+                                  ) *
+                                    Number(el.cantidad),
                                 0
                               ),
                             indice

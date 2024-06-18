@@ -29,14 +29,13 @@ const Botones: FunctionComponent<BotonesProps> = ({
             !agotado &&
             (gastosAprobados?.aprobado
               ? comprarPublicacion(articulo)
-              : aprobarGastos(
+              : aprobarGastos!(
                   articulo.token,
                   Number(
-                    ((articulo.elemento as Mezcla).maximo
+                    Number((articulo.elemento as Mezcla).maximo) > 0
                       ? (articulo.elemento as Mezcla).maximo
-                      : (articulo.elemento as Catalogo).precio) *
-                      articulo.cantidad
-                  ),
+                      : (articulo.elemento as Catalogo).precio
+                  ) * Number(articulo.cantidad),
                   indice
                 ))
           }

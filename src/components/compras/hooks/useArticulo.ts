@@ -1,6 +1,6 @@
 import { AutographType, Coleccion } from "@/components/game/types/game.types";
 import { useEffect, useState } from "react";
-import { Catalogo, Compra } from "../types/compras.types";
+import { Catalogo, Compra, Mezcla } from "../types/compras.types";
 import { getArticulo } from "../../../../graphql/autograph/queries/getArticulo";
 import {
   ACCEPTED_TOKENS_AMOY,
@@ -11,6 +11,7 @@ import {
 import { getCatalogo } from "../../../../graphql/autograph/queries/getCatalogo";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
 import { Profile } from "../../../../graphql/generated";
+import { getMezcla } from "../../../../graphql/autograph/queries/getMezcla";
 
 const useArticulo = (
   manejarMostrarArticulo:
@@ -62,6 +63,41 @@ const useArticulo = (
             tipo: AutographType.Catalog,
           },
         ];
+      } else if (manejarMostrarArticulo?.tipo == AutographType.Mix) {
+        const datos = await getMezcla();
+
+        articulos = await Promise.all(
+          datos?.data?.collections.map(async (col: any) => {
+            if (!col.collectionMetadata) {
+              const cadena = await fetch(
+                `${INFURA_GATEWAY}/ipfs/${col.uri.split("ipfs://")?.[1]}`
+              );
+              col.collectionMetadata = await cadena.json();
+            }
+
+            return {
+              galeria: col.collectionMetadata.gallery,
+              imagen: col.collectionMetadata.image,
+              id: col.collectionId,
+              cantidad: col.amount,
+              tokenes: col.acceptedTokens,
+              tokenesMinteados: col.mintedTokens,
+              precio: col.price,
+              tipo: numberToAutograph[Number(col.type)],
+              titulo: col.collectionMetadata.title,
+              descripcion: col.collectionMetadata.description,
+              etiquetas: col.collectionMetadata.tags,
+              npcIdiomas: col.collectionMetadata.locales,
+              npcInstrucciones: col.collectionMetadata.instructions,
+              npcs: col.collectionMetadata.npcs,
+              pubIds: col.pubIds,
+              profileIds: col.profileIds,
+              coleccionId: col.collectionId,
+              galeriaId: col.galleryId,
+              profile: undefined,
+            };
+          })
+        );
       } else {
         const datos = await getArticulo(
           manejarMostrarArticulo?.disenador!,
@@ -110,16 +146,32 @@ const useArticulo = (
       }
 
       setArticulosActuales(articulos);
-      setArticuloSeleccionado(
-        articulos.map((ar) => ({
-          elemento: ar,
-          token: ACCEPTED_TOKENS_AMOY[0][2],
-          cantidad: 1,
-          tipo: (ar as Coleccion)?.tipo,
-          color: "",
-          tamano: "",
-        }))
-      );
+      if (manejarMostrarArticulo?.tipo == AutographType.Mix) {
+        setArticuloSeleccionado([
+          {
+            elemento: {
+              maximo: 100,
+            },
+            token: ACCEPTED_TOKENS_AMOY[0][2],
+            cantidad: 1,
+            tipo: AutographType.Mix,
+            color: "",
+            tamano: "",
+          },
+        ]);
+      } else {
+        setArticuloSeleccionado(
+          articulos.map((ar) => ({
+            elemento: ar,
+            token: ACCEPTED_TOKENS_AMOY[0][2],
+            cantidad: 1,
+            tipo: (ar as Coleccion)?.tipo,
+            color: "",
+            tamano: "",
+          }))
+        );
+      }
+
       setPagina(0);
       setArticuloIndice(0);
     } catch (err: any) {

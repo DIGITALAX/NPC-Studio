@@ -67,14 +67,14 @@ export type BotonesProps = {
   carritoCargando: boolean;
   articulo: Compra;
   dict: Dictionary;
-  aprobarCargando: boolean;
-  aprobarGastos: (
+  aprobarCargando?: boolean;
+  aprobarGastos?: (
     token: string,
     precio: number,
     indice: number
   ) => Promise<void>;
-  gastosAprobados: { token: string; aprobado: boolean };
-  agotado: boolean;
+  gastosAprobados?: { token: string; aprobado: boolean };
+  agotado?: boolean;
 };
 
 export type AutografoProps = {
@@ -161,19 +161,12 @@ export type MezclaProps = {
     }>
   ) => void;
   carritoCargando: boolean;
-  aprobarGastos: (
-    token: string,
-    precio: number,
-    indice: number
-  ) => Promise<void>;
-  articuloIndice: number;
-  setArticuloIndice: (e: SetStateAction<number>) => void;
   carrito: {
     compras: Compra[];
     abierto: boolean;
   };
-  gastosAprobados: { token: string; aprobado: boolean }[];
-  comprarPublicacion: (articulo: Compra) => Promise<void>;
+  setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
+  articulos: Coleccion[];
   setVerImagen: (
     e: SetStateAction<{
       abierto: boolean;
