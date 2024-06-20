@@ -166,6 +166,26 @@ function Process({
                                   ),
                                 }))
                               );
+
+                              setColeccionActual({
+                                imagen: "",
+                                cantidad: 1,
+                                tokenes: [],
+                                precio: 0,
+                                id: gal.colecciones.length + 1,
+                                tipo: "NFT" as any,
+                                titulo: "",
+                                descripcion: "",
+                                etiquetas: "",
+                                npcIdiomas: "",
+                                npcInstrucciones: "",
+                                npcs: "",
+                                galeria: gal.colecciones?.[0]?.galeria || "",
+                                tokenesMinteados: [],
+                                profile: undefined,
+                                profileIds: [],
+                                pubIds: [],
+                              });
                               setMostrarGalerias(false);
                             }}
                           >
@@ -589,20 +609,23 @@ function Process({
                                 (sprite.key
                                   .toLowerCase()
                                   .includes(
-                                    (dropDown.npcsTexto.split(",") || "")
+                                    (dropDown.npcsTexto || "")
+                                      .split(",")
                                       .filter(Boolean)
                                       .pop()
                                       ?.trim()
                                       .toLowerCase() || ""
                                   ) &&
-                                  !(coleccionActual.npcs.split(",") || "")
+                                  !(coleccionActual.npcs || "")
+                                    .split(",")
                                     .map((npc) => npc.trim().toLowerCase())
                                     .includes(sprite.key.toLowerCase())) ||
                                 SCENE_LIST.map((col) => col.sprites).filter(
                                   (sprite) =>
                                     sprite.filter(
                                       (s) =>
-                                        (dropDown.npcsTexto.split(",") || "")
+                                        (dropDown.npcsTexto || "")
+                                          .split(",")
                                           .filter(Boolean)
                                           .pop()
                                           ?.trim()
@@ -624,14 +647,19 @@ function Process({
                           ).value
                             .trim()
                             .toLowerCase();
-                          setColeccionActual((prev) => ({
-                            ...prev,
-                            npcs: (prev.npcs.split(",") || "")
-                              .filter((valor) =>
-                                valor.toLowerCase().includes(searchTerm)
-                              )
-                              .join(","),
-                          }));
+                          setColeccionActual((prev) => {
+                            const npcs = prev.npcs || "";
+
+                            return {
+                              ...prev,
+                              npcs: npcs
+                                .split(",")
+                                .filter((valor) =>
+                                  valor.toLowerCase().includes(searchTerm)
+                                )
+                                .join(","),
+                            };
+                          });
 
                           setDropDown({
                             ...dropDown,
@@ -682,18 +710,21 @@ function Process({
                             (id.key
                               .toLowerCase()
                               .includes(
-                                (dropDown.idiomasTexto.split(",") || "")
+                                (dropDown.idiomasTexto || "")
+                                  .split(",")
                                   .filter(Boolean)
                                   .pop()
                                   ?.trim()
                                   .toLowerCase() || ""
                               ) &&
-                              !(coleccionActual.npcIdiomas.split(",") || "")
+                              !(coleccionActual.npcIdiomas || "")
+                                .split(",")
                                 .map((npc) => npc.trim().toLowerCase())
                                 .includes(id.key.toLowerCase())) ||
                             IDIOMAS.filter(
                               (i) =>
-                                (dropDown.idiomasTexto.split(",") || "")
+                                (dropDown.idiomasTexto || "")
+                                  .split(",")
                                   .filter(Boolean)
                                   .pop()
                                   ?.trim()
@@ -711,14 +742,20 @@ function Process({
                           ).value
                             .trim()
                             .toLowerCase();
-                          setColeccionActual((prev) => ({
-                            ...prev,
-                            npcIdiomas: (prev.npcIdiomas.split(",") || "")
-                              .filter((valor) =>
-                                valor.toLowerCase().includes(searchTerm)
-                              )
-                              .join(","),
-                          }));
+                          setColeccionActual((prev) => {
+                            {
+                              const idiomas = prev.npcIdiomas || "";
+                              return {
+                                ...prev,
+                                npcIdiomas: idiomas
+                                  .split(",")
+                                  .filter((valor) =>
+                                    valor.toLowerCase().includes(searchTerm)
+                                  )
+                                  .join(","),
+                              };
+                            }
+                          });
 
                           setDropDown({
                             ...dropDown,
@@ -737,9 +774,7 @@ function Process({
                           let npcIdiomas: string;
                           setColeccionActual((prev) => {
                             const npcsArray = prev.npcIdiomas
-                              ? (prev.npcIdiomas.split(",") || "").filter(
-                                  Boolean
-                                )
+                              ? prev.npcIdiomas.split(",").filter(Boolean)
                               : [];
                             if (npcsArray.includes(value)) {
                               npcIdiomas = npcsArray

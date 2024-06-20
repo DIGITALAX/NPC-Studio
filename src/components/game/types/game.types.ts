@@ -14,9 +14,11 @@ import { PublicClient } from "viem";
 import {
   Catalogo,
   Compra,
+  Details,
   Mezcla,
 } from "@/components/compras/types/compras.types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
+import { AccessControlConditions } from "@lit-protocol/types";
 
 export type LogProps = {
   connected: boolean;
@@ -493,6 +495,10 @@ export type PantallaCambioProps = {
   publicClient: PublicClient;
   address: `0x${string}` | undefined;
   setConectarPub: (e: SetStateAction<boolean>) => void;
+  todosLosPedidos: Pedido[];
+  pedidosCargando: boolean;
+  manejarDescifrar: (indice: number) => Promise<void>;
+  descifrarCargando: boolean[];
 };
 
 export interface Galeria {
@@ -535,4 +541,40 @@ export interface DatosOraculos {
   currency: string;
   rate: string;
   wei: string;
+}
+
+export type PedidosProps = {
+  todosLosPedidos: Pedido[];
+  pedidosCargando: boolean;
+  manejarDescifrar: (indice: number) => Promise<void>;
+  descifrarCargando: boolean[];
+};
+
+export interface Pedido {
+  subOrderTypes: string[];
+  subOrderStyles: {
+    color: string;
+    tamano: string
+  }[];
+  total: string;
+  orderId: string;
+  blockNumber: string;
+  blockTimestamp: string;
+  transactionHash: string;
+  buyer: string;
+  fulfillment?: Details | EncryptedDetails;
+  amounts: string;
+  subTotals: string[];
+  parentIds: string[];
+  collectionIds: number[][];
+  currencies: string[];
+  mintedTokens: number[][];
+  collections: string[];
+  decrypted: boolean;
+}
+
+export interface EncryptedDetails {
+  ciphertext: string;
+  dataToEncryptHash: string;
+  accessControlConditions: AccessControlConditions | undefined;
 }

@@ -13,17 +13,30 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
   setVerImagen,
   setArticuloSeleccionado,
 }): JSX.Element => {
-  console.log({ articuloSeleccionado });
   return (
     <div className="relative w-full h-fit flex items-start justify-center gap-4 flex-col gap-3 font-vcr text-white text-xs">
       <div className="relative w-full h-fit flex items-start justify-start overflow-x-scroll">
         <div className="relative w-fit h-fit flex items-start justify-start flex-row gap-2">
           {articulos
-            ?.filter((art) =>
-              art?.tokenes
-                ?.map((i) => i.toLowerCase())
-                ?.includes(articuloSeleccionado[0].token)
-            )
+            ?.filter((art) => {
+              const preciosSeleccionados = articulos
+                ?.filter((art) =>
+                  art?.tokenes
+                    ?.map((i) => i.toLowerCase())
+                    ?.includes(articuloSeleccionado?.[0]?.token)
+                )
+                ?.map((art) => Number(art.precio) / 10 ** 18);
+
+              const sumaPrecios = preciosSeleccionados
+                ?.sort((a, b) => a - b)
+                ?.slice(0, 5)
+                ?.reduce((acc, val) => acc + val, 0);
+
+              return (
+                sumaPrecios <=
+                (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+              );
+            })
             ?.map((art, indice: number) => {
               return (
                 <div
@@ -35,7 +48,9 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                       setVerImagen({
                         abierto: true,
                         tipo: "image/png",
-                        url: art?.imagen?.split("ipfs://")?.[1],
+                        url: `${INFURA_GATEWAY}/ipfs/${
+                          art?.imagen?.split("ipfs://")?.[1]
+                        }`,
                       })
                     }
                     className="relative w-60 h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-sm"
@@ -75,6 +90,22 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                     arr[0] = {
                       ...arr[0],
                       token: moneda[2],
+                      elemento: {
+                        maximo: Number(
+                          (
+                            Number(
+                              articulos
+                                ?.filter((art) =>
+                                  art?.tokenes
+                                    ?.map((i) => i.toLowerCase())
+                                    ?.includes(articuloSeleccionado?.[0]?.token)
+                                )
+                                .map((art) => Number(art.precio) / 10 ** 18)
+                                .reduce((acc, val) => acc + val, 0)
+                            ) / 2
+                          ).toFixed(0)
+                        ),
+                      },
                     };
 
                     return arr;
@@ -101,22 +132,24 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                   ?.filter((art) =>
                     art?.tokenes
                       ?.map((i) => i.toLowerCase())
-                      ?.includes(articuloSeleccionado[0].token)
+                      ?.includes(articuloSeleccionado?.[0]?.token)
                   )
-                  .map((art) => Number(art.precio) / 10 ** 18)
-                  .sort((a, b) => a - b)
-                  .slice(0, 3)
-                  .reduce((acc, val) => acc + val, 0)!
+                  ?.map((art) => Number(art.precio) / 10 ** 18)
+                  ?.sort((a, b) => a - b)
+                  ?.slice(0, 5)
+                  ?.reduce((acc, val) => acc + val, 0) || 0!
               }
               max={
                 articulos
                   ?.filter((art) =>
                     art?.tokenes
                       ?.map((i) => i.toLowerCase())
-                      ?.includes(articuloSeleccionado[0].token)
+                      ?.includes(articuloSeleccionado?.[0]?.token)
                   )
-                  .map((art) => Number(art.precio) / 10 ** 18)
-                  .reduce((acc, val) => acc + val, 0)!
+                  ?.map((art) => Number(art.precio) / 10 ** 18)
+                  ?.sort((a, b) => b - a)
+                  ?.slice(0, 5)
+                  ?.reduce((acc, val) => acc + val, 0) || 0!
               }
               onChange={(e) =>
                 setArticuloSeleccionado((prev) => {
@@ -133,9 +166,9 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 })
               }
               step="1"
-              // value={
-              //   (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
-              // }
+              value={
+                (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+              }
             />
           </div>
         )}

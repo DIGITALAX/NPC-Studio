@@ -395,6 +395,7 @@ const useMint = (
   const hacerPublicacion = async (): Promise<void> => {
     setCargandoConexion(true);
 
+
     try {
       const contentURI = await subirContenido(
         descripcion,
@@ -412,6 +413,8 @@ const useMint = (
         chain: polygonAmoy,
         transport: custom((window as any).ethereum),
       });
+
+      
 
       await publicarLens(
         contentURI!,

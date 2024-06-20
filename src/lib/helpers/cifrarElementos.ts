@@ -1,15 +1,23 @@
 import { Details } from "@/components/compras/types/compras.types";
+import { AutographType } from "@/components/game/types/game.types";
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
 
 export const cifrarElementos = async (
   client: LitNodeClient,
-  elementos: { id: number; color: string; tamano: string; cantidad: number }[],
+  elementos: {
+    id: number;
+    color: string;
+    tamano: string;
+    cantidad: number;
+    tipo: AutographType;
+  }[],
   cumplimiento: Details,
   address: `0x${string}`
 ): Promise<
   | {
       coleccionId: number;
       cifrados: string;
+      tipo: AutographType;
     }[]
   | undefined
 > => {
@@ -17,6 +25,7 @@ export const cifrarElementos = async (
     let elementosCifrados: {
       coleccionId: number;
       cifrados: string;
+      tipo: AutographType;
     }[] = [];
 
     await Promise.all(
@@ -67,6 +76,7 @@ export const cifrarElementos = async (
             dataToEncryptHash,
             accessControlConditions,
           }),
+          tipo: el.tipo,
         });
       })
     );

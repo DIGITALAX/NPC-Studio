@@ -63,6 +63,7 @@ const useCompras = (
     | {
         coleccionId: number;
         cifrados: string;
+        tipo: AutographType;
       }[]
     | undefined
   > => {
@@ -92,6 +93,7 @@ const useCompras = (
           cantidad: el.cantidad,
           tamano: el.tamano,
           id: (el.elemento as Coleccion)?.coleccionId || 0,
+          tipo: el.tipo,
         })),
         {
           ...cumplimiento,
@@ -113,6 +115,7 @@ const useCompras = (
         | {
             coleccionId: number;
             cifrados: string;
+            tipo: AutographType;
           }[]
         | undefined;
       if (elemento.tipo !== AutographType.NFT) {
@@ -172,6 +175,7 @@ const useCompras = (
         | {
             coleccionId: number;
             cifrados: string;
+            tipo: AutographType;
           }[]
         | undefined;
       if (
@@ -205,18 +209,25 @@ const useCompras = (
           ),
           carrito.compras?.map((com) => Number(com.cantidad)),
           carrito.compras?.map((com) => autographTypeToNumber[com.tipo]),
-          carrito.compras?.map((com) =>
-            cadenasCifradas?.find(
-              (cad) =>
-                Number(cad.coleccionId) ==
-                Number((com.elemento as Coleccion).coleccionId || 0)
-            )
-              ? cadenasCifradas?.find(
+          JSON.stringify(
+            carrito.compras
+              ?.map((com) =>
+                cadenasCifradas?.find(
                   (cad) =>
                     Number(cad.coleccionId) ==
-                    Number((com.elemento as Coleccion).coleccionId || 0)
-                )?.cifrados
-              : ""
+                      Number((com.elemento as Coleccion).coleccionId || 0) &&
+                    cad.tipo == com.tipo
+                )
+                  ? cadenasCifradas?.find(
+                      (cad) =>
+                        Number(cad.coleccionId) ==
+                          Number(
+                            (com.elemento as Coleccion).coleccionId || 0
+                          ) && cad.tipo == com.tipo
+                    )?.cifrados
+                  : ""
+              )
+              ?.filter(Boolean)
           ),
         ],
         account: address,
@@ -337,7 +348,6 @@ const useCompras = (
             : val
         )
       );
-
     } catch (err: any) {
       console.error(err.message);
     }
@@ -458,7 +468,6 @@ const useCompras = (
           }
         })
       );
-      console.log({aprobados})
       setGastosAprobados(aprobados);
     } catch (err: any) {
       console.error(err.message);

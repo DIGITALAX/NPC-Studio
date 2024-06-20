@@ -150,7 +150,20 @@ const useArticulo = (
         setArticuloSeleccionado([
           {
             elemento: {
-              maximo: 100,
+              maximo: Number(
+                (
+                  Number(
+                    articulos
+                      ?.filter((art) =>
+                        art?.tokenes
+                          ?.map((i) => i.toLowerCase())
+                          ?.includes(articuloSeleccionado?.[0]?.token)
+                      )
+                      .map((art) => Number(art.precio) / 10 ** 18)
+                      .reduce((acc, val) => acc + val, 0)
+                  ) / 2
+                ).toFixed(0)
+              ),
             },
             token: ACCEPTED_TOKENS_AMOY[0][2],
             cantidad: 1,

@@ -36,13 +36,13 @@ function Log({
             {[
               {
                 titulo: dict.Home.connect,
-                imagen: "QmRfPstaxusA9j4DYtwSsvrNn1F3zmvFekNbSeGChvrCHB",
+                imagen: "QmfVM4Fg28tCYELteZJNjBoyjPQEENYnWPy4gRJatBFzd1",
                 llama: !connected ? openConnectModal : () => manejarSalir(),
                 cargando: false,
               },
               {
                 titulo: "Lens",
-                imagen: "QmcAH8o2iNCrfTMDFRJbd1f9hAgYbbCwkygB9bdbrR9uFx",
+                imagen: "QmYpZgGFF4m6kNPsjYYEp7EkwoiE75YvjT3M5rSX18we62",
                 llama: () =>
                   !connected
                     ? {}
@@ -53,19 +53,19 @@ function Log({
               },
               {
                 titulo: dict.Home.orders,
-                imagen: "QmSFwCzJKRA6eg93yiAPyYKyWuAJfLLVTf38VSsgVDu3k1",
+                imagen: "QmP6sjSUGJHj4g15dNWjtWonemCHscPWeZrBFURvSrLjjD",
                 llama: () => setPantalla(2),
                 cargando: false,
               },
               {
                 titulo: dict.Home.studio,
-                imagen: "QmbQwhWaCimcLHuD8BdBhbgv1aWU3s2E2DBgkqqEAtPkvi",
+                imagen: "QmYAEjcDCXGSkBMkfxkBgaw7euY4hEguzkf5ea5ZG89km1",
                 llama: () => setPantalla(0),
                 cargando: false,
               },
               {
                 titulo: dict.Home.create,
-                imagen: "QmPhp6oB7zLL5nXvCK1LRgqFKmbHGtzP6z8GZZB1wj1R9Z",
+                imagen: "QmSpR9h16z1wLLtqHqamWgddoZU6NUoCArykPNmNPzSnoz",
                 llama: () => setPantalla(1),
                 cargando: false,
               },
@@ -84,7 +84,7 @@ function Log({
                     key={indice}
                     className={`relative w-8 h-full flex items-center justify-center ${
                       elemento?.cargando
-                        ? "bg-white"
+                        ? "bg-black"
                         : "cursor-pointer active:scale-90 hover:scale-95 hover:opacity-80"
                     }`}
                     title={elemento.titulo}
@@ -94,17 +94,22 @@ function Log({
                       elemento?.llama()
                     }
                   >
-                    {elemento?.cargando ? (
-                      <div className="relative w-fit h-fit flex items-center justify-center animate-spin">
-                        <AiOutlineLoading color={"black"} size={15} />
+                    {elemento?.cargando && (
+                      <div className="absolute w-fit h-fit flex items-center justify-center animate-spin">
+                        <AiOutlineLoading color={"white"} size={15} />
                       </div>
-                    ) : (
+                    )}
+                    <div
+                      className={`relative w-full h-full flex items-center justify-center ${
+                        elemento?.cargando && "opacity-40"
+                      }`}
+                    >
                       <Image
                         layout="fill"
                         draggable={false}
                         src={`${INFURA_GATEWAY}/ipfs/${elemento.imagen}`}
                       />
-                    )}
+                    </div>
                   </div>
                 );
               }

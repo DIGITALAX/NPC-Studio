@@ -15,6 +15,7 @@ import { polygonAmoy } from "viem/chains";
 import { createPublicClient } from "viem";
 import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
+import usePedidos from "@/components/game/hooks/usePedidos";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -103,6 +104,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.setErrorInteraccion!
   );
 
+  const {
+    todosLosPedidos,
+    pedidosCargando,
+    manejarDescifrar,
+    descifrarCargando,
+  } = usePedidos(context?.pantalla!, address, context?.cliente!);
+
   return (
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
@@ -161,6 +169,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             borrarGaleria={borrarGaleria}
             publicClient={publicClient}
             address={address}
+            todosLosPedidos={todosLosPedidos}
+            pedidosCargando={pedidosCargando}
+            manejarDescifrar={manejarDescifrar}
+            descifrarCargando={descifrarCargando}
           />
         </div>
       </div>

@@ -39,6 +39,10 @@ function PantallaCambio({
   publicClient,
   address,
   setConectarPub,
+  todosLosPedidos,
+  pedidosCargando,
+  manejarDescifrar,
+  descifrarCargando,
 }: PantallaCambioProps) {
   const context = useContext(ModalContext);
 
@@ -75,7 +79,14 @@ function PantallaCambio({
       );
 
     case 2:
-      return <Pedidos />;
+      return (
+        <Pedidos
+          todosLosPedidos={todosLosPedidos}
+          pedidosCargando={pedidosCargando}
+          manejarDescifrar={manejarDescifrar}
+          descifrarCargando={descifrarCargando}
+        />
+      );
 
     default:
       return (

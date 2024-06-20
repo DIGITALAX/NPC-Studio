@@ -3,7 +3,7 @@ import Image from "next/legacy/image";
 import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
 import { CarritoAbiertoProps } from "../types/common.types";
 import Cumplimiento from "@/components/compras/modules/Cumplimiento";
-import { Coleccion } from "@/components/game/types/game.types";
+import { AutographType, Coleccion } from "@/components/game/types/game.types";
 import { Catalogo, Mezcla } from "@/components/compras/types/compras.types";
 import { RxCrossCircled } from "react-icons/rx";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -21,7 +21,6 @@ function CarritoAbierto({
   gastosAprobados,
   aprobarGastos,
 }: CarritoAbiertoProps) {
-  console.log({gastosAprobados})
   return (
     <div
       className="inset-0 justify-center fixed z-30 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
@@ -44,11 +43,14 @@ function CarritoAbierto({
           <div
             className={`relative w-full h-full bg-black/80 flex flex-col items-center py-10 px-4 gap-5 text-white font-vcr justify-start`}
           >
-            <Cumplimiento
-              setCumplimiento={setCumplimiento}
-              cumplimiento={cumplimiento}
-              dict={dict}
-            />
+            {carrito?.compras?.filter((it) => it.tipo !== AutographType.NFT)
+              ?.length > 0 && (
+              <Cumplimiento
+                setCumplimiento={setCumplimiento}
+                cumplimiento={cumplimiento}
+                dict={dict}
+              />
+            )}
             <div className="relative w-full h-full flex items-start justify-start">
               <div className="relative w-fit h-fit overflow-x-scroll flex items-start justify-start gap-4 flex-row">
                 {carrito.compras?.map((elemento, indice: number) => {
@@ -164,7 +166,7 @@ function CarritoAbierto({
                           aprobarGastos(
                             carrito.compras.filter(
                               (el) => el.token == token[2]
-                            )[0].token,
+                            )?.[0]?.token,
                             carrito.compras
                               .filter((el) => el.token == token[2])
                               ?.reduce(
