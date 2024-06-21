@@ -23,7 +23,11 @@ const config: Config = {
         amarillo: "#F8FF6F",
         dorado: "#F5C652",
         offNegro: "#0F1015",
-
+        ligero: "#F9FF90",
+        oscuro: "#1F32EE",
+        mar: "#0789D2",
+        rojo: "#EE3075",
+        rosa: "#F5E0E2"
       },
       fontSize: {
         xxs: "0.6rem",
@@ -31,17 +35,20 @@ const config: Config = {
       fontFamily: {
         rain: "Internal Rainbows",
         mana: "Manaspace",
+        bit: "Bitblox",
         at: "at01",
         leco: "Leco",
         abad: "Abaddon",
         arc: "Arcade Classic",
         vcr: "Vcr",
+        con: "Consolas",
       },
       backgroundImage: {
         esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,
       },
       zIndex: {
-        "100": "100",
+        100: "100",
+        200: "200",
       },
     },
   },

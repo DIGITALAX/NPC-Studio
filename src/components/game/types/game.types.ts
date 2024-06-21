@@ -366,10 +366,14 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     title: string;
+    onChain: string;
     comprado: string;
     aprobar: string;
     gNew: string;
     cump: string;
+    carritoCompra: string;
+    precioMax: string;
+    carrito: string;
     random: string;
     create: string;
     gUpdate: string;
@@ -422,10 +426,13 @@ export type Dictionary = {
     gCreate: string;
     tipo: string;
     nombre: string;
+    npcStudio: string;
     ciudad: string;
     direccion: string;
     estado: string;
     pais: string;
+    todoElCatalogo: string;
+    muestra: string;
   };
   Nav: {
     lan: string;
@@ -554,7 +561,7 @@ export interface Pedido {
   subOrderTypes: string[];
   subOrderStyles: {
     color: string;
-    tamano: string
+    tamano: string;
   }[];
   total: string;
   orderId: string;

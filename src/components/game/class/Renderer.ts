@@ -16,6 +16,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private socket!: WebSocket;
   private escena: Escena | null;
   private sceneKey!: string;
+  private estadoDePantalla: boolean;
   private seatsTaken: Seat[];
   private npcCamara!: string;
   private setManejarMostrarArticulo!: (
@@ -34,6 +35,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
     super({ key: "NPCEnginePhaser" });
     this.seatsTaken = [];
     this.escena = null;
+    this.estadoDePantalla = false;
     this.esperandoRespuesta = false;
   }
 
@@ -205,11 +207,12 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           .setDepth(obj.sitio.y);
         interactivo.setInteractive();
         interactivo.on("pointerdown", () => {
-          this.setManejarMostrarArticulo({
-            etiqueta: obj.etiqueta,
-            disenador: obj.disenador,
-            tipo: obj.tipo,
-          });
+          !this.estadoDePantalla &&
+            this.setManejarMostrarArticulo({
+              etiqueta: obj.etiqueta,
+              disenador: obj.disenador,
+              tipo: obj.tipo,
+            });
         });
         interactivo.on("pointerover", () => {
           this.game.canvas.style.cursor = "pointer";
@@ -364,6 +367,10 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         npc.makeCameraFollow();
       }
     });
+  }
+
+  setEstadoDePantalla(estado: boolean) {
+    this.estadoDePantalla = estado;
   }
 
   destruir() {

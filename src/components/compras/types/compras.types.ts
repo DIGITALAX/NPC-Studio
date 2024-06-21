@@ -56,12 +56,6 @@ export type ComprasCambioProps = {
 };
 
 export type BotonesProps = {
-  setCarrito: (
-    e: SetStateAction<{
-      compras: Compra[];
-      abierto: boolean;
-    }>
-  ) => void;
   indice: number;
   comprarPublicacion?: (elemento: Compra) => Promise<void>;
   carritoCargando: boolean;
@@ -75,6 +69,21 @@ export type BotonesProps = {
   ) => Promise<void>;
   gastosAprobados?: { token: string; aprobado: boolean };
   agotado?: boolean;
+  minteado: number;
+  cantidad: number;
+  precio: number;
+  setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  carrito: {
+    compras: Compra[];
+    abierto: boolean;
+  };
+  datosOraculos: DatosOraculos[];
 };
 
 export type AutografoProps = {
@@ -160,7 +169,6 @@ export type MezclaProps = {
       abierto: boolean;
     }>
   ) => void;
-  carritoCargando: boolean;
   carrito: {
     compras: Compra[];
     abierto: boolean;
@@ -205,6 +213,13 @@ export type CatalogoProps = {
     indice: number
   ) => Promise<void>;
   setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
 };
 
 export interface Catalogo {
@@ -256,4 +271,5 @@ export type CumplimientoProps = {
   setColor?: (e: string) => void;
   tamano?: string;
   setTamano?: (e: string) => void;
+  abierto?: boolean
 };

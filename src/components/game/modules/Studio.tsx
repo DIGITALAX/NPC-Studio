@@ -87,7 +87,8 @@ function Studio({
     escena,
     setNpc,
     setCargando,
-    setManejarMostrarArticulo
+    setManejarMostrarArticulo,
+    manejarMostrarArticulo
   );
   const {
     articuloCargando,
@@ -121,6 +122,7 @@ function Studio({
     setErrorInteraccion,
     setMostrarNotificacion
   );
+
   return (
     <>
       <div

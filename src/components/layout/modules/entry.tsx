@@ -200,11 +200,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           setSeguirColeccionar={context?.setSeguirColeccionar!}
         />
       )}
-      <Carrito
-        setCarrito={context?.setCarrito!}
-        carrito={context?.carrito!}
-        dict={dict}
-      />
+
       <Modals
         setConectarPub={setConectarPub}
         conectarPub={conectarPub}
@@ -233,6 +229,12 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         manejarEnviarMensaje={manejarEnviarMensaje}
         setMensaje={setMensaje}
         mensaje={mensaje}
+      />
+      <Carrito
+        setCarrito={context?.setCarrito!}
+        carrito={context?.carrito!}
+        dict={dict}
+        setManejarMostrarArticulo={setManejarMostrarArticulo}
       />
     </div>
   );

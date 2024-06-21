@@ -9,13 +9,22 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
   color,
   setTamano,
   tamano,
+  abierto,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-fit flex flex-col items-start justify-start gap-3">
-      <div className="relative w-fit h-fit flex text-black font-vcr text-2xl">
+    <div className="relative w-full h-full flex flex-col items-start justify-start gap-3 font-bit text-white">
+      <div
+        className={`relative w-full h-fit flex text-2xl ${
+          abierto ? "justify-center" : "justify-start"
+        }`}
+      >
         {dict.Home.cump}
       </div>
-      <div className="relative flex flex-row flex-wrap items-start justify-start gap-5 w-full h-fit">
+      <div
+        className={`relative flex flex-row flex-wrap items-end gap-5 w-full h-full ${
+          abierto ? "justify-center" : "justify-start"
+        }`}
+      >
         {[
           {
             titulo: dict.Home.nombre,
@@ -54,12 +63,15 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
                 key={indice}
                 className={`relative w-fit h-fit flex items-start justify-center flex-col gap-2`}
               >
-                <div className="relative w-fit h-fit flex text-white font-vcr text-base">
+                <div className="relative w-fit h-fit flex text-sm uppercase">
                   {elemento?.titulo}
                 </div>
-
                 <input
-                  className={`relative border border-white rounded-md flex bg-black font-vcr text-white text-sm p-2 h-10 w-40 `}
+                  className={`relative border rounded-md flex  text-sm p-1 h-8 w-32 ${
+                    abierto
+                      ? "border-ligero bg-black"
+                      : "border-white bg-oscuro"
+                  }`}
                   placeholder={
                     (cumplimiento as any)?.[elemento?.titulo?.toLowerCase()] ||
                     ""
@@ -84,7 +96,7 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
                 return (
                   <div
                     key={indice}
-                    className={`relative w-6 h-6 flex items-center justify-center bg-black text-white text-xs cursor-pointer active:scale-95 rounded-full ${
+                    className={`relative w-7 h-7 flex items-center justify-center border border-white text-xs cursor-pointer active:scale-95 rounded-full ${
                       tamano == t && "opacity-80"
                     }`}
                     onClick={() => setTamano!(t)}
@@ -100,7 +112,7 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
               return (
                 <div
                   key={indice}
-                  className={`relative w-6 h-6 flex items-center justify-center cursor-pointer active:scale-95 rounded-full ${
+                  className={`relative w-7 h-7 flex items-center justify-center cursor-pointer border border-white active:scale-95 rounded-full ${
                     c == color && "opacity-80"
                   }`}
                   style={{

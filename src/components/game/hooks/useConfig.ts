@@ -11,12 +11,22 @@ const useConfig = (
   setNpc: (npc: SetStateAction<string>) => void,
   setCargando: (e: SetStateAction<boolean>) => void,
   setManejarMostrarArticulo: (
-    e: SetStateAction<{
-      etiqueta: string;
-      disenador: string;
-      tipo: AutographType;
-    } | undefined>
-  ) => void
+    e: SetStateAction<
+      | {
+          etiqueta: string;
+          disenador: string;
+          tipo: AutographType;
+        }
+      | undefined
+    >
+  ) => void,
+  manejarMostrarArticulo:
+    | {
+        etiqueta: string;
+        disenador: string;
+        tipo: AutographType;
+      }
+    | undefined
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
@@ -127,6 +137,18 @@ const useConfig = (
       }
     }
   }, [chosenNpc, juego?.scene?.scenes, gameRef.current, socket]);
+
+  useEffect(() => {
+    const customScene = juego?.scene?.scenes.find(
+      (scene) =>
+        scene.scene.key === "NPCEnginePhaser" || scene.scene.key === "default"
+    );
+    if (customScene) {
+      (customScene as any).setEstadoDePantalla(
+        manejarMostrarArticulo ? true : false
+      );
+    }
+  }, [manejarMostrarArticulo]);
 
   useEffect(() => {
     if (!scriptRef.current) {

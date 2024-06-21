@@ -96,6 +96,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
     case AutographType.Catalog:
       return (
         <Catalogo
+          setVerImagen={setVerImagen}
           articuloSeleccionado={articuloSeleccionado}
           dict={dict}
           carrito={carrito}

@@ -53,6 +53,7 @@
     "cart": "Carrito",
     "addCart": "Añada al Carrito",
     "pubCompra": "Coleccione Pub",
+    "carritoCompra": "Compre Carrito",
     "aprobar": "Apruebe Gastos",
     "agotado": "AGOTADO",
     "cump": "Detalles de Cumplimiento",
@@ -62,7 +63,13 @@
     "estado": "Estado",
     "pais": "País",
     "comprado": "Elementos Comprados! Vuelva pronto para ver tus pedidos.",
-    "random": "Elija Una Mezcla Aleatoria"
+    "random": "Elija Una Mezcla Aleatoria",
+    "todoElCatalogo": "Coleccione Todo El Catálogo",
+    "muestra": "muestra de páginas: delantera + trasera",
+    "npcStudio": "NPC Studio",
+    "onChain": "Arte En Cadena",
+    "carrito": "¿Cuál está en tu carrito?",
+    "precioMax": "Configure el máximo precio"
   },
   "Nav": {
     "lan": "Elija Idioma"

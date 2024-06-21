@@ -1,4 +1,4 @@
-import { Dictionary } from "@/components/game/types/game.types";
+import { AutographType, Dictionary } from "@/components/game/types/game.types";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, SetStateAction, useEffect, useState } from "react";
@@ -16,45 +16,53 @@ const Carrito: FunctionComponent<{
       abierto: boolean;
     }>
   ) => void;
-}> = ({ dict, carrito, setCarrito }): JSX.Element => {
+  setManejarMostrarArticulo: (
+    e: SetStateAction<
+      | {
+          etiqueta: string;
+          disenador: string;
+          tipo: AutographType;
+        }
+      | undefined
+    >
+  ) => void;
+}> = ({ dict, carrito, setCarrito, setManejarMostrarArticulo }): JSX.Element => {
   const [carritoAnim, setCarritoAnim] = useState<boolean>(false);
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    if (carrito?.compras?.length > 0) {
+    if (carrito?.compras?.reduce((acc, val) => acc + val.cantidad, 0) > 0) {
       timeoutId = setTimeout(() => {
         setCarritoAnim(false);
       }, 1000);
     }
 
     return () => timeoutId && clearTimeout(timeoutId);
-  }, [carrito?.compras?.length]);
+  }, [carrito?.compras?.reduce((acc, val) => acc + val.cantidad, 0)]);
 
   return (
-    <div className="fixed bottom-5 right-5 w-fit h-fit z-30">
+    <div className="fixed bottom-5 right-5 w-fit h-fit z-100">
       <div
-        className="relative bg-black rounded-full p-2 h-14 w-14 border border-white flex items-center justify-center hover:opacity-70"
-        onClick={() =>
+        className="relative bg-black rounded-full p-2 h-14 w-14 cursor-pointer active:scale-95 border border-ligero flex items-center justify-center hover:opacity-70"
+        onClick={() => {
           setCarrito({
             compras: carrito?.compras,
             abierto: true,
-          })
-        }
+          });
+          setManejarMostrarArticulo(undefined);
+        }}
+        id={carritoAnim ? "cartAnim" : ""}
+        title={dict.Home.cart}
       >
-        <div
-          className="relative w-8 h-8 flex items-center justify-center cursor-pointer active:scale-95"
-          id={carritoAnim ? "cartAnim" : ""}
-          title={dict.Home.cart}
-        >
-          <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmT5ewiqFhfo8EHxSYiFwFR67pBpg7xesdtwAu9oWBoqqu`}
-            layout="fill"
-            draggable={false}
-          />
-        </div>
+        <Image
+          src={`${INFURA_GATEWAY}/ipfs/QmeUvktErG1LkwLYRZjU7FqWj9nCXkHcMoy7kpfwTe3WSM`}
+          layout="fill"
+          objectFit="cover"
+          draggable={false}
+        />
       </div>
-      {carrito?.compras?.length > 0 && (
-        <div className="absolute rounded-full border border-mar bg-black w-5 flex items-center justify-center right-0 -bottom-1 h-5 p-1 font-vcr text-mar text-xxs z-1">
-          {carrito?.compras?.length}
+      {carrito?.compras?.reduce((acc, val) => acc + val.cantidad, 0) > 0 && (
+        <div className="absolute rounded-full border border-ligero bg-black w-5 flex items-center justify-center right-0 -bottom-1 h-5 p-1 font-con text-mar text-xxs z-1 text-ligero">
+          {carrito?.compras?.reduce((acc, val) => acc + val.cantidad, 0)}
         </div>
       )}
     </div>

@@ -165,46 +165,56 @@ export const DIGITALAX_ADDRESS: `0x${string}` =
 
 export const ACCEPTED_TOKENS: string[][] = [
   [
-    "QmYYUQ8nGDnyuk8jQSung1WmTksvLEQBXjnCctdRrKtsNk",
+    "QmcyKazTx7gQAmFLrX4uwM5pub1LmNQRngM4ns6ydoETkZ",
     "WMATIC",
     "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
   ],
   [
-    "QmZRhUgjK6bJM8fC7uV145yf66q2e7vGeT7CLosw1SdMdN",
+    "QmfXXgwqWCZpvwGQM3fUXhJcDJU8tRbhtRm8UK6GJ7JztR",
     "WETH",
     "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
   ],
   [
-    "QmSbpsDRwxSCPBWPkwWvcb49jViSxzmNHjYy3AcGF3qM2x",
+    "QmdcG3aNe911JrHhkZWVSc61tadeQBgDHX96zG2vZBaits",
     "USDT",
     "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
   ],
   [
-    "QmS6f8vrNZok9j4pJttUuWpNrjsf4vP9RD5mRL36z6UdaL",
+    "Qmc4tP96CPmzpxURjdk5jvnkB2uWSbb7qA6LYm8LCCGrRt",
     "MONA",
     "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+  ],
+  [
+    "QmQUrVWFVT2rSYT8KPr8iJ7C3aE8qPpDcjsLy143i3o2St",
+    "BONSAI",
+    "0x3d2bD0e15829AA5C362a4144FdF4A1112fa29B5c",
   ],
 ];
 
 export const ACCEPTED_TOKENS_AMOY: string[][] = [
   [
-    "QmYYUQ8nGDnyuk8jQSung1WmTksvLEQBXjnCctdRrKtsNk",
+    "QmcyKazTx7gQAmFLrX4uwM5pub1LmNQRngM4ns6ydoETkZ",
     "WMATIC",
     "0x1f83476ed25e5ca2e32df06b8d1e59da38f25cca",
   ],
   [
-    "QmZRhUgjK6bJM8fC7uV145yf66q2e7vGeT7CLosw1SdMdN",
+    "QmfXXgwqWCZpvwGQM3fUXhJcDJU8tRbhtRm8UK6GJ7JztR",
     "WETH",
     "0xc4414eba4caa899f52463aa232e451ac31d00ed3",
   ],
   [
-    "QmS6f8vrNZok9j4pJttUuWpNrjsf4vP9RD5mRL36z6UdaL",
+    "Qmc4tP96CPmzpxURjdk5jvnkB2uWSbb7qA6LYm8LCCGrRt",
     "MONA",
     "0x5dd9a1636b221b45043b040a72f4229f8d66e40d",
   ],
   [
-    "QmSbpsDRwxSCPBWPkwWvcb49jViSxzmNHjYy3AcGF3qM2x",
+    "QmdcG3aNe911JrHhkZWVSc61tadeQBgDHX96zG2vZBaits",
     "USDT",
+    "0x29244d4cb549c35a9e634b262e62a49aa7a14b80",
+  ],
+  [
+    "QmQUrVWFVT2rSYT8KPr8iJ7C3aE8qPpDcjsLy143i3o2St",
+    "BONSAI",
     "0x29244d4cb549c35a9e634b262e62a49aa7a14b80",
   ],
 ];

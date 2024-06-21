@@ -62,7 +62,14 @@
     "estado": "State",
     "pais": "Country",
     "comprado": "Items Purchased! Check back to Orders shortly.",
-    "random": "Choose A Random Mix"
+    "random": "Choose A Random Mix",
+    "todoElCatalogo": "Collect the Entire Catalog",
+    "muestra": "page preview: front + Back",
+    "npcStudio": "NPC Estudio",
+    "onChain": "On Chain Medio",
+    "carrito": "What's in your cart?",
+    "precioMax": "Set Max Price",
+    "carritoCompra": "Buy Cart"
   },
   "Nav": {
     "lan": "Choose Language"
