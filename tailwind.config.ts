@@ -27,7 +27,9 @@ const config: Config = {
         oscuro: "#1F32EE",
         mar: "#0789D2",
         rojo: "#EE3075",
-        rosa: "#F5E0E2"
+        rosa: "#F5E0E2",
+        morado: "#7E68C6",
+        brillo: "#FFFF0A"
       },
       fontSize: {
         xxs: "0.6rem",

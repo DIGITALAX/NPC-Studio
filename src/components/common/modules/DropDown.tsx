@@ -18,7 +18,7 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
       <div className="relative w-full h-fit flex text-white font-aust text-sm">
         {titulo}
       </div>
-      <div className="relative w-full h-10 p-px flex flex-row items-center justify-center font-vcr text-white text-center rounded-sm border border-white">
+      <div className="relative w-full h-10 p-px flex flex-row items-center justify-center font-vcr text-white text-center rounded-sm border border-brillo">
         <div className="relative bg-black flex flex-row w-full h-full justify-start items-center p-2 gap-2">
           <div
             className={`relative flex items-center justify-center cursor-pointer w-4 h-3 `}
@@ -41,7 +41,7 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
       </div>
       {estaAbierto && (
         <div
-          className="absolute flex items-center justify-start w-full h-32 overflow-y-scroll z-10 bg-black top-12 py-px px-1 border border-white rounded-sm"
+          className="absolute flex items-center justify-start w-full h-32 overflow-y-scroll z-10 bg-black top-12 py-px px-1 border border-brillo rounded-sm"
           id="dropDown"
         >
           <div className="relative flex flex-row items-center justify-center w-fit h-fit gap-3">

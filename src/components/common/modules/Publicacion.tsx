@@ -44,11 +44,11 @@ function Publicacion({
   const elementoTexto = useRef(null);
   return (
     <div
-      className={`relative rounded-sm h-fit px-1 py-3 sm:py-2 sm:px-2 flex flex-col gap-4 sm:gap-2 border-2 publicacions-center justify-between border-cereza w-full`}
+      className={`relative rounded-sm h-fit px-1 py-3 sm:py-2 sm:px-2 flex flex-col gap-4 sm:gap-2 border-2 publicacions-center justify-between border-morado w-full bg-offNegro`}
     >
       <div className="relative w-full h-fit flex publicacions-center justify-between flex-row">
         <div
-          className={`relative w-fit h-fit flex publicacions-center justify-start font-bit text-xxs text-black`}
+          className={`relative w-fit h-fit flex publicacions-center justify-start font-bit text-xxs text-white`}
         >
           <div className={`relative w-fit h-fit flex`}>
             {publicacion?.createdAt &&

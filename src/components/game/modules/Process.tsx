@@ -130,12 +130,12 @@ function Process({
               priority
             />
           </div>
-          <div className="relative w-full h-full flex flex-col gap-4 items-start justify-start text-white font-vcr px-32 pt-24 pb-32">
+          <div className="relative w-full h-full flex flex-col gap-4 items-start justify-start text-white font-bit px-32 pt-24 pb-32">
             {mostrarGalerias ? (
               <div className="relative w-full h-fit flex items-start justify-between text-xl flex-col gap-5 overflow-y-scroll">
                 <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-end">
                   <div
-                    className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                    className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white  rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                     onClick={() => setMostrarGalerias(false)}
                   >
                     {dict.Home.back}
@@ -147,7 +147,7 @@ function Process({
                         return (
                           <div
                             key={indice}
-                            className="relative w-60 h-52 border border-white rounded-sm flex items-center justify-center cursor-pointer hover:opacity-80 bg-black/60 animate-pulse"
+                            className="relative w-60 h-52 border border-brillo rounded-sm flex items-center bg-offNegro justify-center cursor-pointer hover:opacity-80 bg-black/60 animate-pulse"
                           ></div>
                         );
                       })
@@ -155,7 +155,7 @@ function Process({
                         return (
                           <div
                             key={indice}
-                            className="relative w-60 h-52 border border-white rounded-sm flex items-center justify-center cursor-pointer hover:opacity-80"
+                            className="relative w-60 h-52 border border-brillo rounded-sm flex items-center justify-center cursor-pointer bg-offNegro hover:opacity-80"
                             onClick={() => {
                               setColecciones(
                                 gal.colecciones.map((item, indice) => ({
@@ -203,7 +203,7 @@ function Process({
                               (col) => col.tokenesMinteados.length > 0
                             ).length < 1 && (
                               <div
-                                className="absolute rounded-full w-fit h-fit border border-white bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
+                                className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   if (!cargandoBorrar)
@@ -232,14 +232,14 @@ function Process({
                   </div>
                   <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-end">
                     <div
-                      className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                      className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                       onClick={() => setMostrarGalerias(true)}
                     >
                       {dict.Home.all}
                     </div>
                     {colecciones.filter((col) => col.galeriaId).length > 0 && (
                       <div
-                        className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                        className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white  rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                         onClick={() => {
                           if (!mintCargando) {
                             setColecciones([]);
@@ -269,13 +269,13 @@ function Process({
                       </div>
                     )}
                     <div
-                      className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                      className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                       onClick={() => !mintCargando && manejarAhorar()}
                     >
                       {dict.Home.save}
                     </div>
                     <div
-                      className={`relative w-32 h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs`}
+                      className={`relative w-36 h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs`}
                       onClick={() => !mintCargando && manejarMintear()}
                     >
                       {!mintCargando ? (
@@ -296,7 +296,7 @@ function Process({
                   </div>
                 </div>
                 <input
-                  className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52"
+                  className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-10 w-52"
                   placeholder={dict.Home.gTitulo}
                   disabled={coleccionActual?.galeriaId ? true : false}
                   value={coleccionActual?.galeria || ""}
@@ -315,7 +315,7 @@ function Process({
                   }}
                 />
                 <div className="relative w-full h-fit flex items-start justify-start flex-row gap-8">
-                  <div className="relative w-fit h-full flex items-center justify-between flex-col gap-6 text-sm px-3">
+                  <div className="relative w-fit h-full flex items-center justify-between flex-col gap-6 text-xxs px-3">
                     <div className="relative w-fit h-fit flex items-center justify-center">
                       {dict.Home.gCol}
                     </div>
@@ -325,7 +325,7 @@ function Process({
                           return (
                             <div
                               key={indice}
-                              className="relative w-3/4 h-20 flex items-center justify-center cursor-pointer hover:opacity-70 rounded-sm border border-white"
+                              className="relative w-3/4 h-20 flex items-center justify-center cursor-pointer hover:opacity-70 rounded-sm border border-brillo"
                             >
                               <Image
                                 draggable={false}
@@ -350,7 +350,7 @@ function Process({
                                 }}
                               />
                               <div
-                                className="absolute rounded-full w-fit h-fit border border-white bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
+                                className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   if (!elemento?.galeriaId) {
@@ -372,7 +372,7 @@ function Process({
                       </div>
                     </div>
                     <div
-                      className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                      className="relative w-full h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                       onClick={() => {
                         if (!mintCargando) {
                           setColeccionActual({
@@ -417,7 +417,7 @@ function Process({
                           {dict.Home.tit}
                         </div>
                         <input
-                          className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52"
+                          className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-10 w-52"
                           value={coleccionActual?.titulo}
                           disabled={coleccionActual?.galeriaId ? true : false}
                           onChange={(e) =>
@@ -429,7 +429,7 @@ function Process({
                         />
                       </div>
                       <label
-                        className="relative border border-white w-52 h-56 rounded-sm cursor-pointer p-px"
+                        className="relative border border-brillo w-52 h-56 rounded-sm cursor-pointer p-px"
                         id="pfp"
                       >
                         <div className="relative w-full h-full flex items-center justify-center rounded-sm">
@@ -476,7 +476,7 @@ function Process({
                               cantidad: Number(e.target.value),
                             }))
                           }
-                          className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52 max-w-[15rem]"
+                          className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-10 w-52 max-w-[15rem]"
                           style={{
                             resize: "none",
                           }}
@@ -497,7 +497,7 @@ function Process({
                               descripcion: e.target.value,
                             }))
                           }
-                          className="relative rounded-sm p-1 bg-black text-xs border border-white h-40 w-52 break-all"
+                          className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-40 w-52 break-all"
                           style={{
                             resize: "none",
                           }}
@@ -521,7 +521,7 @@ function Process({
                               precio: Number(e.target.value),
                             }))
                           }
-                          className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52 max-w-[15rem]"
+                          className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-10 w-52 max-w-[15rem]"
                           style={{
                             resize: "none",
                           }}
@@ -536,7 +536,7 @@ function Process({
                             (elemento: string[], indice: number) => {
                               return (
                                 <div
-                                  className={`relative w-fit h-fit rounded-full flex items-center cursor-pointer active:scale-95 ${
+                                  className={`relative w-6 h-6 rounded-full flex items-center cursor-pointer active:scale-95 ${
                                     coleccionActual?.tokenes?.includes(
                                       elemento[2] as `0x${string}`
                                     )
@@ -570,8 +570,7 @@ function Process({
                                     src={`${INFURA_GATEWAY}/ipfs/${elemento[0]}`}
                                     className="flex rounded-full"
                                     draggable={false}
-                                    width={30}
-                                    height={35}
+                                layout="fill"
                                   />
                                 </div>
                               );
@@ -594,7 +593,7 @@ function Process({
                               etiquetas: e.target.value,
                             }))
                           }
-                          className="relative rounded-sm p-1 bg-black text-xs border border-white h-10 w-52 max-w-[15rem]"
+                          className="relative rounded-sm p-1 bg-black text-xs border border-brillo h-10 w-52 max-w-[15rem]"
                           style={{
                             resize: "none",
                           }}
@@ -835,7 +834,7 @@ function Process({
                       />
                       <div className="relative w-fit h-fit flex flex-row gap-3">
                         <div
-                          className="relative w-32 h-8 flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                          className="relative w-32 h-8 flex items-center justify-center bg-oscuro border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                           onClick={() => {
                             if (coleccionActual?.galeriaId) {
                               if (
@@ -909,7 +908,7 @@ function Process({
                         </div>
                         {coleccionActual?.galeriaId && (
                           <div
-                            className="relative w-32 h-8 flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                            className="relative w-24 h-8 flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                             onClick={() => setConectarPub(true)}
                           >
                             {dict.Home.pub}
@@ -942,7 +941,7 @@ function Process({
             </div>
             <div className="relative w-full h-fit flex items-center justify-center flex-row gap-4">
               <div
-                className="relative w-32 h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 text-xs"
+                className="relative w-32 h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 text-xs"
                 onClick={() => setMint(3)}
               >
                 {!mintCargando ? (
@@ -952,7 +951,7 @@ function Process({
                 )}
               </div>
               <div
-                className="relative w-32 h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                className="relative w-32 h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                 onClick={() => setMint(1)}
               >
                 {!mintCargando ? (

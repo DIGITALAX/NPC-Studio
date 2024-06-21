@@ -24,7 +24,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
 }) => {
   return (
     <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
-      <div className="absolute w-96 h-fit flex flex-col items-start justify-start p-2 rounded-md border-4 border-white bg-black/80 cursor-grab active:cursor-grabbing gap-6">
+      <div className="absolute w-96 z-200 h-fit flex flex-col items-start justify-start p-2 rounded-md border-4 border-white bg-black/80 cursor-grab active:cursor-grabbing gap-6">
         <div className="relative w-full h-fit flex items-start justify-start flex-col gap-3">
           <div className="close" onClick={() => setDragDialog(false)}>
             <IoIosCloseCircle size={20} color="white" />

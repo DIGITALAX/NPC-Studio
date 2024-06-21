@@ -30,12 +30,12 @@ const PublicacionConectada: FunctionComponent<PublicacionConectadaProps> = ({
       onClick={() => setConectarPub(false)}
     >
       <div
-        className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-black border border-white cursor-default"
+        className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-oscuro rounded-md border border-white cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-fit max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex flex-col gap-4 items-center justify-center p-4">
           <div className="relative w-full h-fit flex items-center justify-center">
-            <div className="relative w-60 h-60 flex items-center justify-center border border-white">
+            <div className="relative w-60 h-60 flex items-center justify-center border border-ligero rounded-md">
               <Image
                 draggable={false}
                 src={`${INFURA_GATEWAY}/ipfs/${
@@ -43,11 +43,12 @@ const PublicacionConectada: FunctionComponent<PublicacionConectadaProps> = ({
                 }`}
                 layout="fill"
                 objectFit="cover"
+                className="rounded-md"
               />
             </div>
           </div>
           <div
-            className={`relative w-full  h-full bg-black/80 flex flex-col items-center text-white font-vcr justify-start`}
+            className={`relative w-full h-full bg-black/80 flex flex-col items-center text-white round-md font-vcr justify-start`}
           >
             <textarea
               value={descripcion || ""}
