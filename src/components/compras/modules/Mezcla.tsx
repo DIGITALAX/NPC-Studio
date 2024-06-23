@@ -3,6 +3,7 @@ import { Mezcla as MezclaTipo, MezclaProps } from "../types/compras.types";
 import Image from "next/legacy/image";
 import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
+import { AutographType } from "@/components/game/types/game.types";
 
 const Mezcla: FunctionComponent<MezclaProps> = ({
   setCarrito,
@@ -11,7 +12,64 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
   dict,
   setVerImagen,
   setArticuloSeleccionado,
+  carrito,
 }): JSX.Element => {
+  const articulosTokenes = articulos?.filter((art) => {
+    const tokenesArticulo = art?.tokenes?.map((i) => i.toLowerCase());
+    const tokenSeleccionado = articuloSeleccionado?.[0]?.token.toLowerCase();
+    const tokenValido = tokenesArticulo?.includes(tokenSeleccionado);
+    return tokenValido;
+  });
+
+  const articulosFiltrados = articulosTokenes?.filter((filt) => {
+    const tokenes = carrito?.compras?.filter((car) => {
+      if (car.tipo == AutographType.Mix) {
+        const mezclaSimulada = articulos?.filter((art) => {
+          const tokenesArticulo = art?.tokenes?.map((i) => i.toLowerCase());
+          const tokenSeleccionado = car.token.toLowerCase();
+          const tokenValido = tokenesArticulo?.includes(tokenSeleccionado);
+
+          const cantidadDisponible =
+            Number(art.cantidad) -
+            Number(art.tokenesMinteados?.length) -
+            carrito?.compras
+              ?.filter((el) => {
+                const { profile: _, ...elSinProfile } = el.elemento as any;
+                const { profile: __, ...artSinProfile } = art;
+
+                return (
+                  JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile)
+                );
+              })
+              ?.reduce((acc, val) => acc + Number(val.cantidad), 0);
+
+          return tokenValido && cantidadDisponible > 0;
+        });
+
+        const contenidos = mezclaSimulada?.filter((mezcla) => {
+          const { profile: _, ...elSinProfile } = filt;
+          const { profile: __, ...artSinProfile } = mezcla;
+
+          return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
+        });
+
+        return contenidos?.length > 0;
+      } else if (car.tipo !== AutographType.Catalog) {
+        const { profile: _, ...elSinProfile } = car.elemento as any;
+        const { profile: __, ...artSinProfile } = filt;
+
+        return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
+      }
+    });
+
+    return (
+      Number(filt.cantidad) -
+      Number(filt.tokenesMinteados?.length) -
+      tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0)
+    );
+  });
+
+
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
@@ -19,51 +77,29 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
       </div>
       <div className="relative w-full h-fit flex items-start justify-start overflow-x-scroll">
         <div className="relative w-fit h-fit flex items-start justify-start flex-row gap-2">
-          {articulos
-            ?.filter((a) =>
-              a?.tokenes
-                ?.map((i) => i.toLowerCase())
-                ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-            )
-            ?.slice(0, 5)
-            ?.filter(() => {
-              const preciosSeleccionados = articulos
-                ?.filter((art) =>
-                  art?.tokenes
-                    ?.map((i) => i.toLowerCase())
-                    ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-                )
-                ?.map((art) => Number(art.precio) / 10 ** 18)
-                ?.sort((a, b) => a - b)
-                ?.slice(0, 5);
+          {articulosFiltrados?.slice(0, 5)?.filter(() => {
+            const preciosSeleccionados = articulosFiltrados
+              ?.map((art) => Number(art.precio) / 10 ** 18)
+              ?.sort((a, b) => a - b)
+              ?.slice(0, 5);
 
-              const sumaPrecios = preciosSeleccionados?.reduce(
-                (acc, val) => acc + val,
-                0
-              );
-              return (
-                sumaPrecios <=
-                (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
-              );
-            })?.length < 3 ? (
+            const sumaPrecios = preciosSeleccionados?.reduce(
+              (acc, val) => acc + val,
+              0
+            );
+            return (
+              sumaPrecios <=
+              (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+            );
+          })?.length < 3 ? (
             <div className="relative w-full h-fit flex gap-2 items-center justify-center text-center gap-2">
               {dict.Home.noMix}
             </div>
           ) : (
-            articulos
-              ?.filter((a) =>
-                a?.tokenes
-                  ?.map((i) => i.toLowerCase())
-                  ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-              )
+            articulosFiltrados
               ?.slice(0, 5)
               ?.filter(() => {
-                const preciosSeleccionados = articulos
-                  ?.filter((art) =>
-                    art?.tokenes
-                      ?.map((i) => i.toLowerCase())
-                      ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-                  )
+                const preciosSeleccionados = articulosFiltrados
                   ?.map((art) => Number(art.precio) / 10 ** 18)
                   ?.sort((a, b) => a - b)
                   ?.slice(0, 5);
@@ -127,33 +163,21 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
           )}
         </div>
       </div>
-      {articulos
-        ?.filter((a) =>
-          a?.tokenes
-            ?.map((i) => i.toLowerCase())
-            ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-        )
-        ?.slice(0, 5)
-        ?.filter(() => {
-          const preciosSeleccionados = articulos
-            ?.filter((art) =>
-              art?.tokenes
-                ?.map((i) => i.toLowerCase())
-                ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
-            )
-            ?.map((art) => Number(art.precio) / 10 ** 18)
-            ?.sort((a, b) => a - b)
-            ?.slice(0, 5);
+      {articulosFiltrados?.slice(0, 5)?.filter(() => {
+        const preciosSeleccionados = articulosFiltrados
+          ?.map((art) => Number(art.precio) / 10 ** 18)
+          ?.sort((a, b) => a - b)
+          ?.slice(0, 5);
 
-          const sumaPrecios = preciosSeleccionados?.reduce(
-            (acc, val) => acc + val,
-            0
-          );
-          return (
-            sumaPrecios <=
-            (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
-          );
-        })?.length > 2 && (
+        const sumaPrecios = preciosSeleccionados?.reduce(
+          (acc, val) => acc + val,
+          0
+        );
+        return (
+          sumaPrecios <=
+          (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+        );
+      })?.length > 2 && (
         <div className="relative w-full h-fit flex items-center justify-center text-lg break-words">
           {dict.Home.random}
         </div>
@@ -168,37 +192,23 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
               {(articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo}
             </div>
           </div>
-          {articulos?.length > 0 && (
+          {articulos?.length > 2 && (
             <div className="relative w-full h-fit flex items-center justify-center">
               <input
                 type="range"
                 key={articuloSeleccionado?.[0]?.token}
                 min={
-                  articulos
-                    ?.filter((art) =>
-                      art?.tokenes
-                        ?.map((i) => i.toLowerCase())
-                        ?.includes(
-                          articuloSeleccionado?.[0]?.token.toLowerCase()
-                        )
-                    )
+                  articulosFiltrados
                     ?.map((art) => Number(art.precio) / 10 ** 18)
                     ?.slice(0, 5)
-                    ?.reduce((acc, val) => acc + val, 0) || 0
+                    ?.reduce((acc, val) => acc + val, 0) + 100 || 0
                 }
                 max={
-                  articulos
-                    ?.filter((art) =>
-                      art?.tokenes
-                        ?.map((i) => i.toLowerCase())
-                        ?.includes(
-                          articuloSeleccionado?.[0]?.token.toLowerCase()
-                        )
-                    )
+                  articulosFiltrados
                     ?.map((art) => Number(art.precio) / 10 ** 18)
                     ?.sort((a, b) => a - b)
                     ?.slice(-5)
-                    ?.reduce((acc, val) => acc + val, 0) || 0
+                    ?.reduce((acc, val) => acc + val, 0) + 100 || 0
                 }
                 onChange={(e) =>
                   setArticuloSeleccionado((prev) => {
@@ -242,18 +252,15 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                       token: moneda[2],
                       elemento: {
                         maximo: Number(
-                          Number(
-                            articulos
-                              ?.filter((art) =>
-                                art?.tokenes
-                                  ?.map((i) => i.toLowerCase())
-                                  ?.includes(moneda[2].toLowerCase())
-                              )
-                              ?.map((art) => Number(art.precio) / 10 ** 18)
-                              ?.sort((a, b) => a - b)
-                              ?.slice(-5)
-                              ?.reduce((acc, val) => acc + val, 0)
-                          ).toFixed(0)
+                          (
+                            Number(
+                              articulosFiltrados
+                                ?.map((art) => Number(art.precio) / 10 ** 18)
+                                ?.sort((a, b) => a - b)
+                                ?.slice(-5)
+                                ?.reduce((acc, val) => acc + val, 0)
+                            ) + 100
+                          ).toFixed()
                         ),
                       },
                     };
@@ -277,9 +284,13 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
       <div className="relative w-full h-fit flex items-center justify-center">
         <div className="relative w-fit h-full flex items-center justify-center">
           <div
-            className="relative bg-black rounded-full h-fit w-fit cursor-pointer active:scale-95 border border-white flex items-center justify-center hover:opacity-70"
+            className={`relative bg-black rounded-full h-fit w-fit  border border-white flex items-center justify-center  ${
+              articulosFiltrados?.length > 2 &&
+              "hover:opacity-70 cursor-pointer active:scale-95"
+            }`}
             title={dict.Home.addCart}
             onClick={() =>
+              articulosFiltrados?.length > 2 &&
               setCarrito((prev) => {
                 let compras = prev.compras;
 

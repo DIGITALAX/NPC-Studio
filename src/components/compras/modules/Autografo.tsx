@@ -4,7 +4,7 @@ import Botones from "./Botones";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { Coleccion } from "@/components/game/types/game.types";
+import { AutographType, Coleccion } from "@/components/game/types/game.types";
 
 const Autografo: FunctionComponent<AutografoProps> = ({
   dict,
@@ -26,7 +26,29 @@ const Autografo: FunctionComponent<AutografoProps> = ({
   const pfp = createProfilePicture(
     articulos?.[articuloIndice]?.profile?.metadata?.picture
   );
-
+  const tokenes = articulos?.[articuloIndice]
+  ? carrito?.compras?.filter((car) => {
+      if (car.tipo == AutographType.Mix) {
+        if (
+          articulos?.[articuloIndice]?.tokenes?.includes(car.token as any) &&
+          Number(articulos?.[articuloIndice]?.cantidad) -
+            Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) >
+            2
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (car.tipo !== AutographType.Catalog) {
+        const { profile: _, ...elSinProfile } = car.elemento as any;
+        const { profile: __, ...artSinProfile } = articulos?.[articuloIndice];
+        console.log(
+          JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile)
+        );
+        return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
+      }
+    })
+  : [];
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
@@ -73,16 +95,12 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               setArticuloSeleccionado={setArticuloSeleccionado}
               cantidad={articulos?.[articuloIndice]?.cantidad}
               agotado={
-                Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) +
-                  Number(articuloSeleccionado?.[articuloIndice]?.cantidad) +
-                  carrito?.compras
-                    ?.filter(
-                      (el) =>
-                        JSON.stringify(el.elemento) ==
-                        JSON.stringify(articulos?.[articuloIndice])
-                    )
-                    ?.reduce((sum, el) => sum + el.cantidad, 0) >
-                articulos?.[articuloIndice]?.cantidad
+                Number(articulos?.[articuloIndice]?.cantidad) -
+                  Number(
+                    articulos?.[articuloIndice]?.tokenesMinteados?.length
+                  ) -
+                  tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0) <=
+                0
               }
               comprarPublicacion={comprarPublicacion}
               setCarrito={setCarrito}
@@ -92,9 +110,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               aprobarGastos={aprobarGastos}
               gastosAprobados={gastosAprobados?.[articuloIndice]}
               indice={articuloIndice}
-              
             />
-
           </div>
         </div>
         <div className="relative w-full h-full flex flex-col justify-start items-start gap-3">

@@ -570,7 +570,7 @@ function Process({
                                     src={`${INFURA_GATEWAY}/ipfs/${elemento[0]}`}
                                     className="flex rounded-full"
                                     draggable={false}
-                                layout="fill"
+                                    layout="fill"
                                   />
                                 </div>
                               );
@@ -608,27 +608,27 @@ function Process({
                                 (sprite.key
                                   .toLowerCase()
                                   .includes(
-                                    (dropDown.npcsTexto || "")
-                                      .split(",")
-                                      .filter(Boolean)
-                                      .pop()
+                                    dropDown.npcsTexto
+                                      ?.split(",")
+                                      ?.filter(Boolean)
+                                      ?.pop()
                                       ?.trim()
-                                      .toLowerCase() || ""
+                                      ?.toLowerCase() || ""
                                   ) &&
-                                  !(coleccionActual.npcs || "")
-                                    .split(",")
-                                    .map((npc) => npc.trim().toLowerCase())
-                                    .includes(sprite.key.toLowerCase())) ||
+                                  !coleccionActual.npcs
+                                    ?.split(",")
+                                    ?.map((npc) => npc.trim().toLowerCase())
+                                    ?.includes(sprite.key.toLowerCase())) ||
                                 SCENE_LIST.map((col) => col.sprites).filter(
                                   (sprite) =>
                                     sprite.filter(
                                       (s) =>
-                                        (dropDown.npcsTexto || "")
-                                          .split(",")
-                                          .filter(Boolean)
-                                          .pop()
+                                        dropDown.npcsTexto
+                                          ?.split(",")
+                                          ?.filter(Boolean)
+                                          ?.pop()
                                           ?.trim()
-                                          .toLowerCase() == s.key.toLowerCase()
+                                          ?.toLowerCase() == s.key.toLowerCase()
                                     ).length > 0
                                 ).length > 0
                               ) {
@@ -646,19 +646,15 @@ function Process({
                           ).value
                             .trim()
                             .toLowerCase();
-                          setColeccionActual((prev) => {
-                            const npcs = prev.npcs || "";
-
-                            return {
-                              ...prev,
-                              npcs: npcs
-                                .split(",")
-                                .filter((valor) =>
-                                  valor.toLowerCase().includes(searchTerm)
-                                )
-                                .join(","),
-                            };
-                          });
+                          setColeccionActual((prev) => ({
+                            ...prev,
+                            npcs: prev.npcs
+                              .split(",")
+                              .filter((valor) =>
+                                valor.toLowerCase().includes(searchTerm)
+                              )
+                              .join(","),
+                          }));
 
                           setDropDown({
                             ...dropDown,
@@ -675,26 +671,22 @@ function Process({
                         }}
                         manejarElegir={(value: string) => {
                           let npcs: string;
-                          setColeccionActual((prev) => {
-                            const npcsArray = prev.npcs
-                              ? prev.npcs.split(",").filter(Boolean)
-                              : [];
-                            if (npcsArray.includes(value)) {
-                              npcs = npcsArray
-                                .filter((npc) => npc !== value)
-                                .join(",");
-                              return {
-                                ...prev,
-                                npcs,
-                              };
-                            } else {
-                              npcs = [...npcsArray, value].join(",");
-                              return {
-                                ...prev,
-                                npcs,
-                              };
-                            }
-                          });
+
+                          const npcsArray = coleccionActual.npcs
+                            ? coleccionActual.npcs.split(",").filter(Boolean)
+                            : [];
+                          if (npcsArray.includes(value)) {
+                            npcs = npcsArray
+                              .filter((npc) => npc !== value)
+                              .join(",");
+                          } else {
+                            npcs = [...npcsArray, value].join(",");
+                          }
+
+                          setColeccionActual((prev) => ({
+                            ...prev,
+                            npcs,
+                          }));
 
                           setDropDown((prev) => ({
                             ...prev,
@@ -709,25 +701,25 @@ function Process({
                             (id.key
                               .toLowerCase()
                               .includes(
-                                (dropDown.idiomasTexto || "")
-                                  .split(",")
-                                  .filter(Boolean)
-                                  .pop()
+                                dropDown.idiomasTexto
+                                  ?.split(",")
+                                  ?.filter(Boolean)
+                                  ?.pop()
                                   ?.trim()
-                                  .toLowerCase() || ""
+                                  ?.toLowerCase() || ""
                               ) &&
-                              !(coleccionActual.npcIdiomas || "")
-                                .split(",")
-                                .map((npc) => npc.trim().toLowerCase())
-                                .includes(id.key.toLowerCase())) ||
+                              !coleccionActual.npcIdiomas
+                                ?.split(",")
+                                ?.map((npc) => npc.trim().toLowerCase())
+                                ?.includes(id.key.toLowerCase())) ||
                             IDIOMAS.filter(
                               (i) =>
-                                (dropDown.idiomasTexto || "")
-                                  .split(",")
-                                  .filter(Boolean)
-                                  .pop()
+                                dropDown.idiomasTexto
+                                  ?.split(",")
+                                  ?.filter(Boolean)
+                                  ?.pop()
                                   ?.trim()
-                                  .toLowerCase() == i.key.toLowerCase()
+                                  ?.toLowerCase() == i.key.toLowerCase()
                             ).length > 0
                           ) {
                             return id;
@@ -741,20 +733,15 @@ function Process({
                           ).value
                             .trim()
                             .toLowerCase();
-                          setColeccionActual((prev) => {
-                            {
-                              const idiomas = prev.npcIdiomas || "";
-                              return {
-                                ...prev,
-                                npcIdiomas: idiomas
-                                  .split(",")
-                                  .filter((valor) =>
-                                    valor.toLowerCase().includes(searchTerm)
-                                  )
-                                  .join(","),
-                              };
-                            }
-                          });
+                          setColeccionActual((prev) => ({
+                            ...prev,
+                            npcIdiomas: prev.npcIdiomas
+                              .split(",")
+                              .filter((valor) =>
+                                valor.toLowerCase().includes(searchTerm)
+                              )
+                              .join(","),
+                          }));
 
                           setDropDown({
                             ...dropDown,
@@ -771,26 +758,24 @@ function Process({
                         }}
                         manejarElegir={(value: string) => {
                           let npcIdiomas: string;
-                          setColeccionActual((prev) => {
-                            const npcsArray = prev.npcIdiomas
-                              ? prev.npcIdiomas.split(",").filter(Boolean)
-                              : [];
-                            if (npcsArray.includes(value)) {
-                              npcIdiomas = npcsArray
-                                .filter((npc) => npc !== value)
-                                .join(",");
-                              return {
-                                ...prev,
-                                npcIdiomas,
-                              };
-                            } else {
-                              npcIdiomas = [...npcsArray, value].join(",");
-                              return {
-                                ...prev,
-                                npcIdiomas,
-                              };
-                            }
-                          });
+
+                          const npcsArray = coleccionActual.npcIdiomas
+                            ? coleccionActual.npcIdiomas
+                                .split(",")
+                                .filter(Boolean)
+                            : [];
+                          if (npcsArray.includes(value)) {
+                            npcIdiomas = npcsArray
+                              .filter((npc) => npc !== value)
+                              .join(",");
+                          } else {
+                            npcIdiomas = [...npcsArray, value].join(",");
+                          }
+
+                          setColeccionActual((prev) => ({
+                            ...prev,
+                            npcIdiomas,
+                          }));
 
                           setDropDown((prev) => ({
                             ...prev,

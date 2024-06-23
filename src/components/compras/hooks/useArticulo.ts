@@ -161,7 +161,7 @@ const useArticulo = (
                     ?.map((art) => Number(art.precio) / 10 ** 18)
                     ?.sort((a, b) => a - b)
                     ?.slice(-5)
-                    ?.reduce((acc, val) => acc + val, 0)
+                    ?.reduce((acc, val) => acc + val, 0) + 100
                 ).toFixed(0)
               ),
             },

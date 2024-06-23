@@ -11,7 +11,7 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
   setEstaAbierto,
   valores,
   manejarElegir,
-  disabled
+  disabled,
 }): JSX.Element => {
   return (
     <div className="relative flex items-center justify-center flex-col w-52 h-fit">
@@ -33,9 +33,8 @@ const ImageDropDown: FunctionComponent<DropDownProps> = ({
           <input
             className={`relative w-full h-full p-1.5 bg-black flex items-center justify-center text-white text-sm`}
             value={valor}
-            
             disabled={!manejarCambio || disabled ? true : false}
-            onChange={(e) =>  manejarCambio && manejarCambio(e)}
+            onChange={(e) => manejarCambio && manejarCambio(e)}
           />
         </div>
       </div>

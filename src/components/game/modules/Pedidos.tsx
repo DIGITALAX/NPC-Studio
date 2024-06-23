@@ -47,8 +47,8 @@ function Pedidos({
                   <div className="relative w-full flex flex-row justify-between items-center gap-4 h-28 p-2">
                     <div className="relative justify-start items-center w-fit h-full flex flex-row gap-5">
                       <div className="relative w-fit h-full flex items-start justify-between flex-col gap-3">
-                        <div className="relative w-fit h-fit flex items-center justify-start">
-                          {dict.Home.pedido} {pedido.orderId}
+                        <div className="relative w-fit h-fit flex items-center justify-start break-words whitespace-nowrap">
+                          {dict.Home.pedido} {"Id"} {pedido.orderId}
                         </div>
                         <div className="relative w-14 h-14 flex items-center justify-center border border-white rounded-md">
                           <Image

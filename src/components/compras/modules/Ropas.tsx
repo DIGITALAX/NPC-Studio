@@ -2,10 +2,9 @@ import { FunctionComponent } from "react";
 import { RopasProps } from "../types/compras.types";
 import Botones from "./Botones";
 import Image from "next/legacy/image";
-import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
+import { INFURA_GATEWAY } from "@/lib/constants";
 import Cumplimiento from "./Cumplimiento";
-import { Coleccion } from "@/components/game/types/game.types";
+import { AutographType } from "@/components/game/types/game.types";
 
 const Ropas: FunctionComponent<RopasProps> = ({
   setCarrito,
@@ -26,6 +25,27 @@ const Ropas: FunctionComponent<RopasProps> = ({
   setCumplimiento,
   cumplimiento,
 }): JSX.Element => {
+  const tokenes = articulos?.[articuloIndice]
+    ? carrito?.compras?.filter((car) => {
+        if (car.tipo == AutographType.Mix) {
+          if (
+            articulos?.[articuloIndice]?.tokenes?.includes(car.token as any) &&
+            Number(articulos?.[articuloIndice]?.cantidad) -
+              Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) >
+              2
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else if (car.tipo !== AutographType.Catalog) {
+          const { profile: _, ...elSinProfile } = car.elemento as any;
+          const { profile: __, ...artSinProfile } = articulos?.[articuloIndice];
+          return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
+        }
+      })
+    : [];
+
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-center justify-between font-con text-sm flex-row">
@@ -130,16 +150,12 @@ const Ropas: FunctionComponent<RopasProps> = ({
               setArticuloSeleccionado={setArticuloSeleccionado}
               cantidad={articulos?.[articuloIndice]?.cantidad}
               agotado={
-                Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) +
-                  Number(articuloSeleccionado?.[articuloIndice]?.cantidad) +
-                  carrito?.compras
-                    ?.filter(
-                      (el) =>
-                        JSON.stringify(el.elemento) ==
-                        JSON.stringify(articulos?.[articuloIndice])
-                    )
-                    ?.reduce((sum, el) => sum + el.cantidad, 0) >
-                articulos?.[articuloIndice]?.cantidad
+                Number(articulos?.[articuloIndice]?.cantidad) -
+                  Number(
+                    articulos?.[articuloIndice]?.tokenesMinteados?.length
+                  ) -
+                  tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0) <=
+                0
               }
               comprarPublicacion={comprarPublicacion}
               setCarrito={setCarrito}

@@ -90,7 +90,9 @@ const Botones: FunctionComponent<BotonesProps> = ({
         </div>
         <div className="relative w-fit h-full flex items-center justify-center">
           <div
-            className="relative bg-black rounded-full h-fit w-fit cursor-pointer active:scale-95 border border-white flex items-center justify-center hover:opacity-70"
+            className={`relative bg-black rounded-full h-fit w-fit border border-white flex items-center justify-center ${
+              !agotado && "cursor-pointer active:scale-95 hover:opacity-70"
+            }`}
             title={dict.Home.addCart}
             onClick={() =>
               !agotado &&
