@@ -78,7 +78,10 @@
     "lens": "Don't have a Lens profile?",
     "lens2": "Mint",
     "nada": "There's nothing in your cart yet, add items?",
-    "noMix": "No Mix for This Token."
+    "noMix": "No Mix for This Token.",
+    "mensajes": "Messages",
+    "regresar": "Back",
+    "NoMensaje": "No Messages Here Yet."
   },
   "Nav": {
     "lan": "Choose Language"

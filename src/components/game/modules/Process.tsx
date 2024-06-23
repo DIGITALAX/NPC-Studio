@@ -321,52 +321,56 @@ function Process({
                       <div className="relative w-fit h-fit flex items-center justify-center">
                         {dict.Home.gCol}
                       </div>
-                      <div className="relative w-full h-64 flex items-start justify-start overflow-y-scroll py-3">
+                      <div className="relative w-full h-full min-h-[16rem] max-h-full flex items-start justify-start overflow-y-scroll py-3">
                         <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-col">
                           {colecciones?.map((elemento: Coleccion, indice) => {
                             return (
                               <div
                                 key={indice}
-                                className="relative w-3/4 h-20 flex items-center justify-center cursor-pointer hover:opacity-70 rounded-sm border border-brillo"
+                                className="relative w-fit h-fit flex items-center justify-center cursor-pointer hover:opacity-70 rounded-sm border border-brillo"
                               >
-                                <Image
-                                  draggable={false}
-                                  layout="fill"
-                                  src={
-                                    elemento.imagen?.includes("ipfs://")
-                                      ? `${INFURA_GATEWAY}/ipfs/${
-                                          elemento.imagen?.split("ipfs://")?.[1]
-                                        }`
-                                      : elemento.imagen
-                                  }
-                                  objectFit="cover"
-                                  onClick={() => {
-                                    setColeccionActual(elemento);
-                                    setDropDown({
-                                      npcsAbiertos: false,
-                                      idiomasAbiertos: false,
-                                      tiposAbiertos: false,
-                                      npcsTexto: elemento.npcs,
-                                      idiomasTexto: elemento.npcIdiomas,
-                                    });
-                                  }}
-                                />
-                                <div
-                                  className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (!elemento?.galeriaId) {
-                                      setColecciones((prev) =>
-                                        prev.filter(
-                                          (el) =>
-                                            JSON.stringify(el) !==
-                                            JSON.stringify(elemento)
-                                        )
-                                      );
+                                <div className="relative w-28 h-20 flex items-center justify-center">
+                                  <Image
+                                    draggable={false}
+                                    layout="fill"
+                                    src={
+                                      elemento.imagen?.includes("ipfs://")
+                                        ? `${INFURA_GATEWAY}/ipfs/${
+                                            elemento.imagen?.split(
+                                              "ipfs://"
+                                            )?.[1]
+                                          }`
+                                        : elemento.imagen
                                     }
-                                  }}
-                                >
-                                  <RxCrossCircled color="white" size={15} />
+                                    objectFit="cover"
+                                    onClick={() => {
+                                      setColeccionActual(elemento);
+                                      setDropDown({
+                                        npcsAbiertos: false,
+                                        idiomasAbiertos: false,
+                                        tiposAbiertos: false,
+                                        npcsTexto: elemento.npcs,
+                                        idiomasTexto: elemento.npcIdiomas,
+                                      });
+                                    }}
+                                  />
+                                  <div
+                                    className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (!elemento?.galeriaId) {
+                                        setColecciones((prev) =>
+                                          prev.filter(
+                                            (el) =>
+                                              JSON.stringify(el) !==
+                                              JSON.stringify(elemento)
+                                          )
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    <RxCrossCircled color="white" size={15} />
+                                  </div>
                                 </div>
                               </div>
                             );

@@ -1,4 +1,4 @@
-import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
+import { ChangeEvent, MutableRefObject, RefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
 import { Indexar, Notificacion } from "./../../common/types/common.types";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/components/compras/types/compras.types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { AccessControlConditions } from "@lit-protocol/types";
+import { DecodedMessage } from "@xmtp/xmtp-js";
 
 export type LogProps = {
   connected: boolean;
@@ -366,11 +367,14 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     title: string;
+    NoMensaje: string;
     onChain: string;
     nada: string;
     tx: string;
     comprado: string;
+    regresar: string;
     noMix: string;
+    mensajes: string;
     aprobar: string;
     cumplimiento: string;
     descifrado: string;
@@ -569,6 +573,16 @@ export type PedidosProps = {
   pedidoAbierto: boolean[];
   setPedidoAbierto: (e: SetStateAction<boolean[]>) => void;
   dict: Dictionary;
+  enviarMensaje: () => Promise<void>;
+  mensajeCargando: boolean;
+  conversacion: DecodedMessage<any>[];
+  conversacionCargando: boolean;
+  conversacionAbierta: boolean;
+  setConversacionAbierta: (e: SetStateAction<boolean>) => void;
+  mensaje: string;
+  setMensaje: (e: SetStateAction<string>) => void;
+  address: `0x${string}` | undefined;
+  mensajeRef: MutableRefObject<HTMLVideoElement | undefined>
 };
 
 export interface Pedido {
@@ -596,3 +610,15 @@ export interface EncryptedDetails {
   dataToEncryptHash: string;
   accessControlConditions: AccessControlConditions | undefined;
 }
+
+export type ConversacionProps = {
+  mensaje: string;
+  setMensaje: (e: SetStateAction<string>) => void;
+  enviarMensaje: () => Promise<void>;
+  mensajeCargando: boolean;
+  conversacion: DecodedMessage<any>[];
+  conversacionCargando: boolean;
+  address: `0x${string}` | undefined;
+  dict: Dictionary
+  mensajeRef:MutableRefObject<HTMLVideoElement | undefined>
+};

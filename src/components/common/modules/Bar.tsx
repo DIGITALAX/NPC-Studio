@@ -20,7 +20,6 @@ const Bar: FunctionComponent<BarProps> = ({
   manejarMirror,
   manejarColeccionar,
   setSeguirColeccionar,
- 
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))
@@ -41,7 +40,15 @@ const Bar: FunctionComponent<BarProps> = ({
                 choices[indice] = !choices[indice];
                 return choices;
               }),
-            manejarMeGusta,
+            () =>
+              manejarMeGusta(
+                elemento?.id,
+                (elemento?.__typename === "Mirror"
+                  ? elemento?.mirrorOn
+                  : (elemento as Post)
+                )?.operations?.hasReacted,
+                indice
+              ),
             () =>
               setComentariosAbiertos((prev) => {
                 const arr = [...prev];
@@ -109,6 +116,7 @@ const Bar: FunctionComponent<BarProps> = ({
                         ? "cursor-pointer active:scale-95"
                         : "opacity-70"
                     } `}
+                    onClick={() => functions[indexTwo]?.()}
                   >
                     <Image
                       layout="fill"
@@ -132,7 +140,7 @@ const Bar: FunctionComponent<BarProps> = ({
       </div>
       {abrirMirrorEleccion?.[indice] && (
         <div
-          className={`absolute w-fit h-fit flex flex-row gap-4 p-2 items-center justify-center bg-lirio/80 rounded-sm left-2 -top-8 border border-white z-10`}
+          className={`absolute w-fit h-fit flex flex-row gap-4 p-2 items-center justify-center bg-black rounded-sm left-2 -top-8 border border-white z-50`}
         >
           {[
             "QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3",

@@ -7,6 +7,7 @@ import Pedidos from "./Pedidos";
 import Process from "./Process";
 import { useContext } from "react";
 import { ModalContext } from "@/app/providers";
+import useConversacion from "@/components/compras/hooks/useConversacion";
 
 function PantallaCambio({
   npc,
@@ -47,6 +48,17 @@ function PantallaCambio({
   setPedidoAbierto,
 }: PantallaCambioProps) {
   const context = useContext(ModalContext);
+  const {
+    enviarMensaje,
+    mensajeCargando,
+    conversacion,
+    conversacionCargando,
+    conversacionAbierta,
+    setConversacionAbierta,
+    setMensaje,
+    mensaje,
+    mensajeRef,
+  } = useConversacion(context?.lensConectado, address, context?.pantalla!);
 
   switch (context?.pantalla) {
     case 1:
@@ -83,6 +95,7 @@ function PantallaCambio({
     case 2:
       return (
         <Pedidos
+          address={address}
           dict={dict}
           todosLosPedidos={todosLosPedidos}
           pedidosCargando={pedidosCargando}
@@ -90,6 +103,15 @@ function PantallaCambio({
           descifrarCargando={descifrarCargando}
           pedidoAbierto={pedidoAbierto}
           setPedidoAbierto={setPedidoAbierto}
+          enviarMensaje={enviarMensaje}
+          mensajeCargando={mensajeCargando}
+          conversacion={conversacion}
+          conversacionCargando={conversacionCargando}
+          conversacionAbierta={conversacionAbierta}
+          setConversacionAbierta={setConversacionAbierta}
+          setMensaje={setMensaje}
+          mensaje={mensaje}
+          mensajeRef={mensajeRef}
         />
       );
 

@@ -33,7 +33,7 @@ const lensMeGusta = async (
         setIndexar(Indexar.Exito);
       setTimeout(() => {
         setIndexar(Indexar.Inactivo);
-      }, 1000);
+      }, 3000);
     }
   }
 };

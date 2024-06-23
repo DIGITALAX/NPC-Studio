@@ -42,9 +42,6 @@ const Autografo: FunctionComponent<AutografoProps> = ({
       } else if (car.tipo !== AutographType.Catalog) {
         const { profile: _, ...elSinProfile } = car.elemento as any;
         const { profile: __, ...artSinProfile } = articulos?.[articuloIndice];
-        console.log(
-          JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile)
-        );
         return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
       }
     })
