@@ -94,7 +94,6 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
         <Botones
           minteado={catalogo?.minteado}
           cantidad={catalogo?.cantidad}
-          carrito={carrito}
           precio={catalogo?.precio}
           datosOraculos={datosOraculos}
           setCarrito={setCarrito}

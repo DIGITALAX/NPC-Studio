@@ -33,7 +33,7 @@ function Studio({
   setErrorInteraccion,
   setMostrarNotificacion,
 }: {
-  npc: string;
+  npc: string | undefined;
   escena: string;
   setVerImagen: (
     e: SetStateAction<{
@@ -43,7 +43,7 @@ function Studio({
     }>
   ) => void;
   publicClient: PublicClient;
-  setNpc: (e: SetStateAction<string>) => void;
+  setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
   cliente: LitNodeClient;
@@ -88,7 +88,8 @@ function Studio({
     setNpc,
     setCargando,
     setManejarMostrarArticulo,
-    manejarMostrarArticulo
+    manejarMostrarArticulo,
+    carrito?.abierto
   );
   const {
     articuloCargando,

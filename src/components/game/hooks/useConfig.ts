@@ -6,9 +6,9 @@ import { AutographType, PhaserGameElement } from "../types/game.types";
 import { SCENE_LIST } from "../../../lib/constants";
 
 const useConfig = (
-  chosenNpc: string,
+  chosenNpc: string | undefined,
   sceneKey: string,
-  setNpc: (npc: SetStateAction<string>) => void,
+  setNpc: (npc: SetStateAction<string | undefined>) => void,
   setCargando: (e: SetStateAction<boolean>) => void,
   setManejarMostrarArticulo: (
     e: SetStateAction<
@@ -26,7 +26,8 @@ const useConfig = (
         disenador: string;
         tipo: AutographType;
       }
-    | undefined
+    | undefined,
+  abierto: boolean
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
@@ -76,6 +77,10 @@ const useConfig = (
               scene.events.once("render", () =>
                 setTimeout(() => setCargando(false), 3000)
               );
+
+              scene.events.on("grab", () => {
+                chosenNpc && setNpc(undefined);
+              });
             }
           });
           game.scene.start("NPCEnginePhaser");
@@ -95,9 +100,9 @@ const useConfig = (
   useEffect(() => {
     if (!socket) {
       const newSocket = new WebSocket(
-        // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+        `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
 
-        `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+        // `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
 
       setSocket(newSocket);
@@ -127,7 +132,7 @@ const useConfig = (
   }, []);
 
   useEffect(() => {
-    if (gameRef.current && juego?.scene?.scenes) {
+    if (gameRef.current && juego?.scene?.scenes && chosenNpc) {
       const customScene = juego?.scene?.scenes.find(
         (scene) =>
           scene.scene.key === "NPCEnginePhaser" || scene.scene.key === "default"
@@ -145,10 +150,10 @@ const useConfig = (
     );
     if (customScene) {
       (customScene as any).setEstadoDePantalla(
-        manejarMostrarArticulo ? true : false
+        manejarMostrarArticulo && !abierto ? true : false
       );
     }
-  }, [manejarMostrarArticulo]);
+  }, [manejarMostrarArticulo, abierto]);
 
   useEffect(() => {
     if (!scriptRef.current) {

@@ -79,10 +79,6 @@ export type BotonesProps = {
       abierto: boolean;
     }>
   ) => void;
-  carrito: {
-    compras: Compra[];
-    abierto: boolean;
-  };
   datosOraculos: DatosOraculos[];
 };
 
@@ -259,8 +255,6 @@ export interface Details {
   ciudad: string;
   estado: string;
   pais: string;
-  colores: string[];
-  tamanos: string[];
 }
 
 export type CumplimientoProps = {

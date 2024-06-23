@@ -273,6 +273,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         Object.values(this.npcs).forEach((npc) => {
           npc.stopCameraFollow();
         });
+        this.events.emit("grab");
       });
       this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
         if (pointer.isDown) {

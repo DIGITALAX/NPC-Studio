@@ -43,6 +43,8 @@ function PantallaCambio({
   pedidosCargando,
   manejarDescifrar,
   descifrarCargando,
+  pedidoAbierto,
+  setPedidoAbierto,
 }: PantallaCambioProps) {
   const context = useContext(ModalContext);
 
@@ -81,10 +83,13 @@ function PantallaCambio({
     case 2:
       return (
         <Pedidos
+          dict={dict}
           todosLosPedidos={todosLosPedidos}
           pedidosCargando={pedidosCargando}
           manejarDescifrar={manejarDescifrar}
           descifrarCargando={descifrarCargando}
+          pedidoAbierto={pedidoAbierto}
+          setPedidoAbierto={setPedidoAbierto}
         />
       );
 

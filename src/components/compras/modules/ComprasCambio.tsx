@@ -85,7 +85,6 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
           articuloSeleccionado={articuloSeleccionado}
           dict={dict}
           setCarrito={setCarrito}
-          carritoCargando={carritoCargando}
           carrito={carrito}
           setVerImagen={setVerImagen}
           setArticuloSeleccionado={setArticuloSeleccionado}

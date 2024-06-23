@@ -26,9 +26,6 @@ const Ropas: FunctionComponent<RopasProps> = ({
   setCumplimiento,
   cumplimiento,
 }): JSX.Element => {
-  const pfp = createProfilePicture(
-    articulos?.[articuloIndice]?.profile?.metadata?.picture
-  );
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-center justify-between font-con text-sm flex-row">
@@ -41,7 +38,7 @@ const Ropas: FunctionComponent<RopasProps> = ({
       </div>
       <div className="relative w-full h-[30rem] flex flex-row justify-between items-start gap-5">
         <div className="relative w-full h-full flex flex-col justify-between items-start gap-6">
-          <div className="relative w-full h-full items-start justify-start overflow-y-scroll flex min-w-fit">
+          <div className="relative w-full h-full items-start justify-start overflow-y-scroll flex min-w-fit min-h-[12rem]">
             <div className="relative w-full h-fit items-start justify-start flex grid grid-cols-3 gap-2">
               {articulos?.map((el, indice) => {
                 return (
@@ -70,11 +67,10 @@ const Ropas: FunctionComponent<RopasProps> = ({
             setCumplimiento={setCumplimiento}
             cumplimiento={cumplimiento}
             dict={dict}
-            color={articuloSeleccionado?.[articuloIndice]?.color || ""}
+            color={articuloSeleccionado?.[articuloIndice]?.color || "black"}
             setColor={(color) =>
               setArticuloSeleccionado((prev) => {
                 const arr = [...prev];
-
                 arr[articuloIndice] = {
                   ...arr[articuloIndice],
                   color,
@@ -83,11 +79,10 @@ const Ropas: FunctionComponent<RopasProps> = ({
                 return arr;
               })
             }
-            tamano={articuloSeleccionado?.[articuloIndice]?.tamano || ""}
+            tamano={articuloSeleccionado?.[articuloIndice]?.tamano || "m"}
             setTamano={(tamano) =>
               setArticuloSeleccionado((prev) => {
                 const arr = [...prev];
-
                 arr[articuloIndice] = {
                   ...arr[articuloIndice],
                   tamano,
@@ -134,7 +129,6 @@ const Ropas: FunctionComponent<RopasProps> = ({
               datosOraculos={datosOraculos}
               setArticuloSeleccionado={setArticuloSeleccionado}
               cantidad={articulos?.[articuloIndice]?.cantidad}
-              carrito={carrito}
               agotado={
                 Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) +
                   Number(articuloSeleccionado?.[articuloIndice]?.cantidad) +

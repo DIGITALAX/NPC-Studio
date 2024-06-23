@@ -17,7 +17,6 @@ const Botones: FunctionComponent<BotonesProps> = ({
   minteado,
   cantidad,
   precio,
-  carrito,
   setCarrito,
   datosOraculos,
   setArticuloSeleccionado,
@@ -94,17 +93,7 @@ const Botones: FunctionComponent<BotonesProps> = ({
             className="relative bg-black rounded-full h-fit w-fit cursor-pointer active:scale-95 border border-white flex items-center justify-center hover:opacity-70"
             title={dict.Home.addCart}
             onClick={() =>
-              !(
-                Number(minteado) +
-                  Number(articulo?.cantidad) +
-                  carrito?.compras
-                    ?.filter(
-                      (el) =>
-                        JSON.stringify(el.elemento) == JSON.stringify(articulo)
-                    )
-                    ?.reduce((sum, el) => sum + el.cantidad, 0) >
-                articulo?.cantidad
-              ) &&
+              !agotado &&
               setCarrito((prev) => {
                 let compras = prev.compras;
 
@@ -128,7 +117,6 @@ const Botones: FunctionComponent<BotonesProps> = ({
                 } else {
                   compras = [...prev.compras, articulo];
                 }
-
                 return {
                   ...prev,
                   compras,

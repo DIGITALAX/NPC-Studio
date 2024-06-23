@@ -109,6 +109,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     pedidosCargando,
     manejarDescifrar,
     descifrarCargando,
+    setPedidoAbierto,
+    pedidoAbierto,
   } = usePedidos(context?.pantalla!, address, context?.cliente!);
 
   return (
@@ -140,6 +142,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         >
           <PantallaCambio
             npc={npc}
+            pedidoAbierto={pedidoAbierto}
+            setPedidoAbierto={setPedidoAbierto}
             setConectarPub={setConectarPub}
             manejarMostrarArticulo={manejarMostrarArticulo}
             setManejarMostrarArticulo={setManejarMostrarArticulo}

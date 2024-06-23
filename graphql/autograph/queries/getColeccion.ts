@@ -1,35 +1,44 @@
 import { autographClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
-const ARTICULO = gql`
-  query ($buyer: String!) {
-    orderCreateds(where: { buyer: $buyer }, orderBy: orderId, orderDirection: desc) {
-      id
-      subOrderTypes
-      total
-      orderId
-      blockNumber
-      blockTimestamp
-      transactionHash
-      buyer
-      fulfillment
-      amounts
-      subTotals
-      parentIds
-      collectionIds
-      currencies
+const COLECCION = gql`
+  query ($collectionId: Int!) {
+    collections(where: { collectionId: $collectionId }) {
+      uri
+      type
+      price
       mintedTokens
+      galleryId
+      id
+      designer
+      collectionMetadata {
+        title
+        tipo
+        tags
+        npcs
+        instructions
+        locales
+        image
+        id
+        gallery
+        description
+      }
+      collectionId
+      amount
+      acceptedTokens
+      profileIds
+      pubIds
     }
   }
 `;
 
-export const getPedidos = async (
-  buyer: string
+export const getColeccion = async (
+  collectionId: number
 ): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
   const queryPromise = autographClient.query({
-    query: ARTICULO,
-    variables: { buyer },
+    query: COLECCION,
+    variables: { collectionId },
     fetchPolicy: "no-cache",
     errorPolicy: "all",
   });

@@ -151,17 +151,17 @@ const useArticulo = (
           {
             elemento: {
               maximo: Number(
-                (
-                  Number(
-                    articulos
-                      ?.filter((art) =>
-                        art?.tokenes
-                          ?.map((i) => i.toLowerCase())
-                          ?.includes(articuloSeleccionado?.[0]?.token)
-                      )
-                      .map((art) => Number(art.precio) / 10 ** 18)
-                      .reduce((acc, val) => acc + val, 0)
-                  ) / 2
+                Number(
+                  articulos
+                    ?.filter((art) =>
+                      art?.tokenes
+                        ?.map((i) => i.toLowerCase())
+                        ?.includes(ACCEPTED_TOKENS_AMOY[0][2].toLowerCase())
+                    )
+                    ?.map((art) => Number(art.precio) / 10 ** 18)
+                    ?.sort((a, b) => a - b)
+                    ?.slice(-5)
+                    ?.reduce((acc, val) => acc + val, 0)
                 ).toFixed(0)
               ),
             },
@@ -176,11 +176,19 @@ const useArticulo = (
         setArticuloSeleccionado(
           articulos.map((ar) => ({
             elemento: ar,
-            token: ACCEPTED_TOKENS_AMOY[0][2],
+            token: ar.tokenes?.[0],
             cantidad: 1,
             tipo: (ar as Coleccion)?.tipo,
-            color: "",
-            tamano: "",
+            color:
+              (ar as Coleccion)?.tipo == AutographType.Hoodie ||
+              (ar as Coleccion)?.tipo == AutographType.Shirt
+                ? "black"
+                : "",
+            tamano:
+              (ar as Coleccion)?.tipo == AutographType.Hoodie ||
+              (ar as Coleccion)?.tipo == AutographType.Shirt
+                ? "m"
+                : "",
           }))
         );
       }

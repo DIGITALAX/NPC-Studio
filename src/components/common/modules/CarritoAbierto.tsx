@@ -22,100 +22,113 @@ function CarritoAbierto({
   aprobarGastos,
 }: CarritoAbiertoProps) {
   return (
-    <div className="relative w-full items-start justify-start flex flex-col gap-10 h-fit p-2 text-rosa font-bit">
+    <div className="relative w-full items-start justify-start flex flex-col gap-10 h-full p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
         {dict.Home.npcStudio}
       </div>
-      <div className="relative w-full h-full flex items-start justify-between flex-row gap-12">
+      <div
+        className={`relative w-full h-full flex justify-between flex-row gap-12 ${
+          carrito.compras?.length < 1 ? " items-end" : " items-start"
+        }`}
+      >
         <div className="relative w-full h-full flex items-start justify-start max-w-[50%]">
           <div className="relative w-fit h-fit overflow-x-scroll flex items-start justify-start gap-4 flex-row">
-            {carrito.compras?.map((elemento, indice: number) => {
-              return (
-                <div
-                  key={indice}
-                  className="flex flex-col gap-2 glex items-center justify-center relative w-fit h-fit text-xs"
-                >
-                  <div className="relative w-36 h-52 rounded-md flex items-center justify-center p-2 border border-ligero">
-                    <div className="relative w-full h-full rounded-md">
-                      <Image
-                        layout="fill"
-                        draggable={false}
-                        objectFit="cover"
-                        className="rounded-md"
-                        src={`${INFURA_GATEWAY}/ipfs/${
-                          (elemento.elemento as Coleccion)?.imagen
-                            ? (elemento.elemento as Coleccion).imagen?.split(
-                                "ipfs://"
-                              )?.[1]
-                            : (elemento.elemento as Catalogo)?.paginas
-                            ? (
-                                elemento.elemento as Catalogo
-                              )?.paginas[0]?.split("ipfs://")?.[1]
-                            : "QmbNPRomMwXfAd6m7eseA48DhfizuGVKCvMBViQLe9BsLs"
-                        }`}
-                      />
-                    </div>
-                  </div>
-                  <div className="relative w-fit h-fit flex items-center justify-center">
-                    {`${Number(
-                      (
-                        ((Number((elemento?.elemento as Catalogo)?.precio) > 0
-                          ? (elemento?.elemento as Catalogo)?.precio
-                          : Number((elemento?.elemento as Mezcla)?.maximo) *
-                            10 ** 18) *
-                          Number(elemento?.cantidad)) /
-                        Number(
-                          datosOraculos?.find(
-                            (oraculo) =>
-                              oraculo.currency?.toLowerCase() ===
-                              elemento?.token?.toLowerCase()
-                          )?.rate
-                        )
-                      )?.toFixed(3)
-                    )} ${
-                      ACCEPTED_TOKENS_AMOY?.find(
-                        (moneda) =>
-                          moneda[2]?.toLowerCase() ===
-                          elemento?.token?.toLowerCase()
-                      )?.[1]
-                    }`}
-                  </div>
+            {carrito.compras?.length < 1 ? (
+              <div className="flex flex-col gap-2 glex items-center justify-center text-center relative w-full h-full text-xs">
+                {dict.Home.nada}
+              </div>
+            ) : (
+              carrito.compras?.map((elemento, indice: number) => {
+                return (
                   <div
-                    className="realtive rounded-full w-fit h-fit border border-white bg-black cursor-pointer opacity-80"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCarrito((prev) => ({
-                        ...prev,
-                        compras: prev.compras.filter(
-                          (el) =>
-                            JSON.stringify(el) !== JSON.stringify(elemento)
-                        ),
-                      }));
-                    }}
+                    key={indice}
+                    className="flex flex-col gap-2 glex items-center justify-center relative w-fit h-fit text-xs"
                   >
-                    <div
-                      className={`relative flex items-center justify-center w-fit h-fit`}
-                    >
-                      <RxCrossCircled color="white" size={15} />
-                    </div>
-                  </div>
-                  <div className="relative w-fit h-fit flex items-center justify-center">
-                    {elemento?.cantidad}
-                  </div>
-                  {elemento?.color?.trim() !== "" &&
-                    elemento?.tamano?.trim() !== "" && (
-                      <div className="relative w-fit h-fit flex items-center justify-center flex-row gap-1 text-vcr text-white">
-                        <div className="relative w-fit h-fit flex items-center justify-center rounded-full border-white bg-black">
-                          {elemento?.color}
-                        </div>
-                        <div className="relative w-fit h-fit flex items-center justify-center rounded-full border-white bg-black">
-                          {elemento?.tamano}
-                        </div>
+                    <div className="relative w-36 h-52 rounded-md flex items-center justify-center p-2 border border-ligero">
+                      <div className="relative w-full h-full rounded-md">
+                        <Image
+                          layout="fill"
+                          draggable={false}
+                          objectFit="cover"
+                          className="rounded-md"
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            (elemento.elemento as Coleccion)?.imagen
+                              ? (elemento.elemento as Coleccion).imagen?.split(
+                                  "ipfs://"
+                                )?.[1]
+                              : (elemento.elemento as Catalogo)?.paginas
+                              ? (
+                                  elemento.elemento as Catalogo
+                                )?.paginas[0]?.split("ipfs://")?.[1]
+                              : "QmegowH3mczqGbK1mkU1XLtntDdHfZEYDTZQCe9yfRhQXB"
+                          }`}
+                        />
                       </div>
-                    )}
-                </div>
-              );
-            })}
+                    </div>
+                    <div className="relative w-fit h-fit flex items-center justify-center">
+                      {`${Number(
+                        (
+                          ((Number((elemento?.elemento as Catalogo)?.precio) > 0
+                            ? (elemento?.elemento as Catalogo)?.precio
+                            : Number((elemento?.elemento as Mezcla)?.maximo) *
+                              10 ** 18) *
+                            Number(elemento?.cantidad)) /
+                          Number(
+                            datosOraculos?.find(
+                              (oraculo) =>
+                                oraculo.currency?.toLowerCase() ===
+                                elemento?.token?.toLowerCase()
+                            )?.rate
+                          )
+                        )?.toFixed(3)
+                      )} ${
+                        ACCEPTED_TOKENS_AMOY?.find(
+                          (moneda) =>
+                            moneda[2]?.toLowerCase() ===
+                            elemento?.token?.toLowerCase()
+                        )?.[1]
+                      }`}
+                    </div>
+                    <div
+                      className="realtive rounded-full w-fit h-fit border border-white bg-black cursor-pointer opacity-80"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCarrito((prev) => ({
+                          ...prev,
+                          compras: prev.compras.filter(
+                            (el) =>
+                              JSON.stringify(el) !== JSON.stringify(elemento)
+                          ),
+                        }));
+                      }}
+                    >
+                      <div
+                        className={`relative flex items-center justify-center w-fit h-fit`}
+                      >
+                        <RxCrossCircled color="white" size={15} />
+                      </div>
+                    </div>
+                    <div className="relative w-fit h-fit flex items-center justify-center">
+                      {elemento?.cantidad}
+                    </div>
+                    {elemento?.color?.trim() !== "" &&
+                      elemento?.tamano?.trim() !== "" && (
+                        <div className="relative w-fit h-fit flex items-center justify-center flex-row gap-1 text-vcr text-white">
+                          <div
+                            className="relative w-7 h-7 flex items-center justify-center border-white rounded-full border"
+                            style={{
+                              backgroundColor: elemento?.color,
+                            }}
+                          ></div>
+                          <div className="relative w-7 h-7 flex items-center justify-center text-xs border rounded-full border-white bg-black">
+                            {elemento?.tamano}
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
         <div className="relative w-full h-fit flex flex-col gap-5 items-center justify-start">
@@ -187,7 +200,7 @@ function CarritoAbierto({
               </div>
             </div>
             <div
-              className={`relative bg-rojo px-1.5 py-1 w-32 h-8 flex items-center border-white border justify-center ${
+              className={`relative bg-rojo px-1.5 py-1 w-36 h-8 flex items-center border-white border text-xs justify-center ${
                 gastosAprobados.every((i) => i?.aprobado == true) &&
                 "cursor-pointer active:scale-95"
               }`}

@@ -53,20 +53,11 @@ const useCompras = (
     ciudad: "",
     estado: "",
     pais: "",
-    colores: [],
-    tamanos: [],
   });
 
   const cifrarCumplimiento = async (
     elementos: Compra[]
-  ): Promise<
-    | {
-        coleccionId: number;
-        cifrados: string;
-        tipo: AutographType;
-      }[]
-    | undefined
-  > => {
+  ): Promise<string | undefined> => {
     if (
       !address ||
       cumplimiento?.direccion?.trim() === "" ||
@@ -76,6 +67,7 @@ const useCompras = (
       cumplimiento?.zip?.trim() === "" ||
       cumplimiento?.pais?.trim() === ""
     ) {
+      setMostrarNotificacion(Notificacion.Cumplimiento);
       setCarritoCargando(false);
       return;
     }
@@ -94,6 +86,7 @@ const useCompras = (
           tamano: el.tamano,
           id: (el.elemento as Coleccion)?.coleccionId || 0,
           tipo: el.tipo,
+          moneda: el.token,
         })),
         {
           ...cumplimiento,
@@ -111,15 +104,16 @@ const useCompras = (
   const comprarPublicacion = async (elemento: Compra) => {
     setCarritoCargando(true);
     try {
-      let cadenasCifradas:
-        | {
-            coleccionId: number;
-            cifrados: string;
-            tipo: AutographType;
-          }[]
-        | undefined;
+      let cadenasCifradas: string = "";
       if (elemento.tipo !== AutographType.NFT) {
-        cadenasCifradas = await cifrarCumplimiento([elemento]);
+        const cadena = await cifrarCumplimiento([elemento]);
+
+        if (!cadena) {
+          setCarritoCargando(false);
+          return;
+        } else {
+          cadenasCifradas = cadena;
+        }
       }
 
       const clientWallet = createWalletClient({
@@ -130,7 +124,7 @@ const useCompras = (
       const datos = coder.encode(
         ["string", "address", "uint8", "uint8"],
         [
-          cadenasCifradas ? cadenasCifradas?.[0].cifrados : "",
+          cadenasCifradas || "",
           elemento?.token,
           Number(elemento?.cantidad),
           autographTypeToNumber[elemento?.tipo],
@@ -171,13 +165,7 @@ const useCompras = (
   const comprarCarrito = async () => {
     setCarritoCargando(true);
     try {
-      let cadenasCifradas:
-        | {
-            coleccionId: number;
-            cifrados: string;
-            tipo: AutographType;
-          }[]
-        | undefined;
+      let cadenasCifradas: string | undefined = "";
       if (
         carrito?.compras?.filter((c) => c.tipo !== AutographType.NFT)?.length >
         0
@@ -209,26 +197,7 @@ const useCompras = (
           ),
           carrito.compras?.map((com) => Number(com.cantidad)),
           carrito.compras?.map((com) => autographTypeToNumber[com.tipo]),
-          JSON.stringify(
-            carrito.compras
-              ?.map((com) =>
-                cadenasCifradas?.find(
-                  (cad) =>
-                    Number(cad.coleccionId) ==
-                      Number((com.elemento as Coleccion).coleccionId || 0) &&
-                    cad.tipo == com.tipo
-                )
-                  ? cadenasCifradas?.find(
-                      (cad) =>
-                        Number(cad.coleccionId) ==
-                          Number(
-                            (com.elemento as Coleccion).coleccionId || 0
-                          ) && cad.tipo == com.tipo
-                    )?.cifrados
-                  : ""
-              )
-              ?.filter(Boolean)
-          ),
+          cadenasCifradas,
         ],
         account: address,
       });
@@ -325,13 +294,17 @@ const useCompras = (
         chain: polygonAmoy,
         args: [
           AUTOGRAPH_MARKET,
-          (precio /
-            Number(
-              datosOraculos?.find((oraculo) => oraculo.currency === token)?.rate
-            )) *
-            Number(
-              datosOraculos?.find((oraculo) => oraculo.currency === token)?.wei
-            ),
+          Number(
+            (Number(precio * 1.5) /
+              Number(
+                datosOraculos?.find((oraculo) => oraculo.currency === token)
+                  ?.rate
+              )) *
+              Number(
+                datosOraculos?.find((oraculo) => oraculo.currency === token)
+                  ?.wei
+              )
+          ).toFixed(0),
         ],
         account: address,
       });

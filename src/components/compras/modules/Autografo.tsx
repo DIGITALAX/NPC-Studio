@@ -72,7 +72,6 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               datosOraculos={datosOraculos}
               setArticuloSeleccionado={setArticuloSeleccionado}
               cantidad={articulos?.[articuloIndice]?.cantidad}
-              carrito={carrito}
               agotado={
                 Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) +
                   Number(articuloSeleccionado?.[articuloIndice]?.cantidad) +
@@ -93,7 +92,9 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               aprobarGastos={aprobarGastos}
               gastosAprobados={gastosAprobados?.[articuloIndice]}
               indice={articuloIndice}
+              
             />
+
           </div>
         </div>
         <div className="relative w-full h-full flex flex-col justify-start items-start gap-3">

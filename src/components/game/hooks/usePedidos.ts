@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { EncryptedDetails, Pedido } from "../types/game.types";
+import {
+  AutographType,
+  Coleccion,
+  EncryptedDetails,
+  Pedido,
+} from "../types/game.types";
 import { getPedidos } from "../../../../graphql/autograph/queries/getPedidos";
-import { INFURA_GATEWAY } from "@/lib/constants";
+import { INFURA_GATEWAY, numberToAutograph } from "@/lib/constants";
 import {
   LitNodeClient,
   checkAndSignAuthMessage,
   decryptToString,
 } from "@lit-protocol/lit-node-client";
+import { getColeccion } from "../../../../graphql/autograph/queries/getColeccion";
+import { getCatalogo } from "../../../../graphql/autograph/queries/getCatalogo";
 
 const usePedidos = (
   pantalla: number,
@@ -16,6 +23,7 @@ const usePedidos = (
   const [pedidosCargando, setPedidosCargando] = useState<boolean>(false);
   const [descifrarCargando, setDescifrarCargando] = useState<boolean[]>([]);
   const [todosLosPedidos, setTodosLosPedidos] = useState<Pedido[]>([]);
+  const [pedidoAbierto, setPedidoAbierto] = useState<boolean[]>([]);
 
   const manejarDescifrar = async (indice: number) => {
     if (
@@ -66,10 +74,22 @@ const usePedidos = (
         pedidos[indice] = {
           ...pedidos[indice],
           fulfillment,
-          subOrderStyles: pedidos[indice]?.subOrderTypes.map((_, indice) => ({
-            color: fulfillment.sizes[fulfillment.sizes.length - 1 - indice],
-            tamano: fulfillment.colors[fulfillment.colors.length - 1 - indice],
-          })),
+          subOrders: pedidos[indice]?.subOrders.map((subOrder) => {
+            const matchingElemento = fulfillment?.elementos.find(
+              (elemento: any) =>
+                elemento.moneda?.toLowerCase() ===
+                  subOrder.currency?.toLowerCase() &&
+                  elemento.tipo === subOrder.type &&
+                Number(elemento.id) === Number(subOrder.id) &&
+                Number(elemento.cantidad) === Number(subOrder.amount)
+            );
+
+            return {
+              ...subOrder,
+              color: matchingElemento?.color,
+              tamano: matchingElemento?.tamano,
+            };
+          }),
           decrypted: true,
         };
         return pedidos;
@@ -90,7 +110,7 @@ const usePedidos = (
       const datos = await getPedidos(address!);
 
       const pedidos = await Promise.all(
-        datos?.data?.orderCreateds.map(async (pedido: any) => {
+        datos?.data?.orderCreateds.map(async (pedido: any, i: number) => {
           let jsonArray = await JSON.parse(pedido.collectionIds);
           let collectionIds: number[][] = [];
           for (let i = 0; i < jsonArray.length; i++) {
@@ -103,6 +123,7 @@ const usePedidos = (
           }
 
           jsonArray = await JSON.parse(pedido.mintedTokens);
+
           let mintedTokens: number[][] = [];
           for (let i = 0; i < jsonArray.length; i++) {
             let subArray = jsonArray[i];
@@ -110,14 +131,84 @@ const usePedidos = (
             for (let j = 0; j < subArray.length; j++) {
               subResult.push(Number(subArray[j]));
             }
-            collectionIds.push(subResult);
+            mintedTokens.push(subResult);
+          }
+
+          let subOrders: {
+            images: string[];
+            color?: string;
+            tamano?: string;
+            type: string;
+            amount: number;
+            subTotal: number;
+            currency: string;
+            id: number;
+          }[] = [];
+
+          await Promise.all(
+            collectionIds?.map(async (col: number[], indice) => {
+              if (
+                numberToAutograph[Number(pedido.subOrderTypes?.[indice])] ==
+                AutographType.Catalog
+              ) {
+                const datos = await getCatalogo();
+                subOrders.push({
+                  images: [datos?.data?.autographCreateds[0].pages?.[0]],
+                  amount: pedido.amounts?.[indice],
+                  subTotal: Number(pedido.subTotals?.[indice]) / 10 ** 18,
+                  currency: pedido.currencies?.[indice],
+                  type: numberToAutograph[
+                    Number(pedido.subOrderTypes?.[indice])
+                  ],
+                  id: collectionIds[indice]?.[0],
+                });
+              } else {
+                let images: string[] = [];
+                await Promise.all(
+                  col.map(async (el) => {
+                    const datos = await getColeccion(el);
+                    await Promise.all(
+                      datos?.data?.collections.map(async (col: any) => {
+                        if (!col.collectionMetadata) {
+                          const cadena = await fetch(
+                            `${INFURA_GATEWAY}/ipfs/${
+                              col.uri.split("ipfs://")?.[1]
+                            }`
+                          );
+                          col.collectionMetadata = await cadena.json();
+                        }
+
+                        images.push(col.collectionMetadata.image);
+                      })
+                    );
+                  })
+                );
+
+                subOrders.push({
+                  images,
+                  amount: pedido.amounts?.[indice],
+                  subTotal: Number(pedido.subTotals?.[indice]) / 10 ** 18,
+                  currency: pedido.currencies?.[indice],
+                  type: numberToAutograph[
+                    Number(pedido.subOrderTypes?.[indice])
+                  ],
+                  id: collectionIds[indice]?.[0],
+                });
+              }
+            })
+          );
+
+          let fulfillment: string = "";
+          if (pedido.orderId !== "2" && pedido.orderId !== "1") {
+            fulfillment = JSON.parse(pedido?.fulfillment);
           }
 
           return {
             ...pedido,
             collectionIds,
             mintedTokens,
-            fulfillment: await JSON.parse(pedido?.fulfillment),
+            subOrders,
+            fulfillment,
             decrypted: false,
           };
         })
@@ -125,6 +216,7 @@ const usePedidos = (
 
       setTodosLosPedidos(pedidos);
       setDescifrarCargando(Array.from({ length: pedidos.length }, () => false));
+      setPedidoAbierto(Array.from({ length: pedidos.length }, () => false));
     } catch (err: any) {
       console.error(err.message);
     }
@@ -142,6 +234,8 @@ const usePedidos = (
     descifrarCargando,
     manejarDescifrar,
     todosLosPedidos,
+    setPedidoAbierto,
+    pedidoAbierto,
   };
 };
 

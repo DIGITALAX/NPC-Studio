@@ -114,8 +114,8 @@ export type SceneProps = {
   escena: string;
   dict: Dictionary;
   setEscena: (e: SetStateAction<string>) => void;
-  npc: string;
-  setNpc: (e: SetStateAction<string>) => void;
+  npc: string | undefined;
+  setNpc: (e: SetStateAction<string | undefined>) => void;
 };
 
 export interface Message {
@@ -367,9 +367,17 @@ export type Dictionary = {
   Home: {
     title: string;
     onChain: string;
+    nada: string;
+    tx: string;
     comprado: string;
     aprobar: string;
+    cumplimiento: string;
+    descifrado: string;
+    lens: string;
+    lens2: string;
+    pedido: string;
     gNew: string;
+    descifrar: string;
     cump: string;
     carritoCompra: string;
     precioMax: string;
@@ -443,7 +451,7 @@ export type Dictionary = {
 };
 
 export type PantallaCambioProps = {
-  npc: string;
+  npc: string | undefined;
   escena: string;
   colecciones: Coleccion[];
   setManejarMostrarArticulo: (
@@ -470,7 +478,7 @@ export type PantallaCambioProps = {
   setMostrarGalerias: (e: SetStateAction<boolean>) => void;
   manejarAhorar: () => void;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
-  setNpc: (e: SetStateAction<string>) => void;
+  setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
   cargandoBorrar: boolean;
@@ -506,6 +514,8 @@ export type PantallaCambioProps = {
   pedidosCargando: boolean;
   manejarDescifrar: (indice: number) => Promise<void>;
   descifrarCargando: boolean[];
+  pedidoAbierto: boolean[];
+  setPedidoAbierto: (e: SetStateAction<boolean[]>) => void;
 };
 
 export interface Galeria {
@@ -555,28 +565,28 @@ export type PedidosProps = {
   pedidosCargando: boolean;
   manejarDescifrar: (indice: number) => Promise<void>;
   descifrarCargando: boolean[];
+  pedidoAbierto: boolean[];
+  setPedidoAbierto: (e: SetStateAction<boolean[]>) => void;
+  dict: Dictionary;
 };
 
 export interface Pedido {
-  subOrderTypes: string[];
-  subOrderStyles: {
-    color: string;
-    tamano: string;
-  }[];
   total: string;
   orderId: string;
   blockNumber: string;
   blockTimestamp: string;
   transactionHash: string;
-  buyer: string;
   fulfillment?: Details | EncryptedDetails;
-  amounts: string;
-  subTotals: string[];
-  parentIds: string[];
-  collectionIds: number[][];
-  currencies: string[];
-  mintedTokens: number[][];
-  collections: string[];
+  subOrders: {
+    images: string[];
+    type: string;
+    color?: string;
+    tamano?: string;
+    amount: number;
+    subTotal: number;
+    currency: string;
+    id: number;
+  }[];
   decrypted: boolean;
 }
 

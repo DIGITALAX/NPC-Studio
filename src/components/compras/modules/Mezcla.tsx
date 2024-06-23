@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import { Mezcla as MezclaTipo, MezclaProps } from "../types/compras.types";
-import Botones from "./Botones";
 import Image from "next/legacy/image";
 import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
@@ -21,20 +20,27 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
       <div className="relative w-full h-fit flex items-start justify-start overflow-x-scroll">
         <div className="relative w-fit h-fit flex items-start justify-start flex-row gap-2">
           {articulos
-            ?.filter((art) => {
+            ?.filter((a) =>
+              a?.tokenes
+                ?.map((i) => i.toLowerCase())
+                ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
+            )
+            ?.slice(0, 5) 
+            ?.filter(() => {
               const preciosSeleccionados = articulos
-                ?.filter((a) =>
-                  a?.tokenes
+                ?.filter((art) =>
+                  art?.tokenes
                     ?.map((i) => i.toLowerCase())
-                    ?.includes(articuloSeleccionado?.[0]?.token)
+                    ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
                 )
-                ?.map((art) => Number(art.precio) / 10 ** 18);
-
-              const sumaPrecios = preciosSeleccionados
+                ?.map((art) => Number(art.precio) / 10 ** 18)
                 ?.sort((a, b) => a - b)
-                ?.slice(0, 5)
-                ?.reduce((acc, val) => acc + val, 0);
+                ?.slice(0, 5); 
 
+              const sumaPrecios = preciosSeleccionados?.reduce(
+                (acc, val) => acc + val,
+                0
+              );
               return (
                 sumaPrecios <=
                 (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
@@ -104,29 +110,33 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
             <div className="relative w-full h-fit flex items-center justify-center">
               <input
                 type="range"
+                key={articuloSeleccionado?.[0]?.token}
                 min={
                   articulos
                     ?.filter((art) =>
                       art?.tokenes
                         ?.map((i) => i.toLowerCase())
-                        ?.includes(articuloSeleccionado?.[0]?.token)
+                        ?.includes(
+                          articuloSeleccionado?.[0]?.token.toLowerCase()
+                        )
                     )
                     ?.map((art) => Number(art.precio) / 10 ** 18)
-                    ?.sort((a, b) => a - b)
                     ?.slice(0, 5)
-                    ?.reduce((acc, val) => acc + val, 0) || 0!
+                    ?.reduce((acc, val) => acc + val, 0) || 0
                 }
                 max={
                   articulos
                     ?.filter((art) =>
                       art?.tokenes
                         ?.map((i) => i.toLowerCase())
-                        ?.includes(articuloSeleccionado?.[0]?.token)
+                        ?.includes(
+                          articuloSeleccionado?.[0]?.token.toLowerCase()
+                        )
                     )
                     ?.map((art) => Number(art.precio) / 10 ** 18)
-                    ?.sort((a, b) => b - a)
-                    ?.slice(0, 5)
-                    ?.reduce((acc, val) => acc + val, 0) || 0!
+                    ?.sort((a, b) => a - b)
+                    ?.slice(-5)
+                    ?.reduce((acc, val) => acc + val, 0) || 0
                 }
                 onChange={(e) =>
                   setArticuloSeleccionado((prev) => {
@@ -170,17 +180,17 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                       token: moneda[2],
                       elemento: {
                         maximo: Number(
-                          (
-                            Number(
-                              articulos
-                                ?.filter((art) =>
-                                  art?.tokenes
-                                    ?.map((i) => i.toLowerCase())
-                                    ?.includes(articuloSeleccionado?.[0]?.token)
-                                )
-                                .map((art) => Number(art.precio) / 10 ** 18)
-                                .reduce((acc, val) => acc + val, 0)
-                            ) / 2
+                          Number(
+                            articulos
+                              ?.filter((art) =>
+                                art?.tokenes
+                                  ?.map((i) => i.toLowerCase())
+                                  ?.includes(moneda[2].toLowerCase())
+                              )
+                              ?.map((art) => Number(art.precio) / 10 ** 18)
+                              ?.sort((a, b) => a - b)
+                              ?.slice(-5)
+                              ?.reduce((acc, val) => acc + val, 0)
                           ).toFixed(0)
                         ),
                       },

@@ -88,7 +88,7 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
           }
         )}
       </div>
-      {color && tamano && (
+      {setColor && setTamano && (
         <div className="relative w-fit h-fit flex items-center justify-center flex-col gap-3">
           <div className="relative w-fit h-fit flex flex-row gap-1.5 items-start justify-center">
             {["xs", "s", "m", "l", "xl", "2xl"].map(
@@ -97,7 +97,7 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
                   <div
                     key={indice}
                     className={`relative w-7 h-7 flex items-center justify-center border border-white text-xs cursor-pointer active:scale-95 rounded-full ${
-                      tamano == t && "opacity-80"
+                      tamano == t && "opacity-40"
                     }`}
                     onClick={() => setTamano!(t)}
                   >
@@ -113,7 +113,7 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
                 <div
                   key={indice}
                   className={`relative w-7 h-7 flex items-center justify-center cursor-pointer border border-white active:scale-95 rounded-full ${
-                    c == color && "opacity-80"
+                    c == color && "opacity-40"
                   }`}
                   style={{
                     backgroundColor: c,

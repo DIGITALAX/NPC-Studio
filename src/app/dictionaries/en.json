@@ -62,14 +62,22 @@
     "estado": "State",
     "pais": "Country",
     "comprado": "Items Purchased! Check back to Orders shortly.",
-    "random": "Choose A Random Mix",
+    "random": "Get A Random Mix (Max 5 pieces)",
     "todoElCatalogo": "Collect the Entire Catalog",
     "muestra": "page preview: front + Back",
-    "npcStudio": "NPC Estudio",
+    "npcStudio": "NPC Studio",
     "onChain": "On Chain Medio",
     "carrito": "What's in your cart?",
     "precioMax": "Set Max Price",
-    "carritoCompra": "Buy Cart"
+    "carritoCompra": "Buy Cart",
+    "pedido": "Order",
+    "tx": "Transaction",
+    "descifrar": "Decrypt",
+    "descifrado": "Decrypted",
+    "cumplimiento": "Don't forget all your Fulfillment Details!",
+    "lens": "Don't have a Lens profile?",
+    "lens2": "Mint",
+    "nada": "There's nothing in your cart yet, add items?"
   },
   "Nav": {
     "lan": "Choose Language"

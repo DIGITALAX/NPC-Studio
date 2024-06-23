@@ -40,7 +40,24 @@ function NotificacionCambio({
           {dict.Home.galeriaEliminada}
         </div>
       );
-      
+    case Notificacion.Cumplimiento:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-lg text-center">
+          {dict.Home.cumplimiento}
+        </div>
+      );
+    case Notificacion.Perfil:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-lg text-center flex-col gap-4">
+          <div className="relative w-fit h-fit flex items-center justify-center">
+            {dict.Home.lens}
+          </div>
+          <div className="relative px-1.5 py-1 w-32 h-8 flex items-center border border-white justify-center bg-mar cursor-pointer active:scale-95 text-xs" onClick={() => window.open('https://www.lens.xyz/mint')}>
+            {dict.Home.lens2}
+          </div>
+        </div>
+      );
+
     default:
       return (
         <>
