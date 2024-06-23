@@ -77,7 +77,8 @@
     "cumplimiento": "¡No Olvide Todos Sus Detalles de Cumplimiento!",
     "lens": "¿No tiene un perfil de Lens?",
     "lens2": "Mintéelo",
-    "nada": "Aún, no hay nada en tu carrito, ¿Quiere añadir algo?"
+    "nada": "Aún, no hay nada en tu carrito, ¿Quiere añadir algo?",
+    "noMix": "No Hay Mezcla Para Este Token."
   },
   "Nav": {
     "lan": "Elija Idioma"

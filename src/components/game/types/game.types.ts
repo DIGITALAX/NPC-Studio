@@ -370,6 +370,7 @@ export type Dictionary = {
     nada: string;
     tx: string;
     comprado: string;
+    noMix: string;
     aprobar: string;
     cumplimiento: string;
     descifrado: string;

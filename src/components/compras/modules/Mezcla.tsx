@@ -25,7 +25,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 ?.map((i) => i.toLowerCase())
                 ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
             )
-            ?.slice(0, 5) 
+            ?.slice(0, 5)
             ?.filter(() => {
               const preciosSeleccionados = articulos
                 ?.filter((art) =>
@@ -35,7 +35,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 )
                 ?.map((art) => Number(art.precio) / 10 ** 18)
                 ?.sort((a, b) => a - b)
-                ?.slice(0, 5); 
+                ?.slice(0, 5);
 
               const sumaPrecios = preciosSeleccionados?.reduce(
                 (acc, val) => acc + val,
@@ -45,57 +45,119 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 sumaPrecios <=
                 (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
               );
-            })
-            ?.map((art, indice: number) => {
-              const pfp = createProfilePicture(art?.profile?.metadata?.picture);
-              return (
-                <div
-                  key={indice}
-                  className="relative w-fit h-fit flex flex-col gap-2 items-center justify-start flex-col gap-2"
-                >
+            })?.length < 3 ? (
+            <div className="relative w-full h-fit flex gap-2 items-center justify-center text-center gap-2">
+              {dict.Home.noMix}
+            </div>
+          ) : (
+            articulos
+              ?.filter((a) =>
+                a?.tokenes
+                  ?.map((i) => i.toLowerCase())
+                  ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
+              )
+              ?.slice(0, 5)
+              ?.filter(() => {
+                const preciosSeleccionados = articulos
+                  ?.filter((art) =>
+                    art?.tokenes
+                      ?.map((i) => i.toLowerCase())
+                      ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
+                  )
+                  ?.map((art) => Number(art.precio) / 10 ** 18)
+                  ?.sort((a, b) => a - b)
+                  ?.slice(0, 5);
+
+                const sumaPrecios = preciosSeleccionados?.reduce(
+                  (acc, val) => acc + val,
+                  0
+                );
+                return (
+                  sumaPrecios <=
+                  (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+                );
+              })
+              ?.map((art, indice: number) => {
+                const pfp = createProfilePicture(
+                  art?.profile?.metadata?.picture
+                );
+                return (
                   <div
-                    onClick={() =>
-                      setVerImagen({
-                        abierto: true,
-                        tipo: "png",
-                        url: `${INFURA_GATEWAY}/ipfs/${
-                          art?.imagen?.split("ipfs://")?.[1]
-                        }`,
-                      })
-                    }
-                    className="relative w-60 h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-md"
+                    key={indice}
+                    className="relative w-fit h-fit flex flex-col gap-2 items-center justify-start flex-col gap-2"
                   >
-                    <Image
-                      layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${
-                        art?.imagen?.split("ipfs://")?.[1]
-                      }`}
-                      draggable={false}
-                      objectFit="cover"
-                      className="rounded-md"
-                    />
-                  </div>
-                  <div className="absolute bottom-2 left-2 w-fit h-fit flex items-center justify-center">
-                    <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
-                      {pfp && (
-                        <Image
-                          layout="fill"
-                          objectFit="cover"
-                          src={pfp}
-                          draggable={false}
-                          className="rounded-full"
-                        />
-                      )}
+                    <div
+                      onClick={() =>
+                        setVerImagen({
+                          abierto: true,
+                          tipo: "png",
+                          url: `${INFURA_GATEWAY}/ipfs/${
+                            art?.imagen?.split("ipfs://")?.[1]
+                          }`,
+                        })
+                      }
+                      className="relative w-60 h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-md"
+                    >
+                      <Image
+                        layout="fill"
+                        src={`${INFURA_GATEWAY}/ipfs/${
+                          art?.imagen?.split("ipfs://")?.[1]
+                        }`}
+                        draggable={false}
+                        objectFit="cover"
+                        className="rounded-md"
+                      />
+                    </div>
+                    <div className="absolute bottom-2 left-2 w-fit h-fit flex items-center justify-center">
+                      <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
+                        {pfp && (
+                          <Image
+                            layout="fill"
+                            objectFit="cover"
+                            src={pfp}
+                            draggable={false}
+                            className="rounded-full"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+          )}
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-center justify-center text-lg break-words">
-        {articulos?.length > 0 ? dict.Home.random : dict.Home.agotado}
-      </div>
+      {articulos
+        ?.filter((a) =>
+          a?.tokenes
+            ?.map((i) => i.toLowerCase())
+            ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
+        )
+        ?.slice(0, 5)
+        ?.filter(() => {
+          const preciosSeleccionados = articulos
+            ?.filter((art) =>
+              art?.tokenes
+                ?.map((i) => i.toLowerCase())
+                ?.includes(articuloSeleccionado?.[0]?.token.toLowerCase())
+            )
+            ?.map((art) => Number(art.precio) / 10 ** 18)
+            ?.sort((a, b) => a - b)
+            ?.slice(0, 5);
+
+          const sumaPrecios = preciosSeleccionados?.reduce(
+            (acc, val) => acc + val,
+            0
+          );
+          return (
+            sumaPrecios <=
+            (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
+          );
+        })?.length > 2 && (
+        <div className="relative w-full h-fit flex items-center justify-center text-lg break-words">
+          {dict.Home.random}
+        </div>
+      )}
       <div className="relative w-full h-fit flex flex-row items-center justify-between">
         <div className="relative items-start justify-center flex flex-col gap-2 w-48 h-fit">
           <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-start text-base">

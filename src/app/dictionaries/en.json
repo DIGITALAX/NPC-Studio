@@ -77,7 +77,8 @@
     "cumplimiento": "Don't forget all your Fulfillment Details!",
     "lens": "Don't have a Lens profile?",
     "lens2": "Mint",
-    "nada": "There's nothing in your cart yet, add items?"
+    "nada": "There's nothing in your cart yet, add items?",
+    "noMix": "No Mix for This Token."
   },
   "Nav": {
     "lan": "Choose Language"
