@@ -33,7 +33,7 @@ function Pedidos({
               return (
                 <div
                   className={`relative w-full border border-ligero flex flex-col cursor-pointer text-white text-sm font-con bg-gradient-to-r from-oscuro to-offNegro ${
-                    pedidoAbierto?.[indice] ? "h-fit" : "h-28"
+                    pedidoAbierto?.[indice] ? "h-fit" : "h-fit sm:h-28"
                   }`}
                   key={indice}
                   onClick={() =>
@@ -44,7 +44,9 @@ function Pedidos({
                     })
                   }
                 >
-                  <div className="relative w-full flex flex-row justify-between items-center gap-4 h-28 p-2">
+                  <div
+                    className={`relative w-full flex flex-col sm:flex-row justify-start sm:justify-between item-start sm:items-center gap-4 h-fit sm:h-28 p-2 `}
+                  >
                     <div className="relative justify-start items-center w-fit h-full flex flex-row gap-5">
                       <div className="relative w-fit h-full flex items-start justify-between flex-col gap-3">
                         <div className="relative w-fit h-fit flex items-center justify-start break-words whitespace-nowrap">
@@ -64,16 +66,16 @@ function Pedidos({
                         USD {Number(pedido.total) / 10 ** 18}
                       </div>
                     </div>
-                    <div className="relative w-fit h-full flex items-center justify-between text-right flex-col gap-3">
-                      <div className="relative w-full h-fit flex items-end justify-end">
+                    <div className="relative w-fit h-full flex items-start sm:items-center justify-start sm:justify-between text-left sm:text-right flex-col gap-3">
+                      <div className="relative w-full h-fit flex sm:items-end sm:justify-end break-all items-start justify-start">
                         {pedido.blockTimestamp}
                       </div>
-                      <div className="relative w-fit h-fit flex items-end justify-end flex-col gap-1">
-                        <div className="relative w-fit h-fit flex items-center justify-end">
+                      <div className="relative w-fit h-fit flex sm:items-end sm:justify-end flex-col gap-1 items-start justify-start">
+                        <div className="relative w-fit h-fit flex sm:items-center sm:justify-end break-all items-start justify-start">
                           {dict.Home.tx}
                         </div>
                         <div
-                          className="relative w-fit h-fit flex items-center justify-end cursor-pointer text-xs text-ligero"
+                          className="relative w-fit h-fit flex sm:items-center sm:justify-end break-all cursor-pointer text-xs text-ligero items-start justify-start"
                           onClick={() =>
                             window.open(
                               `https://polygonscan.com/tx/${pedido.transactionHash}`
@@ -86,10 +88,10 @@ function Pedidos({
                     </div>
                   </div>
                   {pedidoAbierto?.[indice] && (
-                    <div className="relative w-full flex flex-col justify-between items-center gap-4 h-fit p-2">
+                    <div className="relative w-full flex flex-col justify-between items-center gap-10 sm:gap-4 h-fit p-2">
                       <div className="relative h-px w-full bg-white flex"></div>
-                      <div className="relative w-full h-fit flex items-start justify-between gap-4">
-                        <div className="relative w-full h-fit flex items-center flex-row gap-3 justify-start">
+                      <div className="relative w-full h-fit flex items-start justify-between gap-4 flex-wrap">
+                        <div className="relative w-full h-fit flex items-center flex-row gap-3 justify-start flex-wrap">
                           {[
                             {
                               titulo: dict.Home.nombre,
@@ -140,10 +142,10 @@ function Pedidos({
                                   className="relative w-fit h-fit flex items-start flex-col justify-center gap-1 text-left font-vcr text-xs"
                                   key={indice}
                                 >
-                                  <div className="relative w-fit h-fit flex items-center justify-start text-white">
+                                  <div className="relative w-fit h-fit flex items-center justify-start text-white break-all">
                                     {item.titulo}
                                   </div>
-                                  <div className="relative w-fit h-fit flex items-center justify-start text-ligero">
+                                  <div className="relative w-fit h-fit flex items-center justify-start text-ligero break-all">
                                     {item.valor}
                                   </div>
                                 </div>
@@ -181,7 +183,7 @@ function Pedidos({
                         </div>
                       </div>
                       <div className="relative w-full h-full flex items-start justify-start">
-                        <div className="relative w-full h-fit flex items-start justify-start gap-4 flex-col">
+                        <div className="relative w-full h-fit flex items-start justify-start gap-4 flex-col flex-wrap">
                           {pedido.subOrders?.map(
                             (
                               subOrder: {
@@ -198,7 +200,7 @@ function Pedidos({
                               return (
                                 <div
                                   key={indice}
-                                  className="relative w-full flex items-center justify-between flex-row h-fit gap-4"
+                                  className="relative w-full flex items-center justify-between flex-row h-fit gap-4 flex-wrap sm:flex-nowrap"
                                 >
                                   <div className="flex relative item-center justify-start whitespace-nowrap break-words">
                                     {subOrder.amount} x {subOrder.type}

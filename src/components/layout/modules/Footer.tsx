@@ -14,7 +14,7 @@ function Footer() {
   const path = usePathname();
   return (
     <div className="relative w-full h-fit py-4 flex items-center justify-between gap-6 flex-col sm:flex-row mb-0 px-4">
-      <div className="relative w-fit h-fit flex items-center justify-center gap-4 flex-row">
+      <div className="relative w-fit h-fit flex items-center justify-center gap-4 flex-col sm:flex-row">
         <div
           className="relative w-fit h-fit flex items-center justify-center ml-0 font-rain text-white text-4xl cursor-pointer active:scale-95"
           onClick={() => window.open("https://www.digitalax.xyz/")}
@@ -59,7 +59,6 @@ function Footer() {
           </div>
         </div>
       </div>
-
       <div className="relative w-fit h-fit flex items-center justify-center mr-0">
         <div className="relative w-fit h-fit mr-0 flex-row gap-3 flex items-center justify-center md:pr-2 md:order-3 order-1">
           {[

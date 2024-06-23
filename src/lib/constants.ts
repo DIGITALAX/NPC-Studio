@@ -22,16 +22,16 @@ export const SCENE_LIST: {
     cover: "QmcWnwXob7yRrZg4gUJyqo3Vtsabk8jWL5eL7NEn5HhDe7",
     sprites: [
       {
-        key: "muchacho-estudio",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Liam",
+        cover: "Qmdz9Viu3pHyk3arQn7HxH8kvHaQVCeHV7vvzrg7AeSzHL",
       },
       {
-        key: "chica-estudio",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Isabella",
+        cover: "QmYVwEAfBm2BiXtLhJWATASUL1wHEyYBL6PnQS89Ng3LQT",
       },
       {
-        key: "dama-estudio",
-        cover: "QmZW3DWmPRT65ctLHzpsBkFR8wUkSfD7z6twDtyhHCusg7",
+        key: "Aidan",
+        cover: "QmbxGzm42DUZ8ZWkMSKwAxx2Cn9RWWNkau8ptsnZPSkGwb",
       },
     ],
   },
@@ -41,12 +41,16 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-atico",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Harper",
+        cover: "QmUw577TnSrF8E7YpMLgwxBVTwMXKSBuoe7wATJEQ962Nj",
       },
       {
-        key: "chica-atico",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Scarlett",
+        cover: "QmbbAkD2Rump8ZmrH8jtJQqq9ctLpaheyv4C9pmF9fqP9W",
+      },
+      {
+        key: "Suri",
+        cover: "Qmd6JDDg7C6WVcjqL6MmmfEbjNW4ZjLGeGJsvzRYPy8SBQ",
       },
     ],
   },
@@ -56,13 +60,17 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-lote",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Henry",
+        cover: "QmfQ9LbgRkS9iZxbESChnnWkMf38YkpJBLoBsb1CY1pjwx",
       },
       {
-        key: "chica-lote",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Kai",
+        cover: "QmP8HcbyqnK6uPvwf7uhtUvhLa8qoGhhq9eoB6BYEUJsTK",
       },
+      {
+        key: "Yasmine",
+        cover: "QmNpaCRmYnGEkVE6WnTiLWPwd4QgFtZewhbvkJyZZcJoDc"
+      }
     ],
   },
   {
@@ -71,12 +79,16 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-boutique",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Freya",
+        cover: "QmPAdDHaWvUQTgN6pBRDMVTqduxkAxkjieFsYotY48B4tP",
       },
       {
-        key: "chica-boutique",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Amira",
+        cover: "QmRcgYCHbTUj9e7dpbhnuPHbGt6pZMHQM9QNWybM9FJ4Mp",
+      },
+      {
+        key: "Sophia",
+        cover: "QmdiDhhh43hgQTtM2st2WEiLeA5FfEcK7rmiCaWTj5STN6",
       },
     ],
   },
@@ -86,12 +98,16 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-micro",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Hugo",
+        cover: "QmagLVfiWwZTK6K3xUUioF7WF6FJVTA6wAeM4buJMvgVf9",
       },
       {
-        key: "chica-micro",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Ingrid",
+        cover: "QmUKj6vj42hcZTKbMwgREvGNjv3wcLYt7YC2xJzMFkvrcH",
+      },
+      {
+        key: "Tariq",
+        cover: "QmVfB7tN8NGuywnaZjnYAhj3MNRXU9A2XYyAycBEAo6X4H",
       },
     ],
   },
@@ -101,12 +117,16 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-agencia",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Javi",
+        cover: "QmVBfTtaBVNUfWwDUR96tx53zZA82uGxq2i6N42upj5pEe",
       },
       {
-        key: "chica-agencia",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Anaya",
+        cover: "QmcTk99fd9G4GnPjZLS3UGgMCiNN3ehBk5PxYdH8brXCu4",
+      },
+      {
+        key: "Kostas",
+        cover: "QmNoxKkxsMExxnhtZ5upEqJ7ybqZpw888Xgp1y5dMmeJNg",
       },
     ],
   },
@@ -116,12 +136,12 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-pub",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Dimitra",
+        cover: "QmVeHZbx4xKpziHd15J6VjKschSfodm2bwzTV7HAac8Q7D",
       },
       {
-        key: "chica-pub",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Mila",
+        cover: "QmZa1J3Jxb2rSkNzB6wA2wDHYWqKb9grKA5jLib2dMzYiL",
       },
     ],
   },
@@ -131,12 +151,12 @@ export const SCENE_LIST: {
 
     sprites: [
       {
-        key: "muchacho-contenido",
-        cover: "QmXME5CUW3PdBVqsGx9JJznB1dWYUBbem1cmQgtEBX2vp7",
+        key: "Rafael",
+        cover: "Qmc5KHgbKNAr3TZmFSjsEsqB1xJmq1u7WisZYA14ytPZXz",
       },
       {
-        key: "chica-contenido",
-        cover: "QmczmZzdHG7fmYtCUDS58faHs1d1pzENEa3x8WxscyNhRH",
+        key: "Mia",
+        cover: "QmZXAwJJ881tkEXo44dBSkvyF7EFVMQPnPGGGrMdTKRU7p",
       },
     ],
   },
