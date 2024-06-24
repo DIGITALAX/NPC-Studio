@@ -71,9 +71,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     setColeccionActual,
     coleccionActual,
     manejarArchivo,
-    manejarAhorar,
+    manejarAhorrar,
     setDropDown,
     dropDown,
+    ahorrarCargando,
     mostrarGalerias,
     setMostrarGalerias,
     cargandoGalerias,
@@ -155,7 +156,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             setColeccionActual={setColeccionActual}
             coleccionActual={coleccionActual}
             manejarArchivo={manejarArchivo}
-            manejarAhorar={manejarAhorar}
+            manejarAhorrar={manejarAhorrar}
+            ahorrarCargando={ahorrarCargando}
             setColecciones={setColecciones}
             setNpc={setNpc}
             cargandoBorrar={cargandoBorrar}

@@ -59,7 +59,7 @@ function PantallaComprar({
         }}
       >
         <div
-          className="relative w-[100%] sm:w-[64rem] xl:w-[64rem] h-fit max-h-[40rem] min-h-[40rem] xl:min-h-[40rem] flex items-center justify-center"
+          className="relative relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center"
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();

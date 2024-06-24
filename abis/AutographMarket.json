@@ -166,6 +166,28 @@
   },
   {
     "type": "function",
+    "name": "setAutographNFT",
+    "inputs": [
+      { "name": "_autographNFT", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPrintSplitsData",
+    "inputs": [
+      {
+        "name": "_printSplitsData",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "symbol",
     "inputs": [],
     "outputs": [{ "name": "", "type": "string", "internalType": "string" }],

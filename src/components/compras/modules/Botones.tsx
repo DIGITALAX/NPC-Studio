@@ -29,7 +29,7 @@ const Botones: FunctionComponent<BotonesProps> = ({
             {minteado} / {cantidad}
           </div>
           <div className="relative w-fit h-fit flex flex-col items-start justify-start">
-            <div className="relative w-fit h-fit flex items-start justify-center text-lg">
+            <div className="relative w-fit h-fit flex items-start justify-center text-xs sm:text-lg">
               {`${Number(
                 (
                   precio /
@@ -139,7 +139,7 @@ const Botones: FunctionComponent<BotonesProps> = ({
       </div>
       {comprarPublicacion && (
         <div className="relative w-full h-full flex items-end justify-end">
-          <div className="relative w-full h-fit flex items-end justify-end flex-row gap-3 font-bit text-white text-xs bottom-0">
+          <div className="relative w-full h-fit flex items-end justify-end flex-row gap-3 font-bit text-white text-xxs sm:text-xs bottom-0">
             <div
               className={`relative px-1.5 py-1 w-32 h-8 flex items-center border border-white justify-center bg-mar ${
                 !agotado &&

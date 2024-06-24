@@ -25,7 +25,7 @@ function PantallaCambio({
   setColeccionActual,
   coleccionActual,
   manejarArchivo,
-  manejarAhorar,
+  manejarAhorrar,
   setColecciones,
   setDropDown,
   dropDown,
@@ -35,6 +35,7 @@ function PantallaCambio({
   todasLasGalerias,
   borrarColeccion,
   borrarGaleria,
+  ahorrarCargando,
   manejarMostrarArticulo,
   setManejarMostrarArticulo,
   publicClient,
@@ -86,9 +87,10 @@ function PantallaCambio({
           setColeccionActual={setColeccionActual}
           coleccionActual={coleccionActual}
           manejarArchivo={manejarArchivo}
-          manejarAhorar={manejarAhorar}
+          manejarAhorrar={manejarAhorrar}
           cargandoBorrar={cargandoBorrar}
           setColecciones={setColecciones}
+          ahorrarCargando={ahorrarCargando}
         />
       );
 

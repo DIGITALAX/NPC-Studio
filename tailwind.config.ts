@@ -29,7 +29,7 @@ const config: Config = {
         rojo: "#EE3075",
         rosa: "#F5E0E2",
         morado: "#7E68C6",
-        brillo: "#FFFF0A"
+        brillo: "#FFFF0A",
       },
       fontSize: {
         xxs: "0.6rem",
@@ -51,6 +51,9 @@ const config: Config = {
       zIndex: {
         100: "100",
         200: "200",
+      },
+      screens: {
+        tab: "800px",
       },
     },
   },

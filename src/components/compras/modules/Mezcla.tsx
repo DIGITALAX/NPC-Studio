@@ -14,6 +14,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
   setArticuloSeleccionado,
   carrito,
 }): JSX.Element => {
+
   const articulosTokenes = articulos?.filter((art) => {
     const tokenesArticulo = art?.tokenes?.map((i) => i.toLowerCase());
     const tokenSeleccionado = articuloSeleccionado?.[0]?.token.toLowerCase();
@@ -68,7 +69,6 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
       tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0)
     );
   });
-
 
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
@@ -132,7 +132,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                           }`,
                         })
                       }
-                      className="relative w-60 h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-md"
+                      className="relative h-20 w-20 sm:w-36 sm:h-36 tab:w-60 tab:h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-md"
                     >
                       <Image
                         layout="fill"
@@ -178,19 +178,21 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
           (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
         );
       })?.length > 2 && (
-        <div className="relative w-full h-fit flex items-center justify-center text-lg break-words">
+        <div className="relative w-full h-fit flex items-center justify-center text-sm sm:text-lg break-words sm:text-left text-center">
           {dict.Home.random}
         </div>
       )}
-      <div className="relative w-full h-fit flex flex-row items-center justify-between">
-        <div className="relative items-start justify-center flex flex-col gap-2 w-48 h-fit">
-          <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-start text-base">
-            <div className="relative w-fit h-fit flex items-start justify-start">
+      <div className="relative w-full h-fit flex flex-row items-center justify-center sm:justify-between flex-wrap gap-6">
+        <div className="relative items-center sm:items-start justify-center flex flex-col gap-2 w-48 h-fit">
+          <div className="relative w-fit h-fit flex flex-row gap-2 items-center sm:items-start justify-center sm:justify-start text-xs sm:text-base">
+            <div className="relative w-fit h-fit flex items-center sm:items-start justify-center sm:justify-start">
               {dict.Home.precioMax}
             </div>
-            <div className="relative w-fit h-fit flex items-start justify-start">
-              {(articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo}
-            </div>
+            {articulos?.length > 2 && (
+              <div className="relative w-fit h-fit flex items-center sm:items-start justify-center sm:justify-start">
+                {(articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo}
+              </div>
+            )}
           </div>
           {articulos?.length > 2 && (
             <div className="relative w-full h-fit flex items-center justify-center">
@@ -233,7 +235,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
           )}
         </div>
 
-        <div className="relative w-fit h-fit justify-start items-start flex flex-row gap-1">
+        <div className="relative w-fit h-fit items-center sm:justify-start justify-center sm:items-start flex flex-row gap-1">
           {ACCEPTED_TOKENS_AMOY?.map((moneda: string[], indiceTwo: number) => {
             return (
               <div
@@ -281,7 +283,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
           })}
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-center justify-center">
+      <div className="relative w-full h-fit flex items-center justify-center lg:pt-0 pt-6">
         <div className="relative w-fit h-full flex items-center justify-center">
           <div
             className={`relative bg-black rounded-full h-fit w-fit  border border-white flex items-center justify-center  ${

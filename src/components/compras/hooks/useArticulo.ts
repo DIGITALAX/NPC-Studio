@@ -1,6 +1,6 @@
 import { AutographType, Coleccion } from "@/components/game/types/game.types";
 import { useEffect, useState } from "react";
-import { Catalogo, Compra, Mezcla } from "../types/compras.types";
+import { Catalogo, Compra } from "../types/compras.types";
 import { getArticulo } from "../../../../graphql/autograph/queries/getArticulo";
 import {
   ACCEPTED_TOKENS_AMOY,
@@ -98,6 +98,7 @@ const useArticulo = (
             };
           })
         );
+
       } else {
         const datos = await getArticulo(
           manejarMostrarArticulo?.disenador!,

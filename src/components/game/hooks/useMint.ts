@@ -6,12 +6,13 @@ import {
   useState,
 } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { AutographType, Coleccion, Galeria } from "../types/game.types";
+import { Coleccion, Galeria } from "../types/game.types";
 import { polygonAmoy } from "viem/chains";
 import {
   AUTOGRAPH_COLLECTION,
   AUTOGRAPH_OPEN_ACTION,
   INFURA_GATEWAY,
+  SCENE_LIST,
   autographTypeToNumber,
   numberToAutograph,
 } from "@/lib/constants";
@@ -34,6 +35,7 @@ const useMint = (
   setErrorInteraccion: (e: SetStateAction<boolean>) => void
 ) => {
   const coder = new ethers.AbiCoder();
+  const [ahorrarCargando, setAhorrarCargando] = useState<boolean>(false);
   const [mintCargando, setMintCargando] = useState<boolean>(false);
   const [cargandoGalerias, setCargandoGalerias] = useState<boolean>(false);
   const [cargandoBorrar, setCargandoBorrar] = useState<boolean>(false);
@@ -200,6 +202,22 @@ const useMint = (
           chain: polygonAmoy,
           args: [
             {
+              languages: colecciones
+                .filter((col) => !col.galeriaId)
+                .map(
+                  (col) => col.npcIdiomas?.split(",").filter(Boolean) || [""]
+                ),
+              npcs: colecciones
+                .filter((col) => !col.galeriaId)
+                .map((col) => col.npcs?.split(",").filter(Boolean) || [""])
+                ?.map((npc) =>
+                  npc.map(
+                    (n) =>
+                      SCENE_LIST?.flatMap((s) => s.sprites).find(
+                        (s) => s.key == n
+                      )?.address
+                  )
+                ),
               uris,
               amounts: colecciones
                 .filter((col) => !col.galeriaId)
@@ -231,6 +249,19 @@ const useMint = (
           chain: polygonAmoy,
           args: [
             {
+              languages: colecciones.map(
+                (col) => col.npcIdiomas?.split(",").filter(Boolean) || [""]
+              ),
+              npcs: colecciones
+                .map((col) => col.npcs?.split(",").filter(Boolean) || [""])
+                ?.map((npc) =>
+                  npc.map(
+                    (n) =>
+                      SCENE_LIST?.flatMap((s) => s.sprites).find(
+                        (s) => s.key == n
+                      )?.address
+                  )
+                ),
               uris,
               amounts: colecciones.map((col) => col.cantidad),
               prices: colecciones.map((col) => col.precio * 10 ** 18),
@@ -275,7 +306,14 @@ const useMint = (
         npcsTexto: "",
         idiomasTexto: "",
       });
-      localStorage.removeItem("coleccionesGaleria");
+      const numChunks = localStorage.getItem("coleccionesGaleria_chunks");
+      if (numChunks) {
+        for (let i = 0; i < Number(numChunks); i++) {
+          localStorage.removeItem(`coleccionesGaleria_${i}`);
+        }
+        localStorage.removeItem("oleccionesGaleria_chunks");
+      }
+
       setColecciones([]);
 
       setMint(4);
@@ -388,13 +426,54 @@ const useMint = (
     }
   };
 
-  const manejarAhorar = () => {
-    localStorage.setItem("coleccionesGaleria", JSON.stringify(colecciones));
+  const manejarAhorrar = async () => {
+    setAhorrarCargando(true);
+
+    const num = localStorage.getItem("coleccionesGaleria_chunks");
+    if (num) {
+      for (let i = 0; i < Number(num); i++) {
+        localStorage.removeItem(`coleccionesGaleria_${i}`);
+      }
+      localStorage.removeItem("oleccionesGaleria_chunks");
+    }
+
+    let newColecciones: Coleccion[] = [];
+
+    await Promise.all(
+      colecciones?.map(async (col) => {
+        let imagen = col.imagen;
+
+        if (!imagen.includes("ipfs://")) {
+          const resI = await fetch(`/api/ipfs`, {
+            method: "POST",
+            body: convertirArchivo(col.imagen, "image/png"),
+          });
+          const res = await resI.json();
+          imagen = "ipfs://" + res?.cid;
+        }
+
+        newColecciones.push({
+          ...col,
+          imagen,
+        });
+      })
+    );
+
+    const dataString = JSON.stringify(newColecciones);
+    const chunkSize = 1000;
+    const numChunks = Math.ceil(dataString.length / chunkSize);
+
+    for (let i = 0; i < numChunks; i++) {
+      const chunk = dataString.slice(i * chunkSize, (i + 1) * chunkSize);
+      localStorage.setItem(`coleccionesGaleria_${i}`, chunk);
+    }
+    localStorage.setItem("coleccionesGaleria_chunks", String(numChunks));
+
+    setAhorrarCargando(false);
   };
 
   const hacerPublicacion = async (): Promise<void> => {
     setCargandoConexion(true);
-
 
     try {
       const contentURI = await subirContenido(
@@ -413,8 +492,6 @@ const useMint = (
         chain: polygonAmoy,
         transport: custom((window as any).ethereum),
       });
-
-      
 
       await publicarLens(
         contentURI!,
@@ -462,9 +539,41 @@ const useMint = (
 
   useEffect(() => {
     if (colecciones?.length < 1) {
-      const coleccionesGuardadas = localStorage.getItem("coleccionesGaleria");
-      if (coleccionesGuardadas) {
-        setColecciones(JSON.parse(coleccionesGuardadas));
+      const numChunks = localStorage.getItem("coleccionesGaleria_chunks");
+      if (numChunks) {
+        let dataString = "";
+        for (let i = 0; i < Number(numChunks); i++) {
+          const chunk = localStorage.getItem(`coleccionesGaleria_${i}`);
+          if (chunk) {
+            dataString += chunk;
+          }
+        }
+
+        if (dataString !== "") {
+          const coleccionesGuardadas = JSON.parse(dataString);
+          if (coleccionesGuardadas) {
+            setColecciones(coleccionesGuardadas);
+            setColeccionActual({
+              imagen: "",
+              cantidad: 1,
+              tokenes: [],
+              precio: 0,
+              id: coleccionesGuardadas.length,
+              tipo: "NFT" as any,
+              titulo: "",
+              descripcion: "",
+              etiquetas: "",
+              npcIdiomas: "",
+              npcInstrucciones: "",
+              npcs: "",
+              galeria: coleccionesGuardadas?.[0]?.galeria,
+              tokenesMinteados: [],
+              profileIds: [],
+              pubIds: [],
+              profile: lensConectado,
+            });
+          }
+        }
       }
     }
   }, []);
@@ -483,7 +592,7 @@ const useMint = (
     setColecciones,
     coleccionActual,
     setColeccionActual,
-    manejarAhorar,
+    manejarAhorrar,
     dropDown,
     setDropDown,
     mostrarGalerias,
@@ -493,6 +602,7 @@ const useMint = (
     borrarColeccion,
     borrarGaleria,
     cargandoBorrar,
+    ahorrarCargando,
     cargandoConexion,
     conectarPub,
     hacerPublicacion,

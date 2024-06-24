@@ -20,6 +20,16 @@
         "internalType": "struct AutographLibrary.CollectionInit",
         "components": [
           {
+            "name": "languages",
+            "type": "string[][]",
+            "internalType": "string[][]"
+          },
+          {
+            "name": "npcs",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
+          {
             "name": "acceptedTokens",
             "type": "address[][]",
             "internalType": "address[][]"
@@ -128,6 +138,16 @@
         "type": "tuple",
         "internalType": "struct AutographLibrary.CollectionInit",
         "components": [
+          {
+            "name": "languages",
+            "type": "string[][]",
+            "internalType": "string[][]"
+          },
+          {
+            "name": "npcs",
+            "type": "address[][]",
+            "internalType": "address[][]"
+          },
           {
             "name": "acceptedTokens",
             "type": "address[][]",

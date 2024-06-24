@@ -15,7 +15,7 @@ export const IDIOMAS: { cover: string; key: string }[] = [
 export const SCENE_LIST: {
   key: string;
   cover: string;
-  sprites: { key: string; cover: string }[];
+  sprites: { key: string; cover: string; address: string }[];
 }[] = [
   {
     key: "estudio abierto de trabajo",
@@ -24,14 +24,17 @@ export const SCENE_LIST: {
       {
         key: "Liam",
         cover: "Qmdz9Viu3pHyk3arQn7HxH8kvHaQVCeHV7vvzrg7AeSzHL",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Isabella",
         cover: "QmYVwEAfBm2BiXtLhJWATASUL1wHEyYBL6PnQS89Ng3LQT",
+        address: "0xF04AfA536d2ae262970250cA1020a19f83Bcc64E",
       },
       {
         key: "Aidan",
         cover: "QmbxGzm42DUZ8ZWkMSKwAxx2Cn9RWWNkau8ptsnZPSkGwb",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
       },
     ],
   },
@@ -43,14 +46,17 @@ export const SCENE_LIST: {
       {
         key: "Harper",
         cover: "QmUw577TnSrF8E7YpMLgwxBVTwMXKSBuoe7wATJEQ962Nj",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Scarlett",
         cover: "QmbbAkD2Rump8ZmrH8jtJQqq9ctLpaheyv4C9pmF9fqP9W",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Suri",
         cover: "Qmd6JDDg7C6WVcjqL6MmmfEbjNW4ZjLGeGJsvzRYPy8SBQ",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -62,15 +68,18 @@ export const SCENE_LIST: {
       {
         key: "Henry",
         cover: "QmfQ9LbgRkS9iZxbESChnnWkMf38YkpJBLoBsb1CY1pjwx",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Kai",
         cover: "QmP8HcbyqnK6uPvwf7uhtUvhLa8qoGhhq9eoB6BYEUJsTK",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Yasmine",
-        cover: "QmNpaCRmYnGEkVE6WnTiLWPwd4QgFtZewhbvkJyZZcJoDc"
-      }
+        cover: "QmNpaCRmYnGEkVE6WnTiLWPwd4QgFtZewhbvkJyZZcJoDc",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
+      },
     ],
   },
   {
@@ -81,14 +90,17 @@ export const SCENE_LIST: {
       {
         key: "Freya",
         cover: "QmPAdDHaWvUQTgN6pBRDMVTqduxkAxkjieFsYotY48B4tP",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Amira",
         cover: "QmRcgYCHbTUj9e7dpbhnuPHbGt6pZMHQM9QNWybM9FJ4Mp",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Sophia",
         cover: "QmdiDhhh43hgQTtM2st2WEiLeA5FfEcK7rmiCaWTj5STN6",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -100,14 +112,17 @@ export const SCENE_LIST: {
       {
         key: "Hugo",
         cover: "QmagLVfiWwZTK6K3xUUioF7WF6FJVTA6wAeM4buJMvgVf9",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Ingrid",
         cover: "QmUKj6vj42hcZTKbMwgREvGNjv3wcLYt7YC2xJzMFkvrcH",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Tariq",
         cover: "QmVfB7tN8NGuywnaZjnYAhj3MNRXU9A2XYyAycBEAo6X4H",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -119,14 +134,17 @@ export const SCENE_LIST: {
       {
         key: "Javi",
         cover: "QmVBfTtaBVNUfWwDUR96tx53zZA82uGxq2i6N42upj5pEe",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Anaya",
         cover: "QmcTk99fd9G4GnPjZLS3UGgMCiNN3ehBk5PxYdH8brXCu4",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Kostas",
         cover: "QmNoxKkxsMExxnhtZ5upEqJ7ybqZpw888Xgp1y5dMmeJNg",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -138,10 +156,12 @@ export const SCENE_LIST: {
       {
         key: "Dimitra",
         cover: "QmVeHZbx4xKpziHd15J6VjKschSfodm2bwzTV7HAac8Q7D",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Mila",
         cover: "QmZa1J3Jxb2rSkNzB6wA2wDHYWqKb9grKA5jLib2dMzYiL",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -153,10 +173,12 @@ export const SCENE_LIST: {
       {
         key: "Rafael",
         cover: "Qmc5KHgbKNAr3TZmFSjsEsqB1xJmq1u7WisZYA14ytPZXz",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
       {
         key: "Mia",
         cover: "QmZXAwJJ881tkEXo44dBSkvyF7EFVMQPnPGGGrMdTKRU7p",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
       },
     ],
   },
@@ -166,22 +188,22 @@ export const LENS_HUB_PROXY: `0x${string}` =
   "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
 
 export const AUTOGRAPH_DATA: `0x${string}` =
-  "0xe24e2baA8e53B06820952d82538b495C2A3fA247";
-  
+  "0x52f43D34e1abb0a6d1C97c0CF8b8f323872fC664";
+
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
   "0xe57438297515C4B7c62FE13957413085A7e1763c";
 
-  export const AUTOGRAPH_MARKET: `0x${string}` =
-  "0x660617C0c6cb1C3aF285c96F9B06985875fcf660";
+export const AUTOGRAPH_MARKET: `0x${string}` =
+  "0x93a0adaff142d1549ee9f5a9fe8edfa23cab86b4";
 
 export const AUTOGRAPH_COLLECTION: `0x${string}` =
-  "0x6bD72588E49D703Ef84A36E9082E13Bd16c284D8";
+  "0x76D9FAe8c8d906409894F61A621543b8F2BA8176";
 
 export const DIGITALAX_ADDRESS: `0x${string}` =
   "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";
 
-  export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
-  "0x2FE2758468ccf32a3e8819c79c62FaA155d9b190";
+export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
+  "0xBA8df4FDdE561A7A20ece887Df6d812b916f19E3";
 
 export const ACCEPTED_TOKENS: string[][] = [
   [
@@ -235,7 +257,7 @@ export const ACCEPTED_TOKENS_AMOY: string[][] = [
   [
     "QmQUrVWFVT2rSYT8KPr8iJ7C3aE8qPpDcjsLy143i3o2St",
     "BONSAI",
-    "0x29244d4cb549c35a9e634b262e62a49aa7a14b80",
+    "0xa77B3743Aa61844FbEA890Ba092d405caA473203",
   ],
 ];
 

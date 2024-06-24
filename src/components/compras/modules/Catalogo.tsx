@@ -85,7 +85,7 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
           </div>
         </div>
       </div>
-      <div className="relative w-full h-[12rem] flex flex-row gap-4 items-start justify-between">
+      <div className="relative w-full h-fit tab:flex-nowrap flex-wrap tab:h-[12rem] flex flex-row gap-4 items-start justify-between">
         <Cumplimiento
           setCumplimiento={setCumplimiento}
           cumplimiento={cumplimiento}

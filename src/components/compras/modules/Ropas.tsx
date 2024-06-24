@@ -56,7 +56,7 @@ const Ropas: FunctionComponent<RopasProps> = ({
           {dict.Home.carrito}
         </div>
       </div>
-      <div className="relative w-full h-[30rem] flex flex-row justify-between items-start gap-5">
+      <div className="relative w-full md:h-[30rem] flex flex-row justify-between items-start gap-5 h-fit md:flex-nowrap flex-wrap">
         <div className="relative w-full h-full flex flex-col justify-between items-start gap-6">
           <div className="relative w-full h-full items-start justify-start overflow-y-scroll flex min-w-fit min-h-[12rem]">
             <div className="relative w-full h-fit items-start justify-start flex grid grid-cols-3 gap-2">
@@ -138,7 +138,7 @@ const Ropas: FunctionComponent<RopasProps> = ({
               />
             </div>
           </div>
-          <div className="relative w-fit h-full flex items-start justify-between flex-col gap-3">
+          <div className="relative w-full md:w-fit h-full flex items-start justify-between flex-col gap-3">
             <div className="relative w-fit h-fit flex items-start justify-start text-lg">
               {articulos?.[articuloIndice]?.titulo}
             </div>

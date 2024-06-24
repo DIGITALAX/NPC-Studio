@@ -51,10 +51,10 @@ const Autografo: FunctionComponent<AutografoProps> = ({
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
         {dict.Home.npcStudio} {dict.Home.onChain}
       </div>
-      <div className="relative w-full h-full flex flex-row justify-between items-start gap-5">
-        <div className="relative w-full h-80 flex flex-row justify-between items-start gap-3">
+      <div className="relative w-full h-full flex flex-row justify-between items-start gap-10 md:gap-5 lg:flex-nowrap flex-wrap">
+        <div className="relative w-full h-fit md:h-80 flex flex-row justify-between items-start gap-3 md:flex-nowrap flex-wrap">
           <div
-            className="relative cursor-pointer active:scale-95 w-60 h-full flex items-center justify-center rounded-md border border-rosa"
+            className="relative cursor-pointer active:scale-95 w-full md:w-60 h-80 md:h-full flex items-center justify-center rounded-md border border-rosa"
             onClick={() =>
               setVerImagen({
                 abierto: true,
@@ -80,7 +80,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               {articulos?.[articuloIndice]?.titulo}
             </div>
             <div className="relative w-fit h-full grow flex items-start justify-start overflow-y-scroll">
-              <div className="relative w-fit h-fit flex items-start justify-start  text-left">
+              <div className="relative w-fit h-fit flex items-start justify-start md:text-base text-xs  text-left">
                 {articulos?.[articuloIndice]?.descripcion}
               </div>
             </div>
@@ -138,7 +138,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                 return (
                   <div
                     key={indice}
-                    className={`relative w-full h-20 rounded-md cursor-pointer border border-rosa ${
+                    className={`relative w-full h-28 md:h-20 rounded-md cursor-pointer border border-rosa ${
                       indice == articuloIndice && "opacity-70"
                     }`}
                     onClick={() => setArticuloIndice(indice)}

@@ -77,7 +77,8 @@ export type ProcessProps = {
   borrarGaleria: (galeriaId: number) => Promise<void>;
   isConnected: boolean;
   manejarMintear: () => Promise<void>;
-  manejarAhorar: () => void;
+  manejarAhorrar: () => Promise<void>;
+  ahorrarCargando: boolean;
   mintCargando: boolean;
   esArtista: boolean;
   cargandoBorrar: boolean;
@@ -481,7 +482,8 @@ export type PantallaCambioProps = {
   coleccionActual: Coleccion;
   mostrarGalerias: boolean;
   setMostrarGalerias: (e: SetStateAction<boolean>) => void;
-  manejarAhorar: () => void;
+  manejarAhorrar: () => Promise<void>;
+  ahorrarCargando: boolean;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
   setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;

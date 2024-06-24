@@ -26,7 +26,7 @@ function Process({
   setColeccionActual,
   coleccionActual,
   manejarArchivo,
-  manejarAhorar,
+  manejarAhorrar,
   setColecciones,
   dropDown,
   setDropDown,
@@ -38,6 +38,7 @@ function Process({
   borrarGaleria,
   cargandoBorrar,
   setConectarPub,
+  ahorrarCargando,
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -231,7 +232,7 @@ function Process({
                     <div className="relative w-fit h-fit flex items-start justify-start">
                       {dict.Home.gCreate}
                     </div>
-                    <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-end">
+                    <div className="relative w-fit h-fit flex flex-row gap-2 items-start justify-end flex-wrap">
                       <div
                         className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
                         onClick={() => setMostrarGalerias(true)}
@@ -271,10 +272,20 @@ function Process({
                         </div>
                       )}
                       <div
-                        className="relative w-fit h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
-                        onClick={() => !mintCargando && manejarAhorar()}
+                        className="relative w-36 h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                        onClick={() =>
+                          !mintCargando && !ahorrarCargando && manejarAhorrar()
+                        }
                       >
-                        {dict.Home.save}
+                        {ahorrarCargando ? (
+                          <div
+                            className={`relative w-fit h-fit flex items-center justify-center animate-spin`}
+                          >
+                            <AiOutlineLoading size={15} color="white" />
+                          </div>
+                        ) : (
+                          dict.Home.save
+                        )}
                       </div>
                       <div
                         className={`relative w-36 h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs`}
@@ -322,7 +333,7 @@ function Process({
                         {dict.Home.gCol}
                       </div>
                       <div className="relative w-full h-full min-h-[16rem] max-h-full flex items-start justify-start overflow-y-scroll py-3">
-                        <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-col">
+                        <div className="relative w-full h-fit flex items-center justify-start gap-2 flex-col pr-2">
                           {colecciones?.map((elemento: Coleccion, indice) => {
                             return (
                               <div
@@ -354,23 +365,26 @@ function Process({
                                       });
                                     }}
                                   />
-                                  <div
-                                    className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (!elemento?.galeriaId) {
-                                        setColecciones((prev) =>
-                                          prev.filter(
-                                            (el) =>
-                                              JSON.stringify(el) !==
-                                              JSON.stringify(elemento)
-                                          )
-                                        );
-                                      }
-                                    }}
-                                  >
-                                    <RxCrossCircled color="white" size={15} />
-                                  </div>
+                                  {colecciones?.map((it) => it.galeriaId)
+                                    ?.filter(Boolean).length < 1 && (
+                                    <div
+                                      className="absolute rounded-full w-fit h-fit border border-brillo bg-black cursor-pointer hover:opacity-80 -top-2 z-10 -right-1.5"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (!elemento?.galeriaId) {
+                                          setColecciones((prev) =>
+                                            prev.filter(
+                                              (el) =>
+                                                JSON.stringify(el) !==
+                                                JSON.stringify(elemento)
+                                            )
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      <RxCrossCircled color="white" size={15} />
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             );
@@ -839,6 +853,29 @@ function Process({
                                   borrarColeccion();
                                 }
                               } else {
+                                setColeccionActual({
+                                  imagen: "",
+                                  cantidad: 1,
+                                  tokenes: [],
+                                  precio: 0,
+                                  id: colecciones.length + 1,
+                                  tipo: "NFT" as any,
+                                  titulo: "",
+                                  descripcion: "",
+                                  etiquetas: "",
+                                  npcIdiomas: "",
+                                  npcInstrucciones: "",
+                                  npcs: "",
+                                  galeria:
+                                    coleccionActual?.galeria?.trim() !== ""
+                                      ? coleccionActual?.galeria
+                                      : colecciones?.[0]?.galeria || "",
+                                  tokenesMinteados: [],
+                                  profile: undefined,
+                                  profileIds: [],
+                                  pubIds: [],
+                                });
+
                                 setColecciones((prev) => {
                                   const exists = prev.some(
                                     (item) => item.id === coleccionActual.id
@@ -861,29 +898,6 @@ function Process({
                                   idiomasAbiertos: false,
                                   idiomasTexto: "",
                                   tiposAbiertos: false,
-                                });
-
-                                setColeccionActual({
-                                  imagen: "",
-                                  cantidad: 1,
-                                  tokenes: [],
-                                  precio: 0,
-                                  id: colecciones.length + 1,
-                                  tipo: "NFT" as any,
-                                  titulo: "",
-                                  descripcion: "",
-                                  etiquetas: "",
-                                  npcIdiomas: "",
-                                  npcInstrucciones: "",
-                                  npcs: "",
-                                  galeria:
-                                    coleccionActual?.galeria?.trim() !== ""
-                                      ? coleccionActual?.galeria
-                                      : colecciones?.[0]?.galeria || "",
-                                  tokenesMinteados: [],
-                                  profile: undefined,
-                                  profileIds: [],
-                                  pubIds: [],
                                 });
                               }
                             }}
