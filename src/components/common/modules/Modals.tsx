@@ -78,7 +78,6 @@ const Modals: FunctionComponent<ModalsProps> = ({
       {errorInteraccion && (
         <Error dict={dict} setErrorInteraccion={setErrorInteraccion!} />
       )}
-      
     </>
   );
 };

@@ -25,27 +25,30 @@ function Notificacion({
         className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-oscuro border border-white rounded-md cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-fit max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex items-center justify-center">
+        <div className="relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmRj5ZXiThJ58pFHfcjn9gGLkT28Y1qdNJNhDrrFHJ5LPC`}
             draggable={false}
             layout="fill"
+            objectFit="cover"
+            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
           />
           <div
-            className={`absolute top-0 right-0 w-full h-full bg-black/80 flex flex-col items-center  py-10 px-4 gap-5 text-white font-bit ${
+            className={`flex flex-col items-center py-10 px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll ${
               tipo == NotificacionType.Diseñador
                 ? "justify-start"
                 : "justify-center"
             }`}
           >
-            <NotificacionCambio
-              tipo={tipo}
-              dict={dict}
-              mensajeCargando={mensajeCargando}
-              manejarEnviarMensaje={manejarEnviarMensaje}
-              setMensaje={setMensaje}
-              mensaje={mensaje}
-            />
+            <div className="relative w-full items-center justify-start flex flex-col gap-6 h-fit">
+              <NotificacionCambio
+                tipo={tipo}
+                dict={dict}
+                mensajeCargando={mensajeCargando}
+                manejarEnviarMensaje={manejarEnviarMensaje}
+                setMensaje={setMensaje}
+                mensaje={mensaje}
+              />
+            </div>
           </div>
         </div>
       </div>

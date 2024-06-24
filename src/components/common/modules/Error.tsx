@@ -13,17 +13,17 @@ function Error({ setErrorInteraccion, dict }: ErrorProps) {
         className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-oscuro border border-white cursor-default rounded-md"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-fit max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex items-center justify-center">
+        <div className="relative relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmVhLGkgQiKksGaJwMjkHy7L6ZSfz8vRpM5WP27wHmYNBc`}
+            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
             draggable={false}
             layout="fill"
             objectFit="cover"
           />
           <div
-            className={`absolute top-0 right-0 w-full h-full bg-black/80 flex flex-col items-center py-10 px-4 gap-5 text-white font-bit justify-center`}
+            className={`absolute top-0 right-0 w-full h-full flex flex-col items-center py-10 px-4 gap-5 text-white font-bit justify-center overflow-y-scroll sm:text-base text-sm`}
           >
-            <div className="relative w-3/4 h-fit flex text-center justify-center items-center">
+            <div className="relative w-3/4 break-words h-fit flex text-center justify-center items-center">
               {dict.Home.error}
             </div>
           </div>
