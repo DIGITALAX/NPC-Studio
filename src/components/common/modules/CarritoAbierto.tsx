@@ -22,19 +22,19 @@ function CarritoAbierto({
   aprobarGastos,
 }: CarritoAbiertoProps) {
   return (
-    <div className="relative w-full items-start justify-start flex flex-col gap-10 h-full p-2 text-rosa font-bit">
+    <div className="relative w-full items-start justify-start flex flex-col gap-10 tab:h-full h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
         {dict.Home.npcStudio}
       </div>
       <div
-        className={`relative w-full h-full flex justify-between flex-row gap-12 ${
-          carrito.compras?.length < 1 ? " items-end" : " items-start"
+        className={`relative w-full flex justify-between flex-row gap-12 xl:flex-nowrap flex-wrap ${
+          carrito.compras?.length < 1 ? "items-end h-full" : "items-start h-fit xl:h-full"
         }`}
       >
-        <div className="relative w-full h-full flex items-start justify-start max-w-[50%]">
+        <div className="relative w-full h-fit xl:h-full flex items-start justify-start xl:max-w-[50%]">
           <div className="relative w-fit h-fit overflow-x-scroll flex items-start justify-start gap-4 flex-row">
             {carrito.compras?.length < 1 ? (
-              <div className="flex flex-col gap-2 glex items-center justify-center text-center relative w-full h-full text-xs">
+              <div className="flex flex-col gap-2 flex items-center justify-center text-center relative w-full h-full text-xs">
                 {dict.Home.nada}
               </div>
             ) : (
@@ -42,7 +42,7 @@ function CarritoAbierto({
                 return (
                   <div
                     key={indice}
-                    className="flex flex-col gap-2 glex items-center justify-center relative w-fit h-fit text-xs"
+                    className="flex flex-col gap-2 flex items-center justify-center relative w-fit h-fit text-xs"
                   >
                     <div className="relative w-36 h-52 rounded-md flex items-center justify-center p-2 border border-ligero">
                       <div className="relative w-full h-full rounded-md">
@@ -222,7 +222,7 @@ function CarritoAbierto({
           </div>
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-end justify-end font-con text-lg text-left break-words">
+      <div className="relative w-full h-fit flex items-end justify-end font-con text-xs tab:text-lg text-left break-words pt-5">
         alguna frase aqui
       </div>
     </div>
