@@ -27,25 +27,25 @@ const Autografo: FunctionComponent<AutografoProps> = ({
     articulos?.[articuloIndice]?.profile?.metadata?.picture
   );
   const tokenes = articulos?.[articuloIndice]
-  ? carrito?.compras?.filter((car) => {
-      if (car.tipo == AutographType.Mix) {
-        if (
-          articulos?.[articuloIndice]?.tokenes?.includes(car.token as any) &&
-          Number(articulos?.[articuloIndice]?.cantidad) -
-            Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) >
-            2
-        ) {
-          return true;
-        } else {
-          return false;
+    ? carrito?.compras?.filter((car) => {
+        if (car.tipo == AutographType.Mix) {
+          if (
+            articulos?.[articuloIndice]?.tokenes?.includes(car.token as any) &&
+            Number(articulos?.[articuloIndice]?.cantidad) -
+              Number(articulos?.[articuloIndice]?.tokenesMinteados?.length) >
+              2
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else if (car.tipo !== AutographType.Catalog) {
+          const { profile: _, ...elSinProfile } = car.elemento as any;
+          const { profile: __, ...artSinProfile } = articulos?.[articuloIndice];
+          return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
         }
-      } else if (car.tipo !== AutographType.Catalog) {
-        const { profile: _, ...elSinProfile } = car.elemento as any;
-        const { profile: __, ...artSinProfile } = articulos?.[articuloIndice];
-        return JSON.stringify(elSinProfile) === JSON.stringify(artSinProfile);
-      }
-    })
-  : [];
+      })
+    : [];
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
@@ -53,27 +53,29 @@ const Autografo: FunctionComponent<AutografoProps> = ({
       </div>
       <div className="relative w-full h-full flex flex-row justify-between items-start gap-10 md:gap-5 lg:flex-nowrap flex-wrap">
         <div className="relative w-full h-fit md:h-80 flex flex-row justify-between items-start gap-3 md:flex-nowrap flex-wrap">
-          <div
-            className="relative cursor-pointer active:scale-95 w-full md:w-60 h-80 md:h-full flex items-center justify-center rounded-md border border-rosa"
-            onClick={() =>
-              setVerImagen({
-                abierto: true,
-                tipo: "png",
-                url: `${INFURA_GATEWAY}/ipfs/${
+          <div className="relative w-full h-full flex items-center justify-center">
+            <div
+              className="relative cursor-pointer active:scale-95 w-full md:w-60 h-80 md:h-full flex items-center justify-center rounded-md border border-rosa"
+              onClick={() =>
+                setVerImagen({
+                  abierto: true,
+                  tipo: "png",
+                  url: `${INFURA_GATEWAY}/ipfs/${
+                    articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
+                  }`,
+                })
+              }
+            >
+              <Image
+                layout="fill"
+                draggable={false}
+                src={`${INFURA_GATEWAY}/ipfs/${
                   articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
-                }`,
-              })
-            }
-          >
-            <Image
-              layout="fill"
-              draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/${
-                articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
-              }`}
-              className="rounded-md"
-              objectFit="cover"
-            />
+                }`}
+                className="rounded-md"
+                objectFit="cover"
+              />
+            </div>
           </div>
           <div className="relative w-fit h-full flex items-start justify-between flex-col gap-3">
             <div className="relative w-fit h-fit flex items-start justify-start text-lg">
@@ -96,7 +98,10 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                   Number(
                     articulos?.[articuloIndice]?.tokenesMinteados?.length
                   ) -
-                  tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0) <=
+                  tokenes?.reduce(
+                    (acc, val) => acc + Number(val.cantidad),
+                    0
+                  ) <=
                 0
               }
               comprarPublicacion={comprarPublicacion}
