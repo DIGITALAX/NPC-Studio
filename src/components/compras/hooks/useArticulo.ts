@@ -98,7 +98,6 @@ const useArticulo = (
             };
           })
         );
-
       } else {
         const datos = await getArticulo(
           manejarMostrarArticulo?.disenador!,
@@ -148,21 +147,22 @@ const useArticulo = (
 
       setArticulosActuales(articulos);
       if (manejarMostrarArticulo?.tipo == AutographType.Mix) {
+        const precios = articulos
+          ?.filter((art) =>
+            art?.tokenes
+              ?.map((i) => i.toLowerCase())
+              ?.includes(ACCEPTED_TOKENS_AMOY[0][2].toLowerCase())
+          )
+          ?.map((art) => Number(art.precio) / 10 ** 18);
         setArticuloSeleccionado([
           {
             elemento: {
               maximo: Number(
                 Number(
-                  articulos
-                    ?.filter((art) =>
-                      art?.tokenes
-                        ?.map((i) => i.toLowerCase())
-                        ?.includes(ACCEPTED_TOKENS_AMOY[0][2].toLowerCase())
-                    )
-                    ?.map((art) => Number(art.precio) / 10 ** 18)
-                    ?.sort((a, b) => a - b)
-                    ?.slice(-5)
-                    ?.reduce((acc, val) => acc + val, 0) + 100
+                  (precios?.length <= 3
+                    ? precios
+                    : precios.sort((a, b) => a - b).slice(-5)
+                  ).reduce((acc, val) => acc + val, 0) + 100
                 ).toFixed(0)
               ),
             },

@@ -14,7 +14,6 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
   setArticuloSeleccionado,
   carrito,
 }): JSX.Element => {
-
   const articulosTokenes = articulos?.filter((art) => {
     const tokenesArticulo = art?.tokenes?.map((i) => i.toLowerCase());
     const tokenSeleccionado = articuloSeleccionado?.[0]?.token.toLowerCase();
@@ -69,6 +68,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
       tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0)
     );
   });
+
 
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
@@ -200,17 +200,36 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 type="range"
                 key={articuloSeleccionado?.[0]?.token}
                 min={
-                  articulosFiltrados
-                    ?.map((art) => Number(art.precio) / 10 ** 18)
-                    ?.slice(0, 5)
-                    ?.reduce((acc, val) => acc + val, 0) + 100 || 0
+                  (articulosFiltrados?.map(
+                    (art) => Number(art.precio) / 10 ** 18
+                  ).length <= 3
+                    ? articulosFiltrados?.map(
+                        (art) => Number(art.precio) / 10 ** 18
+                      ) || []
+                    : (
+                        articulosFiltrados?.map(
+                          (art) => Number(art.precio) / 10 ** 18
+                        ) || []
+                      )
+                        .sort((a, b) => a - b)
+                        .slice(0, 5)
+                  )?.reduce((acc, val) => acc + val, 0) + 100 || 0
                 }
                 max={
-                  articulosFiltrados
-                    ?.map((art) => Number(art.precio) / 10 ** 18)
-                    ?.sort((a, b) => a - b)
-                    ?.slice(-5)
-                    ?.reduce((acc, val) => acc + val, 0) + 100 || 0
+                  (articulosFiltrados?.map(
+                    (art) => Number(art.precio) / 10 ** 18
+                  ).length <= 3
+                    ? articulosFiltrados?.map(
+                        (art) => Number(art.precio) / 10 ** 18
+                      ) || []
+                    : (
+                        articulosFiltrados?.map(
+                          (art) => Number(art.precio) / 10 ** 18
+                        ) || []
+                      )
+                        .sort((a, b) => a - b)
+                        .slice(-5)
+                  ).reduce((acc, val) => acc + val, 0) + 100
                 }
                 onChange={(e) =>
                   setArticuloSeleccionado((prev) => {
@@ -254,14 +273,25 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                       token: moneda[2],
                       elemento: {
                         maximo: Number(
-                          (
-                            Number(
-                              articulosFiltrados
-                                ?.map((art) => Number(art.precio) / 10 ** 18)
-                                ?.sort((a, b) => a - b)
-                                ?.slice(-5)
-                                ?.reduce((acc, val) => acc + val, 0)
-                            ) + 100
+                          Number(
+                            (
+                              articulosFiltrados?.map(
+                                (art) => Number(art.precio) / 10 ** 18
+                              ) || []
+                            ).length <= 3
+                              ? (
+                                  articulosFiltrados?.map(
+                                    (art) => Number(art.precio) / 10 ** 18
+                                  ) || []
+                                ).reduce((acc, val) => acc + val, 0) + 100
+                              : (
+                                  articulosFiltrados?.map(
+                                    (art) => Number(art.precio) / 10 ** 18
+                                  ) || []
+                                )
+                                  .sort((a, b) => a - b)
+                                  .slice(-5)
+                                  .reduce((acc, val) => acc + val, 0) + 100
                           ).toFixed()
                         ),
                       },

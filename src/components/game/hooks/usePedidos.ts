@@ -208,7 +208,6 @@ const usePedidos = (
           };
         })
       );
-
       setTodosLosPedidos(pedidos);
       setDescifrarCargando(Array.from({ length: pedidos.length }, () => false));
       setPedidoAbierto(Array.from({ length: pedidos.length }, () => false));

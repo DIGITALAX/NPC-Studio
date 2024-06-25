@@ -74,7 +74,7 @@ export type ProcessProps = {
   mint: number;
   dict: Dictionary;
   borrarColeccion: () => Promise<void>;
-  borrarGaleria: (galeriaId: number) => Promise<void>;
+  borrarGaleria: (galeriaId: number, indice: number) => Promise<void>;
   isConnected: boolean;
   manejarMintear: () => Promise<void>;
   manejarAhorrar: () => Promise<void>;
@@ -504,7 +504,7 @@ export type PantallaCambioProps = {
     idiomasTexto: string;
   };
   borrarColeccion: () => Promise<void>;
-  borrarGaleria: (galeriaId: number) => Promise<void>;
+  borrarGaleria: (galeriaId: number, indice: number) => Promise<void>;
   setDropDown: (
     e: SetStateAction<{
       npcsAbiertos: boolean;

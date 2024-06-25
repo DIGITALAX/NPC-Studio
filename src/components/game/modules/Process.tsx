@@ -201,7 +201,7 @@ function Process({
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     if (!cargandoBorrar[indice])
-                                      borrarGaleria(Number(gal.galleryId));
+                                      borrarGaleria(Number(gal.galleryId), indice);
                                   }}
                                 >
                                   <div
