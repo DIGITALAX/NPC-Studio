@@ -9,6 +9,7 @@ import {
   Quote,
 } from "../../../../graphql/generated";
 import getPublications from "../../../../graphql/lens/queries/publications";
+import { AUTOGRAPH_OPEN_ACTION } from "@/lib/constants";
 
 const useFeed = (lensConectado: Profile | undefined, escena: string) => {
   const [feedCargando, setFeedCargando] = useState<boolean>(false);
@@ -16,13 +17,16 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
     (Post | Comment | Quote | Mirror)[]
   >([]);
   const [tieneMasFeed, setTieneMasFeed] = useState<boolean>(true);
-  const [feedUbi, setFeedUbi] = useState<string>();
+  const [feedUbi, setFeedUbi] = useState<{
+    abierto: string | undefined;
+    etiquetas: string | undefined;
+  }>();
   const [masFeedCargando, setMasFeedCargando] = useState<boolean>(false);
 
   const llamarFeed = async () => {
     setFeedCargando(true);
     try {
-      const { data } = await getPublications(
+      const { data: datosUno } = await getPublications(
         {
           limit: LimitType.TwentyFive,
           where: {
@@ -42,11 +46,52 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
         lensConectado?.id
       );
 
-      setFeedActual(data?.publications?.items as (Post | Quote | Mirror)[]);
-      setFeedUbi(data?.publications?.pageInfo?.next);
+      const { data: datosDos } = await getPublications(
+        {
+          limit: LimitType.TwentyFive,
+          where: {
+            publicationTypes: [
+              PublicationType.Post,
+              PublicationType.Mirror,
+              PublicationType.Quote,
+            ],
+            metadata: {
+              publishedOn: ["npcStudio"],
+            },
+            withOpenActions: [
+              {
+                address: AUTOGRAPH_OPEN_ACTION,
+              },
+            ],
+          },
+        },
+        lensConectado?.id
+      );
+
+      setFeedActual(
+        [
+          ...(datosUno?.publications?.items || []),
+          ...(datosDos?.publications?.items || []),
+        ]?.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ) as (Post | Quote | Mirror)[]
+      );
+      setFeedUbi({
+        abierto:
+          datosDos?.publications?.items?.length !== 25
+            ? undefined
+            : datosDos?.publications?.pageInfo?.next,
+        etiquetas:
+          datosUno?.publications?.items?.length !== 25
+            ? undefined
+            : datosUno?.publications?.pageInfo?.next,
+      });
       if (
-        data?.publications?.items &&
-        data?.publications?.items?.length !== 25
+        datosDos?.publications?.items &&
+        datosDos?.publications?.items?.length !== 25 &&
+        datosUno?.publications?.items &&
+        datosUno?.publications?.items?.length
       ) {
         setTieneMasFeed(false);
       }
@@ -59,35 +104,84 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
   const llamarMasFeed = async () => {
     setMasFeedCargando(true);
     try {
-      const { data } = await getPublications(
-        {
-          limit: LimitType.TwentyFive,
-          cursor: feedUbi,
-          where: {
-            publicationTypes: [
-              PublicationType.Post,
-              PublicationType.Mirror,
-              PublicationType.Quote,
-            ],
-            metadata: {
-              publishedOn: ["npcStudio"],
-              tags: {
-                all: ["npcStudio", escena],
+      let datosUno, datosDos;
+
+      if (feedUbi?.etiquetas) {
+        const { data } = await getPublications(
+          {
+            limit: LimitType.TwentyFive,
+            cursor: feedUbi?.etiquetas,
+            where: {
+              publicationTypes: [
+                PublicationType.Post,
+                PublicationType.Mirror,
+                PublicationType.Quote,
+              ],
+              metadata: {
+                publishedOn: ["npcStudio"],
+                tags: {
+                  all: ["npcStudio", escena],
+                },
               },
             },
           },
-        },
-        lensConectado?.id
-      );
+          lensConectado?.id
+        );
+        datosUno = data;
+      }
 
-      setFeedActual([
-        ...feedActual,
-        ...(data?.publications?.items as (Post | Quote | Mirror)[]),
-      ]);
-      setFeedUbi(data?.publications?.pageInfo?.next);
+      if (feedUbi?.abierto) {
+        const { data } = await getPublications(
+          {
+            cursor: feedUbi?.abierto,
+            limit: LimitType.TwentyFive,
+            where: {
+              publicationTypes: [
+                PublicationType.Post,
+                PublicationType.Mirror,
+                PublicationType.Quote,
+              ],
+              metadata: {
+                publishedOn: ["npcStudio"],
+              },
+              withOpenActions: [
+                {
+                  address: AUTOGRAPH_OPEN_ACTION,
+                },
+              ],
+            },
+          },
+          lensConectado?.id
+        );
+
+        datosDos = data;
+      }
+
+      setFeedActual(
+        [
+          ...feedActual,
+          ...(datosUno?.publications?.items || []),
+          ...(datosDos?.publications?.items || []),
+        ]?.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ) as (Post | Quote | Mirror)[]
+      );
+      setFeedUbi({
+        abierto:
+          datosDos?.publications?.items?.length !== 25
+            ? undefined
+            : datosDos?.publications?.pageInfo?.next,
+        etiquetas:
+          datosUno?.publications?.items?.length !== 25
+            ? undefined
+            : datosUno?.publications?.pageInfo?.next,
+      });
       if (
-        data?.publications?.items &&
-        data?.publications?.items?.length !== 25
+        datosDos?.publications?.items &&
+        datosDos?.publications?.items?.length !== 25 &&
+        datosUno?.publications?.items &&
+        datosUno?.publications?.items?.length
       ) {
         setTieneMasFeed(false);
       }
@@ -108,7 +202,7 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
     tieneMasFeed,
     llamarMasFeed,
     masFeedCargando,
-    setFeedActual
+    setFeedActual,
   };
 };
 

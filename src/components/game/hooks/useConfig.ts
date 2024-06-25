@@ -150,7 +150,7 @@ const useConfig = (
     );
     if (customScene) {
       (customScene as any).setEstadoDePantalla(
-        manejarMostrarArticulo && !abierto ? true : false
+        manejarMostrarArticulo || abierto ? true : false
       );
     }
   }, [manejarMostrarArticulo, abierto]);

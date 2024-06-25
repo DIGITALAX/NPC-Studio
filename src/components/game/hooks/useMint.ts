@@ -6,11 +6,12 @@ import {
   useState,
 } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { Coleccion, Galeria } from "../types/game.types";
+import { AutographType, Coleccion, Galeria } from "../types/game.types";
 import { polygonAmoy } from "viem/chains";
 import {
   AUTOGRAPH_COLLECTION,
   AUTOGRAPH_OPEN_ACTION,
+  IDIOMAS,
   INFURA_GATEWAY,
   SCENE_LIST,
   autographTypeToNumber,
@@ -38,7 +39,7 @@ const useMint = (
   const [ahorrarCargando, setAhorrarCargando] = useState<boolean>(false);
   const [mintCargando, setMintCargando] = useState<boolean>(false);
   const [cargandoGalerias, setCargandoGalerias] = useState<boolean>(false);
-  const [cargandoBorrar, setCargandoBorrar] = useState<boolean>(false);
+  const [cargandoBorrar, setCargandoBorrar] = useState<boolean[]>([]);
   const [todasLasGalerias, setTodasLasGalerias] = useState<Galeria[]>([]);
   const [colecciones, setColecciones] = useState<Coleccion[]>([]);
   const [mostrarGalerias, setMostrarGalerias] = useState<boolean>(false);
@@ -94,41 +95,55 @@ const useMint = (
 
       const gals = await Promise.all(
         datos?.data?.galleryCreateds.map(async (gal: any) => {
+          let colecciones: Coleccion[] = new Array(
+            gal.collectionIds.length
+          ).fill("");
+
+          await Promise.all(
+            gal.collections.map(async (col: any, indice: number) => {
+              if (!col.collectionMetadata) {
+                const cadena = await fetch(
+                  `${INFURA_GATEWAY}/ipfs/${col.uri.split("ipfs://")?.[1]}`
+                );
+                col.collectionMetadata = await cadena.json();
+              }
+
+              colecciones[indice] = {
+                galeria: col.collectionMetadata.gallery,
+                imagen: col.collectionMetadata.image,
+                id: col.collectionId,
+                cantidad: col.amount,
+                tokenes: col.acceptedTokens,
+                tokenesMinteados: col.mintedTokens,
+                coleccionId: Number(col.collectionId),
+                galeriaId: gal.galleryId,
+                precio: col.price,
+                tipo: numberToAutograph[Number(col.type)] as AutographType,
+                titulo: col.collectionMetadata.title,
+                descripcion: col.collectionMetadata.description,
+                etiquetas: col.collectionMetadata.tags,
+                npcIdiomas: col.collectionMetadata.locales,
+                npcInstrucciones: col.collectionMetadata.instructions,
+                npcs: col.collectionMetadata.npcs,
+                profile: undefined,
+                profileIds: [],
+                pubIds: [],
+              };
+            })
+          );
+
           return {
             galleryId: gal.galleryId,
             collectionIds: gal.collectionIds,
-            colecciones: await Promise.all(
-              gal.collections.map(async (col: any) => {
-                if (!col.collectionMetadata) {
-                  const cadena = await fetch(
-                    `${INFURA_GATEWAY}/ipfs/${col.uri.split("ipfs://")?.[1]}`
-                  );
-                  col.collectionMetadata = await cadena.json();
-                }
-
-                return {
-                  galeria: col.collectionMetadata.gallery,
-                  imagen: col.collectionMetadata.image,
-                  id: col.collectionId,
-                  cantidad: col.amount,
-                  tokenes: col.acceptedTokens,
-                  tokenesMinteados: col.mintedTokens,
-                  precio: col.price,
-                  tipo: numberToAutograph[Number(col.type)],
-                  titulo: col.collectionMetadata.title,
-                  descripcion: col.collectionMetadata.description,
-                  etiquetas: col.collectionMetadata.tags,
-                  npcIdiomas: col.collectionMetadata.locales,
-                  npcInstrucciones: col.collectionMetadata.instructions,
-                  npcs: col.collectionMetadata.npcs,
-                };
-              })
-            ),
+            colecciones,
           };
         })
       );
 
       setTodasLasGalerias(gals);
+      setCargandoBorrar(
+        Array.from({ length: todasLasGalerias.length }, () => false)
+      );
     } catch (err: any) {
       console.error(err.message);
     }
@@ -149,13 +164,13 @@ const useMint = (
 
       setMintCargando(true);
 
-      const uris: string[] = [];
+      const uris = new Array(colecciones.length).fill("");
 
       await Promise.all(
         (colecciones.filter((col) => col.galeriaId).length > 0
           ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
-        ).map(async (col: Coleccion) => {
+        ).map(async (col: Coleccion, indice: number) => {
           let image = col.imagen;
           if (!image.includes("ipfs://")) {
             const imagen = await fetch(`/api/ipfs`, {
@@ -185,7 +200,7 @@ const useMint = (
           });
 
           let responseJSON = await response.json();
-          uris.push("ipfs://" + responseJSON?.cid);
+          uris[indice] = "ipfs://" + responseJSON?.cid;
         })
       );
 
@@ -195,6 +210,7 @@ const useMint = (
       });
 
       if (colecciones.filter((col) => col.galeriaId).length > 0) {
+      
         const { request } = await publicClient.simulateContract({
           address: AUTOGRAPH_COLLECTION,
           abi: AutographCollection,
@@ -206,6 +222,15 @@ const useMint = (
                 .filter((col) => !col.galeriaId)
                 .map(
                   (col) => col.npcIdiomas?.split(",").filter(Boolean) || [""]
+                )
+                ?.map((id) =>
+                  id.map(
+                    (n) =>
+                      IDIOMAS?.flatMap((s) => ({
+                        key: s.key,
+                        title: s.title,
+                      })).find((s) => s.key == n)?.title
+                  )
                 ),
               npcs: colecciones
                 .filter((col) => !col.galeriaId)
@@ -249,9 +274,19 @@ const useMint = (
           chain: polygonAmoy,
           args: [
             {
-              languages: colecciones.map(
-                (col) => col.npcIdiomas?.split(",").filter(Boolean) || [""]
-              ),
+              languages: colecciones
+                .map(
+                  (col) => col.npcIdiomas?.split(",").filter(Boolean) || [""]
+                )
+                ?.map((id) =>
+                  id.map(
+                    (n) =>
+                      IDIOMAS?.flatMap((s) => ({
+                        key: s.key,
+                        title: s.title,
+                      })).find((s) => s.key == n)?.title
+                  )
+                ),
               npcs: colecciones
                 .map((col) => col.npcs?.split(",").filter(Boolean) || [""])
                 ?.map((npc) =>
@@ -324,7 +359,7 @@ const useMint = (
   };
 
   const borrarColeccion = async () => {
-    setCargandoBorrar(true);
+    setCargandoBorrar([true]);
     try {
       const clientWallet = createWalletClient({
         chain: polygonAmoy,
@@ -378,11 +413,16 @@ const useMint = (
     } catch (err: any) {
       console.error(err.message);
     }
-    setCargandoBorrar(false);
+    setCargandoBorrar([false]);
+
   };
 
-  const borrarGaleria = async (galeriaId: number) => {
-    setCargandoBorrar(true);
+  const borrarGaleria = async (galeriaId: number, indice: number) => {
+    setCargandoBorrar((prev) => {
+      const arr = [...prev];
+      arr[indice] = true;
+      return arr;
+    });
     try {
       const clientWallet = createWalletClient({
         chain: polygonAmoy,
@@ -408,7 +448,11 @@ const useMint = (
     } catch (err: any) {
       console.error(err.message);
     }
-    setCargandoBorrar(false);
+    setCargandoBorrar((prev) => {
+      const arr = [...prev];
+      arr[indice] = false;
+      return arr;
+    });
   };
 
   const manejarArchivo = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -437,10 +481,10 @@ const useMint = (
       localStorage.removeItem("oleccionesGaleria_chunks");
     }
 
-    let newColecciones: Coleccion[] = [];
+    let newColecciones: Coleccion[] = new Array(colecciones.length).fill("");
 
     await Promise.all(
-      colecciones?.map(async (col) => {
+      colecciones?.map(async (col, indice) => {
         let imagen = col.imagen;
 
         if (!imagen.includes("ipfs://")) {
@@ -452,10 +496,10 @@ const useMint = (
           imagen = "ipfs://" + res?.cid;
         }
 
-        newColecciones.push({
+        newColecciones[indice] = {
           ...col,
           imagen,
-        });
+        };
       })
     );
 

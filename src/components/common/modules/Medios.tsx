@@ -14,11 +14,10 @@ const Medios: FunctionComponent<MediosProps> = ({
       {metadata?.content && metadata?.content?.trim() !== "" && (
         <div
           className={`relative w-full h-fit max-h-[12rem] font-aust  text-left items-start justify-start break-all flex overflow-y-scroll p-3 text-sm whitespace-preline ${
-            metadata?.__typename === "ImageMetadataV3"
-              ? "bg-black text-white"
-              : metadata?.__typename === "VideoMetadataV3"
-              ? "bg-viol text-black"
-              : "bg-nuba text-black"
+            metadata?.__typename === "ImageMetadataV3" ||
+            metadata?.__typename === "VideoMetadataV3"
+              ? "bg-rosa text-black"
+              : "bg-oscuro text-black"
           }`}
           dangerouslySetInnerHTML={{
             __html: descripcionRegex(

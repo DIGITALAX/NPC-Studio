@@ -2,14 +2,42 @@ export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
 export const BASE_URL: string = "	https://api-v2-amoy.lens.dev";
 export const IPFS_REGEX: RegExp = /\b(Qm[1-9A-Za-z]{44}|ba[A-Za-z2-7]{57})\b/;
 
-export const IDIOMAS: { cover: string; key: string }[] = [
-  { key: "א", cover: "Qmdyd6iUPYNruEi5BJaYnoJ8H4FDwqxJF4EAzLvYZfxgXE" },
-  { key: "ع", cover: "Qmb2rQi84hLXtiY673VaBHMTB32Lo1Xe1ah4Q7mG2fKf4J" },
-  { key: "ук", cover: "QmW1QzS8AfYEaV4Kc6YtwXSUXRUatP6VozLy1HB61DTy27" },
-  { key: "es", cover: "QmY43U5RovVkoGrkLiFyA2VPMnGxf5e3NgYZ95u9aNJdem" },
-  { key: "د", cover: "QmTchZ7B2vrTnkKKBpqoYcmLQ8H9wxiNet7DWtmQeVzMdM" },
-  { key: "us", cover: "QmXdyvCYjZ7FkPjgFX5BPi98WTpPdJT5FHhzhtbyzkJuNs" },
-  { key: "br", cover: "QmQce4gWKLj9xWySjxUVsHKorX5rDL45JiaU4y1TBqjLVa" },
+export const IDIOMAS: { cover: string; key: string; title: string }[] = [
+  {
+    key: "א",
+    cover: "Qmdyd6iUPYNruEi5BJaYnoJ8H4FDwqxJF4EAzLvYZfxgXE",
+    title: "Hebrew",
+  },
+  {
+    key: "ع",
+    cover: "Qmb2rQi84hLXtiY673VaBHMTB32Lo1Xe1ah4Q7mG2fKf4J",
+    title: "Arabic",
+  },
+  {
+    key: "ук",
+    cover: "QmW1QzS8AfYEaV4Kc6YtwXSUXRUatP6VozLy1HB61DTy27",
+    title: "Ukranian",
+  },
+  {
+    key: "es",
+    cover: "QmY43U5RovVkoGrkLiFyA2VPMnGxf5e3NgYZ95u9aNJdem",
+    title: "Spanish",
+  },
+  {
+    key: "د",
+    cover: "QmTchZ7B2vrTnkKKBpqoYcmLQ8H9wxiNet7DWtmQeVzMdM",
+    title: "Farsi",
+  },
+  {
+    key: "us",
+    cover: "QmXdyvCYjZ7FkPjgFX5BPi98WTpPdJT5FHhzhtbyzkJuNs",
+    title: "English",
+  },
+  {
+    key: "br",
+    cover: "QmQce4gWKLj9xWySjxUVsHKorX5rDL45JiaU4y1TBqjLVa",
+    title: "Portuguese",
+  },
 ];
 
 export const SCENE_LIST: {
@@ -188,22 +216,22 @@ export const LENS_HUB_PROXY: `0x${string}` =
   "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
 
 export const AUTOGRAPH_DATA: `0x${string}` =
-  "0x52f43D34e1abb0a6d1C97c0CF8b8f323872fC664";
+  "0x64d7b1b3388f8F0B0eaF96fCcd30F94797A7Bf95";
 
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
   "0xe57438297515C4B7c62FE13957413085A7e1763c";
 
 export const AUTOGRAPH_MARKET: `0x${string}` =
-  "0x93a0adaff142d1549ee9f5a9fe8edfa23cab86b4";
+  "0xb75C8dCf8f906EFb903c0f17D30079439B6c8781";
 
 export const AUTOGRAPH_COLLECTION: `0x${string}` =
-  "0x76D9FAe8c8d906409894F61A621543b8F2BA8176";
+  "0x4A59f9d853cA9eAD36792232EeFc9878f0ee48b5";
 
 export const DIGITALAX_ADDRESS: `0x${string}` =
   "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";
 
 export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
-  "0xBA8df4FDdE561A7A20ece887Df6d812b916f19E3";
+  "0xbfc65805Ac8dE63980DB6a7eFc8896cbC8708b04";
 
 export const ACCEPTED_TOKENS: string[][] = [
   [

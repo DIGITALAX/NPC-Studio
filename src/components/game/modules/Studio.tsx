@@ -121,7 +121,8 @@ function Studio({
     datosOraculos,
     setIndexar,
     setErrorInteraccion,
-    setMostrarNotificacion
+    setMostrarNotificacion,
+    setManejarMostrarArticulo
   );
 
   return (

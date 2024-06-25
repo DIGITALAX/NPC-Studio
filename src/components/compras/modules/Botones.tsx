@@ -3,6 +3,7 @@ import { BotonesProps, Catalogo, Mezcla } from "../types/compras.types";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/legacy/image";
 import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
+import { AutographType, Coleccion } from "@/components/game/types/game.types";
 
 const Botones: FunctionComponent<BotonesProps> = ({
   comprarPublicacion,
@@ -142,9 +143,9 @@ const Botones: FunctionComponent<BotonesProps> = ({
           <div className="relative w-full h-fit flex items-end justify-end flex-row gap-3 font-bit text-white text-xxs sm:text-xs bottom-0">
             <div
               className={`relative px-1.5 py-1 w-32 h-8 flex items-center border border-white justify-center bg-mar ${
-                !agotado &&
-                !gastosAprobados?.aprobado &&
-                "cursor-pointer active:scale-95"
+                !agotado && !gastosAprobados?.aprobado
+                  ? "cursor-pointer active:scale-95"
+                  : "opacity-70"
               }`}
               onClick={() =>
                 !aprobarCargando &&
@@ -174,12 +175,17 @@ const Botones: FunctionComponent<BotonesProps> = ({
               className={`relative bg-rojo px-1.5 py-1 w-32 h-8 flex items-center border-white border justify-center ${
                 !agotado &&
                 gastosAprobados?.aprobado &&
-                "cursor-pointer active:scale-95"
+                ((articulo.elemento as Coleccion)?.pubIds?.length > 0 ||
+                  articulo.tipo == AutographType.Catalog)
+                  ? "cursor-pointer active:scale-95"
+                  : "opacity-70"
               }`}
               onClick={() =>
                 !aprobarCargando &&
                 !agotado &&
                 !carritoCargando &&
+                ((articulo.elemento as Coleccion)?.pubIds?.length > 0 ||
+                  articulo.tipo == AutographType.Catalog) &&
                 gastosAprobados?.aprobado &&
                 comprarPublicacion(articulo)
               }

@@ -19,7 +19,8 @@ const Chat: FunctionComponent<ChatProps> = ({
   escena,
   setAbrirCita,
   setSeguirColeccionar,
-  setVerImagen
+  setVerImagen,
+
 }): JSX.Element => {
   const {
     feedCargando,

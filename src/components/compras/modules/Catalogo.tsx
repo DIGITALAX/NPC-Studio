@@ -106,15 +106,14 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
           gastosAprobados={gastosAprobados[0]}
           agotado={
             Number(catalogo?.minteado) +
-              Number(articuloSeleccionado?.[0]?.cantidad) +
               carrito?.compras
                 ?.filter(
                   (el) =>
                     JSON.stringify(el.elemento) ==
-                    JSON.stringify(articuloSeleccionado?.[0])
+                    JSON.stringify(catalogo)
                 )
-                ?.reduce((sum, el) => sum + el.cantidad, 0) >
-            articuloSeleccionado?.[0]?.cantidad
+                ?.reduce((sum, el) => sum + el.cantidad, 0) >=
+                catalogo?.cantidad
           }
           aprobarCargando={aprobarCargando}
           aprobarGastos={aprobarGastos}

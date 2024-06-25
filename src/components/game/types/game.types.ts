@@ -81,7 +81,7 @@ export type ProcessProps = {
   ahorrarCargando: boolean;
   mintCargando: boolean;
   esArtista: boolean;
-  cargandoBorrar: boolean;
+  cargandoBorrar: boolean[];
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
@@ -488,7 +488,7 @@ export type PantallaCambioProps = {
   setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
-  cargandoBorrar: boolean;
+  cargandoBorrar: boolean[];
   dict: Dictionary;
   manejarMintear: () => Promise<void>;
   mintCargando: boolean;

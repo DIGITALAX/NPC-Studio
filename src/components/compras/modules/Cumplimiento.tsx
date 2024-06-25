@@ -67,15 +67,12 @@ const Cumplimiento: FunctionComponent<CumplimientoProps> = ({
                   {elemento?.titulo}
                 </div>
                 <input
+                  key={elemento?.valor}
                   className={`relative border rounded-md flex text-xxs md:text-sm p-1 h-8 w-32 ${
                     abierto
                       ? "border-ligero bg-black"
                       : "border-white bg-oscuro"
                   }`}
-                  placeholder={
-                    (cumplimiento as any)?.[elemento?.titulo?.toLowerCase()] ||
-                    ""
-                  }
                   onChange={(e) => {
                     setCumplimiento((prev) => ({
                       ...prev,

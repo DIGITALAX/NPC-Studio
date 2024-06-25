@@ -198,17 +198,12 @@ const usePedidos = (
             })
           );
 
-          let fulfillment: string = "";
-          if (pedido.orderId !== "2" && pedido.orderId !== "1") {
-            fulfillment = JSON.parse(pedido?.fulfillment);
-          }
-
           return {
             ...pedido,
             collectionIds,
             mintedTokens,
             subOrders,
-            fulfillment,
+            fulfillment: JSON.parse(pedido?.fulfillment),
             decrypted: false,
           };
         })

@@ -134,7 +134,7 @@ function Pedidos({
                     {pedidoAbierto?.[indice] && (
                       <div className="relative w-full flex flex-col justify-between items-center gap-10 sm:gap-4 h-fit p-2">
                         <div className="relative h-px w-full bg-white flex"></div>
-                        <div className="relative w-full h-fit flex items-start justify-between gap-4 flex-wrap">
+                        <div className="relative w-full h-fit flex items-start justify-between gap-4 tab:flex-nowrap flex-wrap">
                           <div className="relative w-full h-fit flex items-center flex-row gap-3 justify-start flex-wrap">
                             {[
                               {

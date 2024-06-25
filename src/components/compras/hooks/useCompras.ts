@@ -37,7 +37,17 @@ const useCompras = (
   datosOraculos: DatosOraculos[],
   setIndexar: (e: SetStateAction<Indexar>) => void,
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
-  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void,
+  setManejarMostrarArticulo: (
+    e: SetStateAction<
+      | {
+          etiqueta: string;
+          disenador: string;
+          tipo: AutographType;
+        }
+      | undefined
+    >
+  ) => void
 ) => {
   const coder = new ethers.AbiCoder();
   const [aprobarCargando, setAprobarCargando] = useState<boolean>(false);
@@ -155,6 +165,16 @@ const useCompras = (
         setIndexar,
         setErrorInteraccion
       );
+      setManejarMostrarArticulo(undefined);
+      setCumplimiento({
+        nombre: "",
+        lens: "",
+        direccion: "",
+        zip: "",
+        ciudad: "",
+        estado: "",
+        pais: "",
+      })
       setMostrarNotificacion(Notificacion.Comprado);
     } catch (err: any) {
       console.error(err.message);
@@ -204,11 +224,22 @@ const useCompras = (
 
       const res = await clientWallet.writeContract(request);
       await publicClient.waitForTransactionReceipt({ hash: res });
+      
 
       setCarrito({
         abierto: false,
         compras: [],
       });
+      setManejarMostrarArticulo(undefined);
+      setCumplimiento({
+        nombre: "",
+        lens: "",
+        direccion: "",
+        zip: "",
+        ciudad: "",
+        estado: "",
+        pais: "",
+      })
       setMostrarNotificacion(Notificacion.Comprado);
     } catch (err: any) {
       console.error(err.message);

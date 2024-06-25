@@ -328,7 +328,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       Object.values(this.npcs).forEach((npc) => npc.update());
 
       if (
-        Object.values(this.npcs).every((npc) => npc.camino.length < 15) &&
+        Object.values(this.npcs).every((npc) => npc.camino?.length < 15) &&
         !this.esperandoRespuesta
       ) {
         this.esperandoRespuesta = true;
