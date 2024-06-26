@@ -67,7 +67,8 @@ export enum Notificacion {
   ColeccionEliminada,
   Perfil,
   Comprado,
-  Cumplimiento
+  Cumplimiento,
+  Campos
 }
 
 export enum Indexar {

@@ -34,6 +34,12 @@ function NotificacionCambio({
           {dict.Home.creado}
         </div>
       );
+    case Notificacion.Campos:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center">
+          {dict.Home.campos}
+        </div>
+      );
     case Notificacion.GaleriaEliminada:
       return (
         <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center">
@@ -47,7 +53,6 @@ function NotificacionCambio({
         </div>
       );
     case Notificacion.Perfil:
-
       return (
         <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center flex-col gap-4">
           <div className="relative w-fit h-fit flex items-center justify-center">

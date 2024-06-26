@@ -81,7 +81,8 @@
     "noMix": "No Mix for This Token.",
     "mensajes": "Messages",
     "regresar": "Back",
-    "NoMensaje": "No Messages Here Yet."
+    "NoMensaje": "No Messages Here Yet.",
+    "campos": "Make sure to fill out all fields before minting."
   },
   "Nav": {
     "lan": "Choose Language"

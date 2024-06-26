@@ -81,7 +81,8 @@
     "noMix": "No Hay Mezcla Para Este Token.",
     "mensajes": "Mensajes",
     "regresar": "Regrese",
-    "NoMensaje": "Aún, No Hay Mensajes Aquí."
+    "NoMensaje": "Aún, No Hay Mensajes Aquí.",
+    "campos": "Asegúrese de que complete todos los campos antes de mintear."
   },
   "Nav": {
     "lan": "Elija Idioma"

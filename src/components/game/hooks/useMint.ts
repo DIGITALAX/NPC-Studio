@@ -159,8 +159,10 @@ const useMint = (
         colecciones?.filter((el) => el.tokenes.length < 1).length > 0 ||
         colecciones?.filter((el) => el.precio < 1).length > 0 ||
         colecciones?.filter((el) => el.tipo.toString().trim() == "").length > 0
-      )
+      ) {
+        setMostrarNotificacion(Notificacion.Campos);
         return;
+      }
 
       setMintCargando(true);
 
@@ -210,7 +212,6 @@ const useMint = (
       });
 
       if (colecciones.filter((col) => col.galeriaId).length > 0) {
-      
         const { request } = await publicClient.simulateContract({
           address: AUTOGRAPH_COLLECTION,
           abi: AutographCollection,
@@ -414,7 +415,6 @@ const useMint = (
       console.error(err.message);
     }
     setCargandoBorrar([false]);
-
   };
 
   const borrarGaleria = async (galeriaId: number, indice: number) => {

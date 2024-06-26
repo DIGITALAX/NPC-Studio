@@ -372,6 +372,7 @@ export type Dictionary = {
     onChain: string;
     nada: string;
     tx: string;
+    campos: string;
     comprado: string;
     regresar: string;
     noMix: string;
