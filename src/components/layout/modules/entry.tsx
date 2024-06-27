@@ -11,7 +11,7 @@ import { ModalContext } from "../../../app/providers";
 import useMint from "../../game/hooks/useMint";
 import { Dictionary } from "@/components/game/types/game.types";
 import PantallaCambio from "@/components/game/modules/PantallaCambio";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import { createPublicClient } from "viem";
 import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
@@ -21,9 +21,9 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
   const { address, isConnected } = useAccount();
   const publicClient = createPublicClient({
-    chain: polygonAmoy,
+    chain: polygon,
     transport: http(
-      `https://polygon-amoy.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_AMOY_KEY}`
+      `https://polygon.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
     ),
   });
   const { openConnectModal } = useConnectModal();

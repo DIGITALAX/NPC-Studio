@@ -2,7 +2,7 @@ import { SetStateAction, useRef, useState } from "react";
 import { ComentarPublicar } from "../types/game.types";
 import { Profile } from "../../../../graphql/generated";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import publicarLens from "@/lib/helpers/publicarLens";
 import { Indexar } from "@/components/common/types/common.types";
 import subirContenido from "@/lib/helpers/subirContenido";
@@ -52,7 +52,7 @@ const useDialog = (
       );
 
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 

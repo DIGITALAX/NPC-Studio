@@ -7,7 +7,7 @@ import {
   CreateOnchainPostTypedDataMutation,
   CreateOnchainCommentEip712TypedDataValue,
 } from "../../../graphql/generated";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import { PublicClient, WalletClient } from "viem";
 import postOnChain from "../../../graphql/lens/mutations/post";
 import broadcast from "../../../graphql/lens/mutations/broadcast";
@@ -111,7 +111,7 @@ const publicarLens = async (
       address: LENS_HUB_PROXY,
       abi: LensHubProxy,
       functionName: comentario ? "comment" : "post",
-      chain: polygonAmoy,
+      chain: polygon,
       args: [
         comentario
           ? {

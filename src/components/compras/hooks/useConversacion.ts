@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ImageSet, Profile } from "../../../../graphql/generated";
 import { DIGITALAX_ADDRESS } from "@/lib/constants";
 import { createWalletClient, custom } from "viem";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 
 const useConversacion = (
   lens: Profile | undefined,
@@ -24,7 +24,7 @@ const useConversacion = (
     try {
       const clientWallet = createWalletClient({
         account: address,
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 

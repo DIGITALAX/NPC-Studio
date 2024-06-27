@@ -1,6 +1,6 @@
 import Image from "next/legacy/image";
 import {
-  ACCEPTED_TOKENS_AMOY,
+  ACCEPTED_TOKENS,
   IDIOMAS,
   INFURA_GATEWAY,
   SCENE_LIST,
@@ -554,7 +554,7 @@ function Process({
                             {dict.Home.tokens}
                           </div>
                           <div className="relative flex flex-row flex-wrap items-start justify-start gap-5 w-full h-fit">
-                            {ACCEPTED_TOKENS_AMOY?.map(
+                            {ACCEPTED_TOKENS?.map(
                               (elemento: string[], indice: number) => {
                                 return (
                                   <div

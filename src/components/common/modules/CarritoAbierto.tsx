@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/lib/constants";
 import { CarritoAbiertoProps } from "../types/common.types";
 import Cumplimiento from "@/components/compras/modules/Cumplimiento";
 import { AutographType, Coleccion } from "@/components/game/types/game.types";
@@ -82,7 +82,7 @@ function CarritoAbierto({
                           )
                         )?.toFixed(3)
                       )} ${
-                        ACCEPTED_TOKENS_AMOY?.find(
+                        ACCEPTED_TOKENS?.find(
                           (moneda) =>
                             moneda[2]?.toLowerCase() ===
                             elemento?.token?.toLowerCase()
@@ -149,7 +149,7 @@ function CarritoAbierto({
               <div className="relative w-full h-fit flex flex-row gap-2 items-center justify-center">
                 {gastosAprobados
                   .map((tok) => [
-                    ACCEPTED_TOKENS_AMOY.find((i) => i[2] == tok.token)?.[0]!,
+                    ACCEPTED_TOKENS.find((i) => i[2] == tok.token)?.[0]!,
                     "",
                     tok.token,
                   ])

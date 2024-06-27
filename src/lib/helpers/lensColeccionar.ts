@@ -6,7 +6,7 @@ import { omit } from "lodash";
 import LensHubProxy from "./../../../abis/LensHubProxy.json";
 import { WalletClient, PublicClient } from "viem";
 import broadcast from "../../../graphql/lens/mutations/broadcast";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import handleIndexCheck from "../../../graphql/lens/queries/indexed";
 import { FetchResult } from "@apollo/client";
 import { BroadcastOnchainMutation } from "../../../graphql/generated";
@@ -122,7 +122,7 @@ const lensColeccionar = async (
       address: LENS_HUB_PROXY,
       abi: LensHubProxy,
       functionName,
-      chain: polygonAmoy,
+      chain: polygon,
       args,
       account: address,
     });

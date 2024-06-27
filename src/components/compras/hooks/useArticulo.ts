@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Catalogo, Compra } from "../types/compras.types";
 import { getArticulo } from "../../../../graphql/autograph/queries/getArticulo";
 import {
-  ACCEPTED_TOKENS_AMOY,
+  ACCEPTED_TOKENS,
   INFURA_GATEWAY,
   autographTypeToNumber,
   numberToAutograph,
@@ -151,7 +151,7 @@ const useArticulo = (
           ?.filter((art) =>
             art?.tokenes
               ?.map((i) => i.toLowerCase())
-              ?.includes(ACCEPTED_TOKENS_AMOY[0][2].toLowerCase())
+              ?.includes(ACCEPTED_TOKENS[0][2].toLowerCase())
           )
           ?.map((art) => Number(art.precio) / 10 ** 18);
         setArticuloSeleccionado([
@@ -166,7 +166,7 @@ const useArticulo = (
                 ).toFixed(0)
               ),
             },
-            token: ACCEPTED_TOKENS_AMOY[0][2],
+            token: ACCEPTED_TOKENS[0][2],
             cantidad: 1,
             tipo: AutographType.Mix,
             color: "",

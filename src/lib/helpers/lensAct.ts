@@ -6,7 +6,7 @@ import broadcast from "../../../graphql/lens/mutations/broadcast";
 import handleIndexCheck from "../../../graphql/lens/queries/indexed";
 import LensHubProxy from "./../../../abis/LensHubProxy.json";
 import { Indexar } from "@/components/common/types/common.types";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import { LENS_HUB_PROXY } from "../constants";
 import { SetStateAction } from "react";
 
@@ -55,7 +55,7 @@ const lensAct = async (
         address: LENS_HUB_PROXY,
         abi: LensHubProxy,
         functionName: "act",
-        chain: polygonAmoy,
+        chain: polygon,
         args: [
           {
             publicationActedProfileId: parseInt(

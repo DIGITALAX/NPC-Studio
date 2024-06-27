@@ -1,5 +1,5 @@
 export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
-export const BASE_URL: string = "	https://api-v2-amoy.lens.dev";
+export const BASE_URL: string = "	https://api-v2.lens.dev";
 export const IPFS_REGEX: RegExp = /\b(Qm[1-9A-Za-z]{44}|ba[A-Za-z2-7]{57})\b/;
 
 export const IDIOMAS: { cover: string; key: string; title: string }[] = [
@@ -216,22 +216,22 @@ export const LENS_HUB_PROXY: `0x${string}` =
   "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
 
 export const AUTOGRAPH_DATA: `0x${string}` =
-  "0x64d7b1b3388f8F0B0eaF96fCcd30F94797A7Bf95";
+  "0xd52dA212D5C7Ec8f7Bb3594372530b19f3e5f37E";
 
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =
-  "0xe57438297515C4B7c62FE13957413085A7e1763c";
+  "0xcD70E5C79b1a199af92134CD8F9f1583963e6CC9";
 
 export const AUTOGRAPH_MARKET: `0x${string}` =
-  "0xb75C8dCf8f906EFb903c0f17D30079439B6c8781";
+  "0x9D38850465982be54372B68eD2067d92aD6F817F";
 
 export const AUTOGRAPH_COLLECTION: `0x${string}` =
-  "0x4A59f9d853cA9eAD36792232EeFc9878f0ee48b5";
+  "0x899aa7B4BC98fe8c55437d4B7EEdaE12156F1736";
 
 export const DIGITALAX_ADDRESS: `0x${string}` =
   "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";
 
 export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
-  "0xbfc65805Ac8dE63980DB6a7eFc8896cbC8708b04";
+  "0x749Da95bC493AF77A695dEc621C733d6317aa8Fc";
 
 export const ACCEPTED_TOKENS: string[][] = [
   [
@@ -257,7 +257,7 @@ export const ACCEPTED_TOKENS: string[][] = [
   [
     "QmQUrVWFVT2rSYT8KPr8iJ7C3aE8qPpDcjsLy143i3o2St",
     "BONSAI",
-    "0x3d2bD0e15829AA5C362a4144FdF4A1112fa29B5c",
+    "0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c",
   ],
 ];
 

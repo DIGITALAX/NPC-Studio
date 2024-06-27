@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { BotonesProps, Catalogo, Mezcla } from "../types/compras.types";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/lib/constants";
 import { AutographType, Coleccion } from "@/components/game/types/game.types";
 
 const Botones: FunctionComponent<BotonesProps> = ({
@@ -43,14 +43,14 @@ const Botones: FunctionComponent<BotonesProps> = ({
                   )
                 )?.toFixed(3)
               )} ${
-                ACCEPTED_TOKENS_AMOY?.find(
+                ACCEPTED_TOKENS?.find(
                   (moneda) =>
                     moneda[2]?.toLowerCase() === articulo?.token?.toLowerCase()
                 )?.[1]
               }`}
             </div>
             <div className="relative w-fit h-fit justify-start items-start flex flex-row gap-1">
-              {ACCEPTED_TOKENS_AMOY.filter((moneda) =>
+              {ACCEPTED_TOKENS.filter((moneda) =>
                 (articulo?.elemento as Catalogo)?.tokenes
                   ?.map((i) => i.toLowerCase())
                   ?.includes(moneda[2]?.toLowerCase())

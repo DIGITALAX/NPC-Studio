@@ -11,7 +11,7 @@ import {
 } from "@lit-protocol/lit-node-client";
 import { cifrarElementos } from "@/lib/helpers/cifrarElementos";
 import { Profile } from "../../../../graphql/generated";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import { PublicClient, createWalletClient, custom } from "viem";
 import AutographMarket from "./../../../../abis/AutographMarket.json";
 import {
@@ -127,7 +127,7 @@ const useCompras = (
       }
 
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -196,7 +196,7 @@ const useCompras = (
       }
 
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -204,7 +204,7 @@ const useCompras = (
         address: AUTOGRAPH_MARKET,
         abi: AutographMarket,
         functionName: "buyTokens",
-        chain: polygonAmoy,
+        chain: polygon,
         args: [
           carrito.compras?.map((com) => com.token),
           carrito.compras?.map(
@@ -255,7 +255,7 @@ const useCompras = (
     setAprobarCargando(true);
     try {
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -322,7 +322,7 @@ const useCompras = (
               },
         ],
         functionName: "approve",
-        chain: polygonAmoy,
+        chain: polygon,
         args: [
           AUTOGRAPH_MARKET,
           Number(

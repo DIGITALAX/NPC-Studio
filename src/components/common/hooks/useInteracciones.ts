@@ -8,7 +8,7 @@ import {
   Quote,
 } from "../../../../graphql/generated";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import lensMirror from "@/lib/helpers/lensMirror";
 import { Indexar } from "../types/common.types";
 import lensMeGusta from "@/lib/helpers/lensMeGusta";
@@ -50,7 +50,7 @@ const useInteracciones = (
 
     try {
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -96,7 +96,7 @@ const useInteracciones = (
 
     try {
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
       await lensMirror(

@@ -3,7 +3,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
 import { Dictionary, DatosOraculos } from "../types/game.types";
 import { Client } from "@xmtp/xmtp-js";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import {
   getAuthenticationToken,
   isAuthExpired,
@@ -42,7 +42,7 @@ const useAccount = (
     try {
       const clientWallet = createWalletClient({
         account: address,
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 

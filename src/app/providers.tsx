@@ -4,7 +4,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { polygon, polygonAmoy } from "wagmi/chains";
+import { polygon } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { Indexar, Notificacion } from "@/components/common/types/common.types";
@@ -16,11 +16,11 @@ import { LitNodeClient } from "@lit-protocol/lit-node-client";
 const config = getDefaultConfig({
   appName: "NPC Studio",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-  chains: [polygon, polygonAmoy],
+  chains: [polygon],
   transports: {
-    [polygonAmoy.id]: http(
-      `https://polygon-amoy.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_AMOY_KEY}`
-    ),
+    // [polygonAmoy.id]: http(
+    //   `https://polygon-amoy.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_AMOY_KEY}`
+    // ),
     [polygon.id]: http(
       `https://polygon.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
     ),

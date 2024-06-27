@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Mezcla as MezclaTipo, MezclaProps } from "../types/compras.types";
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS_AMOY, INFURA_GATEWAY } from "@/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { AutographType } from "@/components/game/types/game.types";
 
@@ -255,7 +255,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
         </div>
 
         <div className="relative w-fit h-fit items-center sm:justify-start justify-center sm:items-start flex flex-row gap-1">
-          {ACCEPTED_TOKENS_AMOY?.map((moneda: string[], indiceTwo: number) => {
+          {ACCEPTED_TOKENS?.map((moneda: string[], indiceTwo: number) => {
             return (
               <div
                 className={`relative w-7 h-7 rounded-full flex items-center cursor-pointer active:scale-95 ${

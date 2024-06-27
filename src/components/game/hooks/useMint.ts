@@ -7,7 +7,7 @@ import {
 } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
 import { AutographType, Coleccion, Galeria } from "../types/game.types";
-import { polygonAmoy } from "viem/chains";
+import { polygon } from "viem/chains";
 import {
   AUTOGRAPH_COLLECTION,
   AUTOGRAPH_OPEN_ACTION,
@@ -207,7 +207,7 @@ const useMint = (
       );
 
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -216,7 +216,7 @@ const useMint = (
           address: AUTOGRAPH_COLLECTION,
           abi: AutographCollection,
           functionName: "addCollections",
-          chain: polygonAmoy,
+          chain: polygon,
           args: [
             {
               languages: colecciones
@@ -272,7 +272,7 @@ const useMint = (
           address: AUTOGRAPH_COLLECTION,
           abi: AutographCollection,
           functionName: "createGallery",
-          chain: polygonAmoy,
+          chain: polygon,
           args: [
             {
               languages: colecciones
@@ -363,7 +363,7 @@ const useMint = (
     setCargandoBorrar([true]);
     try {
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -371,7 +371,7 @@ const useMint = (
         address: AUTOGRAPH_COLLECTION,
         abi: AutographCollection,
         functionName: "deleteCollection",
-        chain: polygonAmoy,
+        chain: polygon,
         args: [coleccionActual.coleccionId, coleccionActual.galeriaId],
         account: address,
       });
@@ -425,7 +425,7 @@ const useMint = (
     });
     try {
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 
@@ -433,7 +433,7 @@ const useMint = (
         address: AUTOGRAPH_COLLECTION,
         abi: AutographCollection,
         functionName: "deleteGallery",
-        chain: polygonAmoy,
+        chain: polygon,
         args: [galeriaId],
         account: address,
       });
@@ -533,7 +533,7 @@ const useMint = (
       );
 
       const clientWallet = createWalletClient({
-        chain: polygonAmoy,
+        chain: polygon,
         transport: custom((window as any).ethereum),
       });
 

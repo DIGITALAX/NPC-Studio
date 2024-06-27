@@ -1,8 +1,4 @@
-import {
-  ACCEPTED_TOKENS_AMOY,
-  INFURA_GATEWAY,
-  numberToAutograph,
-} from "@/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { Pedido, PedidosProps } from "../types/game.types";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -26,7 +22,7 @@ function Pedidos({
   setMensaje,
   mensaje,
   address,
-  mensajeRef
+  mensajeRef,
 }: PedidosProps) {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start overflow-y-scroll bg-black gap-8 p-4">
@@ -297,7 +293,7 @@ function Pedidos({
                                       <div className="relative flex items-center w-7 h-7 rounded-full  justify-center">
                                         <Image
                                           src={`${INFURA_GATEWAY}/ipfs/${
-                                            ACCEPTED_TOKENS_AMOY?.find(
+                                            ACCEPTED_TOKENS?.find(
                                               (tok) =>
                                                 tok[2].toLocaleLowerCase() ==
                                                 subOrder?.currency?.toLowerCase()
