@@ -25,7 +25,7 @@
     "new": "Nueva Colección",
     "amount": "Cantidad",
     "price": "Precio",
-    "tokens": "Tokenes Aceptados",
+    "tokens": "Tokens Aceptados",
     "tags": "Etiquetas",
     "npcL": "Idiomas de NPCs",
     "add": "Añada Colección",
@@ -82,7 +82,8 @@
     "mensajes": "Mensajes",
     "regresar": "Regrese",
     "NoMensaje": "Aún, No Hay Mensajes Aquí.",
-    "campos": "Asegúrese de que complete todos los campos antes de mintear."
+    "campos": "Asegúrese de que complete todos los campos antes de mintear.",
+    "idi": "Primero, Elija Sus NPCs."
   },
   "Nav": {
     "lan": "Elija Idioma"

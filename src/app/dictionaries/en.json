@@ -82,7 +82,8 @@
     "mensajes": "Messages",
     "regresar": "Back",
     "NoMensaje": "No Messages Here Yet.",
-    "campos": "Make sure to fill out all fields before minting."
+    "campos": "Make sure to fill out all fields before minting.",
+    "idi": "First, Choose Your NPCs."
   },
   "Nav": {
     "lan": "Choose Language"

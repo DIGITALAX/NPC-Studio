@@ -85,10 +85,11 @@ function Process({
                 className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1"
                 onClick={
                   esArtista
-                    ? () => setMint(3)
-                    : isConnected
-                    ? () => setMostrarNotificacion(Notificacion.Diseñador)
-                    : openConnectModal
+                    ?
+                  () => setMint(3)
+                  : isConnected
+                  ? () => setMostrarNotificacion(Notificacion.Diseñador)
+                  : openConnectModal
                 }
               >
                 {dict.Home.mint}
@@ -201,7 +202,10 @@ function Process({
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     if (!cargandoBorrar[indice])
-                                      borrarGaleria(Number(gal.galleryId), indice);
+                                      borrarGaleria(
+                                        Number(gal.galleryId),
+                                        indice
+                                      );
                                   }}
                                 >
                                   <div
@@ -709,16 +713,48 @@ function Process({
                             setColeccionActual((prev) => ({
                               ...prev,
                               npcs,
+                              npcIdiomas: coleccionActual.npcIdiomas
+                                ?.split(",")
+                                .filter(Boolean)
+                                ?.filter((idi) =>
+                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                    ?.filter((s) =>
+                                      npcs
+                                        ?.split(",")
+                                        ?.filter(Boolean)
+                                        ?.includes(s.key)
+                                    )
+                                    ?.flatMap((i) => i.idiomas)
+                                    ?.includes(idi)
+                                )
+                                .join(","),
                             }));
 
                             setDropDown((prev) => ({
                               ...prev,
                               npcsTexto: npcs,
+                              idiomasTexto: coleccionActual.npcIdiomas
+                              ?.split(",")
+                              .filter(Boolean)
+                              ?.filter((idi) =>
+                                SCENE_LIST.flatMap((s) => s.sprites)
+                                  ?.filter((s) =>
+                                    npcs
+                                      ?.split(",")
+                                      ?.filter(Boolean)
+                                      ?.includes(s.key)
+                                  )
+                                  ?.flatMap((i) => i.idiomas)
+                                  ?.includes(idi)
+                              )
+                              .join(","),
                             }));
                           }}
                         />
                         <DropDown
                           disabled={coleccionActual?.galeriaId ? true : false}
+                          idiomas
+                          dict={dict}
                           valores={IDIOMAS.filter((id) => {
                             if (
                               (id.key
@@ -747,7 +783,17 @@ function Process({
                             ) {
                               return id;
                             }
-                          })}
+                          })?.filter((idi) =>
+                            SCENE_LIST.flatMap((s) => s.sprites)
+                              ?.filter((s) =>
+                                coleccionActual?.npcs
+                                  ?.split(",")
+                                  ?.filter(Boolean)
+                                  ?.includes(s.key)
+                              )
+                              ?.flatMap((i) => i.idiomas)
+                              ?.includes(idi.key)
+                          )}
                           titulo={dict.Home.npcL}
                           valor={dropDown.idiomasTexto || ""}
                           manejarCambio={(e: ChangeEvent) => {
@@ -762,6 +808,17 @@ function Process({
                                 .split(",")
                                 .filter((valor) =>
                                   valor.toLowerCase().includes(searchTerm)
+                                )
+                                ?.filter((idi) =>
+                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                    ?.filter((s) =>
+                                      coleccionActual?.npcs
+                                        ?.split(",")
+                                        ?.filter(Boolean)
+                                        ?.includes(s.key)
+                                    )
+                                    ?.flatMap((i) => i.idiomas)
+                                    ?.includes(idi)
                                 )
                                 .join(","),
                             }));
@@ -853,7 +910,6 @@ function Process({
                                   borrarColeccion();
                                 }
                               } else {
-         
                                 setColecciones((prev) => {
                                   const exists = prev.some(
                                     (item) => item.id === coleccionActual.id

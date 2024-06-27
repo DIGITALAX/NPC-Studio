@@ -36,6 +36,8 @@ export type DropDownProps = {
   valores: { cover: string; key: string }[];
   manejarElegir: (e: string) => void;
   disabled: boolean;
+  idiomas?: boolean
+  dict?: Dictionary
 };
 
 export type ErrorProps = {

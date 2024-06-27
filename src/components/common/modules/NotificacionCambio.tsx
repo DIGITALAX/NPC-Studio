@@ -82,7 +82,7 @@ function NotificacionCambio({
             value={mensaje}
           ></textarea>
           <div
-            className={`relative flex items-center justify-center bg-offNegro w-16 text-xs rounded-md border border-ligero text-ligero h-8 ${
+            className={`relative flex items-center justify-center bg-offNegro w-20 h-10 text-xs rounded-md border border-ligero text-ligero ${
               !mensajeCargando && "cursor-pointer active:scale-95"
             }`}
             onClick={() => !mensajeCargando && manejarEnviarMensaje()}

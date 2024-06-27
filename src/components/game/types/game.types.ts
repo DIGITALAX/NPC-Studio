@@ -369,6 +369,7 @@ export type Dictionary = {
   Home: {
     title: string;
     NoMensaje: string;
+    idi: string;
     onChain: string;
     nada: string;
     tx: string;
