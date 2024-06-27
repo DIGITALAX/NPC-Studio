@@ -107,19 +107,19 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.escena?.fondo.etiqueta!,
         `${INFURA_GATEWAY}/ipfs/${this.escena?.fondo.uri}`
       );
-      this.escena?.objetos.forEach((obj) => {
+      this.escena?.objetos?.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
-      this.escena?.interactivos.forEach((obj) => {
+      this.escena?.interactivos?.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
-      this.escena?.sillas.forEach((obj) => {
+      this.escena?.sillas?.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
-      this.escena?.profundidad.forEach((obj) => {
+      this.escena?.profundidad?.forEach((obj) => {
         this.load.image(obj.etiqueta, `${INFURA_GATEWAY}/ipfs/${obj.uri}`);
       });
-      this.escena?.sprites.forEach((sprite) => {
+      this.escena?.sprites?.forEach((sprite) => {
         this.load.spritesheet(
           sprite.etiqueta,
           `${INFURA_GATEWAY}/ipfs/${sprite.uri}`,
@@ -167,7 +167,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       let sillas: Seat[] = [];
       let profundidad: (Articulo & { image: Phaser.GameObjects.Image })[] = [];
 
-      this.escena.objetos.forEach((obj) => {
+      this.escena.objetos?.forEach((obj) => {
         this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
@@ -182,7 +182,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           );
       });
 
-      this.escena.profundidad.forEach((obj) => {
+      this.escena.profundidad?.forEach((obj) => {
         const item = this.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
@@ -197,7 +197,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
-      this.escena.interactivos.forEach((obj) => {
+      this.escena.interactivos?.forEach((obj) => {
         const interactivo = this.physics.add
           .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
           .setOrigin(0.5, 0.5)
@@ -230,7 +230,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
-      this.escena.sillas.forEach((silla) => {
+      this.escena.sillas?.forEach((silla) => {
         const item = this.add
           .image(silla.sitio.x, silla.sitio.y, silla.etiqueta)
           .setOrigin(0.5, 0.5)
@@ -270,7 +270,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.input.on("pointerdown", () => {
         this.game.canvas.style.cursor = "grab";
         this.cameras.main.stopFollow();
-        Object.values(this.npcs).forEach((npc) => {
+        Object.values(this.npcs)?.forEach((npc) => {
           npc.stopCameraFollow();
         });
         this.events.emit("grab");
@@ -291,7 +291,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.game.canvas.style.cursor = "default";
       });
 
-      this.escena.sprites.forEach((sprite) => {
+      this.escena.sprites?.forEach((sprite) => {
         this.npcs[sprite.etiqueta] = new RandomWalkerNPC(
           this,
           sprite,
@@ -325,7 +325,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.escena?.clave &&
       this.socket.readyState == WebSocket.OPEN
     ) {
-      Object.values(this.npcs).forEach((npc) => npc.update());
+      Object.values(this.npcs)?.forEach((npc) => npc.update());
 
       if (
         Object.values(this.npcs).every((npc) => npc.camino?.length < 20) &&
@@ -363,7 +363,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   }
 
   setCameraTarget(chosenNpc: string) {
-    Object.values(this.npcs).forEach((npc) => {
+    Object.values(this.npcs)?.forEach((npc) => {
       if (chosenNpc === npc.texture.key) {
         npc.makeCameraFollow();
       }
@@ -375,7 +375,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   }
 
   destruir() {
-    Object.values(this.npcs).forEach((npc) => {
+    Object.values(this.npcs)?.forEach((npc) => {
       npc.stop();
       npc.destroy();
     });
