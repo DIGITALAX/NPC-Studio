@@ -26,8 +26,8 @@ const Scene: FunctionComponent<SceneProps> = ({
           </div>
         </div>
         <div className="relative w-full h-fit p-4 items-start justify-between flex flex-col gap-10 xl:order-2 order-1">
-          <div className="relative w-full h-fit flex items-start justify-start overflow-x-scroll">
-            <div className="relative w-fit h-fit flex items-start justify-start gap-4">
+        <div className="relative w-full h-fit flex items-start justify-start overflow-x-auto">
+        <div className="relative scroll-container h-fit flex items-start justify-start gap-4">
               {SCENE_LIST?.find((es) => es?.key == escena)!?.sprites.map(
                 (
                   sprite: {
