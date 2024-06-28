@@ -67,6 +67,12 @@ export const SCENE_LIST: {
         address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
         idiomas: ["ع", "us", "es"],
       },
+      {
+        key: "Ethan",
+        cover: "QmRJe57Z48CXSi5n952a5gJsqHeyQLej8NEgt34nm7uX9H",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
     ],
   },
   {
@@ -90,6 +96,18 @@ export const SCENE_LIST: {
         key: "Suri",
         cover: "Qmd6JDDg7C6WVcjqL6MmmfEbjNW4ZjLGeGJsvzRYPy8SBQ",
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Carlos",
+        cover: "QmWvDJ4LasewR1xL7KUE6nTSuHCjemH2MYZ5n215LxYUxc",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Bruno",
+        cover: "QmPJWpz8WoiaHECbtaUMJCzWoyvKnGpAYNyfivHDvCx83v",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
         idiomas: ["ع", "us", "es"],
       },
     ],
@@ -117,6 +135,12 @@ export const SCENE_LIST: {
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
         idiomas: ["ع", "us", "es"],
       },
+      {
+        key: "Luca",
+        cover: "QmcP8dNu5nQomXugLdi4JX9MkrUpiGED17Xi9arb7BY1Tu",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
     ],
   },
   {
@@ -140,6 +164,12 @@ export const SCENE_LIST: {
         key: "Sophia",
         cover: "QmdiDhhh43hgQTtM2st2WEiLeA5FfEcK7rmiCaWTj5STN6",
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Hana",
+        cover: "QmSaPNWyUg66cCpxLXmH9zUkiGny1oRhVkGjYDHGMRS7aa",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
         idiomas: ["ع", "us", "es"],
       },
     ],
@@ -167,6 +197,12 @@ export const SCENE_LIST: {
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
         idiomas: ["ع", "us", "es"],
       },
+      {
+        key: "Leila",
+        cover: "QmUKY1ggLv96zZd4biQAcao9ATgdHRJwVczy79JoN9Yj2t",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
     ],
   },
   {
@@ -192,6 +228,12 @@ export const SCENE_LIST: {
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
         idiomas: ["ع", "us", "es"],
       },
+      {
+        key: "Johan",
+        cover: "QmTenjfSkubgHViE7niuydW3WU5edS11Dg52mfEg3aPZar",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
     ],
   },
   {
@@ -211,6 +253,24 @@ export const SCENE_LIST: {
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
         idiomas: ["ع", "us", "es"],
       },
+      {
+        key: "Xander",
+        cover: "QmXmbDMMTE6AP4VgKgyZRLBbQuGKd7mapsg65praaTA28i",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Felix",
+        cover: "QmRyy64v2qboYZYVbK2x99KM2i5PgFdDiSCCwS5CopqqRT",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Zaid",
+        cover: "QmaVPG2gbi9xn1YchwZYMJ1CG85qXSf2DJZb8D9o27K5uS",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
     ],
   },
   {
@@ -228,6 +288,24 @@ export const SCENE_LIST: {
         key: "Mia",
         cover: "QmZXAwJJ881tkEXo44dBSkvyF7EFVMQPnPGGGrMdTKRU7p",
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Gabriel",
+        cover: "QmTCBXgfaCfuSGk856U9jJ4bzvUEXSuSrXdubfAokANsEH",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Zane",
+        cover: "QmWV48sZfC3FwYDpeRkRU9A7PjrZ3crdvCvYUvg7D4azgZ",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
+        idiomas: ["ع", "us", "es"],
+      },
+      {
+        key: "Wendy",
+        cover: "Qme9j8B6UtQ8jpEf5Xmdn17dX37Rzyy1jTGFBSA5QoYG5F",
+        address: "0x6Ca4c8d959c28a2c53e33DE41763626E6070af7b",
         idiomas: ["ع", "us", "es"],
       },
     ],
