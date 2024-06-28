@@ -18,6 +18,7 @@ import generateChallenge from "../../../../graphql/lens/queries/challenge";
 import authenticate from "../../../../graphql/lens/mutations/authenticate";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
 import { getOracleData } from "../../../../graphql/autograph/queries/getOracleData";
+import getInvites from "../../../../graphql/lens/queries/invitados";
 
 const useAccount = (
   isConnected: boolean,

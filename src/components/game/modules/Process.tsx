@@ -85,11 +85,10 @@ function Process({
                 className="relative w-fit h-fit flex items-center justify-center bg-offNegro border border-dorado rounded-sm cursor-pointer active:scale-95 px-1.5 py-1"
                 onClick={
                   esArtista
-                    ?
-                  () => setMint(3)
-                  : isConnected
-                  ? () => setMostrarNotificacion(Notificacion.Diseñador)
-                  : openConnectModal
+                    ? () => setMint(3)
+                    : isConnected
+                    ? () => setMostrarNotificacion(Notificacion.Diseñador)
+                    : openConnectModal
                 }
               >
                 {dict.Home.mint}
@@ -396,7 +395,7 @@ function Process({
                         </div>
                       </div>
                       <div
-                        className="relative w-full h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs"
+                        className="relative w-full h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs whitespace-nowrap"
                         onClick={() => {
                           if (!mintCargando) {
                             setColeccionActual({
@@ -734,20 +733,20 @@ function Process({
                               ...prev,
                               npcsTexto: npcs,
                               idiomasTexto: coleccionActual.npcIdiomas
-                              ?.split(",")
-                              .filter(Boolean)
-                              ?.filter((idi) =>
-                                SCENE_LIST.flatMap((s) => s.sprites)
-                                  ?.filter((s) =>
-                                    npcs
-                                      ?.split(",")
-                                      ?.filter(Boolean)
-                                      ?.includes(s.key)
-                                  )
-                                  ?.flatMap((i) => i.idiomas)
-                                  ?.includes(idi)
-                              )
-                              .join(","),
+                                ?.split(",")
+                                .filter(Boolean)
+                                ?.filter((idi) =>
+                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                    ?.filter((s) =>
+                                      npcs
+                                        ?.split(",")
+                                        ?.filter(Boolean)
+                                        ?.includes(s.key)
+                                    )
+                                    ?.flatMap((i) => i.idiomas)
+                                    ?.includes(idi)
+                                )
+                                .join(","),
                             }));
                           }}
                         />

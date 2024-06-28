@@ -314,6 +314,32 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.scene.resume();
       });
 
+
+      // this.escena.prohibido?.forEach((obstacle) => {
+      //   let color = Phaser.Display.Color.RandomRGB();
+      //   let hexColor = Phaser.Display.Color.GetColor(
+      //     color.red,
+      //     color.green,
+      //     color.blue
+      //   );
+
+      //   let topLeftX = obstacle.x;
+      //   let topLeftY = obstacle.y;
+
+      //   let graphics = this.add.graphics({ fillStyle: { color: hexColor }, });
+
+
+      //   graphics.fillRect(topLeftX, topLeftY, obstacle.anchura, obstacle.altura);
+      //   graphics.lineStyle(2, 0x000000).setDepth(10000);
+      //   graphics.strokeRect(
+      //     topLeftX,
+      //     topLeftY,
+      //     obstacle.anchura,
+      //     obstacle.altura
+      //   );
+      // });
+
+
       this.load.reset();
     }
   }

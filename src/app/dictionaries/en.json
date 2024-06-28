@@ -43,7 +43,7 @@
     "añadido": "Minted! Your collection has been added successfully.",
     "coleccionEliminada": "Your collection has been successfully removed from the gallery.",
     "creado": "Minted! Your gallery has been stored on-chain.",
-    "galeriaEliminada": "Your collection has been deleted from the chain.",
+    "galeriaEliminada": "Your gallery has been deleted from the chain.",
     "success": "Interaction Successful",
     "indexing": "Indexing Interaction",
     "error": "Something Went Wrong Indexing Your Interaction. Try Again?",
