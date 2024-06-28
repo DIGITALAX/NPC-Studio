@@ -197,38 +197,38 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
-      this.escena.interactivos?.forEach((obj) => {
-        const interactivo = this.physics.add
-          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-          .setOrigin(0.5, 0.5)
-          .setSize(obj.talla.x, obj.talla.y)
-          .setScale(obj.escala.x, obj.escala.y)
-          .setDisplaySize(obj.talla.x, obj.talla.y)
-          .setDepth(obj.sitio.y);
-        interactivo.setInteractive();
-        interactivo.on("pointerdown", () => {
-          !this.estadoDePantalla &&
-            this.setManejarMostrarArticulo({
-              etiqueta: obj.etiqueta,
-              disenador: obj.disenador,
-              tipo: obj.tipo,
-            });
-        });
-        interactivo.on("pointerover", () => {
-          this.game.canvas.style.cursor = "pointer";
-        });
-        interactivo.on("pointerout", () => {
-          this.game.canvas.style.cursor = "default";
-        });
-        this.tweens.add({
-          targets: interactivo,
-          y: interactivo.y + 20,
-          yoyo: true,
-          repeat: -1,
-          duration: 1000,
-          ease: "Sine.easeInOut",
-        });
-      });
+      // this.escena.interactivos?.forEach((obj) => {
+      //   const interactivo = this.physics.add
+      //     .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
+      //     .setOrigin(0.5, 0.5)
+      //     .setSize(obj.talla.x, obj.talla.y)
+      //     .setScale(obj.escala.x, obj.escala.y)
+      //     .setDisplaySize(obj.talla.x, obj.talla.y)
+      //     .setDepth(obj.sitio.y);
+      //   interactivo.setInteractive();
+      //   interactivo.on("pointerdown", () => {
+      //     !this.estadoDePantalla &&
+      //       this.setManejarMostrarArticulo({
+      //         etiqueta: obj.etiqueta,
+      //         disenador: obj.disenador,
+      //         tipo: obj.tipo,
+      //       });
+      //   });
+      //   interactivo.on("pointerover", () => {
+      //     this.game.canvas.style.cursor = "pointer";
+      //   });
+      //   interactivo.on("pointerout", () => {
+      //     this.game.canvas.style.cursor = "default";
+      //   });
+      //   this.tweens.add({
+      //     targets: interactivo,
+      //     y: interactivo.y + 20,
+      //     yoyo: true,
+      //     repeat: -1,
+      //     duration: 1000,
+      //     ease: "Sine.easeInOut",
+      //   });
+      // });
 
       this.escena.sillas?.forEach((silla) => {
         const item = this.add
