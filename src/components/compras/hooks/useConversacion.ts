@@ -1,6 +1,6 @@
-import { Conversation, DecodedMessage, Client } from "@xmtp/xmtp-js";
+import {  DecodedMessage, Client } from "@xmtp/xmtp-js";
 import { useEffect, useRef, useState } from "react";
-import { ImageSet, Profile } from "../../../../graphql/generated";
+import {  Profile } from "../../../../graphql/generated";
 import { DIGITALAX_ADDRESS } from "@/lib/constants";
 import { createWalletClient, custom } from "viem";
 import { polygon } from "viem/chains";

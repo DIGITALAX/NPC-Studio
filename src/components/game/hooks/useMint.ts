@@ -40,6 +40,7 @@ const useMint = (
   const [mintCargando, setMintCargando] = useState<boolean>(false);
   const [cargandoGalerias, setCargandoGalerias] = useState<boolean>(false);
   const [cargandoBorrar, setCargandoBorrar] = useState<boolean[]>([]);
+  const [indiceImagen, setIndiceImagen] = useState<number>(0);
   const [todasLasGalerias, setTodasLasGalerias] = useState<Galeria[]>([]);
   const [colecciones, setColecciones] = useState<Coleccion[]>([]);
   const [mostrarGalerias, setMostrarGalerias] = useState<boolean>(false);
@@ -61,6 +62,7 @@ const useMint = (
   const [coleccionActual, setColeccionActual] = useState<Coleccion>({
     imagen: "",
     cantidad: 1,
+    imagenes: Array.from({length: 3}, () => ""),
     tokenes: [],
     precio: 0,
     id: 0,
@@ -126,6 +128,7 @@ const useMint = (
                 npcInstrucciones: col.collectionMetadata.instructions,
                 npcs: col.collectionMetadata.npcs,
                 profile: undefined,
+                imagenes: col.collectionMetadata.images,
                 profileIds: [],
                 pubIds: [],
               };
@@ -182,6 +185,24 @@ const useMint = (
             const res = await imagen.json();
             image = "ipfs://" + res?.cid;
           }
+          let images: string[] = [];
+          if (col.imagenes?.length > 0) {
+            await Promise.all(
+              col.imagenes?.map(async (im) => {
+                if (!im.includes("ipfs://")) {
+                  const imagen = await fetch(`/api/ipfs`, {
+                    method: "POST",
+                    body: convertirArchivo(im, "image/png"),
+                  });
+                  const res = await imagen.json();
+
+                  images.push("ipfs://" + res?.cid);
+                } else {
+                  images.push(im);
+                }
+              })
+            );
+          }
 
           const response = await fetch("/api/ipfs", {
             method: "POST",
@@ -194,6 +215,7 @@ const useMint = (
               tags: col.etiquetas,
               npcs: col.npcs,
               image,
+              images,
               tipo: col.tipo,
               locales: col.npcIdiomas,
               instructions: col.npcInstrucciones,
@@ -334,6 +356,7 @@ const useMint = (
         profile: lensConectado,
         profileIds: [],
         pubIds: [],
+        imagenes: Array.from({length: 3}, () => ""),
       });
       setDropDown({
         npcsAbiertos: false,
@@ -387,6 +410,7 @@ const useMint = (
       );
       setColeccionActual({
         imagen: "",
+        imagenes: Array.from({length: 3}, () => ""),
         cantidad: 1,
         tokenes: [],
         precio: 0,
@@ -411,6 +435,7 @@ const useMint = (
         npcsTexto: "",
         idiomasTexto: "",
       });
+      setIndiceImagen(0);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -455,14 +480,32 @@ const useMint = (
     });
   };
 
-  const manejarArchivo = (e: ChangeEvent<HTMLInputElement>): void => {
+  const manejarArchivo = (
+    e: ChangeEvent<HTMLInputElement>,
+    indice?: number
+  ): void => {
     const file = e.target?.files?.[0];
     if (file) {
       const reader = new FileReader();
+
       reader.onload = (e) => {
+        let objeto: Object = {};
+        if (indice || indice == 0) {
+          let imagenes: string[] = coleccionActual.imagenes;
+
+          imagenes[indice] = e.target?.result as string;
+
+          objeto = {
+            imagenes,
+          };
+        } else {
+          objeto = {
+            imagen: e.target?.result as string,
+          };
+        }
         setColeccionActual((prev) => ({
           ...prev,
-          imagen: e.target?.result as string,
+          ...objeto,
         }));
       };
 
@@ -615,6 +658,7 @@ const useMint = (
               profileIds: [],
               pubIds: [],
               profile: lensConectado,
+              imagenes: Array.from({length: 3}, () => ""),
             });
           }
         }
@@ -660,6 +704,8 @@ const useMint = (
     elementoTexto,
     descripcion,
     setDescripcion,
+    indiceImagen,
+    setIndiceImagen,
   };
 };
 

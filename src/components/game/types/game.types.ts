@@ -82,13 +82,15 @@ export type ProcessProps = {
   mintCargando: boolean;
   esArtista: boolean;
   cargandoBorrar: boolean[];
+  indiceImagen: number;
+  setIndiceImagen: (e: SetStateAction<number>) => void;
   setColecciones: (e: SetStateAction<Coleccion[]>) => void;
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   colecciones: Coleccion[];
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
-  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>, indice?: number) => void;
   setConectarPub: (e: SetStateAction<boolean>) => void;
   dropDown: {
     npcsAbiertos: boolean;
@@ -486,7 +488,7 @@ export type PantallaCambioProps = {
   setMostrarGalerias: (e: SetStateAction<boolean>) => void;
   manejarAhorrar: () => Promise<void>;
   ahorrarCargando: boolean;
-  manejarArchivo: (e: ChangeEvent<HTMLInputElement>) => void;
+  manejarArchivo: (e: ChangeEvent<HTMLInputElement>, indice?: number) => void;
   setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
@@ -524,6 +526,8 @@ export type PantallaCambioProps = {
   manejarDescifrar: (indice: number) => Promise<void>;
   descifrarCargando: boolean[];
   pedidoAbierto: boolean[];
+  indiceImagen: number;
+  setIndiceImagen: (e: SetStateAction<number>) => void;
   setPedidoAbierto: (e: SetStateAction<boolean[]>) => void;
 };
 
@@ -536,6 +540,7 @@ export interface Galeria {
 export interface Coleccion {
   galeria: string;
   imagen: string;
+  imagenes: string[];
   id: number;
   cantidad: number;
   tokenes: `0x${string}`[];

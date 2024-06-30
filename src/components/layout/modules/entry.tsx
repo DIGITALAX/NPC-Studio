@@ -95,6 +95,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     descripcion,
     cargandoConexion,
     setDescripcion,
+    indiceImagen,
+    setIndiceImagen,
   } = useMint(
     context?.setMint!,
     publicClient,
@@ -143,6 +145,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         >
           <PantallaCambio
             npc={npc}
+            indiceImagen={indiceImagen}
+            setIndiceImagen={setIndiceImagen}
             pedidoAbierto={pedidoAbierto}
             setPedidoAbierto={setPedidoAbierto}
             setConectarPub={setConectarPub}

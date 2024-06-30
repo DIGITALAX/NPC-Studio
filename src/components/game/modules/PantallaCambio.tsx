@@ -46,6 +46,8 @@ function PantallaCambio({
   manejarDescifrar,
   descifrarCargando,
   pedidoAbierto,
+  setIndiceImagen,
+  indiceImagen,
   setPedidoAbierto,
 }: PantallaCambioProps) {
   const context = useContext(ModalContext);
@@ -65,6 +67,8 @@ function PantallaCambio({
     case 1:
       return (
         <Process
+          setIndiceImagen={setIndiceImagen}
+          indiceImagen={indiceImagen}
           setConectarPub={setConectarPub}
           borrarColeccion={borrarColeccion}
           borrarGaleria={borrarGaleria}

@@ -11,6 +11,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import DropDown from "@/components/common/modules/DropDown";
 import { ChangeEvent } from "react";
 import { Notificacion } from "@/components/common/types/common.types";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function Process({
   mint,
@@ -39,6 +40,8 @@ function Process({
   cargandoBorrar,
   setConectarPub,
   ahorrarCargando,
+  indiceImagen,
+  setIndiceImagen,
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -160,7 +163,7 @@ function Process({
                               className="relative w-60 h-52 border border-brillo rounded-sm flex items-center justify-center cursor-pointer bg-offNegro hover:opacity-80"
                               onClick={() => {
                                 setColecciones(gal.colecciones);
-
+                                setIndiceImagen(0);
                                 setColeccionActual({
                                   imagen: "",
                                   cantidad: 1,
@@ -175,6 +178,7 @@ function Process({
                                   npcInstrucciones: "",
                                   npcs: "",
                                   galeria: gal.colecciones?.[0]?.galeria || "",
+                                  imagenes: Array.from({length: 3}, () => ""),
                                   tokenesMinteados: [],
                                   profile: undefined,
                                   profileIds: [],
@@ -248,6 +252,7 @@ function Process({
                                 npcsTexto: "",
                                 idiomasTexto: "",
                               });
+                              setIndiceImagen(0);
                               setColeccionActual({
                                 imagen: "",
                                 cantidad: 1,
@@ -266,6 +271,7 @@ function Process({
                                 profile: undefined,
                                 profileIds: [],
                                 pubIds: [],
+                                imagenes: Array.from({length: 3}, () => ""),
                               });
                             }
                           }}
@@ -398,6 +404,7 @@ function Process({
                         className="relative w-full h-fit flex items-center justify-center bg-morado border border-white rounded-sm cursor-pointer active:scale-95 px-1.5 py-1 font-arc text-white text-xs whitespace-nowrap"
                         onClick={() => {
                           if (!mintCargando) {
+                            setIndiceImagen(0);
                             setColeccionActual({
                               imagen: "",
                               cantidad: 1,
@@ -410,6 +417,7 @@ function Process({
                               etiquetas: "",
                               npcIdiomas: "",
                               npcInstrucciones: "",
+                              imagenes: Array.from({length: 3}, () => ""),
                               npcs: "",
                               galeria:
                                 coleccionActual?.galeria?.trim() !== ""
@@ -456,11 +464,37 @@ function Process({
                           id="pfp"
                         >
                           <div className="relative w-full h-full flex items-center justify-center rounded-sm">
-                            {coleccionActual?.imagen && (
+                            {(coleccionActual?.tipo !== AutographType.NFT &&
+                            indiceImagen !== 0
+                              ? coleccionActual?.imagenes?.[indiceImagen - 1]
+                              : coleccionActual.imagen) && (
                               <Image
                                 layout="fill"
+                                key={
+                                  coleccionActual?.tipo !== AutographType.NFT &&
+                                  indiceImagen !== 0
+                                    ? coleccionActual?.imagenes?.[
+                                        indiceImagen - 1
+                                      ]
+                                    : coleccionActual.imagen
+                                }
                                 src={
-                                  coleccionActual.imagen?.includes("ipfs://")
+                                  coleccionActual?.tipo !== AutographType.NFT &&
+                                  indiceImagen !== 0
+                                    ? coleccionActual?.imagenes?.[
+                                        indiceImagen - 1
+                                      ]?.includes("ipfs://")
+                                      ? `${INFURA_GATEWAY}/ipfs/${
+                                          coleccionActual?.imagenes?.[
+                                            indiceImagen - 1
+                                          ]?.split("ipfs://")?.[1]
+                                        }`
+                                      : coleccionActual?.imagenes?.[
+                                          indiceImagen - 1
+                                        ]
+                                    : coleccionActual.imagen?.includes(
+                                        "ipfs://"
+                                      )
                                     ? `${INFURA_GATEWAY}/ipfs/${
                                         coleccionActual.imagen?.split(
                                           "ipfs://"
@@ -482,9 +516,50 @@ function Process({
                               accept={"image/png, image/gif"}
                               multiple={false}
                               onChange={(e) =>
-                                e?.target?.files?.[0] && manejarArchivo(e)
+                                e?.target?.files?.[0] &&
+                                manejarArchivo(
+                                  e,
+                                  indiceImagen > 0 &&
+                                    coleccionActual?.tipo !== AutographType.NFT
+                                    ? indiceImagen - 1
+                                    : undefined
+                                )
                               }
                             />
+                            {coleccionActual?.tipo !== AutographType.NFT && (
+                              <div className="absolute w-full hit left-0 bottom-2 items-center justify-center flex flex-row gap-2">
+                                <div
+                                  className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95 rounded-full bg-black border-white"
+                                  onClick={(e) => {
+                                    e.stopPropagation;
+                                    e.preventDefault();
+                                    setIndiceImagen(
+                                      indiceImagen > 0 ? indiceImagen - 1 : 3
+                                    );
+                                  }}
+                                >
+                                  <FaArrowAltCircleLeft
+                                    size={20}
+                                    color="white"
+                                  />
+                                </div>
+                                <div
+                                  className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95 rounded-full bg-black border-white"
+                                  onClick={(e) => {
+                                    e.stopPropagation;
+                                    e.preventDefault();
+                                    setIndiceImagen(
+                                      indiceImagen < 3 ? indiceImagen + 1 : 0
+                                    );
+                                  }}
+                                >
+                                  <FaArrowAltCircleRight
+                                    size={20}
+                                    color="white"
+                                  />
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </label>
                         <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1">
@@ -931,7 +1006,7 @@ function Process({
                                   idiomasTexto: "",
                                   tiposAbiertos: false,
                                 });
-
+                                setIndiceImagen(0);
                                 setColeccionActual({
                                   imagen: "",
                                   cantidad: 1,
@@ -953,6 +1028,7 @@ function Process({
                                   profile: undefined,
                                   profileIds: [],
                                   pubIds: [],
+                                  imagenes: Array.from({length: 3}, () => ""),
                                 });
                               }
                             }}
