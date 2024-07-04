@@ -4,12 +4,23 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { polygon } from "wagmi/chains";
+import { polygon, polygonAmoy } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { Indexar, Notificacion } from "@/components/common/types/common.types";
-import { OpenActionModule, Profile, Quote } from "../../graphql/generated";
-import { DatosOraculos } from "@/components/game/types/game.types";
+import {
+  Comment,
+  Mirror,
+  OpenActionModule,
+  Post,
+  Profile,
+  Quote,
+  SimpleCollectOpenActionSettings,
+} from "../../graphql/generated";
+import {
+  ComentarPublicar,
+  DatosOraculos,
+} from "@/components/game/types/game.types";
 import { Compra } from "@/components/compras/types/compras.types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 
@@ -48,16 +59,18 @@ export const ModalContext = createContext<
       setIndexar: (e: SetStateAction<Indexar>) => void;
       errorInteraccion: boolean;
       setErrorInteraccion: (e: SetStateAction<boolean>) => void;
-      abrirCita: Quote | undefined;
+      abrirCita: Quote | Post | Comment | Mirror | undefined;
       cliente: LitNodeClient;
-      setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+      setAbrirCita: (
+        e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+      ) => void;
       seguirColeccionar:
         | {
             tipo: string;
             collecionar: {
               id: string;
               stats: number;
-              item: OpenActionModule;
+              item: SimpleCollectOpenActionSettings;
             };
             seguidor: Profile;
           }
@@ -69,7 +82,7 @@ export const ModalContext = createContext<
               collecionar: {
                 id: string;
                 stats: number;
-                item: OpenActionModule;
+                item: SimpleCollectOpenActionSettings;
               };
               seguidor: Profile;
             }
@@ -98,6 +111,8 @@ export const ModalContext = createContext<
           abierto: boolean;
         }>
       ) => void;
+      comentarPublicar: ComentarPublicar[];
+      setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
     }
   | undefined
 >(undefined);
@@ -110,6 +125,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [mostrarNotificacion, setMostrarNotificacion] = useState<Notificacion>(
     Notificacion.Inactivo
   );
+  const [comentarPublicar, setComentarPublicar] = useState<ComentarPublicar[]>([
+    {
+      contenido: "",
+      imagenes: [],
+      videos: [],
+      gifs: [],
+    },
+  ]);
   const [lensConectado, setLensConectado] = useState<Profile | undefined>();
   const [oraculos, setOraculos] = useState<DatosOraculos[]>([]);
   const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
@@ -130,14 +153,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     compras: [],
     abierto: false,
   });
-  const [abrirCita, setAbrirCita] = useState<Quote | undefined>();
+  const [abrirCita, setAbrirCita] = useState<
+    Quote | Post | Comment | Mirror | undefined
+  >();
   const [seguirColeccionar, setSeguirColeccionar] = useState<
     | {
         tipo: string;
         collecionar: {
           id: string;
           stats: number;
-          item: OpenActionModule;
+          item: SimpleCollectOpenActionSettings;
         };
         seguidor: Profile;
       }
@@ -155,6 +180,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setMint,
                 verImagen,
                 setVerImagen,
+                setComentarPublicar,
+                comentarPublicar,
                 pantalla,
                 setPantalla,
                 esArtista,

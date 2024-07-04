@@ -1,7 +1,8 @@
 import { OpenActionModuleInput } from "../../../graphql/generated";
 
 const limpiarColeccion = (
-  openActionModules: OpenActionModuleInput[]
+  openActionModules: OpenActionModuleInput[],
+  address: `0x${string}`
 ): OpenActionModuleInput[] => {
   if (openActionModules && openActionModules.length > 0) {
     const firstModule = openActionModules[0];
@@ -20,11 +21,20 @@ const limpiarColeccion = (
     }
 
     let simpleCollect = firstModule.collectOpenAction?.simpleCollectOpenAction;
-    if (simpleCollect && simpleCollect.hasOwnProperty('amount')) {
+    if (simpleCollect && simpleCollect.hasOwnProperty("amount")) {
       const amount = simpleCollect.amount;
-      if (!amount?.value || !amount?.currency || parseFloat(amount?.value || '') <= 0) {
+      if (
+        !amount?.value ||
+        !amount?.currency ||
+        parseFloat(amount?.value || "") <= 0
+      ) {
         const { amount, ...restOfSimpleCollect } = simpleCollect;
         simpleCollect = restOfSimpleCollect;
+      } else {
+        simpleCollect = {
+          ...simpleCollect,
+          recipient: address
+        };
       }
     }
     if (firstModule.collectOpenAction) {

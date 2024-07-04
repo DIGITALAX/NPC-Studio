@@ -20,7 +20,12 @@ const Chat: FunctionComponent<ChatProps> = ({
   setAbrirCita,
   setSeguirColeccionar,
   setVerImagen,
-
+  setOpcionAbierta,
+  comentarPublicar,
+  setComentarPublicar,
+  
+  setCarrito,
+  setMostrarNotificacion,
 }): JSX.Element => {
   const {
     feedCargando,
@@ -40,6 +45,7 @@ const Chat: FunctionComponent<ChatProps> = ({
     manejarMeGusta,
     manejarMirror,
     manejarColeccionar,
+    manejarAccionAbierta,
   } = useInteracciones(
     lensConectado,
     setErrorInteraccion,
@@ -47,26 +53,35 @@ const Chat: FunctionComponent<ChatProps> = ({
     setFeedActual,
     address,
     publicClient,
-    setIndexar
+    setIndexar,
+    setCarrito,
+    setMostrarNotificacion
   );
   const {
     contenedorMensajesRef,
     setPerfilesAbiertos,
     setMencionarPerfiles,
     setCaretCoord,
-    setComentarPublicar,
     perfilesAbiertos,
     caretCoord,
-    comentarPublicar,
     mencionarPerfiles,
     publicacionCargando,
     manejarPublicar,
-  } = useDialog(address, publicClient, setIndexar, setErrorInteraccion, escena);
+    manejarArchivo,
+  } = useDialog(
+    address,
+    publicClient,
+    setIndexar,
+    setErrorInteraccion,
+    escena,
+    comentarPublicar,
+    setComentarPublicar
+  );
   const elementoTexto = useRef(null);
   return (
     <div
       className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 max-w-full text-white break-all gap-6 ${
-        open ? "h-96 overflow-y-scroll" : "h-80 max-h-full"
+        open ? "h-96 overflow-y-scroll" : "h-[33rem] xl:h-80 max-h-full"
       }`}
       ref={contenedorMensajesRef}
     >
@@ -93,17 +108,20 @@ const Chat: FunctionComponent<ChatProps> = ({
                 (elemento: Post | Quote | Mirror | Comment, indice: number) => {
                   return (
                     <Publicacion
+                      
+                      setOpcionAbierta={setOpcionAbierta}
                       key={indice}
                       setCaretCoord={setCaretCoord}
                       caretCoord={caretCoord}
                       indice={indice + 1}
                       dict={dict}
+                      manejarAccionAbierta={manejarAccionAbierta}
                       publicacion={elemento}
                       comentariosAbiertos={comentariosAbiertos}
                       setComentariosAbiertos={setComentariosAbiertos}
                       abrirMirrorEleccion={abrirMirrorEleccion}
                       setAbrirMirrorEleccion={setAbrirMirrorEleccion}
-                      cargandoInteracciones={cargandoInteracciones[indice + 1]}
+                      cargandoInteracciones={cargandoInteracciones[indice]}
                       setAbrirCita={setAbrirCita}
                       manejarMeGusta={manejarMeGusta}
                       manejarMirror={manejarMirror}
@@ -119,6 +137,7 @@ const Chat: FunctionComponent<ChatProps> = ({
                       mencionarPerfiles={mencionarPerfiles}
                       lensConectado={lensConectado}
                       setVerImagen={setVerImagen}
+                      manejarArchivo={manejarArchivo}
                     />
                   );
                 }
@@ -126,6 +145,7 @@ const Chat: FunctionComponent<ChatProps> = ({
         </InfiniteScroll>
       </div>
       <Comentario
+        setOpcionAbierta={setOpcionAbierta}
         elementoTexto={elementoTexto}
         caretCoord={caretCoord}
         setCaretCoord={setCaretCoord}
@@ -136,6 +156,7 @@ const Chat: FunctionComponent<ChatProps> = ({
         publicacionCargando={publicacionCargando[0]}
         manejarPublicar={manejarPublicar}
         dict={dict}
+        manejarArchivo={manejarArchivo}
         mencionarPerfiles={mencionarPerfiles}
         perfilesAbiertos={perfilesAbiertos}
         comentarPublicar={comentarPublicar}

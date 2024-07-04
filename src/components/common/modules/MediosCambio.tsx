@@ -10,6 +10,7 @@ const MediosCambio: FunctionComponent<MediosCambioProps> = ({
   classNameVideo,
   classNameImagen,
   classNameAudio,
+  ola,
 }): JSX.Element => {
   const [videoInfo, setVideoInfo] = useState<{
     cargando: boolean;
@@ -27,6 +28,14 @@ const MediosCambio: FunctionComponent<MediosCambioProps> = ({
       return (
         <>
           <div id={fuenteUrl} style={classNameVideo}>
+            <video
+              muted={!ola}
+              autoPlay={!ola}
+              loop={!ola}
+              style={classNameVideo}
+            >
+              <source src={fuenteUrl} />
+            </video>
             {/* <KinoraPlayerWrapper
               parentId={srcUrl}
               key={srcUrl}
@@ -81,35 +90,37 @@ const MediosCambio: FunctionComponent<MediosCambioProps> = ({
               )}
             </KinoraPlayerWrapper> */}
           </div>
-          <Ola
-            audio={fuenteUrl}
-            tipo={"video"}
-            clave={fuenteUrl}
-            video={fuenteUrl}
-            manejarVideoPausado={() =>
-              setVideoInfo((prev) => {
-                return {
+          {ola && (
+            <Ola
+              audio={fuenteUrl}
+              tipo={"video"}
+              clave={fuenteUrl}
+              video={fuenteUrl}
+              manejarVideoPausado={() =>
+                setVideoInfo((prev) => {
+                  return {
+                    ...prev,
+                    isPlaying: false,
+                  };
+                })
+              }
+              manejarVideoEmpezado={() =>
+                setVideoInfo((prev) => {
+                  return {
+                    ...prev,
+                    isPlaying: true,
+                  };
+                })
+              }
+              manejarVideoBuscado={(e) =>
+                setVideoInfo((prev) => ({
                   ...prev,
-                  isPlaying: false,
-                };
-              })
-            }
-            manejarVideoEmpezado={() =>
-              setVideoInfo((prev) => {
-                return {
-                  ...prev,
-                  isPlaying: true,
-                };
-              })
-            }
-            manejarVideoBuscado={(e) =>
-              setVideoInfo((prev) => ({
-                ...prev,
-                currentTime: e,
-              }))
-            }
-            informacionVideo={videoInfo}
-          />
+                  currentTime: e,
+                }))
+              }
+              informacionVideo={videoInfo}
+            />
+          )}
         </>
       );
 

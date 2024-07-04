@@ -57,6 +57,7 @@ const Medios: FunctionComponent<MediosProps> = ({
                     <div className="relative w-full h-full flex rounded-sm items-center justify-center">
                       {media?.url && (
                         <MediosCambio
+                          ola
                           tipo={media?.type}
                           fuenteUrl={media?.url}
                           fuenteFondo={media?.cover}

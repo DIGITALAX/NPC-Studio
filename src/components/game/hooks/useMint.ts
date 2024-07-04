@@ -62,9 +62,10 @@ const useMint = (
   const [coleccionActual, setColeccionActual] = useState<Coleccion>({
     imagen: "",
     cantidad: 1,
-    imagenes: Array.from({length: 3}, () => ""),
+    imagenes: Array.from({ length: 3 }, () => ""),
     tokenes: [],
     precio: 0,
+    colors: ["black", "white"],
     id: 0,
     tipo: "NFT" as any,
     titulo: "",
@@ -131,6 +132,7 @@ const useMint = (
                 imagenes: col.collectionMetadata.images,
                 profileIds: [],
                 pubIds: [],
+                colors: col.collectionMetadata.colors,
               };
             })
           );
@@ -176,6 +178,7 @@ const useMint = (
           ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
         ).map(async (col: Coleccion, indice: number) => {
+  
           let image = col.imagen;
           if (!image.includes("ipfs://")) {
             const imagen = await fetch(`/api/ipfs`, {
@@ -186,7 +189,7 @@ const useMint = (
             image = "ipfs://" + res?.cid;
           }
           let images: string[] = [];
-          if (col.imagenes?.length > 0) {
+          if (col.imagenes?.filter((c) => c.trim() !== "")?.length > 0) {
             await Promise.all(
               col.imagenes?.map(async (im) => {
                 if (!im.includes("ipfs://")) {
@@ -352,11 +355,12 @@ const useMint = (
         npcs: "",
         galeria: "",
         id: 0,
+        colors: ["black", "white"],
         tokenesMinteados: [],
         profile: lensConectado,
         profileIds: [],
         pubIds: [],
-        imagenes: Array.from({length: 3}, () => ""),
+        imagenes: Array.from({ length: 3 }, () => ""),
       });
       setDropDown({
         npcsAbiertos: false,
@@ -410,11 +414,12 @@ const useMint = (
       );
       setColeccionActual({
         imagen: "",
-        imagenes: Array.from({length: 3}, () => ""),
+        imagenes: Array.from({ length: 3 }, () => ""),
         cantidad: 1,
         tokenes: [],
         precio: 0,
         id: 0,
+        colors: ["black", "white"],
         tipo: "NFT" as any,
         titulo: "",
         descripcion: "",
@@ -649,6 +654,7 @@ const useMint = (
               tipo: "NFT" as any,
               titulo: "",
               descripcion: "",
+              colors: ["black", "white"],
               etiquetas: "",
               npcIdiomas: "",
               npcInstrucciones: "",
@@ -658,7 +664,7 @@ const useMint = (
               profileIds: [],
               pubIds: [],
               profile: lensConectado,
-              imagenes: Array.from({length: 3}, () => ""),
+              imagenes: Array.from({ length: 3 }, () => ""),
             });
           }
         }

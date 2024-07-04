@@ -1,4 +1,4 @@
-import { SetStateAction, useRef, useState } from "react";
+import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { ComentarPublicar } from "../types/game.types";
 import { Profile } from "../../../../graphql/generated";
 import { PublicClient, createWalletClient, custom } from "viem";
@@ -12,7 +12,9 @@ const useDialog = (
   publicClient: PublicClient,
   setIndexar: (e: SetStateAction<Indexar>) => void,
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
-  sceneKey: string
+  sceneKey: string,
+  comentarPublicar: ComentarPublicar[],
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void
 ) => {
   const contenedorMensajesRef = useRef<HTMLDivElement | null>(null);
   const [caretCoord, setCaretCoord] = useState<
@@ -23,16 +25,14 @@ const useDialog = (
   >([]);
   const [perfilesAbiertos, setPerfilesAbiertos] = useState<boolean[]>([]);
   const [mencionarPerfiles, setMencionarPerfiles] = useState<Profile[]>([]);
-  const [comentarPublicar, setComentarPublicar] = useState<ComentarPublicar[]>(
-    []
-  );
   const [publicacionCargando, setPublicacionCargando] = useState<boolean[]>([]);
 
   const manejarPublicar = async (indice: number, comentarioId?: string) => {
+
     if (
-      !comentarPublicar[0]?.contenido &&
-      !comentarPublicar[0]?.imagenes &&
-      !comentarPublicar[0]?.videos
+      !comentarPublicar[indice]?.contenido &&
+      !comentarPublicar[indice]?.imagenes &&
+      !comentarPublicar[indice]?.videos
     )
       return;
     setPublicacionCargando((prev) => {
@@ -42,12 +42,12 @@ const useDialog = (
     });
     try {
       const contentURI = await subirContenido(
-        comentarPublicar[0]?.contenido?.trim() == ""
+        comentarPublicar[indice]?.contenido?.trim() == ""
           ? " "
-          : comentarPublicar[0]?.contenido,
-        comentarPublicar[0]?.imagenes || [],
-        comentarPublicar[0]?.videos || [],
-        comentarPublicar[0].gifs || [],
+          : comentarPublicar[indice]?.contenido,
+        comentarPublicar[indice]?.imagenes || [],
+        comentarPublicar[indice]?.videos || [],
+        comentarPublicar[indice].gifs || [],
         sceneKey
       );
 
@@ -58,11 +58,11 @@ const useDialog = (
 
       await publicarLens(
         contentURI!,
-        comentarPublicar[0].coleccionar
+        comentarPublicar[indice]?.coleccionar
           ? [
               {
                 collectOpenAction: {
-                  simpleCollectOpenAction: comentarPublicar[0].coleccionar,
+                  simpleCollectOpenAction: comentarPublicar[indice]?.coleccionar,
                 },
               },
             ]
@@ -80,14 +80,16 @@ const useDialog = (
           }),
         comentarioId
       );
-      setComentarPublicar([
-        {
+      setComentarPublicar((prev) => {
+        const arr = [...prev];
+        arr[indice] = {
           contenido: "",
           imagenes: [],
           videos: [],
           gifs: [],
-        },
-      ]);
+        };
+        return arr;
+      });
     } catch (err: any) {
       if (
         !err?.messages?.includes("Block at number") &&
@@ -110,18 +112,63 @@ const useDialog = (
     });
   };
 
+  const manejarArchivo = (
+    e: ChangeEvent<HTMLInputElement>,
+    tipo: string,
+    indice: number
+  ): void => {
+
+    const file = e.target?.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        let objeto: Object = {};
+
+        if (tipo == "video") {
+          const nuevosVideos = [...(comentarPublicar?.[indice]?.videos || [])];
+          nuevosVideos.push(e.target?.result as string);
+          objeto = {
+            videos: nuevosVideos,
+          };
+        } else {
+          const nuevasImagenes = [
+            ...(comentarPublicar?.[indice]?.imagenes || []),
+          ];
+          nuevasImagenes.push({
+            tipo: "image/png",
+            medios: e.target?.result as string,
+          });
+          objeto = {
+            imagenes: nuevasImagenes,
+          };
+        }
+
+        setComentarPublicar((prev) => {
+          const arr = [...prev];
+          arr[indice] = {
+            ...arr[indice],
+            ...objeto,
+          };
+          return arr;
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   return {
     contenedorMensajesRef,
     setPerfilesAbiertos,
     setMencionarPerfiles,
     setCaretCoord,
-    setComentarPublicar,
     perfilesAbiertos,
     caretCoord,
-    comentarPublicar,
     mencionarPerfiles,
     publicacionCargando,
     manejarPublicar,
+    manejarArchivo,
   };
 };
 

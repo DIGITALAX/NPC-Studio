@@ -9,12 +9,14 @@ import { ChangeEvent, RefObject, SetStateAction } from "react";
 import {
   ArticleMetadataV3,
   Comment,
+  Erc20,
   ImageMetadataV3,
   Mirror,
   OpenActionModule,
   Post,
   Profile,
   Quote,
+  SimpleCollectOpenActionSettings,
   StoryMetadataV3,
   TextOnlyMetadataV3,
   VideoMetadataV3,
@@ -23,7 +25,6 @@ import {
   Catalogo,
   Compra,
   Details,
-  Mezcla,
 } from "@/components/compras/types/compras.types";
 
 export type DropDownProps = {
@@ -36,8 +37,64 @@ export type DropDownProps = {
   valores: { cover: string; key: string }[];
   manejarElegir: (e: string) => void;
   disabled: boolean;
-  idiomas?: boolean
-  dict?: Dictionary
+  idiomas?: boolean;
+  dict?: Dictionary;
+};
+
+export type OpcionAbiertaProps = {
+  dict: Dictionary;
+  gifCargando: boolean;
+  monedasDisponibles: Erc20[];
+  setDrops: (
+    e: SetStateAction<{
+      award: string;
+      whoCollectsOpen: boolean;
+      creatorAwardOpen: boolean;
+      currencyOpen: boolean;
+      editionOpen: boolean;
+      edition: string;
+      timeOpen: boolean;
+      time: string;
+    }>
+  ) => void;
+  drops: {
+    award: string;
+    whoCollectsOpen: boolean;
+    creatorAwardOpen: boolean;
+    currencyOpen: boolean;
+    editionOpen: boolean;
+    edition: string;
+    timeOpen: boolean;
+    time: string;
+  };
+  buscarGifs: {
+    search: string;
+    gifs: any[];
+  };
+  setBuscarGifs: (
+    e: SetStateAction<{
+      search: string;
+      gifs: any[];
+    }>
+  ) => void;
+  manejarGif: (e: string) => Promise<void>;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  opcionAbierta:
+    | {
+        tipo: string;
+        indice: number;
+      }
+    | undefined;
+  comentarPublicar: ComentarPublicar;
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
 };
 
 export type ErrorProps = {
@@ -70,7 +127,8 @@ export enum Notificacion {
   Perfil,
   Comprado,
   Cumplimiento,
-  Campos
+  Campos,
+  Agotado,
 }
 
 export enum Indexar {
@@ -155,6 +213,16 @@ export type PublicacionProps = {
   comentariosAbiertos: boolean[];
   setComentariosAbiertos: (e: SetStateAction<boolean[]>) => void;
   indice: number;
+  manejarAccionAbierta: (e: Post, indice: number) => Promise<void>;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
   abrirMirrorEleccion: boolean[];
   setAbrirMirrorEleccion: (e: SetStateAction<boolean[]>) => void;
   cargandoInteracciones: {
@@ -162,7 +230,9 @@ export type PublicacionProps = {
     espejo: boolean;
     coleccion: boolean;
   };
-  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
   manejarMeGusta: (
     id: string,
     hasReacted: boolean,
@@ -181,7 +251,7 @@ export type PublicacionProps = {
           collecionar: {
             id: string;
             stats: number;
-            item: OpenActionModule;
+            item: SimpleCollectOpenActionSettings;
           };
           seguidor: Profile;
         }
@@ -197,6 +267,11 @@ export type PublicacionProps = {
   comentarPublicar: ComentarPublicar[];
   mencionarPerfiles: Profile[];
   publicacionCargando: boolean;
+  manejarArchivo: (
+    e: ChangeEvent<HTMLInputElement>,
+    tipo: string,
+    indice: number
+  ) => void;
   setVerImagen: (
     e: SetStateAction<{
       abierto: boolean;
@@ -239,6 +314,7 @@ export type MediosCambioProps = {
   classNameVideo?: React.CSSProperties;
   classNameImagen?: string;
   classNameAudio?: string;
+  ola?: boolean;
 };
 
 export type OlaProps = {
@@ -264,6 +340,7 @@ export type CitaProps = {
 
 export type BarProps = {
   indice: number;
+
   elemento: Post | Mirror | Comment | Quote;
   setAbrirMirrorEleccion: (e: SetStateAction<boolean[]>) => void;
   abrirMirrorEleccion: boolean[];
@@ -273,7 +350,9 @@ export type BarProps = {
     coleccion: boolean;
   };
   setComentariosAbiertos: (e: SetStateAction<boolean[]>) => void;
-  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
   manejarMeGusta: (
     id: string,
     hasReacted: boolean,
@@ -285,6 +364,7 @@ export type BarProps = {
     tipo: string,
     indice: number
   ) => Promise<void>;
+  manejarAccionAbierta: (e: Post, indice: number) => Promise<void>;
   setSeguirColeccionar: (
     e: SetStateAction<
       | {
@@ -292,7 +372,7 @@ export type BarProps = {
           collecionar: {
             id: string;
             stats: number;
-            item: OpenActionModule;
+            item: SimpleCollectOpenActionSettings;
           };
           seguidor: Profile;
         }
@@ -312,8 +392,22 @@ export type ComentarioProps = {
     x: number;
     y: number;
   }[];
+  manejarArchivo: (
+    e: ChangeEvent<HTMLInputElement>,
+    tipo: string,
+    indice: number
+  ) => void;
   elementoTexto: RefObject<HTMLTextAreaElement>;
   comentarioId?: string;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
   manejarPublicar: (indice: number, comentarioId?: string) => Promise<void>;
   setCaretCoord: (
     e: SetStateAction<
@@ -372,6 +466,58 @@ export type VerMediosProps = {
 
 export type ModalsProps = {
   dict: Dictionary;
+  aprobar: () => Promise<void>;
+  cargandoColeccion: boolean;
+  aprobado: boolean;
+  manejarColeccionar: () => Promise<void>;
+  seguirColeccionar:
+    | {
+        tipo: string;
+        collecionar: {
+          id: string;
+          stats: number;
+          item: SimpleCollectOpenActionSettings;
+        };
+        seguidor: Profile;
+      }
+    | undefined;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: SimpleCollectOpenActionSettings;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
+  monedasDisponibles: Erc20[];
+  setDrops: (
+    e: SetStateAction<{
+      award: string;
+      whoCollectsOpen: boolean;
+      creatorAwardOpen: boolean;
+      currencyOpen: boolean;
+      editionOpen: boolean;
+      edition: string;
+      timeOpen: boolean;
+      time: string;
+    }>
+  ) => void;
+  drops: {
+    award: string;
+    whoCollectsOpen: boolean;
+    creatorAwardOpen: boolean;
+    currencyOpen: boolean;
+    editionOpen: boolean;
+    edition: string;
+    timeOpen: boolean;
+    time: string;
+  };
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   setVerImagen: (
     e: SetStateAction<{
@@ -391,10 +537,39 @@ export type ModalsProps = {
   manejarEnviarMensaje: () => Promise<void>;
   setMensaje: (e: SetStateAction<string>) => void;
   mensaje: string;
+  gifCargando: boolean;
+  buscarGifs: {
+    search: string;
+    gifs: any[];
+  };
+  setBuscarGifs: (
+    e: SetStateAction<{
+      search: string;
+      gifs: any[];
+    }>
+  ) => void;
+  manejarGif: (e: string) => Promise<void>;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  opcionAbierta:
+    | {
+        tipo: string;
+        indice: number;
+      }
+    | undefined;
   errorInteraccion: boolean;
   indexar: Indexar;
   hacerPublicacion: () => Promise<void>;
   conectarPub: boolean;
+  comentarPublicar: ComentarPublicar[];
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   mostrarNotificacion: Notificacion;
   setConectarPub: (e: SetStateAction<boolean>) => void;
   cargandoConexion: boolean;
@@ -408,6 +583,70 @@ export type ModalsProps = {
   caretCoord: { x: number; y: number }[];
   perfilesAbiertos: boolean[];
   mencionarPerfiles: Profile[];
+  hacerCita: () => Promise<void>;
+  citaCargando: boolean;
+  citaPublicar: ComentarPublicar[];
+  setCitaPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setCitaAbierta: (
+    e: SetStateAction<Post | Comment | Quote | Mirror | undefined>
+  ) => void;
+  citaAbierta: Post | Comment | Quote | Mirror | undefined;
+  setCaretCoordCita: (e: SetStateAction<{ x: number; y: number }[]>) => void;
+  mencionarPerfilesCita: Profile[];
+  manejarArchivoCita: (
+    e: ChangeEvent<HTMLInputElement>,
+    tipo: string,
+    indice: number
+  ) => void;
+  setMencionarPerfilesCita: (e: SetStateAction<Profile[]>) => void;
+  setPerfilesAbiertosCita: (e: SetStateAction<boolean[]>) => void;
+  perfilesAbiertosCita: boolean[];
+  caretCoordCita: { x: number; y: number }[];
+  elementoTextoCita: RefObject<HTMLTextAreaElement>;
+};
+
+export type CitaPubProps = {
+  hacerCita: () => Promise<void>;
+  citaCargando: boolean;
+  citaPublicar: ComentarPublicar;
+  setCitaPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setCitaAbierta: (
+    e: SetStateAction<Post | Comment | Quote | Mirror | undefined>
+  ) => void;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  citaAbierta: Post | Comment | Quote | Mirror | undefined;
+  dict: Dictionary;
+  lensConectado: Profile | undefined;
+  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
+  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
+  perfilesAbiertos: boolean[];
+  caretCoord: {
+    x: number;
+    y: number;
+  }[];
+  manejarArchivo: (
+    e: ChangeEvent<HTMLInputElement>,
+    tipo: string,
+    indice: number
+  ) => void;
+  mencionarPerfiles: Profile[];
+  elementoTexto: RefObject<HTMLTextAreaElement>;
+  setCaretCoord: (
+    e: SetStateAction<
+      {
+        x: number;
+        y: number;
+      }[]
+    >
+  ) => void;
 };
 
 export type PublicacionConectadaProps = {
@@ -426,4 +665,37 @@ export type PublicacionConectadaProps = {
   caretCoord: { x: number; y: number }[];
   perfilesAbiertos: boolean[];
   mencionarPerfiles: Profile[];
+};
+
+export type SeguirProps = {
+  dict: Dictionary;
+  aprobar: () => Promise<void>;
+  cargandoColeccion: boolean;
+  aprobado: boolean;
+  manejarColeccionar: () => Promise<void>;
+  seguirColeccionar:
+    | {
+        tipo: string;
+        collecionar: {
+          id: string;
+          stats: number;
+          item: SimpleCollectOpenActionSettings;
+        };
+        seguidor: Profile;
+      }
+    | undefined;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: SimpleCollectOpenActionSettings;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
 };

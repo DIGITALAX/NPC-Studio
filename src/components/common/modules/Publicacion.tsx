@@ -21,11 +21,13 @@ function Publicacion({
   publicacion,
   dict,
   comentariosAbiertos,
+  manejarArchivo,
   setComentariosAbiertos,
   abrirMirrorEleccion,
   setAbrirMirrorEleccion,
   cargandoInteracciones,
   setAbrirCita,
+  setOpcionAbierta,
   manejarMeGusta,
   manejarMirror,
   manejarColeccionar,
@@ -40,6 +42,8 @@ function Publicacion({
   comentarPublicar,
   setComentarPublicar,
   setVerImagen,
+  
+  manejarAccionAbierta
 }: PublicacionProps) {
   const elementoTexto = useRef(null);
   return (
@@ -108,8 +112,10 @@ function Publicacion({
         <Cita cita={publicacion?.quoteOn as Quote} />
       )}
       <Bar
-        indice={indice}
+        indice={indice - 1}
+        
         elemento={publicacion}
+        manejarAccionAbierta={manejarAccionAbierta}
         abrirMirrorEleccion={abrirMirrorEleccion}
         setAbrirMirrorEleccion={setAbrirMirrorEleccion}
         cargandoInteracciones={cargandoInteracciones}
@@ -120,8 +126,10 @@ function Publicacion({
         manejarColeccionar={manejarColeccionar}
         setSeguirColeccionar={setSeguirColeccionar}
       />
-      {comentariosAbiertos?.[indice] && (
+      {comentariosAbiertos?.[indice - 1] && (
         <Comentario
+          setOpcionAbierta={setOpcionAbierta}
+          manejarArchivo={manejarArchivo}
           caretCoord={caretCoord}
           setCaretCoord={setCaretCoord}
           setPerfilesAbiertos={setPerfilesAbiertos}

@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { OpenActionModule, Post, Profile } from "../../../graphql/generated";
+import { OpenActionModule, Post, Profile, SimpleCollectOpenActionSettings } from "../../../graphql/generated";
 
 const manejarLogicaColeccion = (
   pub: Post,
@@ -14,7 +14,7 @@ const manejarLogicaColeccion = (
       collecionar: {
         id: string;
         stats: number;
-        item: OpenActionModule;
+        item: SimpleCollectOpenActionSettings;
       };
       seguidor: Profile;
     } | undefined>
@@ -39,7 +39,7 @@ const manejarLogicaColeccion = (
         collecionar: {
           id: pub?.id,
           stats: pub.stats.countOpenActions,
-          item: pub?.openActionModules?.[0],
+          item: pub?.openActionModules?.[0] as SimpleCollectOpenActionSettings,
         },
         seguidor: pub?.by,
       })

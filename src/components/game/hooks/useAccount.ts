@@ -11,13 +11,14 @@ import {
   removeAuthenticationToken,
   setAuthenticationToken,
 } from "@/lib/utils";
-import { Profile } from "../../../../graphql/generated";
+import { Erc20, LimitType, Profile } from "../../../../graphql/generated";
 import { Notificacion } from "@/components/common/types/common.types";
 import { useSignMessage } from "wagmi";
 import generateChallenge from "../../../../graphql/lens/queries/challenge";
 import authenticate from "../../../../graphql/lens/mutations/authenticate";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
 import { getOracleData } from "../../../../graphql/autograph/queries/getOracleData";
+import getEnabledCurrencies from "../../../../graphql/lens/queries/enabledCurrencies";
 
 const useAccount = (
   isConnected: boolean,
@@ -33,11 +34,45 @@ const useAccount = (
   setOraculos: (e: SetStateAction<DatosOraculos[]>) => void
 ) => {
   const { signMessageAsync } = useSignMessage();
+  const [monedasDisponibles, setMonedasDisponibles] = useState<Erc20[]>([]);
   const [lensCargando, setLensCargando] = useState<boolean>(false);
   const [mensajeCargando, setMensajeCargando] = useState<boolean>(false);
   const [mensaje, setMensaje] = useState<string>(dict.Home.message);
   const [cliente, setCliente] = useState<Client | undefined>();
-
+  const [gifCargando, setGifCargando] = useState<boolean>(false);
+  const [drops, setDrops] = useState<{
+    award: string;
+    whoCollectsOpen: boolean;
+    creatorAwardOpen: boolean;
+    currencyOpen: boolean;
+    editionOpen: boolean;
+    edition: string;
+    timeOpen: boolean;
+    time: string;
+  }>({
+    award: "No",
+    whoCollectsOpen: false,
+    creatorAwardOpen: false,
+    currencyOpen: false,
+    editionOpen: false,
+    edition: "No",
+    timeOpen: false,
+    time: "No",
+  });
+  const [buscarGifs, setBuscarGifs] = useState<{
+    search: string;
+    gifs: any[];
+  }>({
+    search: "",
+    gifs: [],
+  });
+  const [opcionAbierta, setOpcionAbierta] = useState<
+    | {
+        tipo: string;
+        indice: number;
+      }
+    | undefined
+  >();
   const manejarCliente = async (): Promise<Client | undefined> => {
     try {
       const clientWallet = createWalletClient({
@@ -212,9 +247,47 @@ const useAccount = (
     manejarAutenticicacion();
   }, [isConnected, address]);
 
+  const manejarGif = async (search: string) => {
+    setGifCargando(true);
+    try {
+      const response = await fetch("/api/giphy", {
+        method: "POST",
+        body: JSON.stringify({ query: search }),
+      });
+      const allGifs = await response.json();
+      setBuscarGifs((prev) => ({
+        ...prev,
+        gifs: allGifs?.data?.results,
+      }));
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setGifCargando(false);
+  };
+
   useEffect(() => {
     if (oraculos?.length < 1) {
       manejarOraculos();
+    }
+  }, []);
+
+  const llamarMonedas = async (): Promise<void> => {
+    try {
+      const response = await getEnabledCurrencies({
+        limit: LimitType.TwentyFive,
+      });
+
+      if (response && response.data) {
+        setMonedasDisponibles(response.data.currencies.items);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (monedasDisponibles?.length < 1) {
+      llamarMonedas();
     }
   }, []);
 
@@ -226,6 +299,15 @@ const useAccount = (
     mensajeCargando,
     setMensaje,
     mensaje,
+    opcionAbierta,
+    setOpcionAbierta,
+    manejarGif,
+    buscarGifs,
+    setBuscarGifs,
+    gifCargando,
+    monedasDisponibles,
+    drops,
+    setDrops,
   };
 };
 

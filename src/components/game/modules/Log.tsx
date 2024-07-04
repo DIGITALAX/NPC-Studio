@@ -24,6 +24,12 @@ function Log({
   setAbrirCita,
   setSeguirColeccionar,
   setVerImagen,
+  setOpcionAbierta,
+  setComentarPublicar,
+  comentarPublicar,
+  
+  setCarrito,
+  setMostrarNotificacion,
 }: LogProps) {
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
@@ -116,7 +122,7 @@ function Log({
             )}
           </div>
         </div>
-        <div className="relative w-full h-96 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-col py-1 px-2 gap-3">
+        <div className="relative w-full h-[38rem] xl:h-96 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-col py-1 px-2 gap-3">
           <div className="relative w-full h-fit flex flex-row items-center justify-between">
             <div className="absolute font-at text-3xl text-white items-center justify-center w-fit h-fit flex whitespace-preline text-center leading-5 top-1">
               {dict.Home.chat}
@@ -142,7 +148,11 @@ function Log({
           </div>
           <div className="relative w-full h-full flex items-center justify-center p-1">
             <Chat
+              setOpcionAbierta={setOpcionAbierta}
               setVerImagen={setVerImagen}
+              setCarrito={setCarrito}
+              setMostrarNotificacion={setMostrarNotificacion}
+              
               setSeguirColeccionar={setSeguirColeccionar}
               dict={dict}
               lensConectado={lensConectado}
@@ -152,6 +162,8 @@ function Log({
               setErrorInteraccion={setErrorInteraccion}
               escena={escena}
               setAbrirCita={setAbrirCita}
+              comentarPublicar={comentarPublicar}
+              setComentarPublicar={setComentarPublicar}
             />
           </div>
         </div>

@@ -3,7 +3,7 @@ import Image from "next/legacy/image";
 import { AiOutlineLoading } from "react-icons/ai";
 import { Post, Quote } from "../../../../graphql/generated";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { INFURA_GATEWAY } from "@/lib/constants";
+import { AUTOGRAPH_OPEN_ACTION, INFURA_GATEWAY } from "@/lib/constants";
 import numeral from "numeral";
 import { BarProps } from "../types/common.types";
 import manejarLogicaColeccion from "@/lib/helpers/manejarLogicaColeccion";
@@ -20,6 +20,8 @@ const Bar: FunctionComponent<BarProps> = ({
   manejarMirror,
   manejarColeccionar,
   setSeguirColeccionar,
+  manejarAccionAbierta,
+  
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))
@@ -189,7 +191,7 @@ const Bar: FunctionComponent<BarProps> = ({
       )}
       <div className="relative w-fit h-fit flex flex-row gap-2 items-end sm:items-center justify-center ml-auto">
         <div
-          className="relative flex items-center justify-center rounded-full w-5 h-5 cursor-pointer"
+          className="relative flex items-center justify-center rounded-full w-5 h-5 cursor-pointer border border-white bg-black"
           id="pfp"
         >
           {profilePicture && (
@@ -223,16 +225,29 @@ const Bar: FunctionComponent<BarProps> = ({
             )?.operations?.hasActed?.value &&
             "mix-blend-hard-light hue-rotate-60"
           }`}
-          onClick={() =>
-            manejarLogicaColeccion(
-              (elemento?.__typename === "Mirror"
-                ? elemento?.mirrorOn
-                : (elemento as Post)) as Post,
-              cargandoInteracciones?.coleccion!,
-              indice,
-              manejarColeccionar,
-              setSeguirColeccionar
-            )
+          onClick={async () =>
+            !cargandoInteracciones?.coleccion &&
+            ((elemento?.__typename === "Mirror"
+              ? elemento?.mirrorOn
+              : (elemento as Post)
+            )?.openActionModules?.[0]?.contract?.address
+              ?.toLowerCase()
+              ?.includes(AUTOGRAPH_OPEN_ACTION?.toLowerCase())
+              ? await manejarAccionAbierta(
+                  (elemento?.__typename === "Mirror"
+                    ? elemento?.mirrorOn
+                    : elemento) as Post,
+                  indice
+                )
+              : manejarLogicaColeccion(
+                  (elemento?.__typename === "Mirror"
+                    ? elemento?.mirrorOn
+                    : (elemento as Post)) as Post,
+                  cargandoInteracciones?.coleccion!,
+                  indice,
+                  manejarColeccionar,
+                  setSeguirColeccionar
+                ))
           }
         >
           {cargandoInteracciones?.coleccion ? (

@@ -9,11 +9,21 @@ import VerMedios from "./VerMedios";
 import Error from "./Error";
 import Index from "./Index";
 import PublicacionConectada from "./PublicacionConectada";
+import OpcionAbierta from "./OpcionAbierta";
+import CitaPub from "./CitaPub";
+import Seguir from "./Seguir";
 
 const Modals: FunctionComponent<ModalsProps> = ({
   dict,
+  monedasDisponibles,
   setErrorInteraccion,
+  drops,
+  setDrops,
   setVerImagen,
+  seguirColeccionar,
+  setSeguirColeccionar,
+  setOpcionAbierta,
+  opcionAbierta,
   verImagen,
   coleccionActual,
   setMostrarNotificacion,
@@ -38,6 +48,30 @@ const Modals: FunctionComponent<ModalsProps> = ({
   caretCoord,
   perfilesAbiertos,
   mencionarPerfiles,
+  setComentarPublicar,
+  comentarPublicar,
+  manejarGif,
+  buscarGifs,
+  setBuscarGifs,
+  gifCargando,
+  hacerCita,
+  citaPublicar,
+  setCitaPublicar,
+  setCitaAbierta,
+  citaAbierta,
+  citaCargando,
+  setCaretCoordCita,
+  mencionarPerfilesCita,
+  manejarArchivoCita,
+  setMencionarPerfilesCita,
+  setPerfilesAbiertosCita,
+  perfilesAbiertosCita,
+  caretCoordCita,
+  elementoTextoCita,
+  aprobado,
+  aprobar,
+  cargandoColeccion,
+  manejarColeccionar,
 }): JSX.Element => {
   return (
     <>
@@ -73,6 +107,61 @@ const Modals: FunctionComponent<ModalsProps> = ({
       )}
       {verImagen?.abierto && (
         <VerMedios setVerImagen={setVerImagen!} verImagen={verImagen!} />
+      )}
+
+      {citaAbierta && (
+        <CitaPub
+          dict={dict}
+          setCitaAbierta={setCitaAbierta}
+          hacerCita={hacerCita}
+          citaPublicar={citaPublicar?.[0]}
+          setCitaPublicar={setCitaPublicar}
+          citaCargando={citaCargando}
+          citaAbierta={citaAbierta}
+          setOpcionAbierta={setOpcionAbierta}
+          setCaretCoord={setCaretCoordCita}
+          mencionarPerfiles={mencionarPerfilesCita}
+          manejarArchivo={manejarArchivoCita}
+          setMencionarPerfiles={setMencionarPerfilesCita}
+          setPerfilesAbiertos={setPerfilesAbiertosCita}
+          perfilesAbiertos={perfilesAbiertosCita}
+          caretCoord={caretCoordCita}
+          elementoTexto={elementoTextoCita}
+          lensConectado={lensConectado}
+        />
+      )}
+      {opcionAbierta && (
+        <OpcionAbierta
+          setDrops={setDrops}
+          drops={drops}
+          opcionAbierta={opcionAbierta}
+          setOpcionAbierta={setOpcionAbierta}
+          dict={dict}
+          monedasDisponibles={monedasDisponibles}
+          setComentarPublicar={
+            citaAbierta ? setCitaPublicar : setComentarPublicar
+          }
+          comentarPublicar={
+            citaAbierta
+              ? citaPublicar?.[0]
+              : comentarPublicar?.[opcionAbierta?.indice]
+          }
+          manejarGif={manejarGif}
+          gifCargando={gifCargando}
+          setBuscarGifs={setBuscarGifs}
+          buscarGifs={buscarGifs}
+        />
+      )}
+      {seguirColeccionar && (
+        <Seguir
+          dict={dict}
+          aprobado={aprobado}
+          aprobar={aprobar}
+          manejarColeccionar={manejarColeccionar}
+          cargandoColeccion={cargandoColeccion}
+          seguirColeccionar={seguirColeccionar}
+          setSeguirColeccionar={setSeguirColeccionar}
+        />
       )}
       {indexar !== Indexar.Inactivo && <Index dict={dict} tipo={indexar!} />}
       {errorInteraccion && (

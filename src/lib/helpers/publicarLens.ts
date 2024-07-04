@@ -6,6 +6,7 @@ import {
   CreateOnchainCommentTypedDataMutation,
   CreateOnchainPostTypedDataMutation,
   CreateOnchainCommentEip712TypedDataValue,
+  CreateOnchainQuoteTypedDataMutation,
 } from "../../../graphql/generated";
 import { polygon } from "viem/chains";
 import { PublicClient, WalletClient } from "viem";
@@ -18,6 +19,7 @@ import { SetStateAction } from "react";
 import { Indexar } from "@/components/common/types/common.types";
 import validateMetadata from "../../../graphql/lens/queries/validate";
 import commentPost from "../../../graphql/lens/mutations/comment";
+import quotePost from "../../../graphql/lens/mutations/quote";
 
 const publicarLens = async (
   contentURI: string,
@@ -29,7 +31,8 @@ const publicarLens = async (
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
   setCargando: () => void,
   comentario?: string,
-  creacion?: boolean
+  creacion?: boolean,
+  quote?: boolean
 ): Promise<void> => {
   if (
     openActionModules &&
@@ -39,7 +42,8 @@ const publicarLens = async (
     ) &&
     openActionModules?.[0]?.collectOpenAction?.simpleCollectOpenAction
   ) {
-    openActionModules = limpiarColeccion(openActionModules);
+    openActionModules = limpiarColeccion(openActionModules, address);
+
   } else if (!creacion) {
     openActionModules = [
       {
@@ -62,7 +66,13 @@ const publicarLens = async (
     return;
   }
 
-  const data = comentario
+  const data = quote
+    ? await quotePost({
+        quoteOn: comentario,
+        contentURI: contentURI,
+        openActionModules,
+      })
+    : comentario
     ? await commentPost({
         commentOn: comentario,
         contentURI: contentURI,
@@ -73,7 +83,10 @@ const publicarLens = async (
         openActionModules,
       });
 
-  const typedData = comentario
+  const typedData = quote
+    ? (data?.data as CreateOnchainQuoteTypedDataMutation)
+        ?.createOnchainQuoteTypedData?.typedData
+    : comentario
     ? (data?.data as CreateOnchainCommentTypedDataMutation)
         ?.createOnchainCommentTypedData?.typedData
     : (data?.data as CreateOnchainPostTypedDataMutation)
@@ -82,13 +95,16 @@ const publicarLens = async (
   const signature = await clientWallet.signTypedData({
     domain: omit(typedData?.domain, ["__typename"]),
     types: omit(typedData?.types, ["__typename"]),
-    primaryType: comentario ? "Comment" : ("Post" as any),
+    primaryType: quote ? "Quote" : comentario ? "Comment" : ("Post" as any),
     message: omit(typedData?.value, ["__typename"]) as any,
     account: address as `0x${string}`,
   });
 
   const broadcastResult = await broadcast({
-    id: comentario
+    id: quote
+      ? (data?.data as CreateOnchainQuoteTypedDataMutation)
+          ?.createOnchainQuoteTypedData?.id
+      : comentario
       ? (data?.data as CreateOnchainCommentTypedDataMutation)
           ?.createOnchainCommentTypedData?.id
       : (data?.data as CreateOnchainPostTypedDataMutation)
@@ -110,10 +126,10 @@ const publicarLens = async (
     const { request } = await publicClient.simulateContract({
       address: LENS_HUB_PROXY,
       abi: LensHubProxy,
-      functionName: comentario ? "comment" : "post",
+      functionName: quote ? "quote" : comentario ? "comment" : "post",
       chain: polygon,
       args: [
-        comentario
+        comentario || quote
           ? {
               profileId: typedData?.value.profileId,
               contentURI: typedData?.value.contentURI,

@@ -174,11 +174,12 @@ function Process({
                                   titulo: "",
                                   descripcion: "",
                                   etiquetas: "",
+                                  colors: ["black", "white"],
                                   npcIdiomas: "",
                                   npcInstrucciones: "",
                                   npcs: "",
                                   galeria: gal.colecciones?.[0]?.galeria || "",
-                                  imagenes: Array.from({length: 3}, () => ""),
+                                  imagenes: Array.from({ length: 3 }, () => ""),
                                   tokenesMinteados: [],
                                   profile: undefined,
                                   profileIds: [],
@@ -266,12 +267,13 @@ function Process({
                                 npcIdiomas: "",
                                 npcInstrucciones: "",
                                 npcs: "",
+                                colors: ["black", "white"],
                                 galeria: "",
                                 tokenesMinteados: [],
                                 profile: undefined,
                                 profileIds: [],
                                 pubIds: [],
-                                imagenes: Array.from({length: 3}, () => ""),
+                                imagenes: Array.from({ length: 3 }, () => ""),
                               });
                             }
                           }}
@@ -417,8 +419,9 @@ function Process({
                               etiquetas: "",
                               npcIdiomas: "",
                               npcInstrucciones: "",
-                              imagenes: Array.from({length: 3}, () => ""),
+                              imagenes: Array.from({ length: 3 }, () => ""),
                               npcs: "",
+                              colors: ["black", "white"],
                               galeria:
                                 coleccionActual?.galeria?.trim() !== ""
                                   ? coleccionActual?.galeria
@@ -1020,6 +1023,7 @@ function Process({
                                   npcIdiomas: "",
                                   npcInstrucciones: "",
                                   npcs: "",
+                                  colors: ["black", "white"],
                                   galeria:
                                     coleccionActual?.galeria?.trim() !== ""
                                       ? coleccionActual?.galeria
@@ -1028,7 +1032,7 @@ function Process({
                                   profile: undefined,
                                   profileIds: [],
                                   pubIds: [],
-                                  imagenes: Array.from({length: 3}, () => ""),
+                                  imagenes: Array.from({ length: 3 }, () => ""),
                                 });
                               }
                             }}

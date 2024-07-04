@@ -1,4 +1,9 @@
-import { ChangeEvent, MutableRefObject, RefObject, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  MutableRefObject,
+  RefObject,
+  SetStateAction,
+} from "react";
 import Draggable from "react-draggable";
 import { Indexar, Notificacion } from "./../../common/types/common.types";
 import {
@@ -9,6 +14,7 @@ import {
   Profile,
   Quote,
   SimpleCollectOpenActionModuleInput,
+  SimpleCollectOpenActionSettings,
 } from "../../../../graphql/generated";
 import { PublicClient } from "viem";
 import {
@@ -30,7 +36,9 @@ export type LogProps = {
   lensCargando: boolean;
   setDragDialog: (e: SetStateAction<boolean>) => void;
   cargando: boolean;
-  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
   dict: Dictionary;
   setPantalla: (e: SetStateAction<number>) => void;
   address: `0x${string}` | undefined;
@@ -45,6 +53,25 @@ export type LogProps = {
       url: string;
     }>
   ) => void;
+  comentarPublicar: ComentarPublicar[];
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
   setSeguirColeccionar: (
     e: SetStateAction<
       | {
@@ -52,7 +79,7 @@ export type LogProps = {
           collecionar: {
             id: string;
             stats: number;
-            item: OpenActionModule;
+            item: SimpleCollectOpenActionSettings;
           };
           seguidor: Profile;
         }
@@ -142,12 +169,33 @@ export type DialogProps = {
   setDragDialog: (e: SetStateAction<boolean>) => void;
   lensConectado: Profile | undefined;
   dict: Dictionary;
-  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  comentarPublicar: ComentarPublicar[];
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
+
   address: `0x${string}` | undefined;
   publicClient: PublicClient;
   setIndexar: (e: SetStateAction<Indexar>) => void;
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   escena: string;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
   setVerImagen: (
     e: SetStateAction<{
       abierto: boolean;
@@ -162,7 +210,7 @@ export type DialogProps = {
           collecionar: {
             id: string;
             stats: number;
-            item: OpenActionModule;
+            item: SimpleCollectOpenActionSettings;
           };
           seguidor: Profile;
         }
@@ -183,6 +231,17 @@ export type ChatProps = {
       url: string;
     }>
   ) => void;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  comentarPublicar: ComentarPublicar[];
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setSeguirColeccionar: (
     e: SetStateAction<
       | {
@@ -190,7 +249,7 @@ export type ChatProps = {
           collecionar: {
             id: string;
             stats: number;
-            item: OpenActionModule;
+            item: SimpleCollectOpenActionSettings;
           };
           seguidor: Profile;
         }
@@ -201,7 +260,17 @@ export type ChatProps = {
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   escena: string;
   lensConectado: Profile | undefined;
-  setAbrirCita: (e: SetStateAction<Quote | undefined>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
 };
 
 export interface ComentarPublicar {
@@ -370,7 +439,29 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     title: string;
+    yes: string;
+    hr: string;
+    red: string;
+    over: string;
+    fin: string;
+    col: string;
+    who: string;
+    time: string;
+    ago: string;
+    limit: string;
+    edition: string;
+    awardAmount: string;
     NoMensaje: string;
+    award: string;
+    todos: string;
+    seguidor: string;
+    ref: string;
+    moneda: string;
+    buscarGif: string;
+    imagen: string;
+    buscar: string;
+    video: string;
+    collect: string;
     idi: string;
     onChain: string;
     nada: string;
@@ -545,6 +636,7 @@ export interface Coleccion {
   cantidad: number;
   tokenes: `0x${string}`[];
   precio: number;
+  colors: string[];
   tipo: AutographType;
   profile: Profile | undefined;
   titulo: string;
@@ -591,7 +683,7 @@ export type PedidosProps = {
   mensaje: string;
   setMensaje: (e: SetStateAction<string>) => void;
   address: `0x${string}` | undefined;
-  mensajeRef: MutableRefObject<HTMLVideoElement | undefined>
+  mensajeRef: MutableRefObject<HTMLVideoElement | undefined>;
 };
 
 export interface Pedido {
@@ -628,6 +720,6 @@ export type ConversacionProps = {
   conversacion: DecodedMessage<any>[];
   conversacionCargando: boolean;
   address: `0x${string}` | undefined;
-  dict: Dictionary
-  mensajeRef:MutableRefObject<HTMLVideoElement | undefined>
+  dict: Dictionary;
+  mensajeRef: MutableRefObject<HTMLVideoElement | undefined>;
 };

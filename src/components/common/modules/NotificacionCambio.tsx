@@ -28,6 +28,12 @@ function NotificacionCambio({
           {dict.Home.coleccionEliminada}
         </div>
       );
+    case Notificacion.Agotado:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center">
+          {dict.Home.ago}
+        </div>
+      );
     case Notificacion.Creado:
       return (
         <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center">

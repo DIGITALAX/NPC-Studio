@@ -11,6 +11,8 @@ const Dialog: FunctionComponent<DialogProps> = ({
   setDragDialog,
   setIndiceConversacionActual,
   wrapperRef,
+  setComentarPublicar,
+  comentarPublicar,
   lensConectado,
   dict,
   address,
@@ -18,9 +20,13 @@ const Dialog: FunctionComponent<DialogProps> = ({
   setIndexar,
   setErrorInteraccion,
   escena,
+  setOpcionAbierta,
   setAbrirCita,
   setSeguirColeccionar,
-  setVerImagen
+  setVerImagen,
+  
+  setCarrito,
+  setMostrarNotificacion,
 }) => {
   return (
     <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
@@ -31,9 +37,15 @@ const Dialog: FunctionComponent<DialogProps> = ({
           </div>
           <Chat
             open
+            setCarrito={setCarrito}
+            setMostrarNotificacion={setMostrarNotificacion}
+            
             setSeguirColeccionar={setSeguirColeccionar}
             setAbrirCita={setAbrirCita}
             dict={dict}
+            comentarPublicar={comentarPublicar}
+            setComentarPublicar={setComentarPublicar}
+            setOpcionAbierta={setOpcionAbierta}
             setVerImagen={setVerImagen}
             lensConectado={lensConectado}
             address={address}

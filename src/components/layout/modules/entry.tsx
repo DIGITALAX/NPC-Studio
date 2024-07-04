@@ -16,6 +16,7 @@ import { createPublicClient } from "viem";
 import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
+import { Post } from "../../../../graphql/generated";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -41,7 +42,33 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     dragDialog,
     setDragDialog,
     setIndiceConversacionActual,
-  } = useManage();
+    setCitaPublicar,
+    citaCargando,
+    citaPublicar,
+    hacerCita,
+    mencionarPerfilesCita,
+    setCaretCoordCita,
+    setMencionarPerfilesCita,
+    setPerfilesAbiertosCita,
+    manejarArchivoCita,
+    perfilesAbiertosCita,
+    caretCoordCita,
+    elementoTextoCita,
+    aprobado,
+    aprobar,
+    cargandoColeccion,
+    manejarColeccionar,
+  } = useManage(
+    address,
+    publicClient,
+    context?.lensConectado!,
+    context?.setIndexar!,
+    context?.setErrorInteraccion!,
+    context?.abrirCita! as Post,
+    context?.setAbrirCita! as any,
+    context?.seguirColeccionar,
+    context?.setSeguirColeccionar!
+  );
   const {
     lensCargando,
     manejarLens,
@@ -50,6 +77,15 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     mensaje,
     mensajeCargando,
     setMensaje,
+    setOpcionAbierta,
+    opcionAbierta,
+    manejarGif,
+    gifCargando,
+    buscarGifs,
+    setBuscarGifs,
+    monedasDisponibles,
+    drops,
+    setDrops,
   } = useAccountInternal(
     isConnected,
     context?.setEsArtista!,
@@ -120,6 +156,11 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
+          setCarrito={context?.setCarrito!}
+          setMostrarNotificacion={context?.setMostrarNotificacion!}
+          setComentarPublicar={context?.setComentarPublicar!}
+          comentarPublicar={context?.comentarPublicar!}
+          setOpcionAbierta={setOpcionAbierta}
           connected={isConnected}
           lensConectado={context?.lensConectado!}
           manejarSalir={manejarSalir}
@@ -195,6 +236,11 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          setCarrito={context?.setCarrito!}
+          setMostrarNotificacion={context?.setMostrarNotificacion!}
+          setComentarPublicar={context?.setComentarPublicar!}
+          comentarPublicar={context?.comentarPublicar!}
+          setOpcionAbierta={setOpcionAbierta}
           setDragDialog={setDragDialog}
           setErrorInteraccion={context?.setErrorInteraccion!}
           setIndiceConversacionActual={setIndiceConversacionActual}
@@ -212,14 +258,35 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       )}
 
       <Modals
+        aprobado={aprobado}
+        aprobar={aprobar}
+        cargandoColeccion={cargandoColeccion}
+        manejarColeccionar={manejarColeccionar}
+        seguirColeccionar={context?.seguirColeccionar!}
+        setSeguirColeccionar={context?.setSeguirColeccionar!}
+        mencionarPerfilesCita={mencionarPerfilesCita}
+        setCaretCoordCita={setCaretCoordCita}
+        setMencionarPerfilesCita={setMencionarPerfilesCita}
+        setPerfilesAbiertosCita={setPerfilesAbiertosCita}
+        manejarArchivoCita={manejarArchivoCita}
+        perfilesAbiertosCita={perfilesAbiertosCita}
+        caretCoordCita={caretCoordCita}
+        setDrops={setDrops}
+        drops={drops}
+        elementoTextoCita={elementoTextoCita as any}
         setConectarPub={setConectarPub}
+        setComentarPublicar={context?.setComentarPublicar!}
+        comentarPublicar={context?.comentarPublicar!}
         conectarPub={conectarPub}
+        monedasDisponibles={monedasDisponibles}
         hacerPublicacion={hacerPublicacion}
         indexar={context?.indexar!}
         errorInteraccion={context?.errorInteraccion!}
         mostrarNotificacion={context?.mostrarNotificacion!}
         cargandoConexion={cargandoConexion}
         dict={dict}
+        setOpcionAbierta={setOpcionAbierta}
+        opcionAbierta={opcionAbierta}
         setPerfilesAbiertos={setPerfilesAbiertos}
         setMencionarPerfiles={setMencionarPerfiles}
         lensConectado={context?.lensConectado!}
@@ -239,6 +306,16 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         manejarEnviarMensaje={manejarEnviarMensaje}
         setMensaje={setMensaje}
         mensaje={mensaje}
+        manejarGif={manejarGif}
+        gifCargando={gifCargando}
+        buscarGifs={buscarGifs}
+        setBuscarGifs={setBuscarGifs}
+        hacerCita={hacerCita}
+        citaPublicar={citaPublicar}
+        setCitaPublicar={setCitaPublicar}
+        setCitaAbierta={context?.setAbrirCita!}
+        citaAbierta={context?.abrirCita!}
+        citaCargando={citaCargando}
       />
       <Carrito
         setCarrito={context?.setCarrito!}

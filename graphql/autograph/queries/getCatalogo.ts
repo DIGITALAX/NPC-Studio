@@ -46,3 +46,56 @@ export const getCatalogo = async (): Promise<FetchResult | void> => {
     return result;
   }
 };
+
+const CATALOGO_PUBLICACION = gql(
+  `query($pubId: String, $profileId: String) {
+   autographCreateds(first: 1, where: {pubId: $pubId, profileId: $profileId}) {
+    id
+    uri
+    amount
+    price
+    mintedTokens
+    pageCount
+    profileId
+    pubId
+    designer
+    acceptedTokens
+    pages
+    transactionHash
+    blockTimestamp
+    blockNumber
+  }
+  }`
+);
+
+export const getCatalogoPublicacion = async (
+  profileId: string,
+  pubId: string
+): Promise<FetchResult | void> => {
+  let timeoutId: NodeJS.Timeout | undefined;
+  const queryPromise = autographClient.query({
+    query: CATALOGO_PUBLICACION,
+    fetchPolicy: "no-cache",
+    variables: {
+      profileId,
+      pubId,
+    },
+    errorPolicy: "all",
+  });
+
+  const timeoutPromise = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      resolve({ timedOut: true });
+    }, 60000);
+  });
+
+  const result: any = await Promise.race([queryPromise, timeoutPromise]);
+
+  timeoutId && clearTimeout(timeoutId);
+
+  if (result.timedOut) {
+    return;
+  } else {
+    return result;
+  }
+};

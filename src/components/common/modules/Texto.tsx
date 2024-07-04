@@ -8,7 +8,7 @@ const Texto: FunctionComponent<TextoProps> = ({ metadata }): JSX.Element => {
       <div
         className={`relative w-full h-fit max-h-[20rem] font-aust text-left items-start justify-start break-words flex overflow-y-scroll p-3 text-sm whitespace-preline ${
           metadata?.__typename !== "TextOnlyMetadataV3" &&
-          metadata?.content?.length > 200
+          metadata?.content?.length > 150
             ? "bg-rosa text-black"
             : "bg-oscuro text-white"
         }`}
@@ -16,7 +16,7 @@ const Texto: FunctionComponent<TextoProps> = ({ metadata }): JSX.Element => {
           __html: descripcionRegex(
             metadata?.content,
             metadata?.__typename !== "TextOnlyMetadataV3" &&
-              metadata?.content?.length > 200
+              metadata?.content?.length > 150
               ? false
               : true
           ),
