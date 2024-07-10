@@ -56,10 +56,10 @@ export const SCENE_LIST: {
         idiomas: ["ук", "us", "br"],
       },
       {
-        key: "Mila",
-        cover: "QmZa1J3Jxb2rSkNzB6wA2wDHYWqKb9grKA5jLib2dMzYiL",
-        address: "0xBEb2e25c86986dfe84f92134B7b0f89D6C21b37A",
-        idiomas: ["us", "ук", "es", "א"],
+        key: "Anaya",
+        cover: "QmcTk99fd9G4GnPjZLS3UGgMCiNN3ehBk5PxYdH8brXCu4",
+        address: "0x9bBca90ea8F188403fAB15Cd5bad4F9a46f56257",
+        idiomas: ["ع", "us", "es"],
       },
       {
         key: "Carlos",
@@ -218,10 +218,10 @@ export const SCENE_LIST: {
         idiomas: ["us", "es"],
       },
       {
-        key: "Anaya",
-        cover: "QmcTk99fd9G4GnPjZLS3UGgMCiNN3ehBk5PxYdH8brXCu4",
-        address: "0x9bBca90ea8F188403fAB15Cd5bad4F9a46f56257",
-        idiomas: ["ع", "us", "es"],
+        key: "Mila",
+        cover: "QmZa1J3Jxb2rSkNzB6wA2wDHYWqKb9grKA5jLib2dMzYiL",
+        address: "0xBEb2e25c86986dfe84f92134B7b0f89D6C21b37A",
+        idiomas: ["us", "ук", "es", "א"],
       },
       {
         key: "Kostas",

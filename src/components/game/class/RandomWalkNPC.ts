@@ -209,6 +209,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
     let angulo = Math.atan2(dy, dx) * (180 / Math.PI);
     let proximaDireccion: string | null = null;
     if (angulo < 0) angulo += 360;
+
     if (angulo >= 337.5 || angulo < 22.5) {
       proximaDireccion = configurarDireccion(
         this.npc.texture.key,
@@ -250,6 +251,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
         Direccion.DerechaArriba
       );
     }
+
     return proximaDireccion;
   }
 
@@ -373,6 +375,7 @@ export default class RandomWalkerNPC extends Phaser.GameObjects.Sprite {
       frameRate: 3,
       repeat: -1,
     });
+
     this.scene.anims.create({
       key: configurarDireccion(this.npc.texture.key, Direccion.IzquierdaAbajo),
       frames: this.scene.anims.generateFrameNumbers(this.npc.texture.key, {

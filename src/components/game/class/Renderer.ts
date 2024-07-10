@@ -62,7 +62,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         const datos = JSON.parse(evento.data);
         const nombre = datos.nombre;
         const valores = datos.datos;
-
         if (nombre === "configurarEscena") {
           if (valores?.estados) {
             this.escena = valores.escena;
@@ -84,6 +83,8 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           }
         } else if (nombre === this.sceneKey) {
           this.esperandoRespuesta = false;
+
+         
           valores?.forEach((npcData: Estado[]) => {
             if (npcData?.length > 0)
               this.npcs[npcData?.[0].npc_etiqueta].camino.push(...npcData);
@@ -352,6 +353,8 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.socket.readyState == WebSocket.OPEN
     ) {
       Object.values(this.npcs)?.forEach((npc) => npc.update());
+
+
 
       if (
         Object.values(this.npcs).every((npc) => npc.camino?.length < 20) &&
