@@ -295,7 +295,7 @@ export const SCENE_LIST: {
       },
       {
         key: "Liam",
-        cover: "Qmdz9Viu3pHyk3arQn7HxH8kvHaQVCeHV7vvzrg7AeSzHL",
+        cover: "Qme5koGwWhCTUMAPGk6rUg97E7izY11RNgGAUTDgPmVPrH",
         address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
         idiomas: ["ук", "us", "br"],
       },
