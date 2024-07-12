@@ -50,10 +50,10 @@ export const SCENE_LIST: {
     cover: "QmcWnwXob7yRrZg4gUJyqo3Vtsabk8jWL5eL7NEn5HhDe7",
     sprites: [
       {
-        key: "Liam",
-        cover: "Qmdz9Viu3pHyk3arQn7HxH8kvHaQVCeHV7vvzrg7AeSzHL",
-        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
-        idiomas: ["ук", "us", "br"],
+        key: "Gabriel",
+        cover: "QmTCBXgfaCfuSGk856U9jJ4bzvUEXSuSrXdubfAokANsEH",
+        address: "0x87dD364f74f67f1e13126D6Fd9a31b7d78C2cC12",
+        idiomas: ["א", "us", "ук", "د"],
       },
       {
         key: "Anaya",
@@ -294,11 +294,12 @@ export const SCENE_LIST: {
         idiomas: ["es", "us", "ук"],
       },
       {
-        key: "Gabriel",
-        cover: "QmTCBXgfaCfuSGk856U9jJ4bzvUEXSuSrXdubfAokANsEH",
-        address: "0x87dD364f74f67f1e13126D6Fd9a31b7d78C2cC12",
-        idiomas: ["א", "us", "ук", "د"],
+        key: "Liam",
+        cover: "Qmdz9Viu3pHyk3arQn7HxH8kvHaQVCeHV7vvzrg7AeSzHL",
+        address: "0x0eFdFDEe179199E49f03013Bf4a03Ce6540468bd",
+        idiomas: ["ук", "us", "br"],
       },
+
       {
         key: "Zane",
         cover: "QmWV48sZfC3FwYDpeRkRU9A7PjrZ3crdvCvYUvg7D4azgZ",
