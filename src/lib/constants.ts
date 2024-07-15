@@ -142,6 +142,12 @@ export const SCENE_LIST: {
         address: "0x7d6e91A790513CF0Eb9b8b3d8D9315626EB5041E",
         idiomas: ["us", "es"],
       },
+      {
+        key: "Tully",
+        cover: "QmULSjAfYdDsApRYpZeysPgw88Qua66fuJ6tHbAX1qSgCb",
+        address: "0x09148EC531e72Ff24D164b550aEDF48848101879",
+        idiomas: ["us", "br"],
+      },
     ],
   },
   {
