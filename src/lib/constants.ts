@@ -162,10 +162,10 @@ export const SCENE_LIST: {
         idiomas: ["es", "א", "د", "us"],
       },
       {
-        key: "Amira",
-        cover: "QmRcgYCHbTUj9e7dpbhnuPHbGt6pZMHQM9QNWybM9FJ4Mp",
-        address: "0x1f2DbfB6efD6Dfdb9958440bBC1e9ffC8Add3EcA",
-        idiomas: ["ع", "us", "es", "ук", "א"],
+        key: "Zaid",
+        cover: "QmaVPG2gbi9xn1YchwZYMJ1CG85qXSf2DJZb8D9o27K5uS",
+        address: "0x82576a9C2340649A0AC3e1CA26Ea703C8a415dA0",
+        idiomas: ["es", "us", "د", "ع", "br"],
       },
       {
         key: "Sophia",
@@ -274,12 +274,7 @@ export const SCENE_LIST: {
         address: "0x230100B048d019861625D8f60cb54D52730936DB",
         idiomas: ["א", "د"],
       },
-      {
-        key: "Zaid",
-        cover: "QmaVPG2gbi9xn1YchwZYMJ1CG85qXSf2DJZb8D9o27K5uS",
-        address: "0x82576a9C2340649A0AC3e1CA26Ea703C8a415dA0",
-        idiomas: ["es", "us", "د", "ع", "br"],
-      },
+
     ],
   },
   {
