@@ -5,6 +5,7 @@ import { INFURA_GATEWAY } from "@/lib/constants";
 import { AiOutlineLoading } from "react-icons/ai";
 import { ImageSet } from "../../../../graphql/generated";
 import { GiWorld } from "react-icons/gi";
+import descripcionRegex from "@/lib/helpers/descripcionRegex";
 
 const Cuenta: FunctionComponent<CuentaProps> = ({
   dict,
@@ -169,8 +170,12 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
             <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
               {dict.Home.info}
             </div>
-            <div className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline">
-              {npc?.prompt?.personalidad}
+            <div
+              className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
+              dangerouslySetInnerHTML={{
+                __html: descripcionRegex(npc?.prompt?.personalidad, true),
+              }}
+            >
             </div>
           </div>
         </div>
