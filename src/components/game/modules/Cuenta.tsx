@@ -166,7 +166,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
             />
           </div>
           <div className="relative w-full h-fit flex items-start justify-start text-left gap-2 flex-col">
-            <div className="relative text-lg font-bit underline-3 text-amarillo flex">
+            <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
               {dict.Home.info}
             </div>
             <div className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline">
