@@ -55,11 +55,7 @@ const lensSeguir = async (
     ];
   } else {
     const data = await unfollow({
-      unfollow: [
-        {
-          profileId,
-        },
-      ],
+      unfollow: [profileId],
     });
 
     const typedData = data?.data?.createUnfollowTypedData?.typedData;

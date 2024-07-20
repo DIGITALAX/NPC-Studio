@@ -26,10 +26,10 @@ const useCuenta = (
         transport: custom((window as any).ethereum),
       });
 
-      lensSeguir(
+      await lensSeguir(
         true,
         "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1],
-        lensConnected?.id,
+        lensConnected?.ownedBy?.address,
         clientWallet,
         publicClient,
         setIndexar,
@@ -48,11 +48,10 @@ const useCuenta = (
         chain: polygon,
         transport: custom((window as any).ethereum),
       });
-
-      lensSeguir(
+      await lensSeguir(
         false,
         "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1],
-        lensConnected?.id,
+        lensConnected?.ownedBy?.address,
         clientWallet,
         publicClient,
         setIndexar,

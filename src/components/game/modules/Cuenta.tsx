@@ -45,7 +45,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
               }
             />
           )}
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black items-end justify-between flex flex-row gap-4 p-2">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black items-end justify-between flex flex-row gap-4 p-2 sm:flex-nowrap flex-wrap">
             <div
               className={`relative justify-center items-center flex w-24 px-px h-8 font-con rounded-sm text-xxs text-white border border-amarillo bg-black ${
                 !seguirCargando &&
@@ -55,7 +55,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
               onClick={() =>
                 !seguirCargando &&
                 lensConnected?.id &&
-                (perfil?.operations?.isFollowedByMe?.isFinalisedOnchain
+                (perfil?.operations?.isFollowedByMe?.value
                   ? dejarNpc()
                   : seguirNpc())
               }
@@ -67,7 +67,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
               >
                 {seguirCargando ? (
                   <AiOutlineLoading color="white" size={15} />
-                ) : perfil?.operations?.isFollowedByMe?.isFinalisedOnchain ? (
+                ) : perfil?.operations?.isFollowedByMe?.value ? (
                   dict.Home.dejar
                 ) : (
                   dict.Home.seguir
@@ -102,7 +102,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
           </div>
         </div>
         <div className="relative w-full h-fit flex flex-col items-start justify-start gap-1.5">
-          <div className="relative w-full h-fit flex flex-row gap-1.5 items-center justify-between">
+          <div className="relative w-full h-fit flex flex-row gap-1.5 items-center justify-between sm:flex-nowrap flex-wrap">
             <div className="font-bit text-3xl text-viola break-all flex items-center justify-center">
               {perfil?.metadata?.displayName}
             </div>
@@ -110,7 +110,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
               {perfil?.handle?.suggestedFormatted?.localName}
             </div>
           </div>
-          <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row font-con text-xs text-white">
+          <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row font-con text-xs text-white sm:flex-nowrap flex-wrap">
             <div className="relative w-fit h-fit flex items-center justify-center gap-1 flex-row">
               <div className="relative w-fit h-fit flex items-center justify-center">
                 <GiWorld color="white" size={15} />
@@ -156,7 +156,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
         <div className="relative w-full h-fit break-all text-xs text-left items-start justify-start font-con text-white">
           {perfil?.metadata?.bio}
         </div>
-        <div className="relative w-full h-full flex items-start justify-between flex-row gap-3">
+        <div className="relative w-full h-full flex items-start justify-between flex-col sm:flex-row gap-3">
           <div className="relative w-full h-96 flex items-center justify-center">
             <Image
               layout="fill"
