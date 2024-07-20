@@ -23,7 +23,6 @@ const Chat: FunctionComponent<ChatProps> = ({
   setOpcionAbierta,
   comentarPublicar,
   setComentarPublicar,
-  
   setCarrito,
   setMostrarNotificacion,
 }): JSX.Element => {

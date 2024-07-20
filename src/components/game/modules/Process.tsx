@@ -720,7 +720,7 @@ function Process({
                                     ) &&
                                     !coleccionActual.npcs
                                       ?.split(",")
-                                      ?.map((npc) => npc.trim().toLowerCase())
+                                      ?.map((npc) => npc?.trim().toLowerCase())
                                       ?.includes(sprite?.etiqueta.toLowerCase())) ||
                                       escenas.map((col) => col.sprites).filter(
                                     (sprite) =>
@@ -846,7 +846,7 @@ function Process({
                                 ) &&
                                 !coleccionActual.npcIdiomas
                                   ?.split(",")
-                                  ?.map((npc) => npc.trim().toLowerCase())
+                                  ?.map((npc) => npc?.trim().toLowerCase())
                                   ?.includes(id.key.toLowerCase())) ||
                               IDIOMAS.filter(
                                 (i) =>

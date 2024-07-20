@@ -28,7 +28,7 @@ const useCuenta = (
 
       lensSeguir(
         true,
-        "0x0" + npc?.perfil_id.toString(16),
+        "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1],
         lensConnected?.id,
         clientWallet,
         publicClient,
@@ -51,7 +51,7 @@ const useCuenta = (
 
       lensSeguir(
         false,
-        "0x0" + npc?.perfil_id.toString(16),
+        "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1],
         lensConnected?.id,
         clientWallet,
         publicClient,
@@ -69,7 +69,7 @@ const useCuenta = (
     try {
       const datos = await getProfile(
         {
-          forProfileId: "0x0" + npc?.perfil_id?.toString(16),
+          forProfileId: "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1],
         },
         lensConnected?.id
       );

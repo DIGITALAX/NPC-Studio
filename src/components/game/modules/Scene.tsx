@@ -39,7 +39,7 @@ const Scene: FunctionComponent<SceneProps> = ({
               draggable={false}
               className="rounded-sm"
             />
-            {npc && (
+            {npc && escenas?.length > 0 && (
               <Cuenta
                 dict={dict}
                 npc={

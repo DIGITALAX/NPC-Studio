@@ -68,7 +68,6 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.setAbrirCita! as any,
     context?.seguirColeccionar,
     context?.setSeguirColeccionar!,
-    context?.escenas!
   );
   const {
     lensCargando,

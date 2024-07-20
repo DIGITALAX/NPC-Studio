@@ -17,9 +17,9 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
   npcCargando,
 }) => {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-4 py-6 overflow-y-scroll">
+    <div className="relative w-[90%] h-[90%] bg-black/70 flex items-start justify-center px-4 py-6 overflow-y-scroll border border-rosa p-1 rounded-sm">
       <div
-        className={`relative bg-black/70 w-[90%] h-[90%] flex items-center justify-start flex-col gap-3 p-1 border border-rosa rounded-sm ${
+        className={`relative w-full h-fit flex items-center justify-start flex-col gap-3 ${
           npcCargando && "animate-pulse"
         }`}
       >
@@ -157,19 +157,19 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
           {perfil?.metadata?.bio}
         </div>
         <div className="relative w-full h-full flex items-start justify-between flex-row gap-3">
-          <div className="relative w-full h-full flex items-center justify-center">
+          <div className="relative w-full h-96 flex items-center justify-center">
             <Image
               layout="fill"
               objectFit="contain"
               draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/${npc.tapa_dos}`}
+              src={`${INFURA_GATEWAY}/ipfs/${npc?.tapa_dos}`}
             />
           </div>
           <div className="relative w-full h-fit flex items-start justify-start text-left gap-2 flex-col">
             <div className="relative text-lg font-bit underline-3 text-amarillo flex">
               {dict.Home.info}
             </div>
-            <div className="relative text-sm font-con text-white break-words flex overflow-y-scroll">
+            <div className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline">
               {npc?.prompt?.personalidad}
             </div>
           </div>

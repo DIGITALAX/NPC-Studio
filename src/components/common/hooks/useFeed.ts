@@ -192,8 +192,11 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
   };
 
   useEffect(() => {
-    setTieneMasFeed(true);
-    llamarFeed();
+    if (escena) {
+      setTieneMasFeed(true);
+      llamarFeed();
+    }
+
   }, [escena, lensConectado]);
 
   return {

@@ -45,14 +45,11 @@ const useManage = (
           seguidor: Profile;
         }
       | undefined
-  ) => void,
-  escenas: Escena[]
+  ) => void
 ) => {
   const elementoTextoCita = useRef<HTMLTextAreaElement>();
-  const [escena, setEscena] = useState<string>(escenas?.[0]?.clave);
-  const [npc, setNpc] = useState<string | undefined>(
-    escenas?.[0]?.sprites?.[0]?.etiqueta
-  );
+  const [escena, setEscena] = useState<string>("estudio abierto de trabajo");
+  const [npc, setNpc] = useState<string | undefined>("Gabriel");
   const [cargando, setCargando] = useState<boolean>(true);
   const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<{
     etiqueta: string;

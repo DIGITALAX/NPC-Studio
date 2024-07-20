@@ -69,6 +69,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
               valores?.estados?.forEach((estado: Estado[]) => {
                 this.caminosInciales[estado[0]?.npc_etiqueta] = estado;
               });
+
             this.events.emit("npcs", valores?.todoInfo);
             if (
               this.escena &&
