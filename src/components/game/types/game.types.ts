@@ -115,6 +115,7 @@ export type ProcessProps = {
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   colecciones: Coleccion[];
+  escenas: Escena[]
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>, indice?: number) => void;
@@ -144,9 +145,14 @@ export type ProcessProps = {
 export type SceneProps = {
   escena: string;
   dict: Dictionary;
+  escenas: Escena[]
+  lensConnected: Profile | undefined;
   setEscena: (e: SetStateAction<string>) => void;
   npc: string | undefined;
   setNpc: (e: SetStateAction<string | undefined>) => void;
+  publicClient: PublicClient,
+  setIndexar: (e: SetStateAction<Indexar>) => void,
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void
 };
 
 export interface Message {
@@ -416,6 +422,13 @@ export interface Sprite {
   margen: number;
   marco_inicio: number;
   marco_final: number;
+  billetera: string;
+  prompt: {
+    personalidad: string;
+    idiomas: string[];
+  };
+  perfil_id: number;
+  tapa_dos: string;
   escala: {
     x: number;
     y: number;
@@ -441,7 +454,13 @@ export type Dictionary = {
     title: string;
     yes: string;
     hr: string;
+    seguiendo: string;
+    seguidores: string;
+    info: string;
+    dejar: string;
+    seguir: string;
     red: string;
+    pedidos: string;
     over: string;
     fin: string;
     col: string;
@@ -722,4 +741,15 @@ export type ConversacionProps = {
   address: `0x${string}` | undefined;
   dict: Dictionary;
   mensajeRef: MutableRefObject<HTMLVideoElement | undefined>;
+};
+
+export type CuentaProps = {
+  dict: Dictionary;
+  perfil: Profile;
+  npcCargando: boolean;
+  npc: Sprite;
+  seguirNpc: () => Promise<void>;
+  dejarNpc: () => Promise<void>;
+  seguirCargando: boolean;
+  lensConnected: Profile | undefined;
 };

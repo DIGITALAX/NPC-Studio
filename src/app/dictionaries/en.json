@@ -105,7 +105,13 @@
     "awardAmount": "Award amount",
     "award": "Creator award?",
     "ago": "We know you're eager, but you've reached this creations' collect limit!",
-    "col": "Collect"
+    "col": "Collect",
+    "pedidos": "No Orders Yet! The Autograph Quarterly will be live soon to collect!",
+    "seguir": "Follow",
+    "dejar": "Unfollow",
+    "seguiendo": "Following",
+    "seguidores": "Followers",
+    "info": "Prompt Info"
   },
   "Nav": {
     "lan": "Choose Language"

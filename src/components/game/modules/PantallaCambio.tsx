@@ -67,6 +67,7 @@ function PantallaCambio({
     case 1:
       return (
         <Process
+          escenas={context?.escenas}
           setIndiceImagen={setIndiceImagen}
           indiceImagen={indiceImagen}
           setConectarPub={setConectarPub}
@@ -125,6 +126,8 @@ function PantallaCambio({
       return (
         <Studio
           npc={npc}
+          escenas={context?.escenas!}
+          setEscenas={context?.setEscenas!}
           dict={dict}
           escena={escena}
           manejarMostrarArticulo={manejarMostrarArticulo}

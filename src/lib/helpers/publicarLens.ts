@@ -60,7 +60,7 @@ const publicarLens = async (
     rawURI: contentURI,
   });
 
-  if (!metadata?.data?.validatePublicationMetadata.valid) {
+  if (!metadata?.data?.validatePublicationMetadata?.valid) {
     setErrorInteraccion(true);
     setCargando();
     return;

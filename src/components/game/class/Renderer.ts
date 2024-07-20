@@ -69,7 +69,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
               valores?.estados?.forEach((estado: Estado[]) => {
                 this.caminosInciales[estado[0]?.npc_etiqueta] = estado;
               });
-
+            this.events.emit("npcs", valores?.todoInfo);
             if (
               this.escena &&
               this.escena?.clave == this.sceneKey &&
@@ -84,7 +84,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         } else if (nombre === this.sceneKey) {
           this.esperandoRespuesta = false;
 
-         
           valores?.forEach((npcData: Estado[]) => {
             if (npcData?.length > 0)
               this.npcs[npcData?.[0].npc_etiqueta].camino.push(...npcData);
@@ -315,7 +314,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         this.scene.resume();
       });
 
-
       // this.escena.prohibido?.forEach((obstacle) => {
       //   let color = Phaser.Display.Color.RandomRGB();
       //   let hexColor = Phaser.Display.Color.GetColor(
@@ -329,7 +327,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
 
       //   let graphics = this.add.graphics({ fillStyle: { color: hexColor }, });
 
-
       //   graphics.fillRect(topLeftX, topLeftY, obstacle.anchura, obstacle.altura);
       //   graphics.lineStyle(2, 0x000000).setDepth(10000);
       //   graphics.strokeRect(
@@ -339,7 +336,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       //     obstacle.altura
       //   );
       // });
-
 
       this.load.reset();
     }
@@ -353,8 +349,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
       this.socket.readyState == WebSocket.OPEN
     ) {
       Object.values(this.npcs)?.forEach((npc) => npc.update());
-
-
 
       if (
         Object.values(this.npcs).every((npc) => npc.camino?.length < 20) &&

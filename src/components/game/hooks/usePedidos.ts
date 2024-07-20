@@ -178,7 +178,7 @@ const usePedidos = (
                           col.collectionMetadata = await cadena.json();
                         }
 
-                        images.push(col.collectionMetadata.image);
+                        images.push(col.collectionMetadata?.image);
                       })
                     );
                   })
@@ -222,6 +222,7 @@ const usePedidos = (
       cogerPedidos();
     }
   }, [pantalla, address]);
+
 
   return {
     pedidosCargando,

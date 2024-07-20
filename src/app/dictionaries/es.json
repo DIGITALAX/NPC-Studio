@@ -105,7 +105,13 @@
     "limit": "¿Edición Limitada?",
     "award": "¿Premio Para Creador?",
     "ago": "Sabemos que está emocionado, pero, ¡Usted ha alcanzado el límite de colección para esta creación!",
-    "col": "Coleccione"
+    "col": "Coleccione",
+    "pedidos": "Aún No Hay Pedidos Aquí! El Autógrafo Trimestal estará en vivo enseguida para coleccionar!",
+    "seguir": "Siga",
+    "dejar": "Deje de Seguir",
+    "seguiendo": "Seguiendo",
+    "seguidores": "Seguidores",
+    "info": "Info del Prompt"
   },
   "Nav": {
     "lan": "Elija Idioma"

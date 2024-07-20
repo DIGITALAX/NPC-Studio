@@ -25,7 +25,7 @@ const lensAct = async (
       actOn,
     });
 
-    const typedData = data?.createActOnOpenActionTypedData.typedData;
+    const typedData = data?.createActOnOpenActionTypedData?.typedData;
 
     const signature = await clientWallet.signTypedData({
       domain: omit(typedData?.domain, ["__typename"]),

@@ -3,7 +3,7 @@
 import { SetStateAction } from "react";
 import useConfig from "../hooks/useConfig";
 import PantallaComprar from "@/components/common/modules/PantallaComprar";
-import { AutographType, DatosOraculos, Dictionary } from "../types/game.types";
+import { AutographType, DatosOraculos, Dictionary, Escena } from "../types/game.types";
 import { Compra } from "@/components/compras/types/compras.types";
 import useArticulo from "@/components/compras/hooks/useArticulo";
 import { Profile } from "../../../../graphql/generated";
@@ -32,6 +32,8 @@ function Studio({
   setIndexar,
   setErrorInteraccion,
   setMostrarNotificacion,
+  setEscenas,
+  escenas
 }: {
   npc: string | undefined;
   escena: string;
@@ -81,6 +83,8 @@ function Studio({
   setIndexar: (e: SetStateAction<Indexar>) => void;
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setEscenas: (e: SetStateAction<Escena[]>) => void;
+  escenas: Escena[]
 }) {
   const { gameRef } = useConfig(
     npc,
@@ -89,7 +93,9 @@ function Studio({
     setCargando,
     setManejarMostrarArticulo,
     manejarMostrarArticulo,
-    carrito?.abierto
+    carrito?.abierto,
+    setEscenas,
+    escenas
   );
   const {
     articuloCargando,

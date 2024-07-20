@@ -278,7 +278,7 @@ const useAccount = (
       });
 
       if (response && response.data) {
-        setMonedasDisponibles(response.data.currencies.items);
+        setMonedasDisponibles(response?.data?.currencies?.items);
       }
     } catch (err: any) {
       console.error(err.message);

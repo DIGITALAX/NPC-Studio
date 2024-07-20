@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     }
 
     const data = await response.json();
-    const cid = data.Hash;
+    const cid = data?.Hash;
 
     return NextResponse.json({ cid });
   } catch (err: any) {

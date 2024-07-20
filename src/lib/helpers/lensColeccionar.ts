@@ -49,7 +49,7 @@ const lensColeccionar = async (
       },
     });
 
-    const typedData = data?.createActOnOpenActionTypedData.typedData;
+    const typedData = data?.createActOnOpenActionTypedData?.typedData;
 
     const signature = await clientWallet.signTypedData({
       domain: omit(typedData?.domain, ["__typename"]),
@@ -80,7 +80,7 @@ const lensColeccionar = async (
       on: id,
     });
 
-    const typedData = data?.createLegacyCollectTypedData.typedData;
+    const typedData = data?.createLegacyCollectTypedData?.typedData;
 
     const signature = await clientWallet.signTypedData({
       domain: omit(typedData?.domain, ["__typename"]),

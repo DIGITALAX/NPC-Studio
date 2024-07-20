@@ -20,6 +20,7 @@ import {
 import {
   ComentarPublicar,
   DatosOraculos,
+  Escena,
 } from "@/components/game/types/game.types";
 import { Compra } from "@/components/compras/types/compras.types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
@@ -113,6 +114,8 @@ export const ModalContext = createContext<
       ) => void;
       comentarPublicar: ComentarPublicar[];
       setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+      escenas: Escena[];
+      setEscenas: (e: SetStateAction<Escena[]>) => void;
     }
   | undefined
 >(undefined);
@@ -153,6 +156,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     compras: [],
     abierto: false,
   });
+  const [escenas, setEscenas] = useState<Escena[]>([]);
   const [abrirCita, setAbrirCita] = useState<
     Quote | Post | Comment | Mirror | undefined
   >();
@@ -186,6 +190,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setPantalla,
                 esArtista,
                 setEsArtista,
+                escenas,
+                setEscenas,
                 mostrarNotificacion,
                 setMostrarNotificacion,
                 lensConectado,

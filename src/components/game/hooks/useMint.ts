@@ -6,14 +6,13 @@ import {
   useState,
 } from "react";
 import { PublicClient, createWalletClient, custom } from "viem";
-import { AutographType, Coleccion, Galeria } from "../types/game.types";
+import { AutographType, Coleccion, Escena, Galeria } from "../types/game.types";
 import { polygon } from "viem/chains";
 import {
   AUTOGRAPH_COLLECTION,
   AUTOGRAPH_OPEN_ACTION,
   IDIOMAS,
   INFURA_GATEWAY,
-  SCENE_LIST,
   autographTypeToNumber,
   numberToAutograph,
 } from "@/lib/constants";
@@ -33,7 +32,8 @@ const useMint = (
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void,
   lensConectado: Profile | undefined,
   setIndexar: (e: SetStateAction<Indexar>) => void,
-  setErrorInteraccion: (e: SetStateAction<boolean>) => void
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void,
+  escenas: Escena[]
 ) => {
   const coder = new ethers.AbiCoder();
   const [ahorrarCargando, setAhorrarCargando] = useState<boolean>(false);
@@ -112,8 +112,8 @@ const useMint = (
               }
 
               colecciones[indice] = {
-                galeria: col.collectionMetadata.gallery,
-                imagen: col.collectionMetadata.image,
+                galeria: col.collectionMetadata?.gallery,
+                imagen: col.collectionMetadata?.image,
                 id: col.collectionId,
                 cantidad: col.amount,
                 tokenes: col.acceptedTokens,
@@ -122,17 +122,17 @@ const useMint = (
                 galeriaId: gal.galleryId,
                 precio: col.price,
                 tipo: numberToAutograph[Number(col.type)] as AutographType,
-                titulo: col.collectionMetadata.title,
-                descripcion: col.collectionMetadata.description,
-                etiquetas: col.collectionMetadata.tags,
-                npcIdiomas: col.collectionMetadata.locales,
-                npcInstrucciones: col.collectionMetadata.instructions,
-                npcs: col.collectionMetadata.npcs,
+                titulo: col.collectionMetadata?.title,
+                descripcion: col.collectionMetadata?.description,
+                etiquetas: col.collectionMetadata?.tags,
+                npcIdiomas: col.collectionMetadata?.locales,
+                npcInstrucciones: col.collectionMetadata?.instructions,
+                npcs: col.collectionMetadata?.npcs,
                 profile: undefined,
-                imagenes: col.collectionMetadata.images,
+                imagenes: col.collectionMetadata?.images,
                 profileIds: [],
                 pubIds: [],
-                colors: col.collectionMetadata.colors,
+                colors: col.collectionMetadata?.colors,
               };
             })
           );
@@ -178,7 +178,6 @@ const useMint = (
           ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
         ).map(async (col: Coleccion, indice: number) => {
-  
           let image = col.imagen;
           if (!image.includes("ipfs://")) {
             const imagen = await fetch(`/api/ipfs`, {
@@ -264,9 +263,9 @@ const useMint = (
                 ?.map((npc) =>
                   npc.map(
                     (n) =>
-                      SCENE_LIST?.flatMap((s) => s.sprites).find(
-                        (s) => s.key == n
-                      )?.address
+                      escenas?.flatMap((s) => s.sprites).find(
+                        (s) => s.etiqueta == n
+                      )?.billetera
                   )
                 ),
               uris,
@@ -318,9 +317,9 @@ const useMint = (
                 ?.map((npc) =>
                   npc.map(
                     (n) =>
-                      SCENE_LIST?.flatMap((s) => s.sprites).find(
-                        (s) => s.key == n
-                      )?.address
+                      escenas?.flatMap((s) => s.sprites).find(
+                        (s) => s.etiqueta == n
+                      )?.billetera
                   )
                 ),
               uris,

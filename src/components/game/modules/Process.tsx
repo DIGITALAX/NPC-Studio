@@ -3,7 +3,6 @@ import {
   ACCEPTED_TOKENS,
   IDIOMAS,
   INFURA_GATEWAY,
-  SCENE_LIST,
 } from "../../../lib/constants";
 import { AutographType, Coleccion, ProcessProps } from "../types/game.types";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -42,6 +41,7 @@ function Process({
   ahorrarCargando,
   indiceImagen,
   setIndiceImagen,
+  escenas
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -705,10 +705,10 @@ function Process({
                         <DropDown
                           disabled={coleccionActual?.galeriaId ? true : false}
                           valores={Array.from(
-                            SCENE_LIST.reduce((acc, item) => {
+                            escenas.reduce((acc, item) => {
                               item.sprites.forEach((sprite) => {
                                 if (
-                                  (sprite.key
+                                  (sprite?.etiqueta
                                     .toLowerCase()
                                     .includes(
                                       dropDown.npcsTexto
@@ -721,8 +721,8 @@ function Process({
                                     !coleccionActual.npcs
                                       ?.split(",")
                                       ?.map((npc) => npc.trim().toLowerCase())
-                                      ?.includes(sprite.key.toLowerCase())) ||
-                                  SCENE_LIST.map((col) => col.sprites).filter(
+                                      ?.includes(sprite?.etiqueta.toLowerCase())) ||
+                                      escenas.map((col) => col.sprites).filter(
                                     (sprite) =>
                                       sprite.filter(
                                         (s) =>
@@ -732,11 +732,11 @@ function Process({
                                             ?.pop()
                                             ?.trim()
                                             ?.toLowerCase() ==
-                                          s.key.toLowerCase()
+                                          s?.etiqueta.toLowerCase()
                                       ).length > 0
                                   ).length > 0
                                 ) {
-                                  acc.set(sprite.key, sprite);
+                                  acc.set(sprite?.etiqueta, sprite);
                                 }
                               });
                               return acc;
@@ -794,14 +794,14 @@ function Process({
                                 ?.split(",")
                                 .filter(Boolean)
                                 ?.filter((idi) =>
-                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                  escenas.flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       npcs
                                         ?.split(",")
                                         ?.filter(Boolean)
-                                        ?.includes(s.key)
+                                        ?.includes(s?.etiqueta)
                                     )
-                                    ?.flatMap((i) => i.idiomas)
+                                    ?.flatMap((i) => i.prompt?.idiomas)
                                     ?.includes(idi)
                                 )
                                 .join(","),
@@ -814,14 +814,14 @@ function Process({
                                 ?.split(",")
                                 .filter(Boolean)
                                 ?.filter((idi) =>
-                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                  escenas.flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       npcs
                                         ?.split(",")
                                         ?.filter(Boolean)
-                                        ?.includes(s.key)
+                                        ?.includes(s?.etiqueta)
                                     )
-                                    ?.flatMap((i) => i.idiomas)
+                                    ?.flatMap((i) => i.prompt?.idiomas)
                                     ?.includes(idi)
                                 )
                                 .join(","),
@@ -861,14 +861,14 @@ function Process({
                               return id;
                             }
                           })?.filter((idi) =>
-                            SCENE_LIST.flatMap((s) => s.sprites)
+                            escenas.flatMap((s) => s.sprites)
                               ?.filter((s) =>
                                 coleccionActual?.npcs
                                   ?.split(",")
                                   ?.filter(Boolean)
-                                  ?.includes(s.key)
+                                  ?.includes(s?.etiqueta)
                               )
-                              ?.flatMap((i) => i.idiomas)
+                              ?.flatMap((i) => i.prompt.idiomas)
                               ?.includes(idi.key)
                           )}
                           titulo={dict.Home.npcL}
@@ -887,14 +887,14 @@ function Process({
                                   valor.toLowerCase().includes(searchTerm)
                                 )
                                 ?.filter((idi) =>
-                                  SCENE_LIST.flatMap((s) => s.sprites)
+                                  escenas.flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       coleccionActual?.npcs
                                         ?.split(",")
                                         ?.filter(Boolean)
-                                        ?.includes(s.key)
+                                        ?.includes(s?.etiqueta)
                                     )
-                                    ?.flatMap((i) => i.idiomas)
+                                    ?.flatMap((i) => i?.prompt?.idiomas)
                                     ?.includes(idi)
                                 )
                                 .join(","),

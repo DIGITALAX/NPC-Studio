@@ -2,8 +2,7 @@
 
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NPCEnginePhaser from "../class/Renderer";
-import { AutographType, PhaserGameElement } from "../types/game.types";
-import { SCENE_LIST } from "../../../lib/constants";
+import { AutographType, Escena, PhaserGameElement } from "../types/game.types";
 
 const useConfig = (
   chosenNpc: string | undefined,
@@ -27,7 +26,9 @@ const useConfig = (
         tipo: AutographType;
       }
     | undefined,
-  abierto: boolean
+  abierto: boolean,
+  setEscenas: (e: SetStateAction<Escena[]>) => void,
+  escenas: Escena[]
 ) => {
   const gameRef = useRef<PhaserGameElement | null>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
@@ -57,14 +58,16 @@ const useConfig = (
           parent: gameRef?.current,
         };
         setNpc(
-          SCENE_LIST.find((clave) => clave.key == sceneKey)?.sprites[0]?.key!
+          escenas.find((clave) => clave.clave == sceneKey)?.sprites[0]
+            ?.etiqueta!
         );
         const game = new Phaser.Game(config);
         game.registry.set("socket", newSocket);
         game.registry.set("sceneKey", sceneKey);
         game.registry.set(
           "chosenNpc",
-          SCENE_LIST.find((clave) => clave.key == sceneKey)?.sprites[0]?.key!
+          escenas.find((clave) => clave.clave == sceneKey)?.sprites[0]
+            ?.etiqueta!
         );
         game.registry.set(
           "setManejarMostrarArticulo",
@@ -77,6 +80,10 @@ const useConfig = (
               scene.events.once("render", () =>
                 setTimeout(() => setCargando(false), 3000)
               );
+
+              scene.events.once("npcs", (todoInfo: Escena[]) => {
+                setEscenas(todoInfo);
+              });
 
               scene.events.on("grab", () => {
                 chosenNpc && setNpc(undefined);

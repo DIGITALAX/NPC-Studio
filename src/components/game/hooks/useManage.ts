@@ -1,7 +1,6 @@
 import { ChangeEvent, SetStateAction, useRef, useState } from "react";
-import { SCENE_LIST } from "../../../lib/constants";
 import Draggable from "react-draggable";
-import { AutographType, ComentarPublicar } from "../types/game.types";
+import { AutographType, ComentarPublicar, Escena } from "../types/game.types";
 import {
   Post,
   Profile,
@@ -46,12 +45,13 @@ const useManage = (
           seguidor: Profile;
         }
       | undefined
-  ) => void
+  ) => void,
+  escenas: Escena[]
 ) => {
   const elementoTextoCita = useRef<HTMLTextAreaElement>();
-  const [escena, setEscena] = useState<string>(SCENE_LIST[0]?.key);
+  const [escena, setEscena] = useState<string>(escenas?.[0]?.clave);
   const [npc, setNpc] = useState<string | undefined>(
-    SCENE_LIST[0]?.sprites?.[0]?.key
+    escenas?.[0]?.sprites?.[0]?.etiqueta
   );
   const [cargando, setCargando] = useState<boolean>(true);
   const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<{

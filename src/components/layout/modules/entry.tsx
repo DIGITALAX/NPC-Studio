@@ -67,7 +67,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.abrirCita! as Post,
     context?.setAbrirCita! as any,
     context?.seguirColeccionar,
-    context?.setSeguirColeccionar!
+    context?.setSeguirColeccionar!,
+    context?.escenas!
   );
   const {
     lensCargando,
@@ -140,7 +141,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.setMostrarNotificacion!,
     context?.lensConectado,
     context?.setIndexar!,
-    context?.setErrorInteraccion!
+    context?.setErrorInteraccion!,
+    context?.escenas!
   );
 
   const {
@@ -231,8 +233,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         dict={dict}
         npc={npc}
         setNpc={setNpc}
+        lensConnected={context?.lensConectado}
         escena={escena}
         setEscena={setEscena}
+        escenas={context?.escenas!}
+        publicClient={publicClient}
+        setIndexar={context?.setIndexar!}
+        setErrorInteraccion={context?.setErrorInteraccion!}
       />
       {dragDialog && (
         <Dialog
