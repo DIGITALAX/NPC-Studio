@@ -133,7 +133,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
             </div>
             <div className="relative w-fit h-fit flex items-center justify-center gap-1 flex-row">
               <div className="relative w-fit h-fit flex items-center justify-center">
-                {dict.Home.seguiendo}
+                {dict.Home.siguiendo}
               </div>
               <div className="relative w-fit h-fit flex items-center justify-center">
                 {perfil?.stats?.following}

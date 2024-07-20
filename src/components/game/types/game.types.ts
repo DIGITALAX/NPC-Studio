@@ -454,7 +454,7 @@ export type Dictionary = {
     title: string;
     yes: string;
     hr: string;
-    seguiendo: string;
+    siguiendo: string;
     seguidores: string;
     info: string;
     dejar: string;
