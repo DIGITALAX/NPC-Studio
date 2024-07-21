@@ -199,7 +199,6 @@ input[type="range"]::-ms-track {
   color: transparent;
 }
 
-
 input[type="range"]::-ms-thumb {
   width: 20px;
   height: 20px;
@@ -226,4 +225,24 @@ input[type="range"]::-ms-thumb {
 * {
   scrollbar-width: thin;
   scrollbar-color: #ffee00 #0000ff; /* thumb color, track color */
+}
+
+.blinker {
+  opacity: 1;
+  margin-bottom: 6px;
+  height: 18px;
+  margin-left: -5px;
+  border-left: 5px solid yellow;
+  animation: blinker 0.9s steps(2, start) infinite;
+}
+
+@keyframes blinker {
+  to {
+    visibility: hidden;
+  }
+}
+
+#teclas {
+  color: yellow;
+  font-family: monospace;
 }

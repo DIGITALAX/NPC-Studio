@@ -21,6 +21,32 @@ function CarritoAbierto({
   gastosAprobados,
   aprobarGastos,
 }: CarritoAbiertoProps) {
+  const getRandomPhrases = () => {
+    const random = Math.random() < 0.5;
+    return random
+      ? [dict.Home.frase1, dict.Home.frase2]
+      : [dict.Home.frase3, dict.Home.frase4];
+  };
+
+  const element = document.getElementById("teclas");
+
+  if (element) {
+    const [firstPhrase, secondPhrase] = getRandomPhrases();
+    const devTypeText = `${firstPhrase} ${secondPhrase}`;
+    let i = 0;
+    let isTag = false;
+    let text = '';
+
+    (function type() {
+        text = devTypeText.slice(0, ++i);
+        element.innerHTML = `<span style='color: yellow; word-break: break-word;'>${text}</span><span class='blinker'>&#32;</span>`;
+        const char = text.slice(-1);
+        if (char === "<") isTag = true;
+        if (char === ">") isTag = false;
+        if (!isTag && text !== devTypeText) setTimeout(type, 60);
+    })();
+  }
+
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-10 tab:h-full h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
@@ -226,9 +252,10 @@ function CarritoAbierto({
           </div>
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-end justify-end font-con text-xs tab:text-lg text-left break-words pt-5">
-        alguna frase aqui
-      </div>
+      <div
+        className="relative w-full h-fit flex items-end justify-end text-xs text-left break-words pt-5 break-worder whitespace-preline"
+        id="teclas"
+      ></div>
     </div>
   );
 }

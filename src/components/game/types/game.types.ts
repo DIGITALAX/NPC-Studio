@@ -452,6 +452,10 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     title: string;
+    frase1: string;
+    frase2: string;
+    frase3: string;
+    frase4: string;
     yes: string;
     hr: string;
     siguiendo: string;
