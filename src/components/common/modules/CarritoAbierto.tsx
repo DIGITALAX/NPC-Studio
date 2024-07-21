@@ -28,7 +28,9 @@ function CarritoAbierto({
       </div>
       <div
         className={`relative w-full flex justify-between flex-row gap-12 xl:flex-nowrap flex-wrap ${
-          carrito.compras?.length < 1 ? "items-end h-full" : "items-start h-fit xl:h-full"
+          carrito.compras?.length < 1
+            ? "items-end h-full"
+            : "items-start h-fit xl:h-full"
         }`}
       >
         <div className="relative w-full h-fit xl:h-full flex items-start justify-start xl:max-w-[50%]">
@@ -201,10 +203,12 @@ function CarritoAbierto({
             </div>
             <div
               className={`relative bg-rojo px-1.5 py-1 w-36 h-8 flex items-center border-white border text-xs justify-center ${
+                carrito?.compras?.length > 0 &&
                 gastosAprobados.every((i) => i?.aprobado == true) &&
                 "cursor-pointer active:scale-95"
               }`}
               onClick={() =>
+                carrito?.compras?.length > 0 &&
                 !carritoCargando &&
                 !aprobarCargando &&
                 gastosAprobados.every((i) => i?.aprobado == true) &&

@@ -1,3 +1,5 @@
+
+
 import { FunctionComponent } from "react";
 import { Escena, SceneProps, Sprite } from "../types/game.types";
 import { INFURA_GATEWAY } from "../../../lib/constants";
