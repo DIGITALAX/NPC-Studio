@@ -84,7 +84,6 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           }
         } else if (nombre === this.sceneKey) {
           this.esperandoRespuesta = false;
-
           valores?.forEach((npcData: Estado[]) => {
             if (npcData?.length > 0)
               this.npcs[npcData?.[0].npc_etiqueta].camino.push(...npcData);
@@ -133,6 +132,33 @@ export default class NPCEnginePhaser extends Phaser.Scene {
           }
         );
       });
+
+
+    //  this.escena.prohibido.forEach((obstacle) => {
+    //     let color = Phaser.Display.Color.RandomRGB();
+    //     let hexColor = Phaser.Display.Color.GetColor(
+    //       color.red,
+    //       color.green,
+    //       color.blue
+    //     );
+
+    //     let graphics = this.add
+    //       .graphics({ fillStyle: { color: hexColor } })
+    //       .setDepth(1000);
+    //     graphics.fillRect(
+    //       obstacle.x,
+    //       obstacle.y,
+    //       obstacle.anchura,
+    //       obstacle.altura
+    //     );
+    //     graphics.lineStyle(2, 0x000000);
+    //     graphics.strokeRect(
+    //       obstacle.x,
+    //       obstacle.y,
+    //       obstacle.anchura,
+    //       obstacle.altura
+    //     );
+    //   });
 
       this.load.once("complete", this.cargarRecursos, this);
       this.load.start();

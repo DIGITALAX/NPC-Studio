@@ -1,6 +1,5 @@
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "../../../lib/constants";
-import messages from "./../../../../public/conversation.json";
 import Draggable from "react-draggable";
 import { FunctionComponent } from "react";
 import { DialogProps } from "../types/game.types";
@@ -62,7 +61,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
                 imagen: "QmdXGstnuEL9SoxdPoP6VwavmLCD1AauGkAs4fp4PsEgJu",
                 funcion: () => {
                   setIndiceConversacionActual((prev) =>
-                    prev - 1 >= 0 ? prev - 1 : messages.length - 1
+                    prev - 1 >= 0 ? prev - 1 : 7
                   );
                 },
               },
@@ -70,7 +69,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
                 imagen: "QmdADQtTM5VkpA7eAS5ozQ8k6Qg3QTGmf5LTwbzvLRtwgs",
                 funcion: () => {
                   setIndiceConversacionActual((prev) =>
-                    prev + 1 < messages.length ? prev + 1 : 0
+                    prev + 1 < 8? prev + 1 : 0
                   );
                 },
               },

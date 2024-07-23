@@ -4,6 +4,7 @@ import { MediosProps } from "../types/common.types";
 import { PublicationMetadataMedia } from "../../../../graphql/generated";
 import { metadataMedios } from "@/lib/helpers/metadataPublicacion";
 import MediosCambio from "./MediosCambio";
+import { INFURA_GATEWAY } from "@/lib/constants";
 
 const Medios: FunctionComponent<MediosProps> = ({
   metadata,
@@ -50,7 +51,12 @@ const Medios: FunctionComponent<MediosProps> = ({
                       setVerImagen({
                         abierto: true,
                         tipo: "png",
-                        url: media?.url,
+                        url: media?.url?.includes("ipfs://")
+                          ? `${INFURA_GATEWAY}/ipfs/${media?.url?.replaceAll(
+                              "ipfs://",
+                              ""
+                            )}`
+                          : media?.url,
                       })
                     }
                   >
@@ -59,7 +65,14 @@ const Medios: FunctionComponent<MediosProps> = ({
                         <MediosCambio
                           ola
                           tipo={media?.type}
-                          fuenteUrl={media?.url}
+                          fuenteUrl={
+                            media?.url?.includes("ipfs://")
+                              ? `${INFURA_GATEWAY}/ipfs/${media?.url?.replaceAll(
+                                  "ipfs://",
+                                  ""
+                                )}`
+                              : media?.url
+                          }
                           fuenteFondo={media?.cover}
                           classNameVideo={{
                             objectFit: "cover",
