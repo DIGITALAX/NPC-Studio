@@ -41,7 +41,7 @@ function Process({
   ahorrarCargando,
   indiceImagen,
   setIndiceImagen,
-  escenas
+  escenas,
 }: ProcessProps) {
   switch (mint) {
     case 1:
@@ -705,58 +705,69 @@ function Process({
                         <DropDown
                           disabled={coleccionActual?.galeriaId ? true : false}
                           valores={Array.from(
-                            escenas.reduce((acc, item) => {
-                              item.sprites.forEach((sprite) => {
-                                if (
-                                  (sprite?.etiqueta
-                                    .toLowerCase()
-                                    .includes(
-                                      dropDown.npcsTexto
+                            escenas
+                              .reduce((acc, item) => {
+                                item.sprites.forEach((sprite) => {
+                                  if (
+                                    (sprite?.etiqueta
+                                      .toLowerCase()
+                                      .includes(
+                                        dropDown.npcsTexto
+                                          ?.split(",")
+                                          ?.filter(Boolean)
+                                          ?.pop()
+                                          ?.trim()
+                                          ?.toLowerCase() || ""
+                                      ) &&
+                                      !coleccionActual.npcs
                                         ?.split(",")
-                                        ?.filter(Boolean)
-                                        ?.pop()
-                                        ?.trim()
-                                        ?.toLowerCase() || ""
-                                    ) &&
-                                    !coleccionActual.npcs
-                                      ?.split(",")
-                                      ?.map((npc) => npc?.trim().toLowerCase())
-                                      ?.includes(sprite?.etiqueta.toLowerCase())) ||
-                                      escenas.map((col) => col.sprites).filter(
-                                    (sprite) =>
-                                      sprite.filter(
-                                        (s) =>
-                                          dropDown.npcsTexto
-                                            ?.split(",")
-                                            ?.filter(Boolean)
-                                            ?.pop()
-                                            ?.trim()
-                                            ?.toLowerCase() ==
-                                          s?.etiqueta.toLowerCase()
+                                        ?.map((npc) =>
+                                          npc?.trim().toLowerCase()
+                                        )
+                                        ?.includes(
+                                          sprite?.etiqueta.toLowerCase()
+                                        )) ||
+                                    escenas
+                                      .map((col) => col.sprites)
+                                      .filter(
+                                        (sprite) =>
+                                          sprite.filter(
+                                            (s) =>
+                                              dropDown.npcsTexto
+                                                ?.split(",")
+                                                ?.filter(Boolean)
+                                                ?.pop()
+                                                ?.trim()
+                                                ?.toLowerCase() ==
+                                              s?.etiqueta.toLowerCase()
+                                          ).length > 0
                                       ).length > 0
-                                  ).length > 0
-                                ) {
-                                  acc.set(sprite?.etiqueta, sprite);
-                                }
-                              });
-                              return acc;
-                            }, new Map()).values()
+                                  ) {
+                                    acc.set(sprite?.etiqueta, {
+                                      cover: sprite.tapa,
+                                      key: sprite.etiqueta,
+                                    });
+                                  }
+                                });
+                                return acc;
+                              }, new Map())
+                              .values()
                           )}
                           titulo={"NPCs"}
                           valor={dropDown.npcsTexto || ""}
                           manejarCambio={(e: ChangeEvent) => {
                             const searchTerm = (
                               e.target as HTMLInputElement
-                            ).value
+                            )?.value
                               .trim()
                               .toLowerCase();
                             setColeccionActual((prev) => ({
                               ...prev,
                               npcs: prev.npcs
                                 .split(",")
-                                .filter((valor) =>
-                                  valor.toLowerCase().includes(searchTerm)
-                                )
+                                // .filter((valor) =>
+                                //   valor.toLowerCase().includes(searchTerm)
+                                // )
                                 .join(","),
                             }));
 
@@ -775,7 +786,6 @@ function Process({
                           }}
                           manejarElegir={(value: string) => {
                             let npcs: string;
-
                             const npcsArray = coleccionActual.npcs
                               ? coleccionActual.npcs.split(",").filter(Boolean)
                               : [];
@@ -784,7 +794,7 @@ function Process({
                                 .filter((npc) => npc !== value)
                                 .join(",");
                             } else {
-                              npcs = [...npcsArray, value].join(",");
+                              npcs = [...(npcsArray || []), value].join(",");
                             }
 
                             setColeccionActual((prev) => ({
@@ -794,7 +804,8 @@ function Process({
                                 ?.split(",")
                                 .filter(Boolean)
                                 ?.filter((idi) =>
-                                  escenas.flatMap((s) => s.sprites)
+                                  escenas
+                                    .flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       npcs
                                         ?.split(",")
@@ -814,7 +825,8 @@ function Process({
                                 ?.split(",")
                                 .filter(Boolean)
                                 ?.filter((idi) =>
-                                  escenas.flatMap((s) => s.sprites)
+                                  escenas
+                                    .flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       npcs
                                         ?.split(",")
@@ -861,7 +873,8 @@ function Process({
                               return id;
                             }
                           })?.filter((idi) =>
-                            escenas.flatMap((s) => s.sprites)
+                            escenas
+                              .flatMap((s) => s.sprites)
                               ?.filter((s) =>
                                 coleccionActual?.npcs
                                   ?.split(",")
@@ -887,7 +900,8 @@ function Process({
                                   valor.toLowerCase().includes(searchTerm)
                                 )
                                 ?.filter((idi) =>
-                                  escenas.flatMap((s) => s.sprites)
+                                  escenas
+                                    .flatMap((s) => s.sprites)
                                     ?.filter((s) =>
                                       coleccionActual?.npcs
                                         ?.split(",")
