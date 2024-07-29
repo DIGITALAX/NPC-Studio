@@ -184,8 +184,9 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           npcIds={
             context?.escenas
               ?.find((es) => es.clave == escena)
-              ?.sprites?.map((s) =>
-                toHexWithLeadingZero(s.perfil_id)
+              ?.sprites?.map(
+                (s) =>
+                  s.perfil_id.toString(16).replaceAll("0x", "0x0")
               )!
           }
         />
@@ -252,10 +253,11 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         <Dialog
           npcIds={
             context?.escenas
-              ?.find((es) => es.clave == escena)
-              ?.sprites?.map((s) =>
-                toHexWithLeadingZero(s.perfil_id)
-              )!
+            ?.find((es) => es.clave == escena)
+            ?.sprites?.map(
+              (s) =>
+                s.perfil_id.toString(16).replaceAll("0x", "0x0")
+            )!
           }
           setCarrito={context?.setCarrito!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}

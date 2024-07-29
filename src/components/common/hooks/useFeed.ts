@@ -237,11 +237,11 @@ const useFeed = (
   };
 
   useEffect(() => {
-    if (escena) {
+    if (escena && npcIds?.length > 0) {
       setTieneMasFeed(true);
       llamarFeed();
     }
-  }, [escena, lensConectado]);
+  }, [escena, lensConectado, npcIds]);
 
   return {
     feedCargando,
