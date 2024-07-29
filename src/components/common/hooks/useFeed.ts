@@ -237,7 +237,7 @@ const useFeed = (
   };
 
   useEffect(() => {
-    if (escena && npcIds?.length > 0) {
+    if (escena && npcIds?.length > 0 && feedActual?.length < 1) {
       setTieneMasFeed(true);
       llamarFeed();
     }
