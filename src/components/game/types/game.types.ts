@@ -61,7 +61,7 @@ export type LogProps = {
       abierto: boolean;
     }>
   ) => void;
-
+  npcIds: string[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setOpcionAbierta: (
     e: SetStateAction<
@@ -115,7 +115,7 @@ export type ProcessProps = {
   openConnectModal: (() => void) | undefined;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   colecciones: Coleccion[];
-  escenas: Escena[]
+  escenas: Escena[];
   setColeccionActual: (e: SetStateAction<Coleccion>) => void;
   coleccionActual: Coleccion;
   manejarArchivo: (e: ChangeEvent<HTMLInputElement>, indice?: number) => void;
@@ -145,14 +145,14 @@ export type ProcessProps = {
 export type SceneProps = {
   escena: string;
   dict: Dictionary;
-  escenas: Escena[]
+  escenas: Escena[];
   lensConnected: Profile | undefined;
   setEscena: (e: SetStateAction<string>) => void;
   npc: string | undefined;
   setNpc: (e: SetStateAction<string | undefined>) => void;
-  publicClient: PublicClient,
-  setIndexar: (e: SetStateAction<Indexar>) => void,
-  setErrorInteraccion: (e: SetStateAction<boolean>) => void
+  publicClient: PublicClient;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
 };
 
 export interface Message {
@@ -184,6 +184,7 @@ export type DialogProps = {
       abierto: boolean;
     }>
   ) => void;
+  npcIds: string[];
   setAbrirCita: (
     e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
   ) => void;
@@ -273,7 +274,7 @@ export type ChatProps = {
       abierto: boolean;
     }>
   ) => void;
-
+  npcIds: string[];
   setAbrirCita: (
     e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
   ) => void;

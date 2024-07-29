@@ -11,7 +11,11 @@ import {
 import getPublications from "../../../../graphql/lens/queries/publications";
 import { AUTOGRAPH_OPEN_ACTION } from "@/lib/constants";
 
-const useFeed = (lensConectado: Profile | undefined, escena: string) => {
+const useFeed = (
+  lensConectado: Profile | undefined,
+  escena: string,
+  npcIds: string[]
+) => {
   const [feedCargando, setFeedCargando] = useState<boolean>(false);
   const [feedActual, setFeedActual] = useState<
     (Post | Comment | Quote | Mirror)[]
@@ -20,6 +24,7 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
   const [feedUbi, setFeedUbi] = useState<{
     abierto: string | undefined;
     etiquetas: string | undefined;
+    mirrors: string | undefined;
   }>();
   const [masFeedCargando, setMasFeedCargando] = useState<boolean>(false);
 
@@ -32,8 +37,8 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
           where: {
             publicationTypes: [
               PublicationType.Post,
-              PublicationType.Mirror,
               PublicationType.Quote,
+              PublicationType.Comment,
             ],
             metadata: {
               publishedOn: ["npcStudio"],
@@ -52,8 +57,8 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
           where: {
             publicationTypes: [
               PublicationType.Post,
-              PublicationType.Mirror,
               PublicationType.Quote,
+              PublicationType.Comment,
             ],
             metadata: {
               publishedOn: ["npcStudio"],
@@ -68,10 +73,22 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
         lensConectado?.id
       );
 
+      const { data: datosTres } = await getPublications(
+        {
+          limit: LimitType.TwentyFive,
+          where: {
+            publicationTypes: [PublicationType.Mirror],
+            from: npcIds,
+          },
+        },
+        lensConectado?.id
+      );
+
       setFeedActual(
         [
           ...(datosUno?.publications?.items || []),
           ...(datosDos?.publications?.items || []),
+          ...(datosTres?.publications?.items || []),
         ]?.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -86,12 +103,18 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
           datosUno?.publications?.items?.length !== 25
             ? undefined
             : datosUno?.publications?.pageInfo?.next,
+        mirrors:
+          datosTres?.publications?.items?.length !== 25
+            ? undefined
+            : datosTres?.publications?.pageInfo?.next,
       });
       if (
         datosDos?.publications?.items &&
         datosDos?.publications?.items?.length !== 25 &&
         datosUno?.publications?.items &&
-        datosUno?.publications?.items?.length
+        datosUno?.publications?.items?.length !== 25 &&
+        datosTres?.publications?.items &&
+        datosTres?.publications?.items?.length !== 25
       ) {
         setTieneMasFeed(false);
       }
@@ -104,7 +127,7 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
   const llamarMasFeed = async () => {
     setMasFeedCargando(true);
     try {
-      let datosUno, datosDos;
+      let datosUno, datosDos, datosTres;
 
       if (feedUbi?.etiquetas) {
         const { data } = await getPublications(
@@ -157,11 +180,27 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
         datosDos = data;
       }
 
+      if (feedUbi?.mirrors) {
+        const { data } = await getPublications(
+          {
+            limit: LimitType.TwentyFive,
+            where: {
+              publicationTypes: [PublicationType.Mirror],
+              from: npcIds,
+            },
+          },
+          lensConectado?.id
+        );
+
+        datosTres = data;
+      }
+
       setFeedActual(
         [
           ...feedActual,
           ...(datosUno?.publications?.items || []),
           ...(datosDos?.publications?.items || []),
+          ...(datosTres?.publications?.items || []),
         ]?.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -176,12 +215,18 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
           datosUno?.publications?.items?.length !== 25
             ? undefined
             : datosUno?.publications?.pageInfo?.next,
+        mirrors:
+          datosTres?.publications?.items?.length !== 25
+            ? undefined
+            : datosTres?.publications?.pageInfo?.next,
       });
       if (
         datosDos?.publications?.items &&
         datosDos?.publications?.items?.length !== 25 &&
         datosUno?.publications?.items &&
-        datosUno?.publications?.items?.length
+        datosUno?.publications?.items?.length !== 25 &&
+        datosTres?.publications?.items &&
+        datosTres?.publications?.items?.length !== 25
       ) {
         setTieneMasFeed(false);
       }
@@ -196,7 +241,6 @@ const useFeed = (lensConectado: Profile | undefined, escena: string) => {
       setTieneMasFeed(true);
       llamarFeed();
     }
-
   }, [escena, lensConectado]);
 
   return {

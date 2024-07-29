@@ -23,7 +23,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
   setAbrirCita,
   setSeguirColeccionar,
   setVerImagen,
-  
+  npcIds,
   setCarrito,
   setMostrarNotificacion,
 }) => {
@@ -38,7 +38,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
             open
             setCarrito={setCarrito}
             setMostrarNotificacion={setMostrarNotificacion}
-            
+            npcIds={npcIds}
             setSeguirColeccionar={setSeguirColeccionar}
             setAbrirCita={setAbrirCita}
             dict={dict}
@@ -69,7 +69,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
                 imagen: "QmdADQtTM5VkpA7eAS5ozQ8k6Qg3QTGmf5LTwbzvLRtwgs",
                 funcion: () => {
                   setIndiceConversacionActual((prev) =>
-                    prev + 1 < 8? prev + 1 : 0
+                    prev + 1 < 8 ? prev + 1 : 0
                   );
                 },
               },

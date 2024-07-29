@@ -27,7 +27,7 @@ function Log({
   setOpcionAbierta,
   setComentarPublicar,
   comentarPublicar,
-  
+  npcIds,
   setCarrito,
   setMostrarNotificacion,
 }: LogProps) {
@@ -152,7 +152,7 @@ function Log({
               setVerImagen={setVerImagen}
               setCarrito={setCarrito}
               setMostrarNotificacion={setMostrarNotificacion}
-              
+              npcIds={npcIds}
               setSeguirColeccionar={setSeguirColeccionar}
               dict={dict}
               lensConectado={lensConectado}

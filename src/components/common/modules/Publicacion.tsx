@@ -46,6 +46,7 @@ function Publicacion({
   manejarAccionAbierta
 }: PublicacionProps) {
   const elementoTexto = useRef(null);
+
   return (
     <div
       className={`relative rounded-sm h-fit px-1 py-3 sm:py-2 sm:px-2 flex flex-col gap-4 sm:gap-2 border-2 publicacions-center justify-between border-morado w-full bg-offNegro`}
@@ -112,8 +113,7 @@ function Publicacion({
         <Cita cita={publicacion?.quoteOn as Quote} />
       )}
       <Bar
-        indice={indice - 1}
-        
+        indice={indice - 1}    
         elemento={publicacion}
         manejarAccionAbierta={manejarAccionAbierta}
         abrirMirrorEleccion={abrirMirrorEleccion}

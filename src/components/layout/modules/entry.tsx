@@ -17,6 +17,7 @@ import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
 import { Post } from "../../../../graphql/generated";
+import toHexWithLeadingZero from "@/lib/helpers/leadingZero";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -67,7 +68,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.abrirCita! as Post,
     context?.setAbrirCita! as any,
     context?.seguirColeccionar,
-    context?.setSeguirColeccionar!,
+    context?.setSeguirColeccionar!
   );
   const {
     lensCargando,
@@ -180,6 +181,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           setDragDialog={setDragDialog}
           setAbrirCita={context?.setAbrirCita!}
           setSeguirColeccionar={context?.setSeguirColeccionar!}
+          npcIds={
+            context?.escenas
+              ?.find((es) => es.clave == escena)
+              ?.sprites?.map((s) =>
+                toHexWithLeadingZero(s.perfil_id)
+              )!
+          }
         />
         <div
           className="relative w-full xl:w-[1512px] h-[800px] xl:h-full border-cielo md:border-8 flex overflow-hidden rounded-md bg-cielo xl:order-2 order-1"
@@ -242,6 +250,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          npcIds={
+            context?.escenas
+              ?.find((es) => es.clave == escena)
+              ?.sprites?.map((s) =>
+                toHexWithLeadingZero(s.perfil_id)
+              )!
+          }
           setCarrito={context?.setCarrito!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
           setComentarPublicar={context?.setComentarPublicar!}

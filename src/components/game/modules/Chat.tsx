@@ -25,6 +25,7 @@ const Chat: FunctionComponent<ChatProps> = ({
   setComentarPublicar,
   setCarrito,
   setMostrarNotificacion,
+  npcIds
 }): JSX.Element => {
   const {
     feedCargando,
@@ -33,7 +34,7 @@ const Chat: FunctionComponent<ChatProps> = ({
     tieneMasFeed,
     masFeedCargando,
     llamarMasFeed,
-  } = useFeed(lensConectado, escena);
+  } = useFeed(lensConectado, escena, npcIds);
 
   const {
     comentariosAbiertos,
@@ -107,7 +108,6 @@ const Chat: FunctionComponent<ChatProps> = ({
                 (elemento: Post | Quote | Mirror | Comment, indice: number) => {
                   return (
                     <Publicacion
-                      
                       setOpcionAbierta={setOpcionAbierta}
                       key={indice}
                       setCaretCoord={setCaretCoord}
