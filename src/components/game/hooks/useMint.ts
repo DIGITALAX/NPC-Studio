@@ -178,6 +178,7 @@ const useMint = (
           ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
         ).map(async (col: Coleccion, indice: number) => {
+          console.log(col.imagen,col.imagenes)
           let image = col.imagen;
           if (!image.includes("ipfs://") && image.trim() !== "") {
             const imagen = await fetch(`/api/ipfs`, {
@@ -192,7 +193,7 @@ const useMint = (
           if (col.imagenes?.filter((c) => c.trim() !== "")?.length > 0) {
             await Promise.all(
               col.imagenes?.map(async (im) => {
-                if (!im.includes("ipfs://")) {
+                if (!im.includes("ipfs://") && image.trim() !== "") {
                   const imagen = await fetch(`/api/ipfs`, {
                     method: "POST",
                     body: convertirArchivo(im, "image/png"),
