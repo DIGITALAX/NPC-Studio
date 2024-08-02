@@ -163,7 +163,9 @@ const useMint = (
         colecciones?.filter((el) => el.imagen.trim() == "").length > 0 ||
         colecciones?.filter((el) => el.tokenes.length < 1).length > 0 ||
         colecciones?.filter((el) => el.precio < 1).length > 0 ||
-        colecciones?.filter((el) => el.tipo.toString().trim() == "").length > 0
+        colecciones?.filter((el) => el.tipo.toString().trim() == "").length >
+          0 ||
+        colecciones?.filter((el) => el.galeria?.trim() == "").length > 0
       ) {
         setMostrarNotificacion(Notificacion.Campos);
         return;
@@ -188,11 +190,11 @@ const useMint = (
             image = "ipfs://" + res?.cid;
           }
           let images: string[] = [];
-          
+
           if (col.imagenes?.filter((c) => c.trim() !== "")?.length > 0) {
             await Promise.all(
               col.imagenes?.map(async (im) => {
-                if (!im.includes("ipfs://") && image.trim() !== "") {
+                if (!im.includes("ipfs://") && im.trim() !== "") {
                   const imagen = await fetch(`/api/ipfs`, {
                     method: "POST",
                     body: convertirArchivo(im, "image/png"),
@@ -200,7 +202,7 @@ const useMint = (
                   const res = await imagen.json();
 
                   images.push("ipfs://" + res?.cid);
-                } else {
+                } else if (im.trim() !== "") {
                   images.push(im);
                 }
               })
@@ -264,9 +266,9 @@ const useMint = (
                 ?.map((npc) =>
                   npc.map(
                     (n) =>
-                      escenas?.flatMap((s) => s.sprites).find(
-                        (s) => s.etiqueta == n
-                      )?.billetera
+                      escenas
+                        ?.flatMap((s) => s.sprites)
+                        .find((s) => s.etiqueta == n)?.billetera
                   )
                 ),
               uris,
@@ -318,9 +320,9 @@ const useMint = (
                 ?.map((npc) =>
                   npc.map(
                     (n) =>
-                      escenas?.flatMap((s) => s.sprites).find(
-                        (s) => s.etiqueta == n
-                      )?.billetera
+                      escenas
+                        ?.flatMap((s) => s.sprites)
+                        .find((s) => s.etiqueta == n)?.billetera
                   )
                 ),
               uris,
