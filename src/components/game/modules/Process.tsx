@@ -383,13 +383,24 @@ function Process({
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         if (!elemento?.galeriaId) {
-                                          setColecciones((prev) =>
-                                            prev.filter(
+                                          setColeccionActual((prev) => ({
+                                            ...prev,
+                                            id: colecciones?.length - 1,
+                                          }));
+                                          setColecciones((prev) => {
+                                            const filt = prev.filter(
                                               (el) =>
                                                 JSON.stringify(el) !==
                                                 JSON.stringify(elemento)
-                                            )
-                                          );
+                                            );
+
+                                            return filt
+                                              .sort((a, b) => a.id - b.id)
+                                              .map((col, ind) => ({
+                                                ...col,
+                                                id: ind,
+                                              }));
+                                          });
                                         }
                                       }}
                                     >
@@ -412,7 +423,7 @@ function Process({
                               cantidad: 1,
                               tokenes: [],
                               precio: 0,
-                              id: colecciones.length,
+                              id: colecciones.length + 1,
                               tipo: "NFT" as any,
                               titulo: "",
                               descripcion: "",
@@ -1029,7 +1040,7 @@ function Process({
                                   cantidad: 1,
                                   tokenes: [],
                                   precio: 0,
-                                  id: colecciones.length + 2,
+                                  id: colecciones.length + 1,
                                   tipo: "NFT" as any,
                                   titulo: "",
                                   descripcion: "",
