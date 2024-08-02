@@ -56,8 +56,8 @@ function PantallaCambio({
     mensajeCargando,
     conversacion,
     conversacionCargando,
-    conversacionAbierta,
-    setConversacionAbierta,
+    abierta,
+    setAbierta,
     setMensaje,
     mensaje,
     mensajeRef,
@@ -114,8 +114,8 @@ function PantallaCambio({
           mensajeCargando={mensajeCargando}
           conversacion={conversacion}
           conversacionCargando={conversacionCargando}
-          conversacionAbierta={conversacionAbierta}
-          setConversacionAbierta={setConversacionAbierta}
+          abierta={abierta}
+          setAbierta={setAbierta}
           setMensaje={setMensaje}
           mensaje={mensaje}
           mensajeRef={mensajeRef}

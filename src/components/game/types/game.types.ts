@@ -455,7 +455,10 @@ export type Dictionary = {
     title: string;
     frase1: string;
     frase2: string;
+    ropa: string;
     frase3: string;
+    returns: string;
+    faq: string;
     frase4: string;
     yes: string;
     hr: string;
@@ -702,8 +705,14 @@ export type PedidosProps = {
   mensajeCargando: boolean;
   conversacion: DecodedMessage<any>[];
   conversacionCargando: boolean;
-  conversacionAbierta: boolean;
-  setConversacionAbierta: (e: SetStateAction<boolean>) => void;
+  abierta: {
+    conversacion: boolean;
+    envio: boolean
+  };
+  setAbierta: (e: SetStateAction<{
+    conversacion: boolean;
+    envio: boolean
+  }>) => void;
   mensaje: string;
   setMensaje: (e: SetStateAction<string>) => void;
   address: `0x${string}` | undefined;

@@ -13,9 +13,9 @@ function Pedidos({
   pedidoAbierto,
   setPedidoAbierto,
   dict,
-  setConversacionAbierta,
+  setAbierta,
   conversacion,
-  conversacionAbierta,
+  abierta,
   conversacionCargando,
   enviarMensaje,
   mensajeCargando,
@@ -26,27 +26,54 @@ function Pedidos({
 }: PedidosProps) {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start overflow-y-scroll bg-black gap-8 p-4">
-      <div className="relative w-full h-fit flex items-center justify-end">
+      <div className="relative w-full h-fit flex items-center justify-end gap-4">
+        {!abierta.envio && !abierta.conversacion && (
+          <div
+            className={`relative bg-rosa px-1.5 py-1 w-32 h-8 flex items-center border-black border text-xs justify-center text-black font-con cursor-pointer active:scale-95`}
+            onClick={() =>
+              setAbierta((prev) => ({
+                ...prev,
+                envio: true,
+              }))
+            }
+          >
+            {conversacionCargando ? (
+              <div className="relative animate-spin flex items-center justify-center">
+                <AiOutlineLoading color="black" size={15} />
+              </div>
+            ) : abierta.envio || abierta.conversacion ? (
+              dict.Home.regresar
+            ) : (
+              dict.Home.ropa
+            )}
+          </div>
+        )}
         <div
-          className={`relative bg-rosa px-1.5 py-1 w-32 h-8 flex items-center border-white border text-xs justify-center text-white font-con ${
+          className={`relative bg-rosa px-1.5 py-1 w-32 h-8 flex items-center border-black border text-xs justify-center text-black font-con ${
             !conversacionCargando
               ? "cursor-pointer active:scale-95"
               : "cursor-default"
           }`}
-          onClick={() => setConversacionAbierta(!conversacionAbierta)}
+          onClick={() =>
+            setAbierta({
+              conversacion:
+                !abierta.conversacion && !abierta.envio ? true : false,
+              envio: false,
+            })
+          }
         >
           {conversacionCargando ? (
             <div className="relative animate-spin flex items-center justify-center">
-              <AiOutlineLoading color="white" size={15} />
+              <AiOutlineLoading color="black" size={15} />
             </div>
-          ) : conversacionAbierta ? (
+          ) : abierta.envio || abierta.conversacion ? (
             dict.Home.regresar
           ) : (
             dict.Home.mensajes
           )}
         </div>
       </div>
-      {conversacionAbierta ? (
+      {abierta?.conversacion ? (
         <Conversacion
           dict={dict}
           conversacionCargando={conversacionCargando}
@@ -58,6 +85,18 @@ function Pedidos({
           mensajeRef={mensajeRef}
           address={address}
         />
+      ) : abierta?.envio ? (
+        <div className="relative flex flex-col gap-3 text-center items-center justify-start w-full h-full sm:px-0 px-2 font-cont text-white text-sm">
+          <div className="relative w-full h-fit flex items-center justify-center break-words text-xl">
+            {dict.Home.returns}
+          </div>
+          <div
+            className="relative w-full h-fit items-center justify-center whitespace-pre-wrap break-words"
+            dangerouslySetInnerHTML={{
+              __html: dict.Home.faq,
+            }}
+          ></div>
+        </div>
       ) : (
         <div className="relative gap-3 w-full h-fit flex items-start justify-start flex-col">
           {pedidosCargando ? (

@@ -1,6 +1,6 @@
-import {  DecodedMessage, Client } from "@xmtp/xmtp-js";
+import { DecodedMessage, Client } from "@xmtp/xmtp-js";
 import { useEffect, useRef, useState } from "react";
-import {  Profile } from "../../../../graphql/generated";
+import { Profile } from "../../../../graphql/generated";
 import { DIGITALAX_ADDRESS } from "@/lib/constants";
 import { createWalletClient, custom } from "viem";
 import { polygon } from "viem/chains";
@@ -13,8 +13,13 @@ const useConversacion = (
   const mensajeRef = useRef<HTMLVideoElement>();
   const [conversacionCargando, setConversacionCargando] =
     useState<boolean>(false);
-  const [conversacionAbierta, setConversacionAbierta] =
-    useState<boolean>(false);
+  const [abierta, setAbierta] = useState<{
+    conversacion: boolean;
+    envio: boolean;
+  }>({
+    conversacion: false,
+    envio: false,
+  });
   const [mensaje, setMensaje] = useState<string>("");
   const [mensajeCargando, setMensajeCargando] = useState<boolean>(false);
   const [conversacion, setConversacion] = useState<DecodedMessage[]>([]);
@@ -87,21 +92,21 @@ const useConversacion = (
   };
 
   useEffect(() => {
-    if (lens && pantalla == 2 && conversacionAbierta) {
+    if (lens && pantalla == 2 && abierta) {
       manejarConversaciones();
     }
-  }, [lens, pantalla, conversacionAbierta]);
+  }, [lens, pantalla, abierta]);
 
   return {
     conversacionCargando,
     conversacion,
     enviarMensaje,
     mensajeCargando,
-    conversacionAbierta,
-    setConversacionAbierta,
+    abierta,
+    setAbierta,
     setMensaje,
     mensaje,
-    mensajeRef
+    mensajeRef,
   };
 };
 
