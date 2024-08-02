@@ -124,6 +124,7 @@ const useAccount = (
     if (openAccountModal) {
       openAccountModal();
     }
+    removeAuthenticationToken();
     setLensConectado(undefined);
   };
 
