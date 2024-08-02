@@ -178,7 +178,6 @@ const useMint = (
           ? colecciones.filter((col) => !col.galeriaId)
           : colecciones
         ).map(async (col: Coleccion, indice: number) => {
-          console.log(col.imagen,col.imagenes)
           let image = col.imagen;
           if (!image.includes("ipfs://") && image.trim() !== "") {
             const imagen = await fetch(`/api/ipfs`, {
