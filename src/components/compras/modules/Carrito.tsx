@@ -20,7 +20,7 @@ const Carrito: FunctionComponent<{
     e: SetStateAction<
       | {
           etiqueta: string;
-          disenador: string;
+          disenadores: string[];
           tipo: AutographType;
         }
       | undefined

@@ -36,6 +36,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
   switch (manejarMostrarArticulo?.tipo) {
     case AutographType.Hoodie:
     case AutographType.Shirt:
+    case AutographType.All:
       return (
         <Ropas
           carrito={carrito}

@@ -130,7 +130,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                 )}
               </div>
             </div>
-            <div className="relative w-fit h-fit flex items-center justify-center text-base">
+            <div className="relative w-fit h-fit flex items-center justify-center text-base break-all">
               {
                 (articuloSeleccionado?.[articuloIndice]?.elemento as Coleccion)
                   ?.profile?.handle?.suggestedFormatted?.localName

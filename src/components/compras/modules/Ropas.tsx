@@ -4,7 +4,8 @@ import Botones from "./Botones";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Cumplimiento from "./Cumplimiento";
-import { AutographType } from "@/components/game/types/game.types";
+import { AutographType, Coleccion } from "@/components/game/types/game.types";
+import createProfilePicture from "@/lib/helpers/createProfilePicture";
 
 const Ropas: FunctionComponent<RopasProps> = ({
   setCarrito,
@@ -25,6 +26,9 @@ const Ropas: FunctionComponent<RopasProps> = ({
   setCumplimiento,
   cumplimiento,
 }): JSX.Element => {
+  const pfp = createProfilePicture(
+    articulos?.[articuloIndice]?.profile?.metadata?.picture
+  );
   const tokenes = articulos?.[articuloIndice]
     ? carrito?.compras?.filter((car) => {
         if (car.tipo == AutographType.Mix) {
@@ -136,6 +140,29 @@ const Ropas: FunctionComponent<RopasProps> = ({
                 className="rounded-md"
                 objectFit="cover"
               />
+              <div className="absolute bottom-2 left-2 w-full h-fit flex items-start justify-start flex-row gap-3">
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
+                    {pfp && (
+                      <Image
+                        layout="fill"
+                        objectFit="cover"
+                        src={pfp}
+                        draggable={false}
+                        className="rounded-full"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="relative w-fit h-fit flex items-center justify-center text-base break-all">
+                  {
+                    (
+                      articuloSeleccionado?.[articuloIndice]
+                        ?.elemento as Coleccion
+                    )?.profile?.handle?.suggestedFormatted?.localName
+                  }
+                </div>
+              </div>
             </div>
           </div>
           <div className="relative w-full md:w-fit h-full flex items-start justify-between flex-col gap-3">
@@ -154,7 +181,10 @@ const Ropas: FunctionComponent<RopasProps> = ({
                   Number(
                     articulos?.[articuloIndice]?.tokenesMinteados?.length
                   ) -
-                  tokenes?.reduce((acc, val) => acc + Number(val.cantidad), 0) <=
+                  tokenes?.reduce(
+                    (acc, val) => acc + Number(val.cantidad),
+                    0
+                  ) <=
                 0
               }
               comprarPublicacion={comprarPublicacion}

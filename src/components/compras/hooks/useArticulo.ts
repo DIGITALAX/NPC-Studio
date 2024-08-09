@@ -1,7 +1,10 @@
 import { AutographType, Coleccion } from "@/components/game/types/game.types";
 import { useEffect, useState } from "react";
 import { Catalogo, Compra } from "../types/compras.types";
-import { getArticulo } from "../../../../graphql/autograph/queries/getArticulo";
+import {
+  getAll,
+  getArticulo,
+} from "../../../../graphql/autograph/queries/getArticulo";
 import {
   ACCEPTED_TOKENS,
   INFURA_GATEWAY,
@@ -17,7 +20,7 @@ const useArticulo = (
   manejarMostrarArticulo:
     | {
         etiqueta: string;
-        disenador: string;
+        disenadores: string[];
         tipo: AutographType;
       }
     | undefined,
@@ -75,6 +78,13 @@ const useArticulo = (
               col.collectionMetadata = await cadena.json();
             }
 
+            const prof = await getDefaultProfile(
+              {
+                for: col.designer,
+              },
+              lensConectado?.id
+            );
+
             return {
               galeria: col.collectionMetadata?.gallery,
               imagen: col.collectionMetadata?.image,
@@ -94,25 +104,56 @@ const useArticulo = (
               profileIds: col.profileIds,
               coleccionId: col.collectionId,
               galeriaId: col.galleryId,
-              profile: undefined,
+              profile: prof?.data?.defaultProfile as Profile,
             };
           })
         );
       } else {
-        const datos = await getArticulo(
-          manejarMostrarArticulo?.disenador!,
-          autographTypeToNumber[manejarMostrarArticulo?.tipo as string]!
+        let datos: Coleccion[] = [];
+        let profs: Profile[] = [];
+
+        await Promise.all(
+          manejarMostrarArticulo!?.disenadores?.map(
+            async (disenador: string) => {
+              if (manejarMostrarArticulo?.tipo == AutographType.All) {
+                const valores = await getAll(disenador);
+                datos.push(...(valores?.data?.collections || []));
+                const prof = await getDefaultProfile(
+                  {
+                    for: disenador,
+                  },
+                  lensConectado?.id
+                );
+
+                profs.push(
+                  ...(Array.from({
+                    length: valores?.data?.collections?.length,
+                  }).fill(prof.data?.defaultProfile as Profile) as Profile[])
+                );
+              } else {
+                const valores = await getArticulo(
+                  disenador!,
+                  autographTypeToNumber[manejarMostrarArticulo?.tipo as string]!
+                );
+                datos.push(...(valores?.data?.collections || []));
+                const prof = await getDefaultProfile(
+                  {
+                    for: disenador,
+                  },
+                  lensConectado?.id
+                );
+                profs.push(
+                  ...(Array.from({
+                    length: valores?.data?.collections?.length,
+                  }).fill(prof.data?.defaultProfile as Profile) as Profile[])
+                );
+              }
+            }
+          )
         );
 
-        const prof = await getDefaultProfile(
-          {
-            for: manejarMostrarArticulo?.disenador,
-          },
-          lensConectado?.id
-        );
-
-        articulos = await Promise.all(
-          datos?.data?.collections.map(async (col: any) => {
+        articulos = (await Promise.all(
+          datos.map(async (col: any, indice: number) => {
             if (!col.collectionMetadata) {
               const cadena = await fetch(
                 `${INFURA_GATEWAY}/ipfs/${col.uri.split("ipfs://")?.[1]}`
@@ -139,10 +180,10 @@ const useArticulo = (
               profileIds: col.profileIds,
               coleccionId: col.collectionId,
               galeriaId: col.galleryId,
-              profile: prof?.data?.defaultProfile as Profile,
+              profile: profs[indice] as Profile,
             };
           })
-        );
+        )) as Coleccion[];
       }
 
       setArticulosActuales(articulos);
@@ -162,8 +203,8 @@ const useArticulo = (
                   (precios?.length <= 3
                     ? precios
                     : precios.sort((a, b) => a - b).slice(-5)
-                  ).reduce((acc, val) => acc + val, 0) + 100
-                ).toFixed(0)
+                  )?.reduce((acc, val) => acc + val, 0) + 100
+                )?.toFixed(0)
               ),
             },
             token: ACCEPTED_TOKENS[0][2],
@@ -182,12 +223,14 @@ const useArticulo = (
             tipo: (ar as Coleccion)?.tipo,
             color:
               (ar as Coleccion)?.tipo == AutographType.Hoodie ||
-              (ar as Coleccion)?.tipo == AutographType.Shirt
+              (ar as Coleccion)?.tipo == AutographType.Shirt ||
+              (ar as Coleccion)?.tipo == AutographType.All
                 ? "black"
                 : "",
             tamano:
               (ar as Coleccion)?.tipo == AutographType.Hoodie ||
-              (ar as Coleccion)?.tipo == AutographType.Shirt
+              (ar as Coleccion)?.tipo == AutographType.Shirt ||
+              (ar as Coleccion)?.tipo == AutographType.All
                 ? "m"
                 : "",
           }))

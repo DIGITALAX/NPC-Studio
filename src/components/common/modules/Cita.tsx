@@ -35,7 +35,7 @@ const Cita: FunctionComponent<CitaProps> = ({
               </div>
             </div>
             <div
-              className={`relative w-fit h-fit text-xs flex items-center justify-center text-white font-bit top-px break-all`}
+              className={`relative w-fit h-fit text-xxs flex items-center justify-center text-white font-bit top-px break-all`}
             >
               {cita?.by?.handle?.suggestedFormatted?.localName
                 ? cita?.by?.handle?.suggestedFormatted?.localName.length > 25
@@ -49,7 +49,7 @@ const Cita: FunctionComponent<CitaProps> = ({
           </div>
           <div className="relative w-fit h-fit flex items-center justify-center">
             <div
-              className={`relative w-fit h-fit text-white font-bit items-center justify-center flex text-xs ml-auto top-px`}
+              className={`relative w-fit h-fit text-white font-bit items-center justify-center flex text-xxs ml-auto top-px`}
             >
               {cita?.createdAt && moment(`${cita?.createdAt}`).fromNow()}
             </div>

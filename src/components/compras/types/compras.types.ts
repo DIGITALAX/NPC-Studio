@@ -11,7 +11,7 @@ export type ComprasCambioProps = {
   manejarMostrarArticulo:
     | {
         etiqueta: string;
-        disenador: string;
+        disenadores: string[];
         tipo: AutographType;
       }
     | undefined;

@@ -32,6 +32,44 @@ const ARTICULO = gql`
   }
 `;
 
+const ARTICULO_ALL = gql`
+  query ($designer: String!) {
+    collections(
+      where: {
+        and: [
+          { designer_contains: $designer }
+          { or: [{ type: 1 }, { type: 2 }] }
+        ]
+      }
+    ) {
+      uri
+      type
+      price
+      mintedTokens
+      galleryId
+      id
+      designer
+      collectionMetadata {
+        title
+        tipo
+        tags
+        npcs
+        instructions
+        locales
+        image
+        id
+        gallery
+        description
+      }
+      collectionId
+      amount
+      acceptedTokens
+      profileIds
+      pubIds
+    }
+  }
+`;
+
 export const getArticulo = async (
   designer: string,
   type: number
@@ -40,6 +78,32 @@ export const getArticulo = async (
   const queryPromise = autographClient.query({
     query: ARTICULO,
     variables: { designer, type },
+    fetchPolicy: "no-cache",
+    errorPolicy: "all",
+  });
+
+  const timeoutPromise = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      resolve({ timedOut: true });
+    }, 60000);
+  });
+
+  const result: any = await Promise.race([queryPromise, timeoutPromise]);
+
+  timeoutId && clearTimeout(timeoutId);
+
+  if (result.timedOut) {
+    return;
+  } else {
+    return result;
+  }
+};
+
+export const getAll = async (designer: string): Promise<FetchResult | void> => {
+  let timeoutId: NodeJS.Timeout | undefined;
+  const queryPromise = autographClient.query({
+    query: ARTICULO_ALL,
+    variables: { designer },
     fetchPolicy: "no-cache",
     errorPolicy: "all",
   });

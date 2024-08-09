@@ -182,9 +182,7 @@ export type DialogProps = {
   setDragDialog: (e: SetStateAction<boolean>) => void;
   lensConectado: Profile | undefined;
   dict: Dictionary;
-  conectado: boolean,
-  openConnectModal: (() => void) | undefined,
-  manejarLens: () => Promise<void>,
+  
   comentarPublicar: ComentarPublicar[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
@@ -389,7 +387,7 @@ export interface Interactivo {
   image: Phaser.GameObjects.Image;
   uri: string;
   etiqueta: string;
-  disenador: string;
+  disenadores: string[];
   tipo: AutographType;
   sitio: {
     x: number;
@@ -615,7 +613,7 @@ export type PantallaCambioProps = {
     e: SetStateAction<
       | {
           etiqueta: string;
-          disenador: string;
+          disenadores: string[];
           tipo: AutographType;
         }
       | undefined
@@ -624,7 +622,7 @@ export type PantallaCambioProps = {
   manejarMostrarArticulo:
     | {
         etiqueta: string;
-        disenador: string;
+        disenadores: string[];
         tipo: AutographType;
       }
     | undefined;
@@ -714,6 +712,7 @@ export enum AutographType {
   Shirt = "Shirt",
   Catalog = "Catalog",
   Mix = "Mix",
+  All = "All"
 }
 
 export interface DatosOraculos {

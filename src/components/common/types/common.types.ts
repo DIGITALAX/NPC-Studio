@@ -151,7 +151,7 @@ export type PantallaComprarProps = {
     e: SetStateAction<
       | {
           etiqueta: string;
-          disenador: string;
+          disenadores: string[];
           tipo: AutographType;
         }
       | undefined
@@ -160,7 +160,7 @@ export type PantallaComprarProps = {
   manejarMostrarArticulo:
     | {
         etiqueta: string;
-        disenador: string;
+        disenadores: string[];
         tipo: AutographType;
       }
     | undefined;

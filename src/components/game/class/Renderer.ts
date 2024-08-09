@@ -22,7 +22,7 @@ export default class NPCEnginePhaser extends Phaser.Scene {
   private setManejarMostrarArticulo!: (
     e: SetStateAction<{
       etiqueta: string;
-      disenador: string;
+      disenadores: string[];
       tipo: AutographType;
     }>
   ) => void;
@@ -133,32 +133,31 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         );
       });
 
+      //  this.escena.prohibido.forEach((obstacle) => {
+      //     let color = Phaser.Display.Color.RandomRGB();
+      //     let hexColor = Phaser.Display.Color.GetColor(
+      //       color.red,
+      //       color.green,
+      //       color.blue
+      //     );
 
-    //  this.escena.prohibido.forEach((obstacle) => {
-    //     let color = Phaser.Display.Color.RandomRGB();
-    //     let hexColor = Phaser.Display.Color.GetColor(
-    //       color.red,
-    //       color.green,
-    //       color.blue
-    //     );
-
-    //     let graphics = this.add
-    //       .graphics({ fillStyle: { color: hexColor } })
-    //       .setDepth(1000);
-    //     graphics.fillRect(
-    //       obstacle.x,
-    //       obstacle.y,
-    //       obstacle.anchura,
-    //       obstacle.altura
-    //     );
-    //     graphics.lineStyle(2, 0x000000);
-    //     graphics.strokeRect(
-    //       obstacle.x,
-    //       obstacle.y,
-    //       obstacle.anchura,
-    //       obstacle.altura
-    //     );
-    //   });
+      //     let graphics = this.add
+      //       .graphics({ fillStyle: { color: hexColor } })
+      //       .setDepth(1000);
+      //     graphics.fillRect(
+      //       obstacle.x,
+      //       obstacle.y,
+      //       obstacle.anchura,
+      //       obstacle.altura
+      //     );
+      //     graphics.lineStyle(2, 0x000000);
+      //     graphics.strokeRect(
+      //       obstacle.x,
+      //       obstacle.y,
+      //       obstacle.anchura,
+      //       obstacle.altura
+      //     );
+      //   });
 
       this.load.once("complete", this.cargarRecursos, this);
       this.load.start();
@@ -224,38 +223,38 @@ export default class NPCEnginePhaser extends Phaser.Scene {
         });
       });
 
-      // this.escena.interactivos?.forEach((obj) => {
-      //   const interactivo = this.physics.add
-      //     .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
-      //     .setOrigin(0.5, 0.5)
-      //     .setSize(obj.talla.x, obj.talla.y)
-      //     .setScale(obj.escala.x, obj.escala.y)
-      //     .setDisplaySize(obj.talla.x, obj.talla.y)
-      //     .setDepth(obj.sitio.y);
-      //   interactivo.setInteractive();
-      //   interactivo.on("pointerdown", () => {
-      //     !this.estadoDePantalla &&
-      //       this.setManejarMostrarArticulo({
-      //         etiqueta: obj.etiqueta,
-      //         disenador: obj.disenador,
-      //         tipo: obj.tipo,
-      //       });
-      //   });
-      //   interactivo.on("pointerover", () => {
-      //     this.game.canvas.style.cursor = "pointer";
-      //   });
-      //   interactivo.on("pointerout", () => {
-      //     this.game.canvas.style.cursor = "default";
-      //   });
-      //   this.tweens.add({
-      //     targets: interactivo,
-      //     y: interactivo.y + 20,
-      //     yoyo: true,
-      //     repeat: -1,
-      //     duration: 1000,
-      //     ease: "Sine.easeInOut",
-      //   });
-      // });
+      this.escena.interactivos?.forEach((obj) => {
+        const interactivo = this.physics.add
+          .image(obj.sitio.x, obj.sitio.y, obj.etiqueta)
+          .setOrigin(0.5, 0.5)
+          .setSize(obj.talla.x, obj.talla.y)
+          .setScale(obj.escala.x, obj.escala.y)
+          .setDisplaySize(obj.talla.x, obj.talla.y)
+          .setDepth(obj.sitio.y);
+        interactivo.setInteractive();
+        interactivo.on("pointerdown", () => {
+          !this.estadoDePantalla &&
+            this.setManejarMostrarArticulo({
+              etiqueta: obj.etiqueta,
+              disenadores: obj.disenadores,
+              tipo: obj.tipo,
+            });
+        });
+        interactivo.on("pointerover", () => {
+          this.game.canvas.style.cursor = "pointer";
+        });
+        interactivo.on("pointerout", () => {
+          this.game.canvas.style.cursor = "default";
+        });
+        this.tweens.add({
+          targets: interactivo,
+          y: interactivo.y + 20,
+          yoyo: true,
+          repeat: -1,
+          duration: 1000,
+          ease: "Sine.easeInOut",
+        });
+      });
 
       this.escena.sillas?.forEach((silla) => {
         const item = this.add

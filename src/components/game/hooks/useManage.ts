@@ -57,7 +57,7 @@ const useManage = (
   const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<{
     etiqueta: string;
     tipo: AutographType;
-    disenador: string;
+    disenadores: string[];
   }>();
   const wrapperRef = useRef<Draggable | null>(null);
   const [dragDialog, setDragDialog] = useState<boolean>(false);

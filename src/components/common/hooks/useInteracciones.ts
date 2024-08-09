@@ -355,7 +355,10 @@ const useInteracciones = (
             ] == AutographType.Hoodie ||
             numberToAutograph[
               Number(datos?.data?.autographCreateds?.items?.[0]?.type)
-            ] == AutographType.Shirt
+            ] == AutographType.Shirt ||
+            numberToAutograph[
+              Number(datos?.data?.autographCreateds?.items?.[0]?.type)
+            ] == AutographType.All
               ? "black"
               : "",
           tamano:
@@ -364,7 +367,10 @@ const useInteracciones = (
             ] == AutographType.Hoodie ||
             numberToAutograph[
               Number(datos?.data?.autographCreateds?.items?.[0]?.type)
-            ] == AutographType.Shirt
+            ] == AutographType.Shirt ||
+            numberToAutograph[
+              Number(datos?.data?.autographCreateds?.items?.[0]?.type)
+            ] == AutographType.All
               ? "m"
               : "",
         };
