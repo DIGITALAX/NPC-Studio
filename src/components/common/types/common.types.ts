@@ -12,7 +12,6 @@ import {
   Erc20,
   ImageMetadataV3,
   Mirror,
-  OpenActionModule,
   Post,
   Profile,
   Quote,
@@ -26,6 +25,7 @@ import {
   Compra,
   Details,
 } from "@/components/compras/types/compras.types";
+import { PublicClient } from "viem";
 
 export type DropDownProps = {
   titulo: string;
@@ -210,7 +210,15 @@ export type PublicacionProps = {
   caretCoord: { x: number; y: number }[];
   publicacion: Quote | Mirror | Comment | Post;
   dict: Dictionary;
+  menos?: boolean
   comentariosAbiertos: boolean[];
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   setComentariosAbiertos: (e: SetStateAction<boolean[]>) => void;
   indice: number;
   manejarAccionAbierta: (e: Post, indice: number) => Promise<void>;
@@ -340,7 +348,13 @@ export type CitaProps = {
 
 export type BarProps = {
   indice: number;
-
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   elemento: Post | Mirror | Comment | Quote;
   setAbrirMirrorEleccion: (e: SetStateAction<boolean[]>) => void;
   abrirMirrorEleccion: boolean[];
@@ -466,9 +480,37 @@ export type VerMediosProps = {
 
 export type ModalsProps = {
   dict: Dictionary;
+  address: `0x${string}` | undefined;
+  publicClient: PublicClient;
+  conectado: boolean;
+  manejarLens: () => Promise<void>;
+  openConnectModal: (() => void) | undefined;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  escena: string;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
   aprobar: () => Promise<void>;
   cargandoColeccion: boolean;
   aprobado: boolean;
+  mostrarInteracciones: {
+    tipo: string;
+    id?: string;
+    abierto: boolean;
+  };
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   manejarColeccionar: () => Promise<void>;
   seguirColeccionar:
     | {
@@ -665,6 +707,144 @@ export type PublicacionConectadaProps = {
   caretCoord: { x: number; y: number }[];
   perfilesAbiertos: boolean[];
   mencionarPerfiles: Profile[];
+};
+
+export type QuienProps = {
+  tipo: string;
+  reactors: any[];
+  quoters: any[];
+  tieneMas: boolean;
+  address: `0x${string}`;
+  publicClient: PublicClient;
+  conectado: boolean;
+  openConnectModal: (() => void) | undefined;
+  manejarLens: () => Promise<void>;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  escena: string;
+  comentarPublicar: ComentarPublicar[];
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
+  setReactors: (e: SetStateAction<any[]>) => void;
+  setQuoters: (e: SetStateAction<(Comment | Quote)[]>) => void;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: SimpleCollectOpenActionSettings;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
+  tieneMasCita: boolean;
+  muestraMas: () => void;
+  mirrorQuote: boolean;
+  dict: Dictionary;
+  lensConectado: Profile | undefined;
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
+};
+
+export type InteraccionesProps = {
+  lensConectado: Profile | undefined;
+  publicClient: PublicClient;
+  conectado: boolean;
+  openConnectModal: (() => void) | undefined;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setCarrito: (
+    e: SetStateAction<{
+      compras: Compra[];
+      abierto: boolean;
+    }>
+  ) => void;
+  escena: string;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  comentarPublicar: ComentarPublicar[];
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
+  setOpcionAbierta: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          indice: number;
+        }
+      | undefined
+    >
+  ) => void;
+  setVerImagen: (
+    e: SetStateAction<{
+      abierto: boolean;
+      tipo: string;
+      url: string;
+    }>
+  ) => void;
+  setAbrirCita: (
+    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
+  ) => void;
+  manejarLens: () => Promise<void>;
+  address: `0x${string}`;
+  setSeguirColeccionar: (
+    e: SetStateAction<
+      | {
+          tipo: string;
+          collecionar: {
+            id: string;
+            stats: number;
+            item: SimpleCollectOpenActionSettings;
+          };
+          seguidor: Profile;
+        }
+      | undefined
+    >
+  ) => void;
+  mostrarInteracciones: {
+    tipo: string;
+    id?: string;
+    abierto: boolean;
+  };
+  dict: Dictionary;
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
 };
 
 export type SeguirProps = {

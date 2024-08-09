@@ -21,14 +21,14 @@ const Bar: FunctionComponent<BarProps> = ({
   manejarColeccionar,
   setSeguirColeccionar,
   manejarAccionAbierta,
-  
+  setMostrarInteracciones,
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))
       ?.by?.metadata?.picture
   );
   return (
-    <div className="relative w-full justify-between flex flex-col sm:flex-row items-between sm:items-center gap-2">
+    <div className="relative w-full justify-between flex flex-col sm:flex-row items-between sm:items-center gap-2 flex-wrap">
       <div className="relative w-fit h-fit flex flex-row items-start sm:items-center gap-2 justify-center">
         {[
           ["QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3", "Mirrors"],
@@ -129,10 +129,20 @@ const Bar: FunctionComponent<BarProps> = ({
                 )}
               </div>
               <div
-                className={`relative w-fit h-fit flex items-center justify-center text-center text-sm ${
-                  (stats[indexTwo] > 0 || image[1] === "Comments") &&
-                  "cursor-pointer active:scale-95"
+                className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
+                  stats[indexTwo] > 0 && "cursor-pointer active:scale-95"
                 }`}
+                onClick={() =>
+                  stats[indexTwo] > 0 &&
+                  setMostrarInteracciones({
+                    abierto: true,
+                    tipo: image[1],
+                    id: (elemento?.__typename == "Mirror"
+                      ? elemento?.mirrorOn
+                      : (elemento as Post)
+                    )?.id,
+                  })
+                }
               >
                 {numeral(stats[indexTwo]).format("0a")}
               </div>
@@ -204,61 +214,90 @@ const Bar: FunctionComponent<BarProps> = ({
             />
           )}
         </div>
-        <div
-          className={`relative w-5 h-5 items-center justify-center flex ${
-            (elemento?.__typename === "Mirror"
-              ? elemento?.mirrorOn
-              : (elemento as Post)
-            )?.openActionModules?.[0]?.__typename ===
-              "SimpleCollectOpenActionSettings" ||
-            (elemento?.__typename === "Mirror"
-              ? elemento?.mirrorOn
-              : (elemento as Post)
-            )?.openActionModules?.[0]?.__typename ===
-              "MultirecipientFeeCollectOpenActionSettings"
-              ? "cursor-pointer active:scale-95"
-              : "opacity-70"
-          } ${cargandoInteracciones?.coleccion && "animate-spin"} ${
-            (elemento?.__typename === "Mirror"
-              ? elemento?.mirrorOn
-              : (elemento as Post)
-            )?.operations?.hasActed?.value &&
-            "mix-blend-hard-light hue-rotate-60"
-          }`}
-          onClick={async () =>
-            !cargandoInteracciones?.coleccion &&
-            ((elemento?.__typename === "Mirror"
-              ? elemento?.mirrorOn
-              : (elemento as Post)
-            )?.openActionModules?.[0]?.contract?.address
-              ?.toLowerCase()
-              ?.includes(AUTOGRAPH_OPEN_ACTION?.toLowerCase())
-              ? await manejarAccionAbierta(
-                  (elemento?.__typename === "Mirror"
-                    ? elemento?.mirrorOn
-                    : elemento) as Post,
-                  indice
-                )
-              : manejarLogicaColeccion(
-                  (elemento?.__typename === "Mirror"
-                    ? elemento?.mirrorOn
-                    : (elemento as Post)) as Post,
-                  cargandoInteracciones?.coleccion!,
-                  indice,
-                  manejarColeccionar,
-                  setSeguirColeccionar
-                ))
-          }
-        >
-          {cargandoInteracciones?.coleccion ? (
-            <AiOutlineLoading size={15} color="white" />
-          ) : (
-            <Image
-              layout="fill"
-              draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/QmZ4v5pzdnCBeyKnS9VrjZiEAbUpAVy8ECArNcpxBt6Tw4`}
-            />
-          )}
+        <div className="relative flex flex-row gap-1 items-center justify-center">
+          <div
+            className={`relative w-5 h-5 items-center justify-center flex ${
+              (elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn
+                : (elemento as Post)
+              )?.openActionModules?.[0]?.__typename ===
+                "SimpleCollectOpenActionSettings" ||
+              (elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn
+                : (elemento as Post)
+              )?.openActionModules?.[0]?.__typename ===
+                "MultirecipientFeeCollectOpenActionSettings"
+                ? "cursor-pointer active:scale-95"
+                : "opacity-70"
+            } ${cargandoInteracciones?.coleccion && "animate-spin"} ${
+              (elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn
+                : (elemento as Post)
+              )?.operations?.hasActed?.value &&
+              "mix-blend-hard-light hue-rotate-60"
+            }`}
+            onClick={async () =>
+              !cargandoInteracciones?.coleccion &&
+              ((elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn
+                : (elemento as Post)
+              )?.openActionModules?.[0]?.contract?.address
+                ?.toLowerCase()
+                ?.includes(AUTOGRAPH_OPEN_ACTION?.toLowerCase())
+                ? await manejarAccionAbierta(
+                    (elemento?.__typename === "Mirror"
+                      ? elemento?.mirrorOn
+                      : elemento) as Post,
+                    indice
+                  )
+                : manejarLogicaColeccion(
+                    (elemento?.__typename === "Mirror"
+                      ? elemento?.mirrorOn
+                      : (elemento as Post)) as Post,
+                    cargandoInteracciones?.coleccion!,
+                    indice,
+                    manejarColeccionar,
+                    setSeguirColeccionar
+                  ))
+            }
+          >
+            {cargandoInteracciones?.coleccion ? (
+              <AiOutlineLoading size={15} color="white" />
+            ) : (
+              <Image
+                layout="fill"
+                draggable={false}
+                src={`${INFURA_GATEWAY}/ipfs/QmZ4v5pzdnCBeyKnS9VrjZiEAbUpAVy8ECArNcpxBt6Tw4`}
+              />
+            )}
+          </div>
+          <div
+            className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
+              (elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn?.stats?.countOpenActions
+                : (elemento as Post)?.stats?.countOpenActions) > 0 &&
+              "cursor-pointer active:scale-95"
+            }`}
+            onClick={() =>
+              (elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn?.stats?.countOpenActions
+                : (elemento as Post)?.stats?.countOpenActions) > 0 &&
+              setMostrarInteracciones({
+                abierto: true,
+                tipo: "Acts",
+                id: (elemento?.__typename == "Mirror"
+                  ? elemento?.mirrorOn
+                  : (elemento as Post)
+                )?.id,
+              })
+            }
+          >
+            {numeral(
+              elemento?.__typename === "Mirror"
+                ? elemento?.mirrorOn?.stats?.countOpenActions
+                : (elemento as Post)?.stats?.countOpenActions
+            ).format("0a")}
+          </div>
         </div>
       </div>
     </div>

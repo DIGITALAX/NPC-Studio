@@ -30,6 +30,7 @@ function Log({
   npcIds,
   setCarrito,
   setMostrarNotificacion,
+  setMostrarInteracciones
 }: LogProps) {
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
@@ -150,6 +151,10 @@ function Log({
             <Chat
               setOpcionAbierta={setOpcionAbierta}
               setVerImagen={setVerImagen}
+              conectado={connected}
+              manejarLens={manejarLens}
+              openConnectModal={openConnectModal}
+              setMostrarInteracciones={setMostrarInteracciones}
               setCarrito={setCarrito}
               setMostrarNotificacion={setMostrarNotificacion}
               npcIds={npcIds}

@@ -35,7 +35,10 @@ const useInteracciones = (
       abierto: boolean;
     }>
   ) => void,
-  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void
+  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void,
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>
 ) => {
   const [comentariosAbiertos, setComentariosAbiertos] = useState<boolean[]>([]);
   const [abrirMirrorEleccion, setAbrirMirrorEleccion] = useState<boolean[]>([]);
@@ -52,7 +55,14 @@ const useInteracciones = (
     tipo: string,
     indice: number
   ) => {
-    if (!lensConectado?.id) return;
+    if (!lensConectado?.id) {
+      if (conectado) {
+        manejarLens();
+      } else {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
 
     setCargandoInteracciones((prev) => {
       const updatedArray = [...prev];
@@ -99,7 +109,15 @@ const useInteracciones = (
   };
 
   const manejarMirror = async (id: string, indice: number) => {
-    if (!lensConectado?.id) return;
+    if (!lensConectado?.id) {
+      if (conectado) {
+        manejarLens();
+      } else {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
+
     setCargandoInteracciones((prev) => {
       const updatedArray = [...prev];
       updatedArray[indice] = { ...updatedArray[indice], espejo: true };
@@ -143,7 +161,15 @@ const useInteracciones = (
     hasReacted: boolean,
     indice: number
   ) => {
-    if (!lensConectado?.id) return;
+    if (!lensConectado?.id) {
+      if (conectado) {
+        manejarLens();
+      } else {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
+
     setCargandoInteracciones((prev) => {
       const updatedArray = [...prev];
       updatedArray[indice] = { ...updatedArray[indice], gusta: true };

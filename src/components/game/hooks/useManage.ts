@@ -45,7 +45,10 @@ const useManage = (
           seguidor: Profile;
         }
       | undefined
-  ) => void
+  ) => void,
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>
 ) => {
   const elementoTextoCita = useRef<HTMLTextAreaElement>();
   const [escena, setEscena] = useState<string>("estudio abierto de trabajo");
@@ -251,7 +254,14 @@ const useManage = (
       Number(seguirColeccionar?.collecionar?.item?.collectLimit || 0) > 0
     )
       return;
-    if (!lensConectado?.id) return;
+    if (!lensConectado?.id) {
+      if (conectado) {
+        manejarLens();
+      } else {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
 
     setCargandoColeccion(true);
     try {

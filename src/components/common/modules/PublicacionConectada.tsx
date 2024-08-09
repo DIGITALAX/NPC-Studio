@@ -103,7 +103,7 @@ const PublicacionConectada: FunctionComponent<PublicacionConectadaProps> = ({
                   return (
                     <div
                       key={indexTwo}
-                      className={`relative border-y border-white w-full h-10 px-3 py-2 bg-black flex flex-row gap-3 cursor-pointer items-center justify-center`}
+                      className={`relative border-y border-white w-full h-10 px-3 py-2 bg-black flex flex-row gap-3 cursor-pointer items-center justify-center break-all`}
                       onClick={() => {
                         setPerfilesAbiertos((prev) => {
                           const arr = [...prev];
@@ -134,7 +134,7 @@ const PublicacionConectada: FunctionComponent<PublicacionConectadaProps> = ({
                             />
                           )}
                         </div>
-                        <div className="relative items-center justify-center w-fit h-fit text-xs flex">
+                        <div className="relative items-center justify-center w-fit h-fit text-xs flex break-all">
                           {user?.handle?.suggestedFormatted?.localName}
                         </div>
                       </div>

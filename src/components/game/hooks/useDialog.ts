@@ -14,7 +14,11 @@ const useDialog = (
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
   sceneKey: string,
   comentarPublicar: ComentarPublicar[],
-  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void,
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>,
+  lensConectado: Profile | undefined
 ) => {
   const contenedorMensajesRef = useRef<HTMLDivElement | null>(null);
   const [caretCoord, setCaretCoord] = useState<
@@ -28,6 +32,14 @@ const useDialog = (
   const [publicacionCargando, setPublicacionCargando] = useState<boolean[]>([]);
 
   const manejarPublicar = async (indice: number, comentarioId?: string) => {
+    if (!lensConectado?.id) {
+      if (conectado) {
+        manejarLens();
+      } else {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
 
     if (
       !comentarPublicar[indice]?.contenido &&
@@ -62,7 +74,8 @@ const useDialog = (
           ? [
               {
                 collectOpenAction: {
-                  simpleCollectOpenAction: comentarPublicar[indice]?.coleccionar,
+                  simpleCollectOpenAction:
+                    comentarPublicar[indice]?.coleccionar,
                 },
               },
             ]
@@ -117,7 +130,6 @@ const useDialog = (
     tipo: string,
     indice: number
   ): void => {
-
     const file = e.target?.files?.[0];
     if (file) {
       const reader = new FileReader();

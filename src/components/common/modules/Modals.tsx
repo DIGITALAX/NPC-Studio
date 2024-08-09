@@ -12,6 +12,7 @@ import PublicacionConectada from "./PublicacionConectada";
 import OpcionAbierta from "./OpcionAbierta";
 import CitaPub from "./CitaPub";
 import Seguir from "./Seguir";
+import Interacciones from "./Interacciones";
 
 const Modals: FunctionComponent<ModalsProps> = ({
   dict,
@@ -72,9 +73,44 @@ const Modals: FunctionComponent<ModalsProps> = ({
   aprobar,
   cargandoColeccion,
   manejarColeccionar,
+  mostrarInteracciones,
+  setMostrarInteracciones,
+  setCarrito,
+  setAbrirCita,
+  setIndexar,
+  publicClient,
+  address,
+  manejarLens,
+  escena,
+  conectado,
+  openConnectModal,
 }): JSX.Element => {
   return (
     <>
+      {mostrarInteracciones?.abierto && (
+        <Interacciones
+          dict={dict}
+          setCarrito={setCarrito}
+          setAbrirCita={setAbrirCita}
+          publicClient={publicClient}
+          address={address!}
+          manejarLens={manejarLens}
+          escena={escena}
+          conectado={conectado}
+          openConnectModal={openConnectModal}
+          setIndexar={setIndexar}
+          setComentarPublicar={setComentarPublicar}
+          setErrorInteraccion={setErrorInteraccion}
+          setMostrarNotificacion={setMostrarNotificacion}
+          setOpcionAbierta={setOpcionAbierta}
+          setSeguirColeccionar={setSeguirColeccionar}
+          setVerImagen={setVerImagen}
+          comentarPublicar={comentarPublicar}
+          mostrarInteracciones={mostrarInteracciones}
+          setMostrarInteracciones={setMostrarInteracciones}
+          lensConectado={lensConectado}
+        />
+      )}
       {mostrarNotificacion !== NotificacionType.Inactivo && (
         <Notificacion
           dict={dict}

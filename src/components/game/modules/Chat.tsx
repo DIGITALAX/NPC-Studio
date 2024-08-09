@@ -14,6 +14,7 @@ const Chat: FunctionComponent<ChatProps> = ({
   dict,
   address,
   publicClient,
+  setMostrarInteracciones,
   setIndexar,
   setErrorInteraccion,
   escena,
@@ -25,7 +26,10 @@ const Chat: FunctionComponent<ChatProps> = ({
   setComentarPublicar,
   setCarrito,
   setMostrarNotificacion,
-  npcIds
+  npcIds,
+  conectado,
+  openConnectModal,
+  manejarLens,
 }): JSX.Element => {
   const {
     feedCargando,
@@ -55,7 +59,10 @@ const Chat: FunctionComponent<ChatProps> = ({
     publicClient,
     setIndexar,
     setCarrito,
-    setMostrarNotificacion
+    setMostrarNotificacion,
+    conectado,
+    openConnectModal,
+    manejarLens
   );
   const {
     contenedorMensajesRef,
@@ -75,7 +82,11 @@ const Chat: FunctionComponent<ChatProps> = ({
     setErrorInteraccion,
     escena,
     comentarPublicar,
-    setComentarPublicar
+    setComentarPublicar,
+    conectado,
+    openConnectModal,
+    manejarLens,
+    lensConectado
   );
   const elementoTexto = useRef(null);
   return (
@@ -108,6 +119,8 @@ const Chat: FunctionComponent<ChatProps> = ({
                 (elemento: Post | Quote | Mirror | Comment, indice: number) => {
                   return (
                     <Publicacion
+                      menos
+                      setMostrarInteracciones={setMostrarInteracciones}
                       setOpcionAbierta={setOpcionAbierta}
                       key={indice}
                       setCaretCoord={setCaretCoord}

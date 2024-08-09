@@ -116,6 +116,18 @@ export const ModalContext = createContext<
       setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
       escenas: Escena[];
       setEscenas: (e: SetStateAction<Escena[]>) => void;
+      mostrarInteracciones: {
+        tipo: string;
+        id?: string;
+        abierto: boolean;
+      };
+      setMostrarInteracciones: (
+        e: SetStateAction<{
+          tipo: string;
+          id?: string;
+          abierto: boolean;
+        }>
+      ) => void;
     }
   | undefined
 >(undefined);
@@ -140,6 +152,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [oraculos, setOraculos] = useState<DatosOraculos[]>([]);
   const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
   const [indexar, setIndexar] = useState<Indexar>(Indexar.Inactivo);
+  const [mostrarInteracciones, setMostrarInteracciones] = useState<{
+    tipo: string;
+    id?: string;
+    abierto: boolean;
+  }>({
+    tipo: "",
+    abierto: false,
+  });
   const [verImagen, setVerImagen] = useState<{
     abierto: boolean;
     tipo: string;
@@ -187,6 +207,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setComentarPublicar,
                 comentarPublicar,
                 pantalla,
+                mostrarInteracciones,
+                setMostrarInteracciones,
                 setPantalla,
                 esArtista,
                 setEsArtista,

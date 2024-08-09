@@ -26,6 +26,10 @@ const Dialog: FunctionComponent<DialogProps> = ({
   npcIds,
   setCarrito,
   setMostrarNotificacion,
+  setMostrarInteracciones,
+  manejarLens,
+  openConnectModal,
+  conectado,
 }) => {
   return (
     <Draggable ref={wrapperRef} cancel=".close" enableUserSelectHack={false}>
@@ -36,6 +40,10 @@ const Dialog: FunctionComponent<DialogProps> = ({
           </div>
           <Chat
             open
+            openConnectModal={openConnectModal}
+            manejarLens={manejarLens}
+            conectado={conectado}
+            setMostrarInteracciones={setMostrarInteracciones}
             setCarrito={setCarrito}
             setMostrarNotificacion={setMostrarNotificacion}
             npcIds={npcIds}

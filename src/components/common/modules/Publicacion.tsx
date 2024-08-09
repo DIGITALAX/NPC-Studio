@@ -42,8 +42,9 @@ function Publicacion({
   comentarPublicar,
   setComentarPublicar,
   setVerImagen,
-  
-  manejarAccionAbierta
+  setMostrarInteracciones,
+  manejarAccionAbierta,
+  menos
 }: PublicacionProps) {
   const elementoTexto = useRef(null);
 
@@ -113,7 +114,8 @@ function Publicacion({
         <Cita cita={publicacion?.quoteOn as Quote} />
       )}
       <Bar
-        indice={indice - 1}    
+        indice={menos ? indice - 1 : indice}   
+        setMostrarInteracciones={setMostrarInteracciones}
         elemento={publicacion}
         manejarAccionAbierta={manejarAccionAbierta}
         abrirMirrorEleccion={abrirMirrorEleccion}
@@ -126,7 +128,7 @@ function Publicacion({
         manejarColeccionar={manejarColeccionar}
         setSeguirColeccionar={setSeguirColeccionar}
       />
-      {comentariosAbiertos?.[indice - 1] && (
+      {comentariosAbiertos?.[(menos ? indice - 1 : indice)] && (
         <Comentario
           setOpcionAbierta={setOpcionAbierta}
           manejarArchivo={manejarArchivo}

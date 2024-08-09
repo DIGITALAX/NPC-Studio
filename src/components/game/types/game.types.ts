@@ -32,6 +32,13 @@ export type LogProps = {
   lensConectado: Profile | undefined;
   openConnectModal: (() => void) | undefined;
   manejarSalir: () => void;
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   manejarLens: () => Promise<void>;
   lensCargando: boolean;
   setDragDialog: (e: SetStateAction<boolean>) => void;
@@ -175,9 +182,19 @@ export type DialogProps = {
   setDragDialog: (e: SetStateAction<boolean>) => void;
   lensConectado: Profile | undefined;
   dict: Dictionary;
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>,
   comentarPublicar: ComentarPublicar[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   setCarrito: (
     e: SetStateAction<{
       compras: Compra[];
@@ -228,6 +245,9 @@ export type DialogProps = {
 
 export type ChatProps = {
   open?: boolean;
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>,
   dict: Dictionary;
   address: `0x${string}` | undefined;
   publicClient: PublicClient;
@@ -275,6 +295,13 @@ export type ChatProps = {
     }>
   ) => void;
   npcIds: string[];
+  setMostrarInteracciones: (
+    e: SetStateAction<{
+      tipo: string;
+      id?: string;
+      abierto: boolean;
+    }>
+  ) => void;
   setAbrirCita: (
     e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
   ) => void;
@@ -457,6 +484,8 @@ export type Dictionary = {
     frase2: string;
     ropa: string;
     frase3: string;
+    mir: string;
+    quo: string;
     returns: string;
     faq: string;
     frase4: string;

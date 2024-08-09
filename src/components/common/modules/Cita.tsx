@@ -35,7 +35,7 @@ const Cita: FunctionComponent<CitaProps> = ({
               </div>
             </div>
             <div
-              className={`relative w-fit h-fit text-xs flex items-center justify-center text-white font-bit top-px`}
+              className={`relative w-fit h-fit text-xs flex items-center justify-center text-white font-bit top-px break-all`}
             >
               {cita?.by?.handle?.suggestedFormatted?.localName
                 ? cita?.by?.handle?.suggestedFormatted?.localName.length > 25

@@ -17,7 +17,7 @@ import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
 import { Post } from "../../../../graphql/generated";
-import toHexWithLeadingZero from "@/lib/helpers/leadingZero";
+import useMostrar from "@/components/common/hooks/useMostrar";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -30,6 +30,36 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   });
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
+  const {
+    lensCargando,
+    manejarLens,
+    manejarSalir,
+    manejarEnviarMensaje,
+    mensaje,
+    mensajeCargando,
+    setMensaje,
+    setOpcionAbierta,
+    opcionAbierta,
+    manejarGif,
+    gifCargando,
+    buscarGifs,
+    setBuscarGifs,
+    monedasDisponibles,
+    drops,
+    setDrops,
+  } = useAccountInternal(
+    isConnected,
+    context?.setEsArtista!,
+    context?.setLensConectado!,
+    openAccountModal,
+    context?.setMostrarNotificacion!,
+    address,
+    publicClient,
+    dict,
+    context?.lensConectado,
+    context?.oraculos!,
+    context?.setOraculos!
+  );
   const {
     npc,
     setNpc,
@@ -68,38 +98,12 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.abrirCita! as Post,
     context?.setAbrirCita! as any,
     context?.seguirColeccionar,
-    context?.setSeguirColeccionar!
-  );
-  const {
-    lensCargando,
-    manejarLens,
-    manejarSalir,
-    manejarEnviarMensaje,
-    mensaje,
-    mensajeCargando,
-    setMensaje,
-    setOpcionAbierta,
-    opcionAbierta,
-    manejarGif,
-    gifCargando,
-    buscarGifs,
-    setBuscarGifs,
-    monedasDisponibles,
-    drops,
-    setDrops,
-  } = useAccountInternal(
+    context?.setSeguirColeccionar!,
     isConnected,
-    context?.setEsArtista!,
-    context?.setLensConectado!,
-    openAccountModal,
-    context?.setMostrarNotificacion!,
-    address,
-    publicClient,
-    dict,
-    context?.lensConectado,
-    context?.oraculos!,
-    context?.setOraculos!
+    openConnectModal,
+    manejarLens
   );
+
   const {
     manejarMintear,
     mintCargando,
@@ -159,6 +163,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
           setCarrito={context?.setCarrito!}
+          setMostrarInteracciones={context?.setMostrarInteracciones!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
           setComentarPublicar={context?.setComentarPublicar!}
           comentarPublicar={context?.comentarPublicar!}
@@ -184,9 +189,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           npcIds={
             context?.escenas
               ?.find((es) => es.clave == escena)
-              ?.sprites?.map(
-                (s) =>
-                  s.perfil_id.toString(16).replaceAll("0x", "0x0")
+              ?.sprites?.map((s) =>
+                s.perfil_id.toString(16).replaceAll("0x", "0x0")
               )!
           }
         />
@@ -251,13 +255,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          setMostrarInteracciones={context?.setMostrarInteracciones!}
           npcIds={
             context?.escenas
-            ?.find((es) => es.clave == escena)
-            ?.sprites?.map(
-              (s) =>
+              ?.find((es) => es.clave == escena)
+              ?.sprites?.map((s) =>
                 s.perfil_id.toString(16).replaceAll("0x", "0x0")
-            )!
+              )!
           }
           setCarrito={context?.setCarrito!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
@@ -274,6 +278,9 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           dict={dict}
           setVerImagen={context?.setVerImagen!}
           escena={escena}
+          conectado={isConnected}
+          manejarLens={manejarLens}
+          openConnectModal={openConnectModal}
           wrapperRef={wrapperRef}
           setAbrirCita={context?.setAbrirCita!}
           setSeguirColeccionar={context?.setSeguirColeccionar!}
@@ -283,6 +290,17 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       <Modals
         aprobado={aprobado}
         aprobar={aprobar}
+        setCarrito={context?.setCarrito!}
+        setAbrirCita={context?.setAbrirCita!}
+        publicClient={publicClient}
+        address={address!}
+        manejarLens={manejarLens}
+        escena={escena}
+        conectado={isConnected}
+        openConnectModal={openConnectModal}
+        setIndexar={context?.setIndexar!}
+        setMostrarInteracciones={context?.setMostrarInteracciones!}
+        mostrarInteracciones={context?.mostrarInteracciones!}
         cargandoColeccion={cargandoColeccion}
         manejarColeccionar={manejarColeccionar}
         seguirColeccionar={context?.seguirColeccionar!}
