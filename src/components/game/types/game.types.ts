@@ -182,7 +182,9 @@ export type DialogProps = {
   setDragDialog: (e: SetStateAction<boolean>) => void;
   lensConectado: Profile | undefined;
   dict: Dictionary;
-  
+  conectado: boolean,
+  openConnectModal: (() => void) | undefined,
+  manejarLens: () => Promise<void>,
   comentarPublicar: ComentarPublicar[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
