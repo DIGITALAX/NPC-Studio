@@ -22,6 +22,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
   gastosAprobados,
   datosOraculos,
   carrito,
+  setMostrarPerfil,
 }): JSX.Element => {
   const pfp = createProfilePicture(
     articulos?.[articuloIndice]?.profile?.metadata?.picture
@@ -116,7 +117,17 @@ const Autografo: FunctionComponent<AutografoProps> = ({
           </div>
         </div>
         <div className="relative w-full h-full flex flex-col justify-start items-start gap-3">
-          <div className="relative w-full h-fit flex items-start justify-start flex-row gap-3">
+          <div
+            className="relative w-full h-fit flex items-start justify-start flex-row gap-3 cursor-pointer active:scale-95"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setMostrarPerfil(
+                (articuloSeleccionado?.[articuloIndice]?.elemento as Coleccion)
+                  ?.profile?.id
+              );
+            }}
+          >
             <div className="relative w-fit h-fit flex items-center justify-center">
               <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
                 {pfp && (

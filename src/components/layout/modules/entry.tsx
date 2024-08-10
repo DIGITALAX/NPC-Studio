@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Dialog from "../../game/modules/Dialog";
 import Log from "../../game/modules/Log";
 import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
@@ -161,6 +161,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4">
       <div className="relative w-full h-fit xl:h-[692px] flex items-center justify-center flex-col xl:flex-row gap-6">
         <Log
+          setMostrarPerfil={context?.setMostrarPerfil!}
           setCarrito={context?.setCarrito!}
           setMostrarInteracciones={context?.setMostrarInteracciones!}
           setMostrarNotificacion={context?.setMostrarNotificacion!}
@@ -244,7 +245,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         dict={dict}
         npc={npc}
         setNpc={setNpc}
-        lensConnected={context?.lensConectado}
+        lensConectado={context?.lensConectado}
         escena={escena}
         setEscena={setEscena}
         escenas={context?.escenas!}
@@ -254,6 +255,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          setMostrarPerfil={context?.setMostrarPerfil!}
           setMostrarInteracciones={context?.setMostrarInteracciones!}
           npcIds={
             context?.escenas
@@ -288,7 +290,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
 
       <Modals
         aprobado={aprobado}
+        escenas={context?.escenas!}
         aprobar={aprobar}
+        setMostrarPerfil={context?.setMostrarPerfil!}
+        mostrarPerfil={context?.mostrarPerfil!}
         setCarrito={context?.setCarrito!}
         setAbrirCita={context?.setAbrirCita!}
         publicClient={publicClient}

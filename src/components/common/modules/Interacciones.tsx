@@ -26,6 +26,7 @@ function Interacciones({
   setOpcionAbierta,
   setVerImagen,
   setAbrirCita,
+  setMostrarPerfil,
   setSeguirColeccionar,
 }: InteraccionesProps) {
   const {
@@ -47,7 +48,7 @@ function Interacciones({
 
   return (
     <div
-      className="inset-0 justify-center fixed z-40 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
+      className="inset-0 justify-center fixed z-200 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
       onClick={() => {
         setMostrarInteracciones({ tipo: "", abierto: false });
         setMirrorQuote(false);
@@ -66,7 +67,7 @@ function Interacciones({
           />
 
           <div
-            className={`flex flex-col items-center py-2 sm:py-10 px-2 sm:px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll justify-center`}
+            className={`flex flex-col items-center py-2 sm:py-10 px-2 sm:px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll`}
           >
             {mostrarInteracciones?.tipo === "Mirrors" &&
               (reactors?.length > 0 || quoters?.length > 0) && (
@@ -103,6 +104,7 @@ function Interacciones({
             {!datosCargando ? (
               <Quien
                 dict={dict}
+                setMostrarPerfil={setMostrarPerfil}
                 lensConectado={lensConectado}
                 tipo={mostrarInteracciones?.tipo}
                 reactors={reactors}

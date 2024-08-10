@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "../../../lib/constants";
 import { LogProps } from "../types/game.types";
 import Chat from "./Chat";
 import { PiArrowSquareInBold } from "react-icons/pi";
 import { AiOutlineLoading } from "react-icons/ai";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 function Log({
   connected,
@@ -33,6 +33,7 @@ function Log({
   setCarrito,
   setMostrarNotificacion,
   setMostrarInteracciones,
+  setMostrarPerfil,
 }: LogProps) {
   const router = useRouter();
   return (
@@ -155,6 +156,7 @@ function Log({
           </div>
           <div className="relative w-full h-full flex items-center justify-center p-1">
             <Chat
+              setMostrarPerfil={setMostrarPerfil}
               setOpcionAbierta={setOpcionAbierta}
               setVerImagen={setVerImagen}
               conectado={connected}

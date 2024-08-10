@@ -25,6 +25,7 @@ const Ropas: FunctionComponent<RopasProps> = ({
   carrito,
   setCumplimiento,
   cumplimiento,
+  setMostrarPerfil,
 }): JSX.Element => {
   const pfp = createProfilePicture(
     articulos?.[articuloIndice]?.profile?.metadata?.picture
@@ -119,28 +120,40 @@ const Ropas: FunctionComponent<RopasProps> = ({
         </div>
         <div className="relative w-full h-full flex flex-col justify-between items-start gap-3 grow">
           <div className="relative w-full h-fit flex items-center justify-center">
-            <div
-              className="relative cursor-pointer active:scale-95 w-full h-80 flex items-center justify-center rounded-md border border-rosa"
-              onClick={() =>
-                setVerImagen({
-                  abierto: true,
-                  tipo: "png",
-                  url: `${INFURA_GATEWAY}/ipfs/${
-                    articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
-                  }`,
-                })
-              }
-            >
+            <div className="relative w-full h-80 flex items-center justify-center rounded-md border border-rosa">
               <Image
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setVerImagen({
+                    abierto: true,
+                    tipo: "png",
+                    url: `${INFURA_GATEWAY}/ipfs/${
+                      articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
+                    }`,
+                  });
+                }}
                 layout="fill"
                 draggable={false}
                 src={`${INFURA_GATEWAY}/ipfs/${
                   articulos?.[articuloIndice]?.imagen?.split("ipfs://")?.[1]
                 }`}
-                className="rounded-md"
+                className="rounded-md cursor-pointer active:scale-95"
                 objectFit="cover"
               />
-              <div className="absolute bottom-2 left-2 w-full h-fit flex items-start justify-start flex-row gap-3">
+              <div
+                className="absolute bottom-2 left-2 w-full h-fit flex items-start justify-start flex-row gap-3 cursor-pointer active:scale-95"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setMostrarPerfil(
+                    (
+                      articuloSeleccionado?.[articuloIndice]
+                        ?.elemento as Coleccion
+                    )?.profile?.id
+                  );
+                }}
+              >
                 <div className="relative w-fit h-fit flex items-center justify-center">
                   <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
                     {pfp && (

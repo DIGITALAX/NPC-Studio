@@ -32,6 +32,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
   comprarCarrito,
   pagina,
   setPagina,
+  setMostrarPerfil,
 }): JSX.Element => {
   switch (manejarMostrarArticulo?.tipo) {
     case AutographType.Hoodie:
@@ -39,6 +40,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
     case AutographType.All:
       return (
         <Ropas
+          setMostrarPerfil={setMostrarPerfil}
           carrito={carrito}
           datosOraculos={datosOraculos}
           gastosAprobados={gastosAprobados}
@@ -63,6 +65,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
       return (
         <Autografo
           carrito={carrito}
+          setMostrarPerfil={setMostrarPerfil}
           datosOraculos={datosOraculos}
           gastosAprobados={gastosAprobados}
           setVerImagen={setVerImagen}
@@ -85,6 +88,7 @@ const ComprasCambio: FunctionComponent<ComprasCambioProps> = ({
         <Mezcla
           articuloSeleccionado={articuloSeleccionado}
           dict={dict}
+          setMostrarPerfil={setMostrarPerfil}
           setCarrito={setCarrito}
           carrito={carrito}
           setVerImagen={setVerImagen}

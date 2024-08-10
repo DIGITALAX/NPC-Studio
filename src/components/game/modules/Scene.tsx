@@ -1,5 +1,3 @@
-
-
 import { FunctionComponent } from "react";
 import { Escena, SceneProps, Sprite } from "../types/game.types";
 import { INFURA_GATEWAY } from "../../../lib/constants";
@@ -13,7 +11,7 @@ const Scene: FunctionComponent<SceneProps> = ({
   escena,
   dict,
   setEscena,
-  lensConnected,
+  lensConectado,
   escenas,
   publicClient,
   setErrorInteraccion,
@@ -22,10 +20,11 @@ const Scene: FunctionComponent<SceneProps> = ({
   const { perfil, npcCargando, seguirCargando, seguirNpc, dejarNpc } =
     useCuenta(
       escenas.flatMap((es) => es.sprites).find((n) => n.etiqueta == npc)!,
-      lensConnected,
+      lensConectado,
       publicClient,
       setIndexar,
-      setErrorInteraccion
+      setErrorInteraccion,
+      escenas
     );
 
   return (
@@ -54,7 +53,7 @@ const Scene: FunctionComponent<SceneProps> = ({
                 seguirNpc={seguirNpc}
                 dejarNpc={dejarNpc}
                 npcCargando={npcCargando}
-                lensConnected={lensConnected}
+                lensConectado={lensConectado}
               />
             )}
           </div>

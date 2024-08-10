@@ -37,6 +37,7 @@ const Quien: FunctionComponent<QuienProps> = ({
   setSeguirColeccionar,
   setQuoters,
   setReactors,
+  setMostrarPerfil,
 }): JSX.Element => {
   const {
     comentariosAbiertos,
@@ -107,6 +108,7 @@ const Quien: FunctionComponent<QuienProps> = ({
                   dict={dict}
                   lensConectado={lensConectado}
                   indice={indice}
+                  setMostrarPerfil={setMostrarPerfil}
                   publicacion={publicacion}
                   data-post-id={publicacion?.id}
                   key={indice}
@@ -176,7 +178,10 @@ const Quien: FunctionComponent<QuienProps> = ({
                   });
                 }}
               >
-                <div className="relative w-fit h-fit flex flex-row gap-3 items-center justify-center">
+                <div
+                  className="relative w-fit h-fit flex flex-row gap-3 items-center justify-center cursor-pointer active:scale-95"
+                  onClick={() => setMostrarPerfil(account?.id)}
+                >
                   <div className="relative w-8 h-8 rounded-full border border-white bg-black items-center justify-center">
                     {profileImage && (
                       <Image

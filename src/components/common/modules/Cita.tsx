@@ -6,18 +6,20 @@ import TiposPublicaciones from "./TiposPublicaciones";
 import { CitaProps } from "../types/common.types";
 
 const Cita: FunctionComponent<CitaProps> = ({
-  cita
+  cita,
+  setMostrarPerfil,
 }): JSX.Element => {
   const profilePicture = createProfilePicture(cita?.by?.metadata?.picture);
   return (
-    <div
-      className="relative w-full h-full grow min-h-60 overflow-y-hidden sm:px-5 py-1 flex items-start justify-center"
-    >
+    <div className="relative w-full h-full grow min-h-60 overflow-y-hidden sm:px-5 py-1 flex items-start justify-center">
       <div
         className={`relative w-full h-full p-2 flex items-center justify-start flex-col from-offBlack to-black bg-gradient-to-r rounded-md gap-5`}
       >
         <div className="relative w-full h-fit flex flex-row items-center justify-center gap-2 px-1">
-          <div className="relative w-fit h-fit flex items-center justify-center gap-1 mr-auto">
+          <div
+            className="relative w-fit h-fit flex items-center justify-center gap-1 mr-auto cursor-pointer active:scale-95"
+            onClick={() => setMostrarPerfil(cita?.by?.id)}
+          >
             <div className="relative w-fit h-fit flex items-center justify-center">
               <div
                 className="relative flex items-center justify-center rounded-full w-5 h-5 bg-black border border-white"

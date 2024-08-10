@@ -8,7 +8,7 @@ const manejarBuscarPerfiles = async (
   setProfilesOpen: (e: SetStateAction<boolean[]>) => void,
   setMentionProfiles: (e: SetStateAction<Profile[]>) => void,
   index: number,
-  lensConnected: Profile | undefined,
+  lensConectado: Profile | undefined,
   setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void,
   textElement: RefObject<HTMLTextAreaElement>
 ): Promise<void> => {
@@ -40,7 +40,7 @@ const manejarBuscarPerfiles = async (
             e.target.value.split(" ")[e.target.value.split(" ")?.length - 1],
           limit: LimitType.TwentyFive,
         },
-        lensConnected?.id
+        lensConectado?.id
       );
       setMentionProfiles(allProfiles?.data?.searchProfiles?.items as Profile[]);
     } else {

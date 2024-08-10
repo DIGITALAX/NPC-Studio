@@ -3,7 +3,7 @@ import { Mezcla as MezclaTipo, MezclaProps } from "../types/compras.types";
 import Image from "next/legacy/image";
 import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { AutographType } from "@/components/game/types/game.types";
+import { AutographType, Coleccion } from "@/components/game/types/game.types";
 
 const Mezcla: FunctionComponent<MezclaProps> = ({
   setCarrito,
@@ -13,6 +13,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
   setVerImagen,
   setArticuloSeleccionado,
   carrito,
+  setMostrarPerfil,
 }): JSX.Element => {
   const articulosTokenes = articulos?.filter((art) => {
     const tokenesArticulo = art?.tokenes?.map((i) => i.toLowerCase());
@@ -69,7 +70,6 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
     );
   });
 
-
   return (
     <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2 text-rosa font-bit">
       <div className="relative w-full h-fit flex items-start justify-start text-rosa font-con text-sm">
@@ -123,15 +123,17 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                     className="relative w-fit h-fit flex flex-col gap-2 items-center justify-start flex-col gap-2"
                   >
                     <div
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
                         setVerImagen({
                           abierto: true,
                           tipo: "png",
                           url: `${INFURA_GATEWAY}/ipfs/${
                             art?.imagen?.split("ipfs://")?.[1]
                           }`,
-                        })
-                      }
+                        });
+                      }}
                       className="relative h-20 w-20 sm:w-36 sm:h-36 tab:w-60 tab:h-60 flex items-center justify-center cursor-pointer active:scale-95 border border-white rounded-md"
                     >
                       <Image
@@ -144,7 +146,14 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                         className="rounded-md"
                       />
                     </div>
-                    <div className="absolute bottom-2 left-2 w-fit h-fit flex items-center justify-center">
+                    <div
+                      className="absolute bottom-2 left-2 w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setMostrarPerfil(art?.profile?.id);
+                      }}
+                    >
                       <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
                         {pfp && (
                           <Image

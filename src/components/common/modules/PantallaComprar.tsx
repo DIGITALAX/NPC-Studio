@@ -14,6 +14,7 @@ function PantallaComprar({
   setCarrito,
   comprarPublicacion,
   articuloSeleccionado,
+  setMostrarPerfil,
   setArticuloSeleccionado,
   aprobarCargando,
   carrito,
@@ -105,6 +106,7 @@ function PantallaComprar({
               ) : (
                 <ComprasCambio
                   dict={dict}
+                  setMostrarPerfil={setMostrarPerfil}
                   pagina={pagina}
                   setPagina={setPagina}
                   comprarCarrito={comprarCarrito}

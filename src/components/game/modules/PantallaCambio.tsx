@@ -125,6 +125,7 @@ function PantallaCambio({
     default:
       return (
         <Studio
+          setMostrarPerfil={context?.setMostrarPerfil!}
           npc={npc}
           escenas={context?.escenas!}
           setEscenas={context?.setEscenas!}

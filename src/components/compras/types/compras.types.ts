@@ -52,6 +52,12 @@ export type ComprasCambioProps = {
   cumplimiento: Details;
   comprarCarrito: () => Promise<void>;
   pagina: number;
+  setMostrarPerfil: (
+    e: SetStateAction<
+      | string
+      | undefined
+    >
+  ) => void;
   setPagina: (e: SetStateAction<number>) => void;
 };
 
@@ -101,6 +107,12 @@ export type AutografoProps = {
       abierto: boolean;
     }>
   ) => void;
+  setMostrarPerfil: (
+    e: SetStateAction<
+      | string
+      | undefined
+    >
+  ) => void;
   carrito: {
     compras: Compra[];
     abierto: boolean;
@@ -134,6 +146,12 @@ export type RopasProps = {
   carritoCargando: boolean;
   setCumplimiento: (e: SetStateAction<Details>) => void;
   cumplimiento: Details;
+  setMostrarPerfil: (
+    e: SetStateAction<
+      | string
+      | undefined
+    >
+  ) => void;
   articuloSeleccionado: Compra[];
   aprobarGastos: (
     token: string,
@@ -169,6 +187,12 @@ export type MezclaProps = {
     compras: Compra[];
     abierto: boolean;
   };
+  setMostrarPerfil: (
+    e: SetStateAction<
+      | string
+      | undefined
+    >
+  ) => void;
   setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
   articulos: Coleccion[];
   setVerImagen: (

@@ -4,7 +4,7 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, http } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { polygon, polygonAmoy } from "wagmi/chains";
+import { polygon } from "wagmi/chains";
 import { SetStateAction, createContext, useState } from "react";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { Indexar, Notificacion } from "@/components/common/types/common.types";
@@ -44,6 +44,8 @@ const queryClient = new QueryClient();
 
 export const ModalContext = createContext<
   | {
+      setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
+      mostrarPerfil: string | undefined;
       mint: number;
       setMint: (e: SetStateAction<number>) => void;
       pantalla: number;
@@ -136,6 +138,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const cliente = new LitNodeClient({ litNetwork: "cayenne", debug: false });
   const [mint, setMint] = useState<number>(1);
   const [pantalla, setPantalla] = useState<number>(0);
+  const [mostrarPerfil, setMostrarPerfil] = useState<string | undefined>();
   const [esArtista, setEsArtista] = useState<boolean>(false);
   const [mostrarNotificacion, setMostrarNotificacion] = useState<Notificacion>(
     Notificacion.Inactivo
@@ -204,6 +207,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 setMint,
                 verImagen,
                 setVerImagen,
+                mostrarPerfil,
+                setMostrarPerfil,
                 setComentarPublicar,
                 comentarPublicar,
                 pantalla,

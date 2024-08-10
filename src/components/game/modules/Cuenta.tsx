@@ -14,7 +14,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
   seguirCargando,
   seguirNpc,
   dejarNpc,
-  lensConnected,
+  lensConectado,
   npcCargando,
 }) => {
   return (
@@ -50,12 +50,12 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
             <div
               className={`relative justify-center items-center flex w-24 px-px h-8 font-con rounded-sm text-xxs text-white border border-amarillo bg-black ${
                 !seguirCargando &&
-                lensConnected?.id &&
+                lensConectado?.id &&
                 "cursor-pointer active:scale-95"
               }`}
               onClick={() =>
                 !seguirCargando &&
-                lensConnected?.id &&
+                lensConectado?.id &&
                 (perfil?.operations?.isFollowedByMe?.value
                   ? dejarNpc()
                   : seguirNpc())
@@ -157,28 +157,29 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
         <div className="relative w-full h-fit break-all text-xs text-left items-start justify-start font-con text-white">
           {perfil?.metadata?.bio}
         </div>
-        <div className="relative w-full h-full flex items-start justify-between flex-col sm:flex-row gap-3">
-          <div className="relative w-full h-96 flex items-center justify-center">
-            <Image
-              layout="fill"
-              objectFit="contain"
-              draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/${npc?.tapa_dos}`}
-            />
-          </div>
-          <div className="relative w-full h-fit flex items-start justify-start text-left gap-2 flex-col">
-            <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
-              {dict.Home.info}
+        {npc && (
+          <div className="relative w-full h-full flex items-start justify-between flex-col sm:flex-row gap-3">
+            <div className="relative w-full h-96 flex items-center justify-center">
+              <Image
+                layout="fill"
+                objectFit="contain"
+                draggable={false}
+                src={`${INFURA_GATEWAY}/ipfs/${npc?.tapa_dos}`}
+              />
             </div>
-            <div
-              className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
-              dangerouslySetInnerHTML={{
-                __html: descripcionRegex(npc?.prompt?.personalidad, true),
-              }}
-            >
+            <div className="relative w-full h-fit flex items-start justify-start text-left gap-2 flex-col">
+              <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
+                {dict.Home.info}
+              </div>
+              <div
+                className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
+                dangerouslySetInnerHTML={{
+                  __html: descripcionRegex(npc?.prompt?.personalidad, true),
+                }}
+              ></div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

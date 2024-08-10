@@ -30,6 +30,7 @@ const Chat: FunctionComponent<ChatProps> = ({
   conectado,
   openConnectModal,
   manejarLens,
+  setMostrarPerfil,
 }): JSX.Element => {
   const {
     feedCargando,
@@ -120,6 +121,7 @@ const Chat: FunctionComponent<ChatProps> = ({
                   return (
                     <Publicacion
                       menos
+                      setMostrarPerfil={setMostrarPerfil}
                       setMostrarInteracciones={setMostrarInteracciones}
                       setOpcionAbierta={setOpcionAbierta}
                       key={indice}
@@ -157,6 +159,7 @@ const Chat: FunctionComponent<ChatProps> = ({
         </InfiniteScroll>
       </div>
       <Comentario
+        setMostrarPerfil={setMostrarPerfil}
         setOpcionAbierta={setOpcionAbierta}
         elementoTexto={elementoTexto}
         caretCoord={caretCoord}

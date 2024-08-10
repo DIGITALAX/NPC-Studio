@@ -3,7 +3,12 @@
 import { SetStateAction } from "react";
 import useConfig from "../hooks/useConfig";
 import PantallaComprar from "@/components/common/modules/PantallaComprar";
-import { AutographType, DatosOraculos, Dictionary, Escena } from "../types/game.types";
+import {
+  AutographType,
+  DatosOraculos,
+  Dictionary,
+  Escena,
+} from "../types/game.types";
 import { Compra } from "@/components/compras/types/compras.types";
 import useArticulo from "@/components/compras/hooks/useArticulo";
 import { Profile } from "../../../../graphql/generated";
@@ -33,7 +38,8 @@ function Studio({
   setErrorInteraccion,
   setMostrarNotificacion,
   setEscenas,
-  escenas
+  setMostrarPerfil,
+  escenas,
 }: {
   npc: string | undefined;
   escena: string;
@@ -47,6 +53,7 @@ function Studio({
   publicClient: PublicClient;
   setNpc: (e: SetStateAction<string | undefined>) => void;
   setCargando: (e: SetStateAction<boolean>) => void;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   cargando: boolean;
   cliente: LitNodeClient;
   address: `0x${string}` | undefined;
@@ -84,7 +91,7 @@ function Studio({
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   setEscenas: (e: SetStateAction<Escena[]>) => void;
-  escenas: Escena[]
+  escenas: Escena[];
 }) {
   const { gameRef } = useConfig(
     npc,
@@ -141,6 +148,7 @@ function Studio({
       />
       {(manejarMostrarArticulo || carrito.abierto) && (
         <PantallaComprar
+          setMostrarPerfil={setMostrarPerfil}
           carrito={carrito}
           pagina={pagina}
           setPagina={setPagina}

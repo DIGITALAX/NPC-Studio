@@ -13,6 +13,7 @@ import OpcionAbierta from "./OpcionAbierta";
 import CitaPub from "./CitaPub";
 import Seguir from "./Seguir";
 import Interacciones from "./Interacciones";
+import Perfil from "./Perfil";
 
 const Modals: FunctionComponent<ModalsProps> = ({
   dict,
@@ -84,11 +85,27 @@ const Modals: FunctionComponent<ModalsProps> = ({
   escena,
   conectado,
   openConnectModal,
+  mostrarPerfil,
+  setMostrarPerfil,
+  escenas,
 }): JSX.Element => {
   return (
     <>
+      {mostrarPerfil && (
+        <Perfil
+          lensConectado={lensConectado}
+          escenas={escenas}
+          setErrorInteraccion={setErrorInteraccion}
+          setIndexar={setIndexar}
+          publicClient={publicClient}
+          mostrarPerfil={mostrarPerfil}
+          setMostrarPerfil={setMostrarPerfil}
+          dict={dict}
+        />
+      )}
       {mostrarInteracciones?.abierto && (
         <Interacciones
+          setMostrarPerfil={setMostrarPerfil}
           dict={dict}
           setCarrito={setCarrito}
           setAbrirCita={setAbrirCita}
@@ -147,6 +164,7 @@ const Modals: FunctionComponent<ModalsProps> = ({
 
       {citaAbierta && (
         <CitaPub
+          setMostrarPerfil={setMostrarPerfil}
           dict={dict}
           setCitaAbierta={setCitaAbierta}
           hacerCita={hacerCita}

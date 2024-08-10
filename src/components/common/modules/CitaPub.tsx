@@ -27,10 +27,11 @@ const CitaPub: FunctionComponent<CitaPubProps> = ({
   setMencionarPerfiles,
   mencionarPerfiles,
   perfilesAbiertos,
+  setMostrarPerfil
 }): JSX.Element => {
   return (
     <div
-      className="inset-0 justify-center fixed z-50 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
+      className="inset-0 justify-center fixed z-200 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto cursor-pointer"
       onClick={() => setCitaAbierta(undefined)}
     >
       <div
@@ -38,10 +39,14 @@ const CitaPub: FunctionComponent<CitaPubProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-full max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex flex-col gap-4 items-center justify-between p-4 overflow-y-scroll">
-          <Cita cita={citaAbierta as Quote} />
+          <Cita
+            setMostrarPerfil={setMostrarPerfil}
+            cita={citaAbierta as Quote}
+          />
           <Comentario
             setOpcionAbierta={setOpcionAbierta}
             manejarArchivo={manejarArchivo}
+            setMostrarPerfil={setMostrarPerfil}
             caretCoord={caretCoord}
             setCaretCoord={setCaretCoord}
             setPerfilesAbiertos={setPerfilesAbiertos}

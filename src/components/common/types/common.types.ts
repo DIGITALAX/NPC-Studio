@@ -4,6 +4,7 @@ import {
   ComentarPublicar,
   DatosOraculos,
   Dictionary,
+  Escena,
 } from "@/components/game/types/game.types";
 import { ChangeEvent, RefObject, SetStateAction } from "react";
 import {
@@ -199,6 +200,7 @@ export type PantallaComprarProps = {
   ) => Promise<void>;
   articulosActuales: Catalogo[] | Coleccion[] | undefined;
   articuloSeleccionado: Compra[];
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
   comprarCarrito: () => Promise<void>;
   pagina: number;
@@ -211,6 +213,7 @@ export type PublicacionProps = {
   publicacion: Quote | Mirror | Comment | Post;
   dict: Dictionary;
   menos?: boolean;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   comentariosAbiertos: boolean[];
   setMostrarInteracciones: (
     e: SetStateAction<{
@@ -344,10 +347,12 @@ export type OlaProps = {
 
 export type CitaProps = {
   cita: Quote;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
 };
 
 export type BarProps = {
   indice: number;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setMostrarInteracciones: (
     e: SetStateAction<{
       tipo: string;
@@ -414,6 +419,7 @@ export type ComentarioProps = {
   elementoTexto: RefObject<HTMLTextAreaElement>;
   comentarioId?: string;
   cita?: boolean;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setOpcionAbierta: (
     e: SetStateAction<
       | {
@@ -484,6 +490,9 @@ export type ModalsProps = {
   address: `0x${string}` | undefined;
   publicClient: PublicClient;
   conectado: boolean;
+  escenas: Escena[];
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
+  mostrarPerfil: string | undefined;
   manejarLens: () => Promise<void>;
   openConnectModal: (() => void) | undefined;
   setIndexar: (e: SetStateAction<Indexar>) => void;
@@ -651,6 +660,7 @@ export type ModalsProps = {
 export type CitaPubProps = {
   hacerCita: () => Promise<void>;
   citaCargando: boolean;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   citaPublicar: ComentarPublicar;
   setCitaPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setCitaAbierta: (
@@ -751,6 +761,7 @@ export type QuienProps = {
   setAbrirCita: (
     e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
   ) => void;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setReactors: (e: SetStateAction<any[]>) => void;
   setQuoters: (e: SetStateAction<(Comment | Quote)[]>) => void;
   setSeguirColeccionar: (
@@ -781,6 +792,17 @@ export type QuienProps = {
   ) => void;
 };
 
+export type PerfilProps = {
+  dict: Dictionary;
+  publicClient: PublicClient;
+  lensConectado: Profile | undefined;
+  escenas: Escena[];
+  mostrarPerfil: string | undefined;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
+  setIndexar: (e: SetStateAction<Indexar>) => void;
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
+};
+
 export type InteraccionesProps = {
   lensConectado: Profile | undefined;
   publicClient: PublicClient;
@@ -807,6 +829,7 @@ export type InteraccionesProps = {
       | undefined
     >
   ) => void;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setVerImagen: (
     e: SetStateAction<{
       abierto: boolean;

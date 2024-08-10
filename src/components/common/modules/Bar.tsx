@@ -22,6 +22,7 @@ const Bar: FunctionComponent<BarProps> = ({
   setSeguirColeccionar,
   manejarAccionAbierta,
   setMostrarInteracciones,
+  setMostrarPerfil
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))
@@ -203,6 +204,9 @@ const Bar: FunctionComponent<BarProps> = ({
         <div
           className="relative flex items-center justify-center rounded-full w-5 h-5 cursor-pointer border border-white bg-black"
           id="pfp"
+          onClick={() =>
+            setMostrarPerfil(elemento?.by?.id)
+          }
         >
           {profilePicture && (
             <Image

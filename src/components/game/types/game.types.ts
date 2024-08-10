@@ -17,6 +17,7 @@ import { DecodedMessage } from "@xmtp/xmtp-js";
 
 export type LogProps = {
   connected: boolean;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   lensConectado: Profile | undefined;
   openConnectModal: (() => void) | undefined;
   manejarSalir: () => void;
@@ -141,7 +142,7 @@ export type SceneProps = {
   escena: string;
   dict: Dictionary;
   escenas: Escena[];
-  lensConnected: Profile | undefined;
+  lensConectado: Profile | undefined;
   setEscena: (e: SetStateAction<string>) => void;
   npc: string | undefined;
   setNpc: (e: SetStateAction<string | undefined>) => void;
@@ -171,6 +172,7 @@ export type DialogProps = {
   lensConectado: Profile | undefined;
   dict: Dictionary;
   conectado: boolean;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
   comentarPublicar: ComentarPublicar[];
@@ -236,6 +238,7 @@ export type ChatProps = {
   conectado: boolean;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
+  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   dict: Dictionary;
   address: `0x${string}` | undefined;
   publicClient: PublicClient;
@@ -782,9 +785,9 @@ export type CuentaProps = {
   dict: Dictionary;
   perfil: Profile;
   npcCargando: boolean;
-  npc: Sprite;
+  npc?: Sprite;
   seguirNpc: () => Promise<void>;
   dejarNpc: () => Promise<void>;
   seguirCargando: boolean;
-  lensConnected: Profile | undefined;
+  lensConectado: Profile | undefined;
 };

@@ -44,7 +44,8 @@ function Publicacion({
   setVerImagen,
   setMostrarInteracciones,
   manejarAccionAbierta,
-  menos
+  menos,
+  setMostrarPerfil,
 }: PublicacionProps) {
   const elementoTexto = useRef(null);
 
@@ -111,10 +112,14 @@ function Publicacion({
       </div>
       <TiposPublicaciones elemento={publicacion} setVerImagen={setVerImagen} />
       {publicacion?.__typename === "Quote" && (
-        <Cita cita={publicacion?.quoteOn as Quote} />
+        <Cita
+          setMostrarPerfil={setMostrarPerfil}
+          cita={publicacion?.quoteOn as Quote}
+        />
       )}
       <Bar
-        indice={menos ? indice - 1 : indice}   
+        setMostrarPerfil={setMostrarPerfil}
+        indice={menos ? indice - 1 : indice}
         setMostrarInteracciones={setMostrarInteracciones}
         elemento={publicacion}
         manejarAccionAbierta={manejarAccionAbierta}
@@ -128,8 +133,9 @@ function Publicacion({
         manejarColeccionar={manejarColeccionar}
         setSeguirColeccionar={setSeguirColeccionar}
       />
-      {comentariosAbiertos?.[(menos ? indice - 1 : indice)] && (
+      {comentariosAbiertos?.[menos ? indice - 1 : indice] && (
         <Comentario
+          setMostrarPerfil={setMostrarPerfil}
           setOpcionAbierta={setOpcionAbierta}
           manejarArchivo={manejarArchivo}
           caretCoord={caretCoord}

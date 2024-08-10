@@ -11,7 +11,7 @@ export default function Cargando() {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full min-h-screen flex items-center justify-center bg-black z-200"
+      className="fixed top-0 left-0 w-full h-full min-h-screen flex items-center justify-center bg-black z-300"
       id="juego"
     >
       <div className="relative flex justify-center items-center flex-col gap-4">

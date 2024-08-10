@@ -28,6 +28,7 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
   elementoTexto,
   setOpcionAbierta,
   cita,
+  setMostrarPerfil,
 }): JSX.Element => {
   return (
     <div className="relative w-full text-white font-aust flex flex-col gap-6 items-center justify-center text-left rounded-md h-fit bottom-0">
@@ -221,7 +222,10 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
                     });
                   }}
                 >
-                  <div className="relative flex flex-row w-full h-full text-white font-aust items-center justify-center gap-2">
+                  <div
+                    className="relative flex flex-row w-full h-full text-white font-aust items-center justify-center gap-2  cursor-pointer active:scale-95"
+                    onClick={() => setMostrarPerfil(user?.id)}
+                  >
                     <div
                       className={`relative rounded-full flex bg-black w-3 h-3 items-center justify-center`}
                       id="pfp"
