@@ -210,7 +210,7 @@ export type PublicacionProps = {
   caretCoord: { x: number; y: number }[];
   publicacion: Quote | Mirror | Comment | Post;
   dict: Dictionary;
-  menos?: boolean
+  menos?: boolean;
   comentariosAbiertos: boolean[];
   setMostrarInteracciones: (
     e: SetStateAction<{
@@ -413,6 +413,7 @@ export type ComentarioProps = {
   ) => void;
   elementoTexto: RefObject<HTMLTextAreaElement>;
   comentarioId?: string;
+  cita?: boolean;
   setOpcionAbierta: (
     e: SetStateAction<
       | {

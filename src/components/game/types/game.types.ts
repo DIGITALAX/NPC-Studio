@@ -1,15 +1,9 @@
-import {
-  ChangeEvent,
-  MutableRefObject,
-  RefObject,
-  SetStateAction,
-} from "react";
+import { ChangeEvent, MutableRefObject, SetStateAction } from "react";
 import Draggable from "react-draggable";
 import { Indexar, Notificacion } from "./../../common/types/common.types";
 import {
   Comment,
   Mirror,
-  OpenActionModule,
   Post,
   Profile,
   Quote,
@@ -17,13 +11,7 @@ import {
   SimpleCollectOpenActionSettings,
 } from "../../../../graphql/generated";
 import { PublicClient } from "viem";
-import {
-  Catalogo,
-  Compra,
-  Details,
-  Mezcla,
-} from "@/components/compras/types/compras.types";
-import { LitNodeClient } from "@lit-protocol/lit-node-client";
+import { Compra, Details } from "@/components/compras/types/compras.types";
 import { AccessControlConditions } from "@lit-protocol/types";
 import { DecodedMessage } from "@xmtp/xmtp-js";
 
@@ -182,9 +170,9 @@ export type DialogProps = {
   setDragDialog: (e: SetStateAction<boolean>) => void;
   lensConectado: Profile | undefined;
   dict: Dictionary;
-  conectado: boolean,
-  openConnectModal: (() => void) | undefined,
-  manejarLens: () => Promise<void>,
+  conectado: boolean;
+  openConnectModal: (() => void) | undefined;
+  manejarLens: () => Promise<void>;
   comentarPublicar: ComentarPublicar[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
@@ -245,9 +233,9 @@ export type DialogProps = {
 
 export type ChatProps = {
   open?: boolean;
-  conectado: boolean,
-  openConnectModal: (() => void) | undefined,
-  manejarLens: () => Promise<void>,
+  conectado: boolean;
+  openConnectModal: (() => void) | undefined;
+  manejarLens: () => Promise<void>;
   dict: Dictionary;
   address: `0x${string}` | undefined;
   publicClient: PublicClient;
@@ -481,6 +469,7 @@ export type Dictionary = {
   Home: {
     title: string;
     frase1: string;
+    indice: string;
     frase2: string;
     ropa: string;
     frase3: string;
@@ -714,7 +703,7 @@ export enum AutographType {
   Shirt = "Shirt",
   Catalog = "Catalog",
   Mix = "Mix",
-  All = "All"
+  All = "All",
 }
 
 export interface DatosOraculos {
@@ -737,12 +726,14 @@ export type PedidosProps = {
   conversacionCargando: boolean;
   abierta: {
     conversacion: boolean;
-    envio: boolean
+    envio: boolean;
   };
-  setAbierta: (e: SetStateAction<{
-    conversacion: boolean;
-    envio: boolean
-  }>) => void;
+  setAbierta: (
+    e: SetStateAction<{
+      conversacion: boolean;
+      envio: boolean;
+    }>
+  ) => void;
   mensaje: string;
   setMensaje: (e: SetStateAction<string>) => void;
   address: `0x${string}` | undefined;

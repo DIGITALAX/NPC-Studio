@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Dialog from "../../game/modules/Dialog";
 import Log from "../../game/modules/Log";
 import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
@@ -17,7 +17,6 @@ import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
 import { Post } from "../../../../graphql/generated";
-import useMostrar from "@/components/common/hooks/useMostrar";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);

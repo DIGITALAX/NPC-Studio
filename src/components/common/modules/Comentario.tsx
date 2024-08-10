@@ -27,12 +27,15 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
   comentarioId,
   elementoTexto,
   setOpcionAbierta,
+  cita,
 }): JSX.Element => {
   return (
     <div className="relative w-full text-white font-aust flex flex-col gap-6 items-center justify-center text-left rounded-md h-fit bottom-0">
-      <div className="relative w-full h-full min-h-[7rem] flex items-start justify-start">
+      <div className="relative w-full h-fit flex items-start justify-start">
         <textarea
-          className="bg-black relative w-full text-sm h-full p-1 flex rounded-md border-lime border-2"
+          className={`bg-black relative w-full text-sm p-1 flex rounded-md border-lime border-2 ${
+            cita ? "h-[9rem]" : "h-[6rem]"
+          }`}
           style={{ resize: "none" }}
           value={comentarPublicar[indice]?.contenido}
           onChange={(e) => {
@@ -244,86 +247,90 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
           </div>
         )}
       </div>
-      <div className="relative gap-2 w-full h-fit items-center justify-start flex flex-row">
-        {[
-          ...(comentarPublicar?.[indice]?.videos || [])?.map((video) => ({
-            type: "video",
-            item: video,
-          })),
-          ...(comentarPublicar?.[indice]?.imagenes || [])?.map((image) => ({
-            type: "image",
-            item: image?.medios,
-          })),
-          ...(comentarPublicar?.[indice]?.gifs || []).map((gif) => ({
-            type: "gif",
-            item: gif,
-          })),
-        ].map(
-          (
-            media: {
-              type: string;
-              item: string;
-            },
-            indiceDos: number
-          ) => {
-            return (
-              <div
-                key={indiceDos}
-                className="relative w-10 h-10 rounded-md flex items-center justify-center border border-white"
-              >
-                <MediosCambio
-                  tipo={media.type !== "video" ? "image" : "video"}
-                  fuenteUrl={media?.item}
-                  classNameVideo={{
-                    objectFit: "cover",
-                    display: "flex",
-                    width: "100%",
-                    height: "100%",
-                    alignItems: "center",
-                    justifyItems: "center",
-                    borderRadius: "0.375rem",
-                    position: "relative",
-                  }}
-                  classNameImagen={"rounded-md object-cover flex"}
-                />
+      {(comentarPublicar?.[indice]?.videos?.length > 0 ||
+        comentarPublicar?.[indice]?.gifs?.length > 0 ||
+        comentarPublicar?.[indice]?.imagenes?.length > 0) && (
+        <div className="relative gap-2 w-full h-fit items-center justify-start flex flex-row">
+          {[
+            ...(comentarPublicar?.[indice]?.videos || [])?.map((video) => ({
+              type: "video",
+              item: video,
+            })),
+            ...(comentarPublicar?.[indice]?.imagenes || [])?.map((image) => ({
+              type: "image",
+              item: image?.medios,
+            })),
+            ...(comentarPublicar?.[indice]?.gifs || []).map((gif) => ({
+              type: "gif",
+              item: gif,
+            })),
+          ].map(
+            (
+              media: {
+                type: string;
+                item: string;
+              },
+              indiceDos: number
+            ) => {
+              return (
                 <div
-                  className="absolute w-4 h-4 bg-black p-px -right-1 -top-1 bg-black rounded-full cursor-pointer flex items-center justify-center border border-white"
-                  onClick={() =>
-                    !publicacionCargando &&
-                    setComentarPublicar((prev) => {
-                      const arr = [...prev];
-                      arr[indice] = {
-                        ...arr[indice],
-                        imagenes:
-                          media.type === "image"
-                            ? (arr[indice]?.imagenes ?? []).filter(
-                                (med) => med.medios !== media.item
-                              )
-                            : arr[indice]?.imagenes,
-                        videos:
-                          media.type === "video"
-                            ? (arr[indice]?.videos ?? []).filter(
-                                (med) => med !== media.item
-                              )
-                            : arr[indice]?.videos,
-                        gifs:
-                          media.type === "gif"
-                            ? (arr[indice]?.gifs ?? []).filter(
-                                (med) => med !== media.item
-                              )
-                            : arr[indice]?.gifs,
-                      };
-                      return arr;
-                    })
-                  }
+                  key={indiceDos}
+                  className="relative w-10 h-10 rounded-md flex items-center justify-center border border-white"
                 >
-                  <ImCross color={"white"} size={7} />
+                  <MediosCambio
+                    tipo={media.type !== "video" ? "image" : "video"}
+                    fuenteUrl={media?.item}
+                    classNameVideo={{
+                      objectFit: "cover",
+                      display: "flex",
+                      width: "100%",
+                      height: "100%",
+                      alignItems: "center",
+                      justifyItems: "center",
+                      borderRadius: "0.375rem",
+                      position: "relative",
+                    }}
+                    classNameImagen={"rounded-md object-cover flex"}
+                  />
+                  <div
+                    className="absolute w-4 h-4 bg-black p-px -right-1 -top-1 bg-black rounded-full cursor-pointer flex items-center justify-center border border-white"
+                    onClick={() =>
+                      !publicacionCargando &&
+                      setComentarPublicar((prev) => {
+                        const arr = [...prev];
+                        arr[indice] = {
+                          ...arr[indice],
+                          imagenes:
+                            media.type === "image"
+                              ? (arr[indice]?.imagenes ?? []).filter(
+                                  (med) => med.medios !== media.item
+                                )
+                              : arr[indice]?.imagenes,
+                          videos:
+                            media.type === "video"
+                              ? (arr[indice]?.videos ?? []).filter(
+                                  (med) => med !== media.item
+                                )
+                              : arr[indice]?.videos,
+                          gifs:
+                            media.type === "gif"
+                              ? (arr[indice]?.gifs ?? []).filter(
+                                  (med) => med !== media.item
+                                )
+                              : arr[indice]?.gifs,
+                        };
+                        return arr;
+                      })
+                    }
+                  >
+                    <ImCross color={"white"} size={7} />
+                  </div>
                 </div>
-              </div>
-            );
-          }
-        )}
-      </div>
+              );
+            }
+          )}
+        </div>
+      )}
     </div>
   );
 };

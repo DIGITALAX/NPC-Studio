@@ -11,7 +11,7 @@ const Cita: FunctionComponent<CitaProps> = ({
   const profilePicture = createProfilePicture(cita?.by?.metadata?.picture);
   return (
     <div
-      className="relative w-full h-60 overflow-y-hidden sm:px-5 py-1 flex items-start justify-center"
+      className="relative w-full h-full grow min-h-60 overflow-y-hidden sm:px-5 py-1 flex items-start justify-center"
     >
       <div
         className={`relative w-full h-full p-2 flex items-center justify-start flex-col from-offBlack to-black bg-gradient-to-r rounded-md gap-5`}

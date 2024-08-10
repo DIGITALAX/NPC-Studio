@@ -42,6 +42,7 @@
     "back": "Return",
     "añadido": "Minted! Your collection has been added successfully.",
     "coleccionEliminada": "Your collection has been successfully removed from the gallery.",
+    "indice": "Agent Index",
     "creado": "Minted! Your gallery has been stored on-chain.",
     "galeriaEliminada": "Your gallery has been deleted from the chain.",
     "success": "Interaction Successful",

@@ -37,7 +37,7 @@ const CitaPub: FunctionComponent<CitaPubProps> = ({
         className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-offNegro rounded-md border border-white cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-fit max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex flex-col gap-4 items-center justify-center p-4">
+        <div className="relative w-[100vw] sm:w-[45vw] xl:w-[40vw] h-full max-h-[90vh] min-h-[40vh] xl:min-h-[60vh] flex flex-col gap-4 items-center justify-between p-4 overflow-y-scroll">
           <Cita cita={citaAbierta as Quote} />
           <Comentario
             setOpcionAbierta={setOpcionAbierta}
@@ -52,6 +52,7 @@ const CitaPub: FunctionComponent<CitaPubProps> = ({
             publicacionCargando={citaCargando}
             manejarPublicar={hacerCita}
             dict={dict}
+            cita
             comentarioId={citaAbierta?.id}
             mencionarPerfiles={mencionarPerfiles}
             perfilesAbiertos={perfilesAbiertos}

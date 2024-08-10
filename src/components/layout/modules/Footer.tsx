@@ -17,7 +17,7 @@ function Footer() {
       <div className="relative w-fit h-fit flex items-center justify-center gap-4 flex-col sm:flex-row">
         <div
           className="relative w-fit h-fit flex items-center justify-center ml-0 font-rain text-white text-4xl cursor-pointer active:scale-95"
-          onClick={() => window.open("https://www.digitalax.xyz/")}
+          onClick={() => router.push("/")}
         >
           DIGITALAX
         </div>

@@ -1,9 +1,11 @@
+'use client';
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "../../../lib/constants";
 import { LogProps } from "../types/game.types";
 import Chat from "./Chat";
 import { PiArrowSquareInBold } from "react-icons/pi";
 import { AiOutlineLoading } from "react-icons/ai";
+import { useRouter } from 'next/navigation';
 
 function Log({
   connected,
@@ -30,8 +32,9 @@ function Log({
   npcIds,
   setCarrito,
   setMostrarNotificacion,
-  setMostrarInteracciones
+  setMostrarInteracciones,
 }: LogProps) {
+  const router = useRouter();
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
       <div className="relative flex flex-col gap-5 h-full w-full items-center justify-start">
@@ -42,21 +45,24 @@ function Log({
           <div className="relative w-full h-8 flex items-center justify-between flex flex-row gap-2">
             {[
               {
-                titulo: dict.Home.connect,
-                imagen: "QmfVM4Fg28tCYELteZJNjBoyjPQEENYnWPy4gRJatBFzd1",
-                llama: !connected ? openConnectModal : () => manejarSalir(),
-                cargando: false,
+                titulo: !connected ? dict.Home.connect : "Lens",
+                imagen: !connected
+                  ? "QmfVM4Fg28tCYELteZJNjBoyjPQEENYnWPy4gRJatBFzd1"
+                  : "QmYpZgGFF4m6kNPsjYYEp7EkwoiE75YvjT3M5rSX18we62",
+                llama: !connected
+                  ? openConnectModal
+                  : !lensConectado && connected
+                  ? () => manejarLens()
+                  : () => manejarSalir(),
+                cargando: lensCargando,
               },
               {
-                titulo: "Lens",
-                imagen: "QmYpZgGFF4m6kNPsjYYEp7EkwoiE75YvjT3M5rSX18we62",
-                llama: () =>
-                  !connected
-                    ? {}
-                    : !lensConectado && connected
-                    ? manejarLens()
-                    : () => manejarSalir(),
-                cargando: lensCargando,
+                titulo: dict.Home.indice,
+                imagen: !connected
+                  ? "QmRDCTnc78cuuJorxuy7KArG1KssSZH6UUwyir8S3eugRe"
+                  : "QmRm4pg7PeGBJ43FcvUhaaC1uDeRiGuFmAZrA9NjD6EFZD",
+                llama: () => router.push("/agent-index"),
+                cargando: false,
               },
               {
                 titulo: dict.Home.orders,

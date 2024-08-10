@@ -91,7 +91,7 @@ const Chat: FunctionComponent<ChatProps> = ({
   const elementoTexto = useRef(null);
   return (
     <div
-      className={`relative w-full flex flex-col items-start justify-start font-at text-base leading-4 max-w-full text-white break-all gap-6 ${
+      className={`relative w-full flex flex-col items-start justify-between font-at text-base leading-4 max-w-full text-white break-all gap-6 ${
         open ? "h-96 overflow-y-scroll" : "h-[33rem] xl:h-80 max-h-full"
       }`}
       ref={contenedorMensajesRef}
