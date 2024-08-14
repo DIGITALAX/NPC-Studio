@@ -27,8 +27,6 @@ function PantallaComprar({
   cumplimiento,
   setCumplimiento,
   comprarCarrito,
-  pagina,
-  setPagina,
 }: PantallaComprarProps) {
   return (
     <div
@@ -107,8 +105,6 @@ function PantallaComprar({
                 <ComprasCambio
                   dict={dict}
                   setMostrarPerfil={setMostrarPerfil}
-                  pagina={pagina}
-                  setPagina={setPagina}
                   comprarCarrito={comprarCarrito}
                   setCumplimiento={setCumplimiento}
                   carrito={carrito}

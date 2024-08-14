@@ -111,8 +111,6 @@ function Studio({
     setArticuloSeleccionado,
     setArticuloIndice,
     articuloIndice,
-    pagina,
-    setPagina,
   } = useArticulo(manejarMostrarArticulo, lensConectado);
   const {
     carritoCargando,
@@ -150,8 +148,6 @@ function Studio({
         <PantallaComprar
           setMostrarPerfil={setMostrarPerfil}
           carrito={carrito}
-          pagina={pagina}
-          setPagina={setPagina}
           dict={dict}
           datosOraculos={datosOraculos}
           articuloIndice={articuloIndice}

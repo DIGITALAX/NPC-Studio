@@ -51,14 +51,12 @@ export type ComprasCambioProps = {
   };
   cumplimiento: Details;
   comprarCarrito: () => Promise<void>;
-  pagina: number;
   setMostrarPerfil: (
     e: SetStateAction<
       | string
       | undefined
     >
   ) => void;
-  setPagina: (e: SetStateAction<number>) => void;
 };
 
 export type BotonesProps = {
@@ -221,8 +219,6 @@ export type CatalogoProps = {
   comprarPublicacion: (articulo: Compra) => Promise<void>;
   setCumplimiento: (e: SetStateAction<Details>) => void;
   cumplimiento: Details;
-  pagina: number;
-  setPagina: (e: SetStateAction<number>) => void;
   datosOraculos: DatosOraculos[];
   carritoCargando: boolean;
   aprobarCargando: boolean;

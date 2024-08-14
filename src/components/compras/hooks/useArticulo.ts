@@ -30,7 +30,6 @@ const useArticulo = (
   const [articulosActuales, setArticulosActuales] = useState<
     Coleccion[] | Catalogo[] | undefined
   >();
-  const [pagina, setPagina] = useState<number>(0);
   const [articuloSeleccionado, setArticuloSeleccionado] = useState<Compra[]>(
     []
   );
@@ -237,7 +236,6 @@ const useArticulo = (
         );
       }
 
-      setPagina(0);
       setArticuloIndice(0);
     } catch (err: any) {
       console.error(err.message);
@@ -260,8 +258,6 @@ const useArticulo = (
     setArticuloSeleccionado,
     articuloIndice,
     setArticuloIndice,
-    pagina,
-    setPagina,
   };
 };
 

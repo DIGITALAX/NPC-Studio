@@ -203,8 +203,6 @@ export type PantallaComprarProps = {
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   setArticuloSeleccionado: (e: SetStateAction<Compra[]>) => void;
   comprarCarrito: () => Promise<void>;
-  pagina: number;
-  setPagina: (e: SetStateAction<number>) => void;
 };
 
 export type PublicacionProps = {

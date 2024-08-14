@@ -2,9 +2,9 @@ import { FunctionComponent } from "react";
 import { CatalogoProps } from "../types/compras.types";
 import Botones from "./Botones";
 import Cumplimiento from "./Cumplimiento";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
+import usePagina from "../hooks/usePagina";
 
 const Catalogo: FunctionComponent<CatalogoProps> = ({
   comprarPublicacion,
@@ -19,14 +19,16 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
   catalogo,
   carrito,
   cumplimiento,
-  pagina,
-  setPagina,
   datosOraculos,
   setArticuloSeleccionado,
   setVerImagen,
 }): JSX.Element => {
+  const { bookRef } = usePagina(catalogo);
   return (
-    <div className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2">
+    <div
+      className="relative w-full items-start justify-start flex flex-col gap-3 h-fit p-2"
+      id="padre"
+    >
       <div className="relative w-full h-fit flex items-start justify-start text-white font-con text-sm">
         {dict.Home.npcStudio}
       </div>
@@ -38,52 +40,24 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
           {dict.Home.muestra}
         </div>
       </div>
-      <div className="relative w-full h-fit flex items-center justify-center gap-1.5 flex-col">
-        <div
-          className="relative w-full h-80 flex items-center justify-center rounded-md border border-white bg-black cursor-pointer"
-          key={catalogo?.paginas?.[pagina]?.split("ipfs://")[1]}
-          onClick={() =>
-            setVerImagen({
-              abierto: true,
-              url: `${INFURA_GATEWAY}/ipfs/${
-                catalogo?.paginas?.[pagina]?.split("ipfs://")[1]
-              }`,
-              tipo: "png",
-            })
-          }
-        >
-          <Image
-            src={`${INFURA_GATEWAY}/ipfs/${
-              catalogo?.paginas?.[pagina]?.split("ipfs://")[1]
-            }`}
-            layout="fill"
-            objectFit="cover"
-            draggable={false}
-            className="rounded-md"
-          />
-        </div>
-        <div className="relative w-fit h-fit flex flex-row gap-2 items-center justify-center">
+      <div
+        className="relative w-full flex items-center justify-center pb-6"
+        ref={bookRef}
+        style={{ height: "320px" }}
+      >
+        {catalogo?.paginas?.map((pagina: string, indice: number) => (
           <div
-            className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95 rounded-full bg-black border-white"
-            onClick={() =>
-              setPagina((prev) =>
-                prev > 0 ? prev - 1 : catalogo.paginasContadas - 2
-              )
-            }
+            key={indice}
+            className="page relative flex items-center justify-center"
           >
-            <FaArrowAltCircleLeft size={20} color="white" />
+            <Image
+              src={`${INFURA_GATEWAY}/ipfs/${pagina.split("ipfs://")[1]}`}
+              layout="fill"
+              objectFit="contain"
+              draggable={false}
+            />
           </div>
-          <div
-            className="relative w-fit h-fit flex items-center justify-center cursor-pointer active:scale-95 rounded-full bg-black border-white"
-            onClick={() =>
-              setPagina((prev) =>
-                prev < catalogo.paginasContadas - 2 ? prev + 1 : 0
-              )
-            }
-          >
-            <FaArrowAltCircleRight size={20} color="white" />
-          </div>
-        </div>
+        ))}
       </div>
       <div className="relative w-full h-fit tab:flex-nowrap flex-wrap tab:h-[12rem] flex flex-row gap-4 items-start justify-between">
         <Cumplimiento
@@ -92,7 +66,7 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
           dict={dict}
         />
         <Botones
-          minteado={catalogo?.minteado}
+          minteado={catalogo?.minteado || 0}
           cantidad={catalogo?.cantidad}
           precio={catalogo?.precio}
           datosOraculos={datosOraculos}
@@ -109,11 +83,10 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
               carrito?.compras
                 ?.filter(
                   (el) =>
-                    JSON.stringify(el.elemento) ==
-                    JSON.stringify(catalogo)
+                    JSON.stringify(el.elemento) == JSON.stringify(catalogo)
                 )
                 ?.reduce((sum, el) => sum + el.cantidad, 0) >=
-                catalogo?.cantidad
+            catalogo?.cantidad
           }
           aprobarCargando={aprobarCargando}
           aprobarGastos={aprobarGastos}

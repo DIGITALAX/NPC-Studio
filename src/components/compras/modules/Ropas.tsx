@@ -184,7 +184,7 @@ const Ropas: FunctionComponent<RopasProps> = ({
             </div>
             <Botones
               dict={dict}
-              minteado={articulos?.[articuloIndice]?.tokenesMinteados?.length}
+              minteado={articulos?.[articuloIndice]?.tokenesMinteados?.length || 0}
               precio={articulos?.[articuloIndice]?.precio}
               datosOraculos={datosOraculos}
               setArticuloSeleccionado={setArticuloSeleccionado}
