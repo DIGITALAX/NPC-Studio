@@ -16,8 +16,9 @@ const Scene: FunctionComponent<SceneProps> = ({
   publicClient,
   setErrorInteraccion,
   setIndexar,
+  manejarMensaje,
 }) => {
-  const { perfil, npcCargando, seguirCargando, seguirNpc, dejarNpc } =
+  const { perfil, npcCargando, seguirCargando, seguirNpc, dejarNpc, esNPC } =
     useCuenta(
       escenas.flatMap((es) => es.sprites).find((n) => n.etiqueta == npc)!,
       lensConectado,
@@ -43,11 +44,8 @@ const Scene: FunctionComponent<SceneProps> = ({
             {npc && escenas?.length > 0 && (
               <Cuenta
                 dict={dict}
-                npc={
-                  escenas
-                    .flatMap((es) => es.sprites)
-                    .find((n) => n.etiqueta == npc)!
-                }
+                manejarMensaje={manejarMensaje}
+                npc={esNPC}
                 perfil={perfil!}
                 seguirCargando={seguirCargando}
                 seguirNpc={seguirNpc}

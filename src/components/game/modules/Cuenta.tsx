@@ -1,11 +1,12 @@
 import { FunctionComponent } from "react";
-import { CuentaProps } from "../types/game.types";
+import { CuentaProps, Sprite } from "../types/game.types";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { AiOutlineLoading } from "react-icons/ai";
-import { ImageSet } from "../../../../graphql/generated";
+import { ImageSet, Profile } from "../../../../graphql/generated";
 import { GiWorld } from "react-icons/gi";
 import descripcionRegex from "@/lib/helpers/descripcionRegex";
+import { useRouter } from "next/navigation";
 
 const Cuenta: FunctionComponent<CuentaProps> = ({
   dict,
@@ -16,7 +17,9 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
   dejarNpc,
   lensConectado,
   npcCargando,
+  manejarMensaje,
 }) => {
+  const router = useRouter();
   return (
     <div className="relative w-[90%] h-[90%] bg-black/70 flex items-start justify-center px-4 py-6 overflow-y-scroll border border-rosa p-1 rounded-sm">
       <div
@@ -24,6 +27,44 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
           npcCargando && "animate-pulse"
         }`}
       >
+        {npc && (
+          <div className="relative flex flex-row gap-3 justify-end sm:flex-nowrap flex-wrap items-center h-fit w-full">
+            <div
+              className="relative w-6 h-6 flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
+              onClick={() =>
+                manejarMensaje!(
+                  perfil?.handle?.suggestedFormatted?.localName as string
+                )
+              }
+            >
+              <Image
+                draggable={false}
+                src={`${INFURA_GATEWAY}/ipfs/QmQjZ1CpMdPgUtNyPJcQUsJfWAaeY1qaHNumGbk2FAmDxH`}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-sm"
+                title={dict.Home.charla}
+              />
+            </div>
+            <div
+              className="relative w-6 h-6 flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
+              onClick={() =>
+                router.push(
+                  `/npc/${perfil?.handle?.suggestedFormatted?.localName}`
+                )
+              }
+            >
+              <Image
+                draggable={false}
+                src={`${INFURA_GATEWAY}/ipfs/Qme8K9FmGB5TaB8cSGZHwNgPartHeL4pzeTPqD9hzR3ygc`}
+                className="rounded-sm"
+                layout="fill"
+                objectFit="cover"
+                title={dict.Home.espectador}
+              />
+            </div>
+          </div>
+        )}
         <div
           className={`relative w-full rounded-sm bg-black border border-amarillo h-32 ${
             npcCargando && "animate-pulse"
@@ -158,27 +199,53 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
           {perfil?.metadata?.bio}
         </div>
         {npc && (
-          <div className="relative w-full h-full flex items-start justify-between flex-col sm:flex-row gap-3">
-            <div className="relative w-full h-96 flex items-center justify-center">
-              <Image
-                layout="fill"
-                objectFit="contain"
-                draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/${npc?.tapa_dos}`}
-              />
-            </div>
-            <div className="relative w-full h-fit flex items-start justify-start text-left gap-2 flex-col">
-              <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
-                {dict.Home.info}
+          <>
+            <div className="relative w-full h-full flex items-start justify-between flex-col sm:flex-row gap-3">
+              <div className="relative w-full h-96 flex items-center justify-center">
+                <Image
+                  layout="fill"
+                  objectFit="contain"
+                  draggable={false}
+                  src={`${INFURA_GATEWAY}/ipfs/${npc?.tapa_dos}`}
+                />
               </div>
-              <div
-                className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
-                dangerouslySetInnerHTML={{
-                  __html: descripcionRegex(npc?.prompt?.personalidad, true),
-                }}
-              ></div>
+              <div className="relative w-full h-96 overflow-y-scroll flex items-start justify-start text-left gap-2 flex-col">
+                <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
+                  {dict.Home.info}
+                </div>
+                <div
+                  className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
+                  dangerouslySetInnerHTML={{
+                    __html: descripcionRegex(npc?.prompt?.personalidad, true),
+                  }}
+                ></div>
+              </div>
             </div>
-          </div>
+            <div className="relative w-full h-fit flex items-start justify-start text-left flex-col gap-2 pt-4">
+              <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
+                {dict.Home.amigos}
+              </div>
+              <div className="relative w-fit h-fit flex items-start justify-between flex-row flex-wrap gap-2">
+                {npc?.amigos?.map((amigo: Sprite & {handle: string}, indice: number) => {
+                  return (
+                    <div
+                      className="relative w-fit h-fit flex items-center justify-center"
+                      key={indice}
+                    >
+                      <div className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70" onClick={() => router.push(`/npc/${amigo?.handle}`)}>
+                        <Image
+                          layout="fill"
+                          objectFit="contain"
+                          draggable={false}
+                          src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa_dos}`}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

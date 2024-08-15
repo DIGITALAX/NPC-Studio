@@ -88,6 +88,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     aprobar,
     cargandoColeccion,
     manejarColeccionar,
+    manejarMensaje
   } = useManage(
     address,
     publicClient,
@@ -100,7 +101,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     context?.setSeguirColeccionar!,
     isConnected,
     openConnectModal,
-    manejarLens
+    manejarLens,
+    context?.setComentarPublicar!
   );
 
   const {
@@ -245,6 +247,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         dict={dict}
         npc={npc}
         setNpc={setNpc}
+        manejarMensaje={manejarMensaje}
         lensConectado={context?.lensConectado}
         escena={escena}
         setEscena={setEscena}

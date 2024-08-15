@@ -14,6 +14,7 @@ import { PublicClient } from "viem";
 import { Compra, Details } from "@/components/compras/types/compras.types";
 import { AccessControlConditions } from "@lit-protocol/types";
 import { DecodedMessage } from "@xmtp/xmtp-js";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type LogProps = {
   connected: boolean;
@@ -141,6 +142,7 @@ export type ProcessProps = {
 export type SceneProps = {
   escena: string;
   dict: Dictionary;
+  manejarMensaje?: (e: string) => void;
   escenas: Escena[];
   lensConectado: Profile | undefined;
   setEscena: (e: SetStateAction<string>) => void;
@@ -445,7 +447,9 @@ export interface Sprite {
   prompt: {
     personalidad: string;
     idiomas: string[];
+    amigos: number[];
   };
+  amigos: (Sprite & { handle: string })[];
   perfil_id: number;
   tapa_dos: string;
   escala: {
@@ -472,7 +476,10 @@ export type Dictionary = {
   Home: {
     title: string;
     frase1: string;
+    amigos: string;
     indice: string;
+    charla: string;
+    espectador: string;
     frase2: string;
     ropa: string;
     frase3: string;
@@ -790,4 +797,5 @@ export type CuentaProps = {
   dejarNpc: () => Promise<void>;
   seguirCargando: boolean;
   lensConectado: Profile | undefined;
+  manejarMensaje?: (e: string) => void;
 };

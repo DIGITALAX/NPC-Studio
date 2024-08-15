@@ -48,7 +48,8 @@ const useManage = (
   ) => void,
   conectado: boolean,
   openConnectModal: (() => void) | undefined,
-  manejarLens: () => Promise<void>
+  manejarLens: () => Promise<void>,
+  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void
 ) => {
   const elementoTextoCita = useRef<HTMLTextAreaElement>();
   const [escena, setEscena] = useState<string>("estudio abierto de trabajo");
@@ -287,6 +288,19 @@ const useManage = (
     setCargandoColeccion(false);
   };
 
+  const manejarMensaje = (handle: string) => {
+    setComentarPublicar((prev) => {
+      const c = [...prev];
+      c[0] = {
+        ...c?.[0],
+        contenido: handle,
+      };
+
+      return c;
+    });
+    setDragDialog(true);
+  };
+
   return {
     npc,
     setNpc,
@@ -317,6 +331,7 @@ const useManage = (
     aprobar,
     cargandoColeccion,
     manejarColeccionar,
+    manejarMensaje,
   };
 };
 

@@ -6,6 +6,7 @@ import lensSeguir from "@/lib/helpers/lensSeguir";
 import { createWalletClient, custom, PublicClient } from "viem";
 import { polygon } from "viem/chains";
 import { Indexar } from "@/components/common/types/common.types";
+import getProfiles from "../../../../graphql/lens/queries/profiles";
 
 const useCuenta = (
   npc: Sprite | undefined | string,
@@ -91,20 +92,60 @@ const useCuenta = (
             )
           )
         ) {
-          setEsNPC(
-            escenas
-              ?.find((e) =>
-                e.sprites?.find(
-                  (s) =>
-                    "0x0" + s.perfil_id?.toString(16)?.split("0x")?.[1] == npc
-                )
+          const sprite = escenas
+            ?.find((e) =>
+              e.sprites?.find(
+                (s) =>
+                  "0x0" + s.perfil_id?.toString(16)?.split("0x")?.[1] == npc
               )
-              ?.sprites?.find(
-                (n) =>
-                  "0x0" + n.perfil_id?.toString(16)?.split("0x")?.[1] == npc
-              )!
-          );
+            )
+            ?.sprites?.find(
+              (n) => "0x0" + n.perfil_id?.toString(16)?.split("0x")?.[1] == npc
+            )!;
+
+          setEsNPC({ ...sprite });
         }
+      } else {
+        const sprite = escenas
+          ?.find((e) =>
+            e.sprites?.find(
+              (s) =>
+                "0x0" + s.perfil_id?.toString(16)?.split("0x")?.[1] ==
+                "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1]
+            )
+          )
+          ?.sprites?.find(
+            (n) =>
+              "0x0" + n.perfil_id?.toString(16)?.split("0x")?.[1] ==
+              "0x0" + npc?.perfil_id.toString(16)?.split("0x")?.[1]
+          )!;
+
+        const datos = await getProfiles(
+          {
+            where: {
+              profileIds: sprite.prompt.amigos?.flatMap(
+                (a) => "0x0" + a?.toString(16)?.split("0x")?.[1]
+              ),
+            },
+          },
+          lensConectado?.id
+        );
+
+        const amigos = sprite.prompt.amigos
+          .map(
+            (amigo) =>
+              escenas
+                .flatMap((s) => s.sprites)
+                .find((s) => s.perfil_id == amigo)!
+          )
+          ?.map((a, i) => ({
+            ...a,
+            handle:
+              datos?.data?.profiles?.items?.[i]?.handle?.suggestedFormatted
+                ?.localName!,
+          }));
+
+        setEsNPC({ ...sprite, amigos });
       }
     } catch (err: any) {
       console.error(err.message);

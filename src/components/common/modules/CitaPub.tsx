@@ -1,13 +1,8 @@
 import { FunctionComponent } from "react";
 import { CitaPubProps } from "../types/common.types";
-import manejarBuscarPerfiles from "@/lib/helpers/manejarBuscarPerfiles";
-import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/lib/constants";
-import { AiOutlineLoading } from "react-icons/ai";
-import { Profile, Quote } from "../../../../graphql/generated";
-import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Cita from "./Cita";
 import Comentario from "./Comentario";
+import { Quote } from "../../../../graphql/generated";
 
 const CitaPub: FunctionComponent<CitaPubProps> = ({
   dict,
