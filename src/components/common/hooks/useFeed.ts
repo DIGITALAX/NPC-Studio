@@ -237,8 +237,19 @@ const useFeed = (
   };
 
   useEffect(() => {
-    if (escena && npcIds?.length > 0 && feedActual?.length < 1) {
+    if (escena && npcIds?.length > 0 && feedActual.length < 1) {
+      llamarFeed();
+    }
+  }, [npcIds?.length, escena]);
+
+  useEffect(() => {
+    if (
+      escena &&
+      npcIds?.length > 0 &&
+      escena !== localStorage?.getItem("escena")
+    ) {
       setTieneMasFeed(true);
+      localStorage.setItem("escena", escena);
       llamarFeed();
     }
   }, [escena, lensConectado, npcIds]);

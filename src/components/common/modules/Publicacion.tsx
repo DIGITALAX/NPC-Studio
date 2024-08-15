@@ -69,7 +69,7 @@ function Publicacion({
             className={`relative w-fit h-fit row-start-1 publicacions-center justify-end flex flex-row gap-2 font-bit text-xxs`}
           >
             <div
-              className={`relative w-fit h-fit col-start-1 place-self-center break-words font-dosis text-offWhite ${
+              className={`relative w-fit h-fit col-start-1 place-self-center break-all font-dosis text-offWhite ${
                 publicacion?.__typename === "Mirror" && "cursor-pointer"
               }`}
             >

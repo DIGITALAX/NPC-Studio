@@ -11,7 +11,7 @@ const Medios: FunctionComponent<MediosProps> = ({
   setVerImagen,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-fit flex flex-col justify-start items-center gap-3 break-words max-w-full">
+    <div className="relative w-full h-fit flex flex-col justify-start items-center gap-3 break-all max-w-full">
       {metadata?.content && metadata?.content?.trim() !== "" && (
         <div
           className={`relative w-full h-fit max-h-[12rem] font-aust  text-left items-start justify-start break-all flex overflow-y-scroll p-3 text-sm whitespace-preline ${
@@ -31,7 +31,7 @@ const Medios: FunctionComponent<MediosProps> = ({
       <div
         className={`relative w-full h-fit overflow-x-scroll gap-2 items-center justify-start flex`}
       >
-        <div className="relative w-fit h-fit gap-2 flex flex-row items-center justify-start">
+        <div className="relative w-full h-fit gap-2 flex flex-row items-center justify-start">
           {[metadata?.asset, ...(metadata?.attachments || [])].filter(Boolean)
             ?.length > 0 &&
             [metadata?.asset, ...(metadata?.attachments || [])]
@@ -42,7 +42,7 @@ const Medios: FunctionComponent<MediosProps> = ({
                 return (
                   <div
                     key={indice}
-                    className={`w-60 relative border border-white rounded-sm h-60 flex items-center justify-center bg-black ${
+                    className={`w-full relative border border-white rounded-sm h-60 flex items-center justify-center bg-black ${
                       media?.url && "cursor-pointer"
                     }`}
                     onClick={() =>

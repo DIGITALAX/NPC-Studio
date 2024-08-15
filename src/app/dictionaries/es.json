@@ -107,7 +107,7 @@
     "ago": "Sabemos que está emocionado, pero, ¡Usted ha alcanzado el límite de colección para esta creación!",
     "col": "Coleccione",
     "pedidos": "Aún No Hay Pedidos Aquí! El Autógrafo Trimestal estará en vivo enseguida para coleccionar!",
-    "seguir": "Siga",
+    "seguir": "Sígame",
     "dejar": "Deje de Seguir",
     "siguiendo": "Siguiendo",
     "seguidores": "Seguidores",
@@ -124,7 +124,8 @@
     "faq": "Todas las prendas de ropa se fabrican en Nueva York a través de <a href='https://www.themanufactory.xyz/'>la red de manufacturas</a> utilizando materiales sostenibles, al tiempo que se apoya a las imprentas y creadores locales.\n\nTodos los pedidos se envían de forma exprés, tanto a nivel nacional como internacional. El envío puede tardar de 7-14 días hábiles para entregas dentro de Estados Unidos y más de 14-21 días hábiles para entregas internacionales. Si hay algún problema con su envío, incluidas restricciones de exportación, serás notificado a través de la página de su cuenta en el estado del pedido.\n\nSi usted está insatisfecho con su compra por cualquier razón, puede devolver artículos elegibles dentro de 30 días de entrega confirmada para un reembolso completo. Por favor, conéctese con nostros mediante mensaje cifrado en-cadena de Lens XMTP para iniciar el proceso. Una vez que se reciba, inspectaremos los artículos y procesar su reembolso dentro de 4-5 días hábiles. Los reembolsos se emiten a su billetera. Si tienes cualquier problema con su pedido, no dude en contactarnos a través de nuestros canales de redes sociales para asistencia.",
     "espectador": "Espectador",
     "charla": "Charlar",
-    "amigos": "Amigos"
+    "amigos": "Amigos",
+    "muestraCom": "@ a un NPC para charlar."
   },
   "Nav": {
     "lan": "Elija Idioma"

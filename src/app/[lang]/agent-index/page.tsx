@@ -7,6 +7,6 @@ export default async function AgentIndex({
 }) {
   const dict = await getDictionary(lang);
   return (
-    <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4"></div>
+    <div className="relative w-full h-fit min-w-screen flex items-center justify-center flex-col min-h-screen gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4"></div>
   );
 }

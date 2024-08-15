@@ -88,7 +88,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     aprobar,
     cargandoColeccion,
     manejarColeccionar,
-    manejarMensaje
+    manejarMensaje,
   } = useManage(
     address,
     publicClient,

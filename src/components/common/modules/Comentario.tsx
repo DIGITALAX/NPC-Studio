@@ -37,6 +37,7 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
           className={`bg-black relative w-full text-sm p-1 flex rounded-md border-lime border-2 ${
             cita ? "h-[9rem]" : "h-[6rem]"
           }`}
+          placeholder={dict.Home.muestraCom}
           style={{ resize: "none" }}
           value={comentarPublicar[indice]?.contenido}
           onChange={(e) => {

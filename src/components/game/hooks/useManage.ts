@@ -1,4 +1,10 @@
-import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Draggable from "react-draggable";
 import { AutographType, ComentarPublicar, Escena } from "../types/game.types";
 import {
@@ -52,7 +58,7 @@ const useManage = (
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void
 ) => {
   const elementoTextoCita = useRef<HTMLTextAreaElement>();
-  const [escena, setEscena] = useState<string>("estudio abierto de trabajo");
+  const [escena, setEscena] = useState<string>();
   const [npc, setNpc] = useState<string | undefined>("Gabriel");
   const [cargando, setCargando] = useState<boolean>(true);
   const [manejarMostrarArticulo, setManejarMostrarArticulo] = useState<{
@@ -300,6 +306,18 @@ const useManage = (
     });
     setDragDialog(true);
   };
+
+  useEffect(() => {
+    if (!escena) {
+      setEscena(
+        localStorage?.getItem("escena") !== "" &&
+          localStorage?.getItem("escena") !== null &&
+          localStorage?.getItem("escena") !== undefined
+          ? (localStorage?.getItem("escena") as string)
+          : "estudio abierto de trabajo"
+      );
+    }
+  }, []);
 
   return {
     npc,

@@ -30,38 +30,44 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
         {npc && (
           <div className="relative flex flex-row gap-3 justify-end sm:flex-nowrap flex-wrap items-center h-fit w-full">
             <div
-              className="relative w-6 h-6 flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
+              className="relative w-fit px-1.5 h-7 font-con rounded-sm text-xxs text-white border border-amarillo bg-black flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
               onClick={() =>
                 manejarMensaje!(
                   perfil?.handle?.suggestedFormatted?.localName as string
                 )
               }
             >
-              <Image
+              <div className="relative w-fit h-fit flex items-center justify-center">
+                {dict.Home.charla}
+              </div>
+              {/* <Image
                 draggable={false}
                 src={`${INFURA_GATEWAY}/ipfs/QmQjZ1CpMdPgUtNyPJcQUsJfWAaeY1qaHNumGbk2FAmDxH`}
                 layout="fill"
                 objectFit="cover"
                 className="rounded-sm"
                 title={dict.Home.charla}
-              />
+              /> */}
             </div>
             <div
-              className="relative w-6 h-6 flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
+              className="relative w-fit px-1.5 h-7 font-con rounded-sm text-xxs text-white border border-amarillo bg-black flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
               onClick={() =>
                 router.push(
                   `/npc/${perfil?.handle?.suggestedFormatted?.localName}`
                 )
               }
             >
-              <Image
+              <div className="relative w-fit h-fit flex items-center justify-center">
+                {dict.Home.espectador}
+              </div>
+              {/* <Image
                 draggable={false}
                 src={`${INFURA_GATEWAY}/ipfs/Qme8K9FmGB5TaB8cSGZHwNgPartHeL4pzeTPqD9hzR3ygc`}
                 className="rounded-sm"
                 layout="fill"
                 objectFit="cover"
                 title={dict.Home.espectador}
-              />
+              /> */}
             </div>
           </div>
         )}
@@ -214,7 +220,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                   {dict.Home.info}
                 </div>
                 <div
-                  className="relative text-sm font-con text-white break-words flex overflow-y-scroll whitespace-preline"
+                  className="relative text-sm font-con text-white break-all flex overflow-y-scroll whitespace-preline"
                   dangerouslySetInnerHTML={{
                     __html: descripcionRegex(npc?.prompt?.personalidad, true),
                   }}
@@ -226,23 +232,28 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                 {dict.Home.amigos}
               </div>
               <div className="relative w-fit h-fit flex items-start justify-between flex-row flex-wrap gap-2">
-                {npc?.amigos?.map((amigo: Sprite & {handle: string}, indice: number) => {
-                  return (
-                    <div
-                      className="relative w-fit h-fit flex items-center justify-center"
-                      key={indice}
-                    >
-                      <div className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70" onClick={() => router.push(`/npc/${amigo?.handle}`)}>
-                        <Image
-                          layout="fill"
-                          objectFit="contain"
-                          draggable={false}
-                          src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa_dos}`}
-                        />
+                {npc?.amigos?.map(
+                  (amigo: Sprite & { handle: string }, indice: number) => {
+                    return (
+                      <div
+                        className="relative w-fit h-fit flex items-center justify-center"
+                        key={indice}
+                      >
+                        <div
+                          className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70"
+                          onClick={() => router.push(`/npc/${amigo?.handle}`)}
+                        >
+                          <Image
+                            layout="fill"
+                            objectFit="contain"
+                            draggable={false}
+                            src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa_dos}`}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
               </div>
             </div>
           </>

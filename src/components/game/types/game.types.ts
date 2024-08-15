@@ -476,6 +476,7 @@ export type Dictionary = {
   Home: {
     title: string;
     frase1: string;
+    muestraCom: string;
     amigos: string;
     indice: string;
     charla: string;
