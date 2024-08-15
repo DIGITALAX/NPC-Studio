@@ -6,7 +6,7 @@ import { http, useAccount } from "wagmi";
 import Scene from "../../game/modules/Scene";
 import useManage from "../../game/hooks/useManage";
 import useAccountInternal from "../../game/hooks/useAccount";
-import { useContext } from "react";
+import { SetStateAction, useContext } from "react";
 import { ModalContext } from "../../../app/providers";
 import useMint from "../../game/hooks/useMint";
 import { Dictionary } from "@/components/game/types/game.types";
@@ -184,7 +184,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           publicClient={publicClient}
           setIndexar={context?.setIndexar!}
           setErrorInteraccion={context?.setErrorInteraccion!}
-          escena={escena}
+          escena={escena!}
           setDragDialog={setDragDialog}
           setAbrirCita={context?.setAbrirCita!}
           setSeguirColeccionar={context?.setSeguirColeccionar!}
@@ -212,7 +212,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             mostrarGalerias={mostrarGalerias}
             setMostrarGalerias={setMostrarGalerias}
             isConnected={isConnected}
-            escena={escena}
+            escena={escena!}
             colecciones={colecciones}
             setColeccionActual={setColeccionActual}
             coleccionActual={coleccionActual}
@@ -249,8 +249,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         setNpc={setNpc}
         manejarMensaje={manejarMensaje}
         lensConectado={context?.lensConectado}
-        escena={escena}
-        setEscena={setEscena}
+        escena={escena!}
+        setEscena={setEscena as (e: SetStateAction<string>) => void}
         escenas={context?.escenas!}
         publicClient={publicClient}
         setIndexar={context?.setIndexar!}
@@ -281,7 +281,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           publicClient={publicClient}
           dict={dict}
           setVerImagen={context?.setVerImagen!}
-          escena={escena}
+          escena={escena!}
           conectado={isConnected}
           manejarLens={manejarLens}
           openConnectModal={openConnectModal}
@@ -302,7 +302,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         publicClient={publicClient}
         address={address!}
         manejarLens={manejarLens}
-        escena={escena}
+        escena={escena!}
         conectado={isConnected}
         openConnectModal={openConnectModal}
         setIndexar={context?.setIndexar!}
