@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Footer from "./../../components/layout/modules/Footer";
 import Providers from "../providers";
 import Cargando from "@/components/common/modules/Cargando";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.npcstudio.xyz"),
@@ -41,14 +42,29 @@ export default function RootLayout({
     <html lang={params.lang}>
       <body>
         <Providers>
+          <Head>
+            <meta
+              name="keywords"
+              content="Web3, Web3 Fashion, Moda Web3, Open Source, CC0, Emma-Jane MacKinnon-Lee, Open Source LLMs, DIGITALAX, F3Manifesto, www.digitalax.xyz, www.f3manifesto.xyz, Women, Life, Freedom."
+            />
+            <meta name="robots" content="index, follow" />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  name: "NPC Studio",
+                  description:
+                    "Web3, Web3 Fashion, Moda Web3, Open Source, CC0, Emma-Jane MacKinnon-Lee, Open Source LLMs, DIGITALAX, F3Manifesto, www.digitalax.xyz, www.f3manifesto.xyz, Women, Life, Freedom.",
+                  url: "https://www.npcstudio.xyz/",
+                }),
+              }}
+            ></script>
+          </Head>
           <Cargando />
           {children}
           <Footer />
-          <div style={{ display: "none" }}>
-            Web3, Web3 Fashion, Moda Web3, Open Source, CC0, Emma-Jane
-            MacKinnon-Lee, Open Source LLMs, DIGITALAX, F3Manifesto,
-            www.digitalax.xyz, www.f3manifesto.xyz, Women, Life, Freedom.
-          </div>
         </Providers>
       </body>
     </html>
