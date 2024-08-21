@@ -227,35 +227,37 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                 ></div>
               </div>
             </div>
-            <div className="relative w-full h-fit flex items-start justify-start text-left flex-col gap-2 pt-4">
-              <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
-                {dict.Home.amigos}
-              </div>
-              <div className="relative w-fit h-fit flex items-start justify-between flex-row flex-wrap gap-2">
-                {npc?.amigos?.map(
-                  (amigo: Sprite & { handle: string }, indice: number) => {
-                    return (
-                      <div
-                        className="relative w-fit h-fit flex items-center justify-center"
-                        key={indice}
-                      >
+            {npc?.amigos?.length > 0 && (
+              <div className="relative w-full h-fit flex items-start justify-start text-left flex-col gap-2 pt-4">
+                <div className="relative text-lg font-bit underline underline-offset-4 text-amarillo flex">
+                  {dict.Home.amigos}
+                </div>
+                <div className="relative w-fit h-fit flex items-start justify-between flex-row flex-wrap gap-2">
+                  {npc?.amigos?.map(
+                    (amigo: Sprite & { handle: string }, indice: number) => {
+                      return (
                         <div
-                          className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70"
-                          onClick={() => router.push(`/npc/${amigo?.handle}`)}
+                          className="relative w-fit h-fit flex items-center justify-center"
+                          key={indice}
                         >
-                          <Image
-                            layout="fill"
-                            objectFit="contain"
-                            draggable={false}
-                            src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa_dos}`}
-                          />
+                          <div
+                            className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70"
+                            onClick={() => router.push(`/npc/${amigo?.handle}`)}
+                          >
+                            <Image
+                              layout="fill"
+                              objectFit="contain"
+                              draggable={false}
+                              src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa_dos}`}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }
-                )}
+                      );
+                    }
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>
