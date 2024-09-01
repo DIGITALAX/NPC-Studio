@@ -2,8 +2,9 @@
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { Dictionary } from "@/components/game/types/game.types";
-import Puntaje from "@/components/agentes/modules/Puntaje";
-import Agentes from "@/components/agentes/modules/Agentes";
+import Cambio from "@/components/agentes/modules/Cambio";
+import useAgentes from "@/components/agentes/hooks/useAgentes";
+import { Pantalla } from "@/components/agentes/types/agentes.types";
 
 export default function Agents({
   lang,
@@ -12,6 +13,8 @@ export default function Agents({
   lang: string;
   dict: Dictionary;
 }) {
+  const { pantallaCambio, setPantallaCambio } = useAgentes();
+
   return (
     <div className="relative w-full h-fit min-w-screen flex items-start justify-start min-h-screen bg-black pb-14 flex-col">
       <div className="relative w-full h-full flex items-stretch justify-start flex-row">
@@ -68,7 +71,7 @@ export default function Agents({
                   fondo: "#B9FFFF",
                   border: "#FFE72B",
                   sombra: "#1239F6",
-                  funcion: () => {},
+                  pantalla: Pantalla.Puntaje,
                 },
                 {
                   titulo: dict.Home.chall,
@@ -76,7 +79,7 @@ export default function Agents({
                   fondo: "#F6FC8D",
                   border: "#FF1493",
                   sombra: "#1239F6",
-                  funcion: () => {},
+                  pantalla: Pantalla.Desafiante,
                 },
                 {
                   titulo: dict.Home.game,
@@ -84,6 +87,8 @@ export default function Agents({
                   fondo: "#A0FF9C",
                   border: "#000000",
                   sombra: "#F6F909",
+                  pantalla: Pantalla.Juego,
+                  inactivo: true,
                 },
                 {
                   titulo: dict.Home.leader,
@@ -91,7 +96,7 @@ export default function Agents({
                   fondo: "#C993FF",
                   border: "#00FF00",
                   sombra: "#FF1493",
-                  funcion: () => {},
+                  pantalla: Pantalla.Tabla,
                 },
                 {
                   titulo: dict.Home.spec,
@@ -99,7 +104,7 @@ export default function Agents({
                   fondo: "#FFD700",
                   border: "#9933FF",
                   sombra: "#FF1493",
-                  funcion: () => {},
+                  pantalla: Pantalla.Especte,
                 },
               ].map(
                 (
@@ -109,7 +114,8 @@ export default function Agents({
                     fondo: string;
                     border: string;
                     sombra: string;
-                    funcion?: () => void;
+                    pantalla: Pantalla;
+                    inactivo?: boolean;
                   },
                   indice
                 ) => {
@@ -117,10 +123,15 @@ export default function Agents({
                     <div
                       key={indice}
                       className={`relative text-center rounded-full w-fit h-fit flex items-center justify-center px-4 py-2 border ${
-                        elemento.funcion &&
+                        pantallaCambio == elemento.pantalla && "opacity-70"
+                      } ${
+                        !elemento.inactivo &&
                         "cursor-pointer active:scale-95 hover:opacity-70"
                       }`}
-                      onClick={() => elemento.funcion && elemento.funcion()}
+                      onClick={() =>
+                        !elemento.inactivo &&
+                        setPantallaCambio(elemento.pantalla)
+                      }
                       style={{
                         color: elemento.texto,
                         backgroundColor: elemento.fondo,
@@ -143,42 +154,7 @@ export default function Agents({
               draggable={false}
             />
           </div>
-          <div
-            className={`text-white font-lib relative w-full h-fit flex items-start justify-start ${
-              lang == "en" ? "text-[8vw]" : "text-[6vw]"
-            }`}
-          >
-            {dict.Home.scorecard}
-          </div>
-          <div className="relative w-full h-fit py-20 flex items-center justify-center flex-col gap-24">
-            <Puntaje />
-            <div className="relative w-fit h-fit flex items-center justify-center flex-col gap-3">
-              <div className="relative w-52 h-52 rounded-full flex items-center justify-center">
-                <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmVUd78Y5zAjsF6saC4SnRmQYAqnqTrTNRLErGBKz7zbZY`}
-                  layout="fill"
-                  objectFit="cover"
-                  draggable={false}
-                />
-              </div>
-              <div className="relative w-fit h-fit flex items-center justify-center break-words font-clar text-[#A9FDCA]">
-                algo de texto
-              </div>
-            </div>
-            <Agentes />
-          </div>
-          <div
-            className={`relative mb-0 w-full h-fit flex items-center justify-end`}
-          >
-            <div className="relativew-full h-60 flex items-center justify-end">
-              <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmTPTQ7w3ZWETDBwsC5HB2TkcHTik85Hpy9thbXZg6nREw`}
-                layout="fill"
-                objectFit="cover"
-                draggable={false}
-              />
-            </div>
-          </div>
+          <Cambio pantallaCambio={pantallaCambio} lang={lang} dict={dict} />
         </div>
       </div>
     </div>
