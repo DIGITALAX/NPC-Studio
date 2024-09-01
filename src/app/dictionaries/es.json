@@ -125,7 +125,13 @@
     "espectador": "Espectador",
     "charla": "Charlar",
     "amigos": "Amigos",
-    "muestraCom": "@ a un NPC para charlar."
+    "muestraCom": "@ a un NPC para charlar.",
+    "score": "PUNTAJE",
+    "leader": "TABLA",
+    "chall": "DESAFIANTES",
+    "game": "EL JUEGO HA COMENZADO",
+    "spec": "ESPECTE",
+    "scorecard": "EL CUADRO DE MANO"
   },
   "Nav": {
     "lan": "Elija Idioma"

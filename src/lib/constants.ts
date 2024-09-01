@@ -40,7 +40,6 @@ export const IDIOMAS: { cover: string; key: string; title: string }[] = [
   },
 ];
 
-
 export const LENS_HUB_PROXY: `0x${string}` =
   "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
 
@@ -133,3 +132,15 @@ export const numberToAutograph: { [key in number]: string } = {
   [3]: "Catalog",
   [4]: "Mix",
 };
+
+export const CARTAS: string[] = [
+  "QmYXGJb9yWMEWtJZxnPaUGZSgUBzmNQeELUpko2KQyDBVW",
+  "QmW3SzU5UGctz3DSTT27wu6YjBWs5hunqKDjM4mRMv3Hku",
+  "QmW9P6WVXuPJHeP2e5VDkFCz2SnpLqr4eDTAim6ZKYyCMR",
+  "QmbyKikfdGvUyDx2gncTSfEpAF5JXgqkYphSReYtQEBPUu",
+  "QmPLVvFpczsAqWgZpi1h8dDXKXUFukFKi5JdFCqBn5bjUL",
+  "QmVtJzwqiTvgXntQx1iPpy1aNrdJPTF6L5xdrmAvczTxuf",
+  "QmbWvJ5s13qjGt1B7uS1ADMNBKkPbJbsuaEkK6z8VvPACJ",
+  "QmYxKdnVPkATDXLXvdS1y4EZwjLk5upmrzjYXhY9VkmgU8",
+  "QmdUBA6YXaCTNuhxCsJribUDSVA59rXGJGnCKtvpiytNNj",
+];

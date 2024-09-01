@@ -128,6 +128,7 @@ const subirContenido = async (
           hideFromFeed: false,
           locale: "en",
           tags: ["npcStudio", sceneKey].filter(Boolean),
+          
         },
       }),
     });

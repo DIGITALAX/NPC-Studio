@@ -477,6 +477,12 @@ export type Dictionary = {
     title: string;
     frase1: string;
     muestraCom: string;
+    spec: string;
+    leader: string;
+    chall: string;
+    score: string;
+    game: string;
+    scorecard: string;
     amigos: string;
     indice: string;
     charla: string;

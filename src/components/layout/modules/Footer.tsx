@@ -13,7 +13,11 @@ function Footer() {
   const router = useRouter();
   const path = usePathname();
   return (
-    <div className="relative w-full h-fit py-4 flex items-center justify-between gap-6 flex-col sm:flex-row mb-0 px-4">
+    <div
+      className={`relative w-full h-fit py-4 flex items-center justify-between gap-6 flex-col sm:flex-row mb-0 px-4 ${
+        path?.includes("agent-index") && "bg-black"
+      }`}
+    >
       <div className="relative w-fit h-fit flex items-center justify-center gap-4 flex-col sm:flex-row">
         <div
           className="relative w-fit h-fit flex items-center justify-center ml-0 font-rain text-white text-4xl cursor-pointer active:scale-95"

@@ -1,12 +1,10 @@
 import { useEffect, useRef } from "react";
-import { PageFlip, SizeType } from "page-flip";
+import { PageFlip } from "page-flip";
 import { Catalogo } from "../types/compras.types";
 
 const usePagina = (catalogo: Catalogo) => {
   const bookRef = useRef<HTMLDivElement>(null);
   const pageFlipRef = useRef<PageFlip | null>(null);
-  const padreRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (
       bookRef.current &&

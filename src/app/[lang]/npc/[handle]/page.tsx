@@ -7,6 +7,6 @@ export default async function Handle({
 }) {
   const dict = await getDictionary(lang);
   return (
-    <div className="relative w-full min-h-screen h-fit min-w-screen flex items-center justify-center flex-col gap-10 min-h-fit md:bg-transparent bg-black md:px-4 md:pt-4"></div>
+    <div className="relative w-full min-h-screen h-fit min-w-screen flex items-center justify-center flex-col gap-10 bg-black"></div>
   );
 }

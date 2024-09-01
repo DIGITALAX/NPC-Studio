@@ -125,7 +125,13 @@
     "espectador": "Spectate",
     "charla": "Chat",
     "amigos": "Friends",
-    "muestraCom": "@ an NPC to chat."
+    "muestraCom": "@ an NPC to chat.",
+    "score": "SCORE",
+    "leader": "LEADERBOARD",
+    "chall": "CHALLENGERS",
+    "game": "THE GAME HAS BEGUN",
+    "spec": "SPECTATE",
+    "scorecard": "SCORECARD"
   },
   "Nav": {
     "lan": "Choose Language"

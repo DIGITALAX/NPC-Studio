@@ -11,7 +11,6 @@ import { Indexar, Notificacion } from "@/components/common/types/common.types";
 import {
   Comment,
   Mirror,
-  OpenActionModule,
   Post,
   Profile,
   Quote,

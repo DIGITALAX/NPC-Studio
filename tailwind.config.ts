@@ -30,6 +30,8 @@ const config: Config = {
         rosa: "#F5E0E2",
         morado: "#7E68C6",
         brillo: "#FFFF0A",
+        offBlack: "#111313",
+        turq: "#1239F6",
       },
       fontSize: {
         xxs: "0.6rem",
@@ -44,6 +46,8 @@ const config: Config = {
         arc: "Arcade Classic",
         vcr: "Vcr",
         con: "Consolas",
+        clar: "Clarity",
+        lib: "LibertadR",
       },
       backgroundImage: {
         esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,

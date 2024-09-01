@@ -15,6 +15,18 @@
 }
 
 @font-face {
+  font-family: "Clarity";
+  font-weight: 400;
+  src: url("/fonts/Clarity.ttf");
+}
+
+@font-face {
+  font-family: "LibertadR";
+  font-weight: 400;
+  src: url("/fonts/LibertadMonoRegular.ttf");
+}
+
+@font-face {
   font-family: "Consolas";
   font-weight: 400;
   src: url("/fonts/Consolas.ttf");
