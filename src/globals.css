@@ -39,6 +39,12 @@
 }
 
 @font-face {
+  font-family: "Super";
+  font-weight: 400;
+  src: url("/fonts/super-legend-boy.otf");
+}
+
+@font-face {
   font-family: "Internal Rainbows";
   font-weight: 400;
   src: url("/fonts/InternalRainbows.otf");

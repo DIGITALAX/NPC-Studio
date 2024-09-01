@@ -32,6 +32,7 @@ const config: Config = {
         brillo: "#FFFF0A",
         offBlack: "#111313",
         turq: "#1239F6",
+        azulito: "#B9FFFF",
       },
       fontSize: {
         xxs: "0.6rem",
@@ -48,6 +49,7 @@ const config: Config = {
         con: "Consolas",
         clar: "Clarity",
         lib: "LibertadR",
+        super: "Super",
       },
       backgroundImage: {
         esterilla: `url("https://thedial.infura-ipfs.io/ipfs/QmR5EfV2Ck8owQSmstmNbNUzcd4BToJnj3GnukDhP3n5J3")`,

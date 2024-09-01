@@ -474,8 +474,10 @@ export enum Movimiento {
 
 export type Dictionary = {
   Home: {
+    espect: string;
     title: string;
     frase1: string;
+    rango: string;
     muestraCom: string;
     spec: string;
     leader: string;
