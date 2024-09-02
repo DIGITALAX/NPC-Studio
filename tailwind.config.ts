@@ -41,7 +41,7 @@ const config: Config = {
         costa: "#00CCFF",
         limon: "#A9FDCA",
         crema: "#F3EFE6",
-        zana: "#FF8B07"
+        zana: "#FF8B07",
       },
       fontSize: {
         xxs: "0.6rem",
@@ -70,6 +70,8 @@ const config: Config = {
       },
       screens: {
         tab: "800px",
+        "1xl": "1460px",
+        
       },
     },
   },

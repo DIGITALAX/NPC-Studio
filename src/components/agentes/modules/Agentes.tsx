@@ -5,7 +5,7 @@ import { FunctionComponent } from "react";
 const Agentes: FunctionComponent = () => {
   return (
     <div className="relative w-full h-fit flex flex-col items-center justify-center gap-8">
-      <div className="relative w-full h-fit grid grid-cols-3 gap-6">
+      <div className="relative w-full h-fit grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-6">
         {CARTAS.map((elemento, i) => {
           return (
             <div

@@ -17,29 +17,30 @@ export default function Agents({
 
   return (
     <div className="relative w-full h-fit min-w-screen flex items-start justify-start min-h-screen bg-black pb-14 flex-col">
-      <div className="relative w-full h-full flex items-stretch justify-start flex-row">
-        <div className="relative w-60 shrink-0 flex">
+      <div className="relative w-full h-full flex items-center lg:items-stretch justify-start flex-col lg:flex-row">
+        <div className="relative w-full lg:w-60 h-12 lg:h-auto shrink-0 flex">
           <Image
             src={`${INFURA_GATEWAY}/ipfs/QmSfZKsL8SySAa2FhSmw6cH9rqwDhnXM58HcqKMxT4E8Mo`}
             layout="fill"
             objectFit="fill"
             draggable={false}
           />
+      
         </div>
-        <div className="relative w-32 shrink-0 flex border-x-2 border-white bg-turq text-white text-lg font-clar">
-          <div className="relative rotate-90 w-fit h-fit">palabras</div>
+        <div className="relative  w-full h-8 lg:h-auto lg:w-32 shrink-0 flex border-y-2 lg:border-x-2 border-white bg-turq text-white text-lg font-clar">
+          <div className="relative lg:rotate-90 w-fit h-fit">palabras</div>
         </div>
-        <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 pl-10 pr-3 py-2 grow">
+        <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 lg:pl-10 pr-1 pl-1 lg:pr-3 py-2 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
             <div
               className={`text-white font-lib relative w-full h-fit flex items-start justify-start ${
-                lang == "en" ? "text-[10vw]" : "text-[8vw]"
+                lang == "en" ? "text-[8vw] 1xl:text-[10vw]" : "text-[6vw] 1xl:text-[8vw]"
               }`}
             >
               {dict.Home.title}
             </div>
             <div className="absolute top-3 right-3 w-fit flex-row flex h-fit items-end justify-start gap-2">
-              <div className="relative flex w-8 h-8 flex items-center justify-center">
+              <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/QmUfJojpNhnpGhrynj9edpJPBm4johzGvNcyMnAADgqdDC`}
                   layout="fill"
@@ -47,7 +48,7 @@ export default function Agents({
                   draggable={false}
                 />
               </div>
-              <div className="relative flex w-8 h-8 flex items-center justify-center">
+              <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/QmWmfupyTZwUAM85VAJBNaXhek8ATnqLGZeZFS5msPHY4c`}
                   layout="fill"
@@ -57,13 +58,13 @@ export default function Agents({
               </div>
             </div>
           </div>
-          <div className="relative w-full h-fit flex items-center justify-between gap-6 flex-row font-clar">
+          <div className="relative w-full h-fit flex items-center justify-between gap-6 flex-col lg:flex-row font-clar">
             <div
               className={`text-white relative w-fit whitespace-nowrap h-fit flex items-start justify-start text-[2vw]`}
             >
               {dict.Home.indice}
             </div>
-            <div className="relative w-full h-fit flex gap-1.5 items-center justify-end flex-wrap text-xxs">
+            <div className="relative w-full h-fit flex gap-1.5 items-center justify-center lg:justify-end flex-wrap text-xxs">
               {[
                 {
                   titulo: dict.Home.score,

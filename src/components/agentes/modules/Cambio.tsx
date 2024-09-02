@@ -21,9 +21,9 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.chall}
           </div>
-          <div className="relative w-full h-fit flex items-center justify-center flex-row gap-14 ">
+          <div className="relative w-full h-fit flex items-center justify-center flex-col lg:flex-row gap-14 ">
             <div className="relative flex w-full h-96 items-center justify-center flex-col">
-              <div className="absolute items-center justify-center flex w-3/4 h-full">
+              <div className="absolute items-center justify-center flex w-full xl:w-3/4 h-full">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/QmPQaDcs5gEYtrqXsz3pvLzu3919a4BXmBAE8McrZyJEor`}
                   layout="fill"
@@ -43,7 +43,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
               </div>
             </div>
             <div className="relative w-full h-96 items-center justify-center flex flex-col">
-              <div className="absolute flex w-3/4 h-full items-center justify-center">
+              <div className="absolute flex w-full xl:w-3/4 h-full items-center justify-center">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/QmXBVuPh7ZAC6wsPRNiGAwFuWzm1XGjQprD6wYYtk2XzAh`}
                   layout="fill"
@@ -79,8 +79,8 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.espect}
           </div>
-          <div className="relative w-full h-fit py-20 flex items-center justify-center pr-4">
-            <div className="relative w-full h-fit flex flex-row gap-10 items-center justify-center">
+          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
+            <div className="relative w-full h-fit flex flex-col xl:flex-row gap-10 items-center justify-center">
               <div className="relative w-full h-[32rem] flex items-center justify-center">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/Qmab2a5syZ5rVB6oHQV12Lrruzyzx5A1oyC1RWdQsK8Mt6`}
@@ -180,12 +180,12 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.leader}
           </div>
-          <div className="relative w-full h-fit py-20 flex items-center justify-center pr-4">
+          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col gap-10 items-start justify-center">
               <div className="relative w-full h-fit flex items-center justify-center flex-col gap-6 font-vcr">
-                <div className="relative w-full h-fit flex items-center justify-between flex-row gap-8">
-                  <div className="relative w-full h-44 flex items-center justify-center border-4 border-flor bg-salmon">
-                    <div className="absolute z-10 top-0 left-0 w-1/2 h-full flex">
+                <div className="relative w-full h-fit flex items-center justify-between flex-col sm:flex-row gap-8">
+                  <div className="relative w-full h-fit sm:h-44 flex sm:flex-row flex-col items-center justify-center border-4 border-flor bg-salmon">
+                    <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                       <Image
                         src={`${INFURA_GATEWAY}/ipfs/QmfBWguNxhoJqvuom7hc5r3FNztMnLZNgyA1CX3GjAugFs`}
                         layout="fill"
@@ -193,7 +193,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                         draggable={false}
                       />
                     </div>
-                    <div className="relative w-full h-full flex items-center justify-center flex-row gap-4 p-1">
+                    <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
                           <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
@@ -225,8 +225,8 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="relative w-full h-44 flex items-center justify-center border-4 border-flor bg-viol -top-20">
-                    <div className="absolute z-10 top-0 left-0 w-1/2 h-full flex">
+                  <div className="relative w-full h-fit sm:h-44 flex items-center justify-center border-4 border-flor bg-viol sm:-top-20 sm:flex-row flex-col">
+                    <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                       <Image
                         src={`${INFURA_GATEWAY}/ipfs/QmaT9VM3Rqb4NRGmrjm7EAKMFXFZertxadqTTA7CeKy7NN`}
                         layout="fill"
@@ -234,7 +234,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                         draggable={false}
                       />
                     </div>
-                    <div className="relative w-full h-full flex items-center justify-center flex-row gap-4 p-1">
+                    <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
                           <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
@@ -266,8 +266,8 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="relative w-full h-44 flex items-center justify-center border-4 border-flor bg-salmon">
-                    <div className="absolute top-0 z-10 left-0 w-1/2 h-full flex">
+                  <div className="relative w-full h-fit sm:h-44 flex items-center justify-center border-4 border-flor bg-salmon sm:flex-row flex-col">
+                    <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                       <Image
                         src={`${INFURA_GATEWAY}/ipfs/QmV3Tu48mvZ5p7F3yktSW6KHr23FqjucY2XWvr8x5nM9UV`}
                         layout="fill"
@@ -275,7 +275,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                         draggable={false}
                       />
                     </div>
-                    <div className="relative w-full h-full flex items-center justify-center flex-row gap-4 p-1">
+                    <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
                           <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
@@ -290,7 +290,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                         </div>
                       </div>
                       <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
-                        <div className="relative w-full h-fit flex items-center justify-end text-2xl">
+                        <div className="relative w-full h-fit flex items-center justify-end break-all text-2xl">
                           193
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
@@ -301,15 +301,15 @@ const Cambio: FunctionComponent<CambioProps> = ({
                             draggable={false}
                           />
                         </div>
-                        <div className="relative w-full h-fit flex items-center justify-end text-white text-2xl">
+                        <div className="relative w-full h-fit flex items-center justify-end break-all text-white text-2xl">
                           $AU
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="relative w-full h-20 flex items-stretch justify-between flex-col gap-3 border-t-4 border-b border-x-4 border-white rounded-md">
-                  <div className="relative w-full h-full bg-gris flex flex-row items-center justify-between text-xxs font-clar text-black">
+                <div className="relative w-full h-fit sm:h-20 flex items-stretch justify-between flex-col gap-3 border-t-4 border-b border-x-4 border-white rounded-md">
+                  <div className="relative w-full h-fit sm:h-full bg-gris flex flex-row items-center justify-center sm:justify-between text-xxs font-clar text-black sm:flex-nowrap flex-wrap">
                     <div className="relative justify-start items-center gap-1.5 flex flex-row">
                       <div className="bg-limon w-fit h-fit py-1 px-2 rounded-sm flex items-center justify-center text-center">
                         score
@@ -317,23 +317,23 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center">
                         $AU
                       </div>
-                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center">
+                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit break-all rounded-sm flex items-center justify-center text-center">
                         Activity
                       </div>
-                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center">
+                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit break-all rounded-sm flex items-center justify-center text-center">
                         Variance
                       </div>
                     </div>
                     <div className="relative justify-end items-center gap-1.5 flex flex-row">
-                      <div className="bg-zana w-fit h-fit py-1 px-2 rounded-sm flex items-center justify-center text-center">
+                      <div className="bg-zana w-fit h-fit py-1 px-2 rounded-sm flex items-center break-all justify-center text-center">
                         Weekly
                       </div>
-                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center">
+                      <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center break-all">
                         All Time
                       </div>
                     </div>
                   </div>
-                  <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative w-full h-10 sm:h-full flex items-center justify-center">
                     <input
                       className="focus:outline-none bg-black w-full h-full relative text-center font-clar text-base text-verde placeholder:text-verde placeholder:opacity-100"
                       placeholder={dict.Home.buscar}
@@ -346,7 +346,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                   className="absolute top-72 left-0 w-full flex items-start justify-start flex-col px-10 pb-10"
                   style={{ height: "calc(100% - 18rem)" }}
                 >
-                  <div className="relative w-full h-10 flex text-left items-start gap-3 flex-row justify-between">
+                  <div className="relative w-full h-10 flex text-left items-start gap-3 flex-row justify-between  overflow-x-scroll">
                     {[
                       dict.Home.rango,
                       dict.Home.espectador,
@@ -364,8 +364,8 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       );
                     })}
                   </div>
-                  <div className="relative flex w-full h-full overflow-y-scroll">
-                    <div className="relative w-full h-fit items-start justify-start overflow-y-scroll flex flex-col">
+                  <div className="relative flex w-full h-full overflow-y-scroll overflow-x-scroll">
+                    <div className="relative w-full h-fit items-start justify-start overflow-y-scroll  overflow-x-scroll flex flex-col">
                       {Array.from({ length: 100 }).map((_, i) => {
                         return (
                           <div
@@ -418,7 +418,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
           <div className="relative w-full h-fit py-20 flex items-center justify-center flex-col gap-24">
             <Puntaje />
             <div className="relative w-fit h-fit flex items-center justify-center flex-col gap-3">
-              <div className="relative w-52 h-52 rounded-full flex items-center justify-center">
+              <div className="relative w-32 md:w-52 h-32 md:h-52 rounded-full flex items-center justify-center">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/QmVUd78Y5zAjsF6saC4SnRmQYAqnqTrTNRLErGBKz7zbZY`}
                   layout="fill"

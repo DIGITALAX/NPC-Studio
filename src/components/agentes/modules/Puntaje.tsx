@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 
 const Puntaje: FunctionComponent = () => {
   return (
-    <div className="relative w-full h-fit flex flex-row gap-3 items-center justify-center">
+    <div className="relative w-full h-fit flex flex-col md:flex-row gap-3 items-center justify-center">
       <div className="relative w-full h-[32rem] flex flex-col items-center justify-center gap-3">
         <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute w-full h-full top-0 left-0 flex">
