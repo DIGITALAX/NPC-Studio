@@ -104,7 +104,7 @@ export default function Agents({
                   fondo: "#FFD700",
                   border: "#9933FF",
                   sombra: "#FF1493",
-                  pantalla: Pantalla.Especte,
+                  pantalla: Pantalla.Espectador,
                 },
               ].map(
                 (

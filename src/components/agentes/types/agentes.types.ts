@@ -8,7 +8,7 @@ export type CambioProps = {
 
 export enum Pantalla {
   Puntaje,
-  Especte,
+  Espectador,
   Tabla,
   Desafiante,
   Juego,

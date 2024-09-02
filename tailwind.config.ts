@@ -33,6 +33,15 @@ const config: Config = {
         offBlack: "#111313",
         turq: "#1239F6",
         azulito: "#B9FFFF",
+        salmon: "#FF8080",
+        flor: "#FF1493",
+        viol: "#C993FF",
+        gris: "#D8D8D8",
+        verde: "#00FF00",
+        costa: "#00CCFF",
+        limon: "#A9FDCA",
+        crema: "#F3EFE6",
+        zana: "#FF8B07"
       },
       fontSize: {
         xxs: "0.6rem",
