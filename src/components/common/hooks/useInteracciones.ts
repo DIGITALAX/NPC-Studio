@@ -57,7 +57,7 @@ const useInteracciones = (
   ) => {
     if (!lensConectado?.id) {
       if (conectado) {
-        manejarLens();
+        await  manejarLens();
       } else {
         openConnectModal && openConnectModal();
       }
@@ -111,7 +111,7 @@ const useInteracciones = (
   const manejarMirror = async (id: string, indice: number) => {
     if (!lensConectado?.id) {
       if (conectado) {
-        manejarLens();
+        await   manejarLens();
       } else {
         openConnectModal && openConnectModal();
       }
@@ -163,7 +163,7 @@ const useInteracciones = (
   ) => {
     if (!lensConectado?.id) {
       if (conectado) {
-        manejarLens();
+        await manejarLens();
       } else {
         openConnectModal && openConnectModal();
       }

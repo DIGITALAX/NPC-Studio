@@ -34,7 +34,7 @@ const useDialog = (
   const manejarPublicar = async (indice: number, comentarioId?: string) => {
     if (!lensConectado?.id) {
       if (conectado) {
-        manejarLens();
+        await manejarLens();
       } else {
         openConnectModal && openConnectModal();
       }

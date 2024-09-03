@@ -222,7 +222,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                 <div
                   className="relative text-sm font-con text-white break-all flex overflow-y-scroll whitespace-preline"
                   dangerouslySetInnerHTML={{
-                    __html: descripcionRegex(npc?.prompt?.personalidad, true),
+                    __html: descripcionRegex(npc?.prompt?.personalidad || "", true),
                   }}
                 ></div>
               </div>

@@ -25,7 +25,6 @@ export default function Agents({
             objectFit="fill"
             draggable={false}
           />
-      
         </div>
         <div className="relative  w-full h-8 lg:h-auto lg:w-32 shrink-0 flex border-y-2 lg:border-x-2 border-white bg-turq text-white text-lg font-clar">
           <div className="relative lg:rotate-90 w-fit h-fit">palabras</div>
@@ -34,7 +33,9 @@ export default function Agents({
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
             <div
               className={`text-white font-lib relative w-full h-fit flex items-start justify-start ${
-                lang == "en" ? "text-[8vw] 1xl:text-[10vw]" : "text-[6vw] 1xl:text-[8vw]"
+                lang == "en"
+                  ? "text-[8vw] 1xl:text-[10vw]"
+                  : "text-[6vw] 1xl:text-[8vw]"
               }`}
             >
               {dict.Home.title}

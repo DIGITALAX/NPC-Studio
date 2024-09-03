@@ -263,7 +263,7 @@ const useManage = (
       return;
     if (!lensConectado?.id) {
       if (conectado) {
-        manejarLens();
+        await  manejarLens();
       } else {
         openConnectModal && openConnectModal();
       }

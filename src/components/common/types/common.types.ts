@@ -222,7 +222,7 @@ export type PublicacionProps = {
   ) => void;
   setComentariosAbiertos: (e: SetStateAction<boolean[]>) => void;
   indice: number;
-  manejarAccionAbierta: (e: Post, indice: number) => Promise<void>;
+  manejarAccionAbierta?: (e: Post, indice: number) => Promise<void>;
   setOpcionAbierta: (
     e: SetStateAction<
       | {
@@ -381,7 +381,7 @@ export type BarProps = {
     tipo: string,
     indice: number
   ) => Promise<void>;
-  manejarAccionAbierta: (e: Post, indice: number) => Promise<void>;
+  manejarAccionAbierta?: (e: Post, indice: number) => Promise<void>;
   setSeguirColeccionar: (
     e: SetStateAction<
       | {

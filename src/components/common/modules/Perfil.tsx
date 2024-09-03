@@ -3,8 +3,6 @@ import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { PerfilProps } from "../types/common.types";
 import useCuenta from "@/components/game/hooks/useCuenta";
-import { ImageSet } from "../../../../graphql/generated";
-import { AiOutlineLoading } from "react-icons/ai";
 import Cuenta from "@/components/game/modules/Cuenta";
 
 function Perfil({
