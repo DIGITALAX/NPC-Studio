@@ -22,6 +22,7 @@ const Quien: FunctionComponent<QuienProps> = ({
   address,
   publicClient,
   conectado,
+  router,
   openConnectModal,
   manejarLens,
   setErrorInteraccion,
@@ -90,22 +91,23 @@ const Quien: FunctionComponent<QuienProps> = ({
 
   if (
     (mirrorQuote && quoters?.length > 0) ||
-    (tipo == "Comments" && reactors?.length > 0)
+    (tipo == dict.Home.Comments && reactors?.length > 0)
   ) {
     return (
       <div className="relative w-full h-full items-start justify-start flex flex-col overflow-y-scroll">
         <InfiniteScroll
-          dataLength={tipo == "Comments" ? reactors?.length : quoters?.length}
+          dataLength={tipo == dict.Home.Comments ? reactors?.length : quoters?.length}
           loader={<></>}
-          hasMore={tipo == "Comments" ? tieneMas : tieneMasCita}
+          hasMore={tipo == dict.Home.Comments ? tieneMas : tieneMasCita}
           next={muestraMas}
           className="w-fit h-fit items-start justify-start flex flex-col gap-10"
         >
-          {(tipo == "Comments" ? reactors : quoters)?.map(
+          {(tipo == dict.Home.Comments ? reactors : quoters)?.map(
             (publicacion: Quote | Comment, indice: number) => {
               return (
                 <Publicacion
                   dict={dict}
+                  router={router}
                   lensConectado={lensConectado}
                   indice={indice}
                   setMostrarPerfil={setMostrarPerfil}
@@ -157,9 +159,9 @@ const Quien: FunctionComponent<QuienProps> = ({
         >
           {reactors?.map((reactor: any, index: number) => {
             const account =
-              tipo === "Likes"
+              tipo === dict.Home.Likes
                 ? reactor?.profile
-                : tipo === "Mirrors"
+                : tipo === dict.Home.Mirrors
                 ? reactor?.by
                 : reactor;
 

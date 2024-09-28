@@ -14,6 +14,7 @@ const Chat: FunctionComponent<ChatProps> = ({
   dict,
   address,
   publicClient,
+  router,
   setMostrarInteracciones,
   setIndexar,
   setErrorInteraccion,
@@ -121,6 +122,7 @@ const Chat: FunctionComponent<ChatProps> = ({
                   return (
                     <Publicacion
                       menos
+                      router={router}
                       setMostrarPerfil={setMostrarPerfil}
                       setMostrarInteracciones={setMostrarInteracciones}
                       setOpcionAbierta={setOpcionAbierta}

@@ -177,6 +177,7 @@ export type DialogProps = {
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
+  router: AppRouterInstance;
   comentarPublicar: ComentarPublicar[];
   setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
@@ -238,6 +239,7 @@ export type DialogProps = {
 export type ChatProps = {
   open?: boolean;
   conectado: boolean;
+  router: AppRouterInstance;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
@@ -475,6 +477,7 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     espect: string;
+    Quote: string;
     title: string;
     frase1: string;
     rango: string;
@@ -489,6 +492,11 @@ export type Dictionary = {
     indice: string;
     charla: string;
     espectador: string;
+    Collect: string;
+    Perfil: string;
+    Comments: string;
+    Mirrors: string;
+    Likes: string;
     frase2: string;
     ropa: string;
     frase3: string;

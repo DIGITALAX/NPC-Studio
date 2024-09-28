@@ -25,6 +25,7 @@ function Interacciones({
   setComentarPublicar,
   setOpcionAbierta,
   setVerImagen,
+  router,
   setAbrirCita,
   setMostrarPerfil,
   setSeguirColeccionar,
@@ -39,11 +40,12 @@ function Interacciones({
     reactors,
     quoters,
     setReactors,
-    setQuoters
+    setQuoters,
   } = useMostrar(
     mostrarInteracciones?.id!,
     lensConectado,
-    mostrarInteracciones?.tipo!
+    mostrarInteracciones?.tipo!,
+    dict
   );
 
   return (
@@ -69,7 +71,7 @@ function Interacciones({
           <div
             className={`flex flex-col items-center py-2 sm:py-10 px-2 sm:px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll`}
           >
-            {mostrarInteracciones?.tipo === "Mirrors" &&
+            {mostrarInteracciones?.tipo === dict.Home.Mirrors &&
               (reactors?.length > 0 || quoters?.length > 0) && (
                 <div className="relative w-full h-fit flex items-center justify-center flex-row gap-2">
                   <div
@@ -104,6 +106,7 @@ function Interacciones({
             {!datosCargando ? (
               <Quien
                 dict={dict}
+                router={router}
                 setMostrarPerfil={setMostrarPerfil}
                 lensConectado={lensConectado}
                 tipo={mostrarInteracciones?.tipo}

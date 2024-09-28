@@ -8,11 +8,13 @@ import {
 import getPublications from "../../../../graphql/lens/queries/publications";
 import whoReactedPublication from "../../../../graphql/lens/queries/whoReacted";
 import whoActedPublication from "../../../../graphql/lens/queries/whoActed";
+import { Dictionary } from "@/components/game/types/game.types";
 
 const useMostrar = (
   id: string,
   lensConectado: Profile | undefined,
-  tipo: string
+  tipo: string,
+  dict: Dictionary
 ) => {
   const [mirrorQuote, setMirrorQuote] = useState<boolean>(false);
   const [datosCargando, setDatosCargando] = useState<boolean>(false);
@@ -470,7 +472,7 @@ const useMostrar = (
 
   const muestraMas = () => {
     switch (tipo) {
-      case "Likes":
+      case dict.Home.Likes:
         showMoreLikes();
         break;
 
@@ -478,11 +480,11 @@ const useMostrar = (
         showMoreActors();
         break;
 
-      case "Mirrors":
+      case dict.Home.Mirrors:
         showMoreQuoteMirrors();
         break;
 
-      case "Comments":
+      case dict.Home.Comments:
         showMoreComments();
         break;
 
@@ -499,7 +501,7 @@ const useMostrar = (
   useEffect(() => {
     if (id) {
       switch (tipo) {
-        case "Likes":
+        case dict.Home.Likes:
           reactors?.length < 1 && showLikes();
           break;
 
@@ -507,11 +509,11 @@ const useMostrar = (
           reactors?.length < 1 && showActors();
           break;
 
-        case "Mirrors":
+        case dict.Home.Mirrors:
           quoters?.length < 1 && reactors?.length < 1 && showMirrorQuotes();
           break;
 
-        case "Comments":
+        case dict.Home.Comments:
           reactors?.length < 1 && showComments();
           break;
 

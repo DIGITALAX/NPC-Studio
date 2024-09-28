@@ -10,6 +10,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
   setDragDialog,
   setIndiceConversacionActual,
   wrapperRef,
+  router,
   setComentarPublicar,
   comentarPublicar,
   lensConectado,
@@ -40,6 +41,7 @@ const Dialog: FunctionComponent<DialogProps> = ({
             <IoIosCloseCircle size={20} color="white" />
           </div>
           <Chat
+          router={router}
             open
             setMostrarPerfil={setMostrarPerfil}
             openConnectModal={openConnectModal}

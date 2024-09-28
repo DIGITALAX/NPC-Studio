@@ -22,6 +22,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   setIndexar,
   openConnectModal,
   manejarLens,
+  router
 }): JSX.Element => {
   const {
     feedActual,
@@ -88,6 +89,7 @@ const Feed: FunctionComponent<FeedProps> = ({
                   return (
                     <Publicacion
                       menos
+                      router={router}
                       setMostrarPerfil={setMostrarPerfil}
                       setMostrarInteracciones={setMostrarInteracciones}
                       setOpcionAbierta={setOpcionAbierta}

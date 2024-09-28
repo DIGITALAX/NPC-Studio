@@ -13,6 +13,7 @@ import Cita from "./Cita";
 import Bar from "./Bar";
 import Comentario from "./Comentario";
 import { useRef } from "react";
+import { PiArrowSquareInBold } from "react-icons/pi";
 
 function Publicacion({
   setCaretCoord,
@@ -46,6 +47,7 @@ function Publicacion({
   manejarAccionAbierta,
   menos,
   setMostrarPerfil,
+  router,
 }: PublicacionProps) {
   const elementoTexto = useRef(null);
 
@@ -53,20 +55,12 @@ function Publicacion({
     <div
       className={`relative rounded-sm h-fit px-1 py-3 sm:py-2 sm:px-2 flex flex-col gap-4 sm:gap-2 border-2 publicacions-center justify-between border-morado w-full bg-offNegro`}
     >
-      <div className="relative w-full h-fit flex publicacions-center justify-between flex-row">
-        <div
-          className={`relative w-fit h-fit flex publicacions-center justify-start font-bit text-xxs text-white`}
-        >
-          <div className={`relative w-fit h-fit flex`}>
-            {publicacion?.createdAt &&
-              moment(`${publicacion?.createdAt}`).fromNow()}
-          </div>
-        </div>
+      <div className="relative w-full h-fit flex items-center justify-end">
         {(publicacion?.__typename === "Comment" ||
           publicacion?.__typename === "Quote" ||
           publicacion?.__typename === "Mirror") && (
           <div
-            className={`relative w-fit h-fit row-start-1 publicacions-center justify-end flex flex-row gap-2 font-bit text-xxs`}
+            className={`relative w-full h-fit row-start-1 publicacions-center justify-between flex flex-row gap-2 font-bit text-xxs`}
           >
             <div
               className={`relative w-fit h-fit col-start-1 place-self-center break-all font-dosis text-offWhite ${
@@ -110,6 +104,31 @@ function Publicacion({
           </div>
         )}
       </div>
+      <div className="relative w-full h-fit flex publicacions-center justify-between flex-row">
+        <div
+          className={`relative w-fit h-fit flex publicacions-center justify-start font-bit text-xxs text-white`}
+        >
+          <div className={`relative w-fit h-fit flex`}>
+            {publicacion?.createdAt &&
+              moment(`${publicacion?.createdAt}`).fromNow()}
+          </div>
+        </div>
+        <div
+          className="relative cursor-pointer active:scale-95 items-center justify-end w-fit h-fit flex items-center justify-center"
+          onClick={() =>
+            router.push(
+              `/post/${
+                publicacion?.__typename === "Mirror"
+                  ? publicacion?.mirrorOn?.id
+                  : publicacion?.id
+              }`
+            )
+          }
+          title={dict.Home.espectador}
+        >
+          <PiArrowSquareInBold size={15} color="white" />
+        </div>
+      </div>
       <TiposPublicaciones elemento={publicacion} setVerImagen={setVerImagen} />
       {publicacion?.__typename === "Quote" && (
         <Cita
@@ -118,8 +137,10 @@ function Publicacion({
         />
       )}
       <Bar
+        router={router}
         setMostrarPerfil={setMostrarPerfil}
         indice={menos ? indice - 1 : indice}
+        dict={dict}
         setMostrarInteracciones={setMostrarInteracciones}
         elemento={publicacion}
         manejarAccionAbierta={manejarAccionAbierta}
@@ -133,6 +154,7 @@ function Publicacion({
         manejarColeccionar={manejarColeccionar}
         setSeguirColeccionar={setSeguirColeccionar}
       />
+
       {comentariosAbiertos?.[menos ? indice - 1 : indice] && (
         <Comentario
           setMostrarPerfil={setMostrarPerfil}

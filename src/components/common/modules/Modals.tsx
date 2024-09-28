@@ -31,6 +31,7 @@ const Modals: FunctionComponent<ModalsProps> = ({
   setMostrarNotificacion,
   mensajeCargando,
   manejarEnviarMensaje,
+  router,
   setMensaje,
   mensaje,
   errorInteraccion,
@@ -105,6 +106,7 @@ const Modals: FunctionComponent<ModalsProps> = ({
       )}
       {mostrarInteracciones?.abierto && (
         <Interacciones
+          router={router}
           setMostrarPerfil={setMostrarPerfil}
           dict={dict}
           setCarrito={setCarrito}

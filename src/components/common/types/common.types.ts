@@ -27,6 +27,7 @@ import {
   Details,
 } from "@/components/compras/types/compras.types";
 import { PublicClient } from "viem";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type DropDownProps = {
   titulo: string;
@@ -213,6 +214,7 @@ export type PublicacionProps = {
   menos?: boolean;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
   comentariosAbiertos: boolean[];
+  router: AppRouterInstance;
   setMostrarInteracciones: (
     e: SetStateAction<{
       tipo: string;
@@ -350,7 +352,9 @@ export type CitaProps = {
 
 export type BarProps = {
   indice: number;
+  dict: Dictionary;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
+  router: AppRouterInstance;
   setMostrarInteracciones: (
     e: SetStateAction<{
       tipo: string;
@@ -584,6 +588,7 @@ export type ModalsProps = {
   coleccionActual: Coleccion;
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   mensajeCargando: boolean;
+  router: AppRouterInstance;
   manejarEnviarMensaje: () => Promise<void>;
   setMensaje: (e: SetStateAction<string>) => void;
   mensaje: string;
@@ -726,6 +731,7 @@ export type QuienProps = {
   address: `0x${string}`;
   publicClient: PublicClient;
   conectado: boolean;
+  router: AppRouterInstance;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
   setErrorInteraccion: (e: SetStateAction<boolean>) => void;
@@ -828,6 +834,7 @@ export type InteraccionesProps = {
     >
   ) => void;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
+  router: AppRouterInstance;
   setVerImagen: (
     e: SetStateAction<{
       abierto: boolean;

@@ -17,6 +17,7 @@ import Carrito from "@/components/compras/modules/Carrito";
 import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
 import { Post } from "../../../../graphql/generated";
+import { useRouter } from "next/navigation";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -27,6 +28,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
     ),
   });
+  const router = useRouter();
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const {
@@ -258,6 +260,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
       />
       {dragDialog && (
         <Dialog
+          router={router}
           setMostrarPerfil={context?.setMostrarPerfil!}
           setMostrarInteracciones={context?.setMostrarInteracciones!}
           npcIds={
@@ -364,6 +367,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         setCitaAbierta={context?.setAbrirCita!}
         citaAbierta={context?.abrirCita!}
         citaCargando={citaCargando}
+        router={router}
       />
       <Carrito
         setCarrito={context?.setCarrito!}

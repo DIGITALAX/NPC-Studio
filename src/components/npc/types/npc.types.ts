@@ -13,6 +13,7 @@ import {
 import { SetStateAction } from "react";
 import { PublicClient } from "viem";
 import { Indexar } from "@/components/common/types/common.types";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type FeedProps = {
   lensConectado: Profile | undefined;
@@ -57,4 +58,5 @@ export type FeedProps = {
   setIndexar: (e: SetStateAction<Indexar>) => void;
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
+  router: AppRouterInstance;
 };

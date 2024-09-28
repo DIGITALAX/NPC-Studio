@@ -133,7 +133,13 @@
     "chall": "CHALLENGERS",
     "game": "THE GAME HAS BEGUN",
     "spec": "SPECTATE",
-    "scorecard": "SCORECARD"
+    "scorecard": "SCORECARD",
+    "Comments": "Comments",
+    "Mirrors": "Mirrors",
+    "Likes": "Likes",
+    "Collect": "Collect",
+    "Perfil": "Profile",
+    "Quote": "Quote"
   },
   "Nav": {
     "lan": "Choose Language"

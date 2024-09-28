@@ -133,7 +133,13 @@
     "chall": "DESAFIANTES",
     "game": "EL JUEGO HA COMENZADO",
     "spec": "ESPECTADOR",
-    "scorecard": "EL CUADRO DE MANO"
+    "scorecard": "EL CUADRO DE MANO",
+    "Comments": "Comentarios",
+    "Mirrors": "Espejos",
+    "Likes": "Gustos",
+    "Collect": "Coleccionar",
+    "Perfil": "Perfil",
+    "Quote": "Cita"
   },
   "Nav": {
     "lan": "Elija Idioma"

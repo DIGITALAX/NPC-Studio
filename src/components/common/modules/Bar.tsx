@@ -23,6 +23,8 @@ const Bar: FunctionComponent<BarProps> = ({
   manejarAccionAbierta,
   setMostrarInteracciones,
   setMostrarPerfil,
+  dict,
+  router,
 }): JSX.Element => {
   const profilePicture = createProfilePicture(
     (elemento?.__typename == "Mirror" ? elemento?.mirrorOn : (elemento as Post))
@@ -32,9 +34,12 @@ const Bar: FunctionComponent<BarProps> = ({
     <div className="relative w-full justify-between flex flex-col sm:flex-row items-between sm:items-center gap-2 flex-wrap">
       <div className="relative w-fit h-fit flex flex-row items-start sm:items-center gap-2 justify-center">
         {[
-          ["QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3", "Mirrors"],
-          ["QmT1aZypVcoAWc6ffvrudV3JQtgkL8XBMjYpJEfdFwkRMZ", "Likes"],
-          ["QmXD3LnHiiLSqG2TzaNd1Pmhk2nVqDHDqn8k7RtwVspE6n", "Comments"],
+          ["QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3", dict.Home.Mirrors],
+          ["QmT1aZypVcoAWc6ffvrudV3JQtgkL8XBMjYpJEfdFwkRMZ", dict.Home.Likes],
+          [
+            "QmXD3LnHiiLSqG2TzaNd1Pmhk2nVqDHDqn8k7RtwVspE6n",
+            dict.Home.Comments,
+          ],
         ].map((image: string[], indexTwo: number) => {
           const functions = [
             () =>
@@ -108,7 +113,7 @@ const Bar: FunctionComponent<BarProps> = ({
                   responded?.[indexTwo] && "mix-blend-hard-light hue-rotate-60"
                 }`}
               >
-                {loaders[indexTwo] && image[1] === "Likes" ? (
+                {loaders[indexTwo] && image[1] === dict.Home.Likes ? (
                   <div className="relative w-fit h-fit animate-spin flex items-center justify-center">
                     <AiOutlineLoading size={15} color="white" />
                   </div>
@@ -129,24 +134,26 @@ const Bar: FunctionComponent<BarProps> = ({
                   </div>
                 )}
               </div>
-              <div
-                className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
-                  stats[indexTwo] > 0 && "cursor-pointer active:scale-95"
-                }`}
-                onClick={() =>
-                  stats[indexTwo] > 0 &&
-                  setMostrarInteracciones({
-                    abierto: true,
-                    tipo: image[1],
-                    id: (elemento?.__typename == "Mirror"
-                      ? elemento?.mirrorOn
-                      : (elemento as Post)
-                    )?.id,
-                  })
-                }
-              >
-                {numeral(stats[indexTwo]).format("0a")}
-              </div>
+              {image[1] !== dict.Home.espectador && (
+                <div
+                  className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
+                    stats[indexTwo] > 0 && "cursor-pointer active:scale-95"
+                  }`}
+                  onClick={() =>
+                    stats[indexTwo] > 0 &&
+                    setMostrarInteracciones({
+                      abierto: true,
+                      tipo: image[1],
+                      id: (elemento?.__typename == "Mirror"
+                        ? elemento?.mirrorOn
+                        : (elemento as Post)
+                      )?.id,
+                    })
+                  }
+                >
+                  {numeral(stats[indexTwo]).format("0a")}
+                </div>
+              )}
             </div>
           );
         })}
@@ -156,9 +163,12 @@ const Bar: FunctionComponent<BarProps> = ({
           className={`absolute w-fit h-fit flex flex-row gap-4 p-2 items-center justify-center bg-black rounded-sm left-2 -top-8 border border-white z-50`}
         >
           {[
-            "QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3",
-            "QmfDNH347Vph4b1tEuegydufjMU2QwKzYnMZCjygGvvUMM",
-          ].map((image: string, indexTwo: number) => {
+            [
+              "QmPRRRX1S3kxpgJdLC4G425pa7pMS1AGNnyeSedngWmfK3",
+              dict.Home.Mirrors,
+            ],
+            ["QmfDNH347Vph4b1tEuegydufjMU2QwKzYnMZCjygGvvUMM", dict.Home.Quote],
+          ].map((image: string[], indexTwo: number) => {
             const functions: ((() => void) | (() => Promise<void>))[] = [
               () =>
                 (
@@ -177,6 +187,7 @@ const Bar: FunctionComponent<BarProps> = ({
                 key={indexTwo}
                 className="relative w-fit h-fit flex cursor-pointer items-center justify-center active:scale-95 hover:opacity-70"
                 onClick={() => !loaders[indexTwo] && functions[indexTwo]()}
+                title={image[1]}
               >
                 {loaders[indexTwo] && indexTwo == 0 ? (
                   <div className="relative w-fit h-fit animate-spin flex items-center justify-center">
@@ -190,7 +201,7 @@ const Bar: FunctionComponent<BarProps> = ({
                   >
                     <Image
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${image}`}
+                      src={`${INFURA_GATEWAY}/ipfs/${image[0]}`}
                       draggable={false}
                     />
                   </div>
@@ -204,6 +215,7 @@ const Bar: FunctionComponent<BarProps> = ({
         <div
           className="relative flex items-center justify-center rounded-full w-5 h-5 cursor-pointer border border-white bg-black"
           id="pfp"
+          title={dict.Home.Perfil}
           onClick={() => setMostrarPerfil(elemento?.by?.id)}
         >
           {profilePicture && (
@@ -216,7 +228,10 @@ const Bar: FunctionComponent<BarProps> = ({
             />
           )}
         </div>
-        <div className="relative flex flex-row gap-1 items-center justify-center">
+        <div
+          className="relative flex flex-row gap-1 items-center justify-center"
+          title={dict.Home.Collect}
+        >
           <div
             className={`relative w-5 h-5 items-center justify-center flex ${
               (elemento?.__typename === "Mirror"
@@ -274,33 +289,39 @@ const Bar: FunctionComponent<BarProps> = ({
               />
             )}
           </div>
-          <div
-            className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
-              (elemento?.__typename === "Mirror"
-                ? elemento?.mirrorOn?.stats?.countOpenActions
-                : (elemento as Post)?.stats?.countOpenActions) > 0 &&
-              "cursor-pointer active:scale-95"
-            }`}
-            onClick={() =>
-              (elemento?.__typename === "Mirror"
-                ? elemento?.mirrorOn?.stats?.countOpenActions
-                : (elemento as Post)?.stats?.countOpenActions) > 0 &&
-              setMostrarInteracciones({
-                abierto: true,
-                tipo: "Acts",
-                id: (elemento?.__typename == "Mirror"
-                  ? elemento?.mirrorOn
-                  : (elemento as Post)
-                )?.id,
-              })
-            }
-          >
-            {numeral(
-              elemento?.__typename === "Mirror"
-                ? elemento?.mirrorOn?.stats?.countOpenActions
-                : (elemento as Post)?.stats?.countOpenActions
-            ).format("0a")}
-          </div>
+          {Number(
+            elemento?.__typename === "Mirror"
+              ? elemento?.mirrorOn?.stats?.countOpenActions
+              : (elemento as Post)?.stats?.countOpenActions
+          ) > 0 && (
+            <div
+              className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
+                (elemento?.__typename === "Mirror"
+                  ? elemento?.mirrorOn?.stats?.countOpenActions
+                  : (elemento as Post)?.stats?.countOpenActions) > 0 &&
+                "cursor-pointer active:scale-95"
+              }`}
+              onClick={() =>
+                (elemento?.__typename === "Mirror"
+                  ? elemento?.mirrorOn?.stats?.countOpenActions
+                  : (elemento as Post)?.stats?.countOpenActions) > 0 &&
+                setMostrarInteracciones({
+                  abierto: true,
+                  tipo: "Acts",
+                  id: (elemento?.__typename == "Mirror"
+                    ? elemento?.mirrorOn
+                    : (elemento as Post)
+                  )?.id,
+                })
+              }
+            >
+              {numeral(
+                elemento?.__typename === "Mirror"
+                  ? elemento?.mirrorOn?.stats?.countOpenActions
+                  : (elemento as Post)?.stats?.countOpenActions
+              ).format("0a")}
+            </div>
+          )}
         </div>
       </div>
     </div>

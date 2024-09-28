@@ -156,6 +156,7 @@ function Log({
           </div>
           <div className="relative w-full h-full flex items-center justify-center p-1">
             <Chat
+              router={router}
               setMostrarPerfil={setMostrarPerfil}
               setOpcionAbierta={setOpcionAbierta}
               setVerImagen={setVerImagen}

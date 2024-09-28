@@ -5,7 +5,7 @@ import { Dictionary } from "@/components/game/types/game.types";
 import useCuenta from "@/components/npc/hooks/useCuenta";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { createPublicClient, http } from "viem";
@@ -31,6 +31,7 @@ export default function NPC({
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { address, isConnected } = useAccount();
+  const router = useRouter();
   const publicClient = createPublicClient({
     chain: polygon,
     transport: http(
@@ -338,6 +339,7 @@ export default function NPC({
           <div className="relative w-1/2 flex items-center justify-center">
             <Feed
               perfil={perfil}
+              router={router}
               dict={dict}
               lensConectado={contexto?.lensConectado}
               setAbrirCita={contexto?.setAbrirCita!}
