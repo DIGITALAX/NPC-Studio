@@ -5,73 +5,73 @@
 @font-face {
   font-family: "Manaspace";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/Manaspace.ttf");
+  src: url("/fonts/Manaspace.ttf");
 }
 
 @font-face {
   font-family: "Bitblox";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/Bitblox.otf");
+  src: url("/fonts/Bitblox.otf");
 }
 
 @font-face {
   font-family: "Clarity";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/Clarity.ttf");
+  src: url("/fonts/Clarity.ttf");
 }
 
 @font-face {
   font-family: "LibertadR";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/LibertadMonoRegular.ttf");
+  src: url("/fonts/LibertadMonoRegular.ttf");
 }
 
 @font-face {
   font-family: "Consolas";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/Consolas.ttf");
+  src: url("/fonts/Consolas.ttf");
 }
 
 @font-face {
   font-family: "Vcr";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/Vcr.ttf");
+  src: url("/fonts/Vcr.ttf");
 }
 
 @font-face {
   font-family: "Super";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/super-legend-boy.otf");
+  src: url("/fonts/super-legend-boy.otf");
 }
 
 @font-face {
   font-family: "Internal Rainbows";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/InternalRainbows.otf");
+  src: url("/fonts/InternalRainbows.otf");
 }
 
 @font-face {
   font-family: "Abaddon";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/abaddon.ttf");
+  src: url("/fonts/abaddon.ttf");
 }
 
 @font-face {
   font-family: "at01";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/at01.ttf");
+  src: url("/fonts/at01.ttf");
 }
 
 @font-face {
   font-family: "Leco";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/leco.ttf");
+  src: url("/fonts/leco.ttf");
 }
 
 @font-face {
   font-family: "Arcade Classic";
   font-weight: 400;
-  src: url("https://npcstudio.xyz/fonts/ArcadeClassic.ttf");
+  src: url("/fonts/ArcadeClassic.ttf");
 }
 
 html {
