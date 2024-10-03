@@ -33,12 +33,32 @@ const usePub = (
         coleccion_id: string;
         pagina: string;
         mensaje: {
-          inputs: string;
-          outputs: string;
-          output: string;
+          inputs_prompt: string;
+          outputs_prompt: string;
+          res_prompt: string;
+          inputs_respuesta: string;
+          outputs_respuesta: string;
+          res_respuesta: string;
           input_tokens: number[];
           output_tokens: number[];
-          model: string;
+          token_means_respuesta: number;
+          k_means_respuesta: number;
+          v_means_respuesta: number;
+          value_std_devs_respuesta: number;
+          value_maxs_respuesta: number;
+          value_mins_respuesta: number;
+          key_std_devs_respuesta: number;
+          key_maxs_respuesta: number;
+          key_mins_respuesta: number;
+          ffn_out_std_devs: number;
+          ffn_out_maxs: number;
+          ffn_out_mins: number;
+          ffn_out_means: number;
+          ffn_inp_std_devs: number;
+          ffn_inp_maxs: number;
+          ffn_inp_mins: number;
+          ffn_inp_means: number;
+          output: string;
         };
         version: number;
         prompt: string;
@@ -98,7 +118,44 @@ const usePub = (
         const json = await cadena.json();
 
         if (json.version) {
-          setAtributos(json);
+        setAtributos({
+          ...json,
+          token_means_respuesta: await manejarJSON(
+            json?.mensaje?.token_means_respuesta
+          ),
+          k_means_respuesta: await manejarJSON(
+            json?.mensaje?.k_means_respuesta
+          ),
+          v_means_respuesta: await manejarJSON(
+            json?.mensaje?.v_means_respuesta
+          ),
+          value_std_devs_respuesta: await manejarJSON(
+            json?.mensaje?.value_std_devs_respuesta
+          ),
+          value_maxs_respuesta: await manejarJSON(
+            json?.mensaje?.value_maxs_respuesta
+          ),
+          value_mins_respuesta: await manejarJSON(
+            json?.mensaje?.value_mins_respuesta
+          ),
+          key_std_devs_respuesta: await manejarJSON(
+            json?.mensaje?.key_std_devs_respuesta
+          ),
+          key_maxs_respuesta: await manejarJSON(
+            json?.mensaje?.key_maxs_respuesta
+          ),
+          key_mins_respuesta: await manejarJSON(
+            json?.mensaje?.key_mins_respuesta
+          ),
+          ffn_out_std_devs: await manejarJSON(json?.mensaje?.ffn_out_std_devs),
+          ffn_out_maxs: await manejarJSON(json?.mensaje?.ffn_out_maxs),
+          ffn_out_mins: await manejarJSON(json?.mensaje?.ffn_out_mins),
+          ffn_out_means: await manejarJSON(json?.mensaje?.ffn_out_means),
+          ffn_inp_std_devs: await manejarJSON(json?.mensaje?.ffn_inp_std_devs),
+          ffn_inp_maxs: await manejarJSON(json?.mensaje?.ffn_inp_maxs),
+          ffn_inp_mins: await manejarJSON(json?.mensaje?.ffn_inp_mins),
+          ffn_inp_means: await manejarJSON(json?.mensaje?.ffn_inp_means),
+        });
         }
       }
 
@@ -155,6 +212,23 @@ const usePub = (
       };
     }
   }, [id]);
+
+  const manejarJSON = async (ipfsHash: string): Promise<number> => {
+    try {
+      if (ipfsHash) {
+        const cadena = await fetch(
+          `${INFURA_GATEWAY}/ipfs/${ipfsHash.split("ipfs://")?.[1]}`
+        );
+
+        const json = await cadena.json();
+        return Number(json?.join(", ")?.[0]);
+      }
+      return 0.0;
+    } catch (err: any) {
+      console.error(err.message);
+      return 0.0;
+    }
+  };
 
   useEffect(() => {
     if (escenas?.length > 0) {
