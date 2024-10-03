@@ -17,6 +17,7 @@ import {
   SimpleCollectOpenActionSettings,
 } from "../../graphql/generated";
 import {
+  Coleccion,
   ComentarPublicar,
   DatosOraculos,
   Escena,
@@ -129,6 +130,12 @@ export const ModalContext = createContext<
           abierto: boolean;
         }>
       ) => void;
+      coleccionActual: Coleccion;
+      setColeccionActual: (e: SetStateAction<Coleccion>) => void;
+      setConectarPub: (e: SetStateAction<boolean>) => void;
+      conectarPub: boolean;
+      escena: undefined | string;
+      setEscena: (e: SetStateAction<undefined | string>) => void;
     }
   | undefined
 >(undefined);
@@ -142,6 +149,28 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [mostrarNotificacion, setMostrarNotificacion] = useState<Notificacion>(
     Notificacion.Inactivo
   );
+  const [escena, setEscena] = useState<string>();
+  const [coleccionActual, setColeccionActual] = useState<Coleccion>({
+    imagen: "",
+    cantidad: 1,
+    imagenes: Array.from({ length: 3 }, () => ""),
+    tokenes: [],
+    precio: 0,
+    colors: ["black", "white"],
+    id: 0,
+    tipo: "NFT" as any,
+    titulo: "",
+    descripcion: "",
+    etiquetas: "",
+    npcIdiomas: "",
+    npcInstrucciones: "",
+    npcs: "",
+    galeria: "",
+    tokenesMinteados: [],
+    profileIds: [],
+    pubIds: [],
+    profile: undefined,
+  });
   const [comentarPublicar, setComentarPublicar] = useState<ComentarPublicar[]>([
     {
       contenido: "",
@@ -154,6 +183,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [oraculos, setOraculos] = useState<DatosOraculos[]>([]);
   const [errorInteraccion, setErrorInteraccion] = useState<boolean>(false);
   const [indexar, setIndexar] = useState<Indexar>(Indexar.Inactivo);
+  const [conectarPub, setConectarPub] = useState<boolean>(false);
   const [mostrarInteracciones, setMostrarInteracciones] = useState<{
     tipo: string;
     id?: string;
@@ -202,8 +232,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <XMTPProvider dbVersion={2}>
             <ModalContext.Provider
               value={{
+                escena,
+                setEscena,
                 mint,
                 setMint,
+                conectarPub,
+                setConectarPub,
+                coleccionActual,
+                setColeccionActual,
                 verImagen,
                 setVerImagen,
                 mostrarPerfil,

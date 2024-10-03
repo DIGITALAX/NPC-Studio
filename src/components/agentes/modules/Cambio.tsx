@@ -77,7 +77,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
               lang == "en" ? "text-[10vw]" : "text-[8vw]"
             }`}
           >
-            {dict.Home.espect}
+            {dict.Home.espectar}
           </div>
           <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col xl:flex-row gap-10 items-center justify-center">

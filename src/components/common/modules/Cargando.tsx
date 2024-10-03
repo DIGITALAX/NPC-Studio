@@ -4,10 +4,10 @@ import Image from "next/legacy/image";
 import { useCargando } from "../hooks/useCargando";
 import { INFURA_GATEWAY } from "@/lib/constants";
 
-export default function Cargando() {
+export default function Cargando({ continua }: { continua: boolean }) {
   const navegando = useCargando();
 
-  if (!navegando) return null;
+  if (!navegando && !continua) return null;
 
   return (
     <div

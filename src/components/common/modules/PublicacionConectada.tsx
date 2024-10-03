@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, MutableRefObject } from "react";
 import { PublicacionConectadaProps } from "../types/common.types";
 import manejarBuscarPerfiles from "@/lib/helpers/manejarBuscarPerfiles";
 import Image from "next/legacy/image";
@@ -61,7 +61,9 @@ const PublicacionConectada: FunctionComponent<PublicacionConectadaProps> = ({
                   0,
                   lensConectado,
                   setCaretCoord,
-                  elementoTexto
+                  elementoTexto as MutableRefObject<
+                    HTMLTextAreaElement | undefined
+                  >
                 );
               }}
               ref={elementoTexto as any}

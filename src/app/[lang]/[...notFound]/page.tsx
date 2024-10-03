@@ -6,7 +6,7 @@ export default async function NotFound({
 }: {
   params: { lang: string };
 }) {
-  const dict = await getDictionary(lang);
+  const dict = await (getDictionary as  (locale: any) => Promise<any>)(lang);
   return (
     <div className="relative w-full h-screen flex items-center justify-center text-center text-2xl font-at text-white break-words">
       <Link

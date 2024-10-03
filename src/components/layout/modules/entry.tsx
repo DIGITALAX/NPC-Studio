@@ -14,9 +14,7 @@ import PantallaCambio from "@/components/game/modules/PantallaCambio";
 import { polygon } from "viem/chains";
 import { createPublicClient } from "viem";
 import Carrito from "@/components/compras/modules/Carrito";
-import Modals from "@/components/common/modules/Modals";
 import usePedidos from "@/components/game/hooks/usePedidos";
-import { Post } from "../../../../graphql/generated";
 import { useRouter } from "next/navigation";
 
 export default function Entry({ dict }: { dict: Dictionary }) {
@@ -31,41 +29,21 @@ export default function Entry({ dict }: { dict: Dictionary }) {
   const router = useRouter();
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
-  const {
-    lensCargando,
-    manejarLens,
-    manejarSalir,
-    manejarEnviarMensaje,
-    mensaje,
-    mensajeCargando,
-    setMensaje,
-    setOpcionAbierta,
-    opcionAbierta,
-    manejarGif,
-    gifCargando,
-    buscarGifs,
-    setBuscarGifs,
-    monedasDisponibles,
-    drops,
-    setDrops,
-  } = useAccountInternal(
-    isConnected,
-    context?.setEsArtista!,
-    context?.setLensConectado!,
-    openAccountModal,
-    context?.setMostrarNotificacion!,
-    address,
-    publicClient,
-    dict,
-    context?.lensConectado,
-    context?.oraculos!,
-    context?.setOraculos!
-  );
+  const { manejarLens, setOpcionAbierta, lensCargando, manejarSalir } =
+    useAccountInternal(
+      isConnected,
+      context?.setEsArtista!,
+      context?.setLensConectado!,
+      context?.setMostrarNotificacion!,
+      address,
+      publicClient,
+      context?.lensConectado,
+      context?.setOraculos!,
+      openAccountModal
+    );
   const {
     npc,
     setNpc,
-    setEscena,
-    escena,
     setCargando,
     cargando,
     manejarMostrarArticulo,
@@ -74,46 +52,17 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     dragDialog,
     setDragDialog,
     setIndiceConversacionActual,
-    setCitaPublicar,
-    citaCargando,
-    citaPublicar,
-    hacerCita,
-    mencionarPerfilesCita,
-    setCaretCoordCita,
-    setMencionarPerfilesCita,
-    setPerfilesAbiertosCita,
-    manejarArchivoCita,
-    perfilesAbiertosCita,
-    caretCoordCita,
-    elementoTextoCita,
-    aprobado,
-    aprobar,
-    cargandoColeccion,
-    manejarColeccionar,
     manejarMensaje,
   } = useManage(
-    address,
-    publicClient,
-    context?.lensConectado!,
-    context?.setIndexar!,
-    context?.setErrorInteraccion!,
-    context?.abrirCita! as Post,
-    context?.setAbrirCita! as any,
-    context?.seguirColeccionar,
-    context?.setSeguirColeccionar!,
-    isConnected,
-    openConnectModal,
-    manejarLens,
-    context?.setComentarPublicar!
+    context?.setComentarPublicar!,
+    context?.setEscena!,
+    context?.escena!
   );
-
   const {
     manejarMintear,
     mintCargando,
     colecciones,
     setColecciones,
-    setColeccionActual,
-    coleccionActual,
     manejarArchivo,
     manejarAhorrar,
     setDropDown,
@@ -126,19 +75,6 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     borrarColeccion,
     borrarGaleria,
     cargandoBorrar,
-    conectarPub,
-    hacerPublicacion,
-    setConectarPub,
-    caretCoord,
-    setCaretCoord,
-    perfilesAbiertos,
-    setPerfilesAbiertos,
-    mencionarPerfiles,
-    setMencionarPerfiles,
-    elementoTexto,
-    descripcion,
-    cargandoConexion,
-    setDescripcion,
     indiceImagen,
     setIndiceImagen,
   } = useMint(
@@ -147,11 +83,10 @@ export default function Entry({ dict }: { dict: Dictionary }) {
     address,
     context?.setMostrarNotificacion!,
     context?.lensConectado,
-    context?.setIndexar!,
-    context?.setErrorInteraccion!,
-    context?.escenas!
+    context?.escenas!,
+    context?.coleccionActual!,
+    context?.setColeccionActual!
   );
-
   const {
     todosLosPedidos,
     pedidosCargando,
@@ -186,13 +121,13 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           publicClient={publicClient}
           setIndexar={context?.setIndexar!}
           setErrorInteraccion={context?.setErrorInteraccion!}
-          escena={escena!}
+          escena={context?.escena!}
           setDragDialog={setDragDialog}
           setAbrirCita={context?.setAbrirCita!}
           setSeguirColeccionar={context?.setSeguirColeccionar!}
           npcIds={
             context?.escenas
-              ?.find((es) => es.clave == escena)
+              ?.find((es) => es.clave == context?.escena)
               ?.sprites?.map((s) =>
                 s.perfil_id.toString(16).replaceAll("0x", "0x0")
               )!
@@ -208,16 +143,16 @@ export default function Entry({ dict }: { dict: Dictionary }) {
             setIndiceImagen={setIndiceImagen}
             pedidoAbierto={pedidoAbierto}
             setPedidoAbierto={setPedidoAbierto}
-            setConectarPub={setConectarPub}
+            setConectarPub={context?.setConectarPub!}
             manejarMostrarArticulo={manejarMostrarArticulo}
             setManejarMostrarArticulo={setManejarMostrarArticulo}
             mostrarGalerias={mostrarGalerias}
             setMostrarGalerias={setMostrarGalerias}
             isConnected={isConnected}
-            escena={escena!}
+            escena={context?.escena!}
             colecciones={colecciones}
-            setColeccionActual={setColeccionActual}
-            coleccionActual={coleccionActual}
+            setColeccionActual={context?.setColeccionActual!}
+            coleccionActual={context?.coleccionActual!}
             manejarArchivo={manejarArchivo}
             manejarAhorrar={manejarAhorrar}
             ahorrarCargando={ahorrarCargando}
@@ -251,8 +186,8 @@ export default function Entry({ dict }: { dict: Dictionary }) {
         setNpc={setNpc}
         manejarMensaje={manejarMensaje}
         lensConectado={context?.lensConectado}
-        escena={escena!}
-        setEscena={setEscena as (e: SetStateAction<string>) => void}
+        escena={context?.escena!}
+        setEscena={context?.setEscena as (e: SetStateAction<string>) => void}
         escenas={context?.escenas!}
         publicClient={publicClient}
         setIndexar={context?.setIndexar!}
@@ -265,7 +200,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           setMostrarInteracciones={context?.setMostrarInteracciones!}
           npcIds={
             context?.escenas
-              ?.find((es) => es.clave == escena)
+              ?.find((es) => es.clave == context?.escena)
               ?.sprites?.map((s) =>
                 s.perfil_id.toString(16).replaceAll("0x", "0x0")
               )!
@@ -284,7 +219,7 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           publicClient={publicClient}
           dict={dict}
           setVerImagen={context?.setVerImagen!}
-          escena={escena!}
+          escena={context?.escena!}
           conectado={isConnected}
           manejarLens={manejarLens}
           openConnectModal={openConnectModal}
@@ -293,82 +228,6 @@ export default function Entry({ dict }: { dict: Dictionary }) {
           setSeguirColeccionar={context?.setSeguirColeccionar!}
         />
       )}
-
-      <Modals
-        aprobado={aprobado}
-        escenas={context?.escenas!}
-        aprobar={aprobar}
-        setMostrarPerfil={context?.setMostrarPerfil!}
-        mostrarPerfil={context?.mostrarPerfil!}
-        setCarrito={context?.setCarrito!}
-        setAbrirCita={context?.setAbrirCita!}
-        publicClient={publicClient}
-        address={address!}
-        manejarLens={manejarLens}
-        escena={escena!}
-        conectado={isConnected}
-        openConnectModal={openConnectModal}
-        setIndexar={context?.setIndexar!}
-        setMostrarInteracciones={context?.setMostrarInteracciones!}
-        mostrarInteracciones={context?.mostrarInteracciones!}
-        cargandoColeccion={cargandoColeccion}
-        manejarColeccionar={manejarColeccionar}
-        seguirColeccionar={context?.seguirColeccionar!}
-        setSeguirColeccionar={context?.setSeguirColeccionar!}
-        mencionarPerfilesCita={mencionarPerfilesCita}
-        setCaretCoordCita={setCaretCoordCita}
-        setMencionarPerfilesCita={setMencionarPerfilesCita}
-        setPerfilesAbiertosCita={setPerfilesAbiertosCita}
-        manejarArchivoCita={manejarArchivoCita}
-        perfilesAbiertosCita={perfilesAbiertosCita}
-        caretCoordCita={caretCoordCita}
-        setDrops={setDrops}
-        drops={drops}
-        elementoTextoCita={elementoTextoCita as any}
-        setConectarPub={setConectarPub}
-        setComentarPublicar={context?.setComentarPublicar!}
-        comentarPublicar={context?.comentarPublicar!}
-        conectarPub={conectarPub}
-        monedasDisponibles={monedasDisponibles}
-        hacerPublicacion={hacerPublicacion}
-        indexar={context?.indexar!}
-        errorInteraccion={context?.errorInteraccion!}
-        mostrarNotificacion={context?.mostrarNotificacion!}
-        cargandoConexion={cargandoConexion}
-        dict={dict}
-        setOpcionAbierta={setOpcionAbierta}
-        opcionAbierta={opcionAbierta}
-        setPerfilesAbiertos={setPerfilesAbiertos}
-        setMencionarPerfiles={setMencionarPerfiles}
-        lensConectado={context?.lensConectado!}
-        setCaretCoord={setCaretCoord}
-        elementoTexto={elementoTexto}
-        descripcion={descripcion}
-        setDescripcion={setDescripcion}
-        caretCoord={caretCoord}
-        perfilesAbiertos={perfilesAbiertos}
-        mencionarPerfiles={mencionarPerfiles}
-        setErrorInteraccion={context?.setErrorInteraccion!}
-        setVerImagen={context?.setVerImagen!}
-        coleccionActual={coleccionActual}
-        verImagen={context?.verImagen!}
-        setMostrarNotificacion={context?.setMostrarNotificacion!}
-        mensajeCargando={mensajeCargando}
-        manejarEnviarMensaje={manejarEnviarMensaje}
-        setMensaje={setMensaje}
-        mensaje={mensaje}
-        manejarGif={manejarGif}
-        gifCargando={gifCargando}
-        buscarGifs={buscarGifs}
-        setBuscarGifs={setBuscarGifs}
-        hacerCita={hacerCita}
-        citaPublicar={citaPublicar}
-        setCitaPublicar={setCitaPublicar}
-        setCitaAbierta={context?.setAbrirCita!}
-        citaAbierta={context?.abrirCita!}
-        citaCargando={citaCargando}
-        router={router}
-      />
       <Carrito
         setCarrito={context?.setCarrito!}
         carrito={context?.carrito!}

@@ -1,9 +1,9 @@
-import { FormEvent, RefObject } from "react";
+import { FormEvent, MutableRefObject, RefObject } from "react";
 import getCaretCoordinates from "textarea-caret";
 
 const getCaretPos = (
   e: FormEvent<HTMLTextAreaElement>,
-  textElement: RefObject<HTMLTextAreaElement>
+  textElement: MutableRefObject<HTMLTextAreaElement | undefined>
 ): { x: number; y: number } => {
   const caret = getCaretCoordinates(
     e.target as HTMLElement,

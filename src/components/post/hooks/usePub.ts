@@ -1,7 +1,4 @@
-import lensSeguir from "@/lib/helpers/lensSeguir";
 import { SetStateAction, useEffect, useState } from "react";
-import { createWalletClient, custom, PublicClient } from "viem";
-import { polygon } from "viem/chains";
 import {
   Profile,
   Quote,
@@ -9,25 +6,54 @@ import {
   Post,
   Mirror,
 } from "../../../../graphql/generated";
-import { Indexar } from "@/components/common/types/common.types";
 import { Escena, Sprite } from "@/components/game/types/game.types";
 import getPublication from "../../../../graphql/lens/queries/publication";
+import { INFURA_GATEWAY } from "@/lib/constants";
 
 const usePub = (
   id: string,
   lensConectado: Profile | undefined,
-  publicClient: PublicClient,
-  setIndexar: (e: SetStateAction<Indexar>) => void,
-  setErrorInteraccion: (e: SetStateAction<boolean>) => void
+  setEscenas: (e: SetStateAction<Escena[]>) => void,
+  escenas: Escena[],
+  setEscena: (e: SetStateAction<string | undefined>) => void
 ) => {
   const [pubCargando, setPubCargando] = useState<boolean>(true);
   const [npc, setNPC] = useState<Sprite | undefined>();
   const [pub, setPub] = useState<(Post | Mirror | Quote | Comment)[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [escenas, setEscenas] = useState<Escena[]>([]);
-  const [escena, setEscena] = useState<string>("");
+  const [atributos, setAtributos] = useState<
+    | {
+        images: string[];
+        metadata_uri: string;
+        locale: string;
+        eleccion: string;
+        comentario_perfil: string;
+        comentario_pub: string;
+        perfil_id: string;
+        coleccion_id: string;
+        pagina: string;
+        mensaje: {
+          inputs: string;
+          outputs: string;
+          output: string;
+          input_tokens: number[];
+          output_tokens: number[];
+          model: string;
+        };
+        version: number;
+        prompt: string;
+        options: {
+          tokenizer: string;
+          ctx: string;
+          model: string;
+          num_tokens: string;
+        };
+        hashes: string[];
+      }
+    | undefined
+  >();
 
-  const llamaNPC = async () => {
+  const llamaPub = async () => {
     setPubCargando(true);
     try {
       const datos = await getPublication(
@@ -58,6 +84,24 @@ const usePub = (
         ) as string
       );
 
+      const atro = (
+        datos?.data?.publication as Post
+      )?.metadata?.attributes?.find(
+        (at) => at.key?.toLowerCase() == "llm_info"
+      )!?.value;
+
+      if (atro) {
+        const cadena = await fetch(
+          `${INFURA_GATEWAY}/ipfs/${atro.split("ipfs://")?.[1]}`
+        );
+
+        const json = await cadena.json();
+
+        if (json.version) {
+          setAtributos(json);
+        }
+      }
+
       setNPC({ ...sprite });
     } catch (err: any) {
       console.error(err.message);
@@ -68,6 +112,8 @@ const usePub = (
   useEffect(() => {
     if (!socket && id) {
       const newSocket = new WebSocket(
+        // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+
         `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
 
@@ -85,7 +131,6 @@ const usePub = (
       newSocket.onerror = (error) => {
         console.error(error);
       };
-
       newSocket.onmessage = (evento) => {
         const datos = JSON.parse(evento.data);
         const nombre = datos.nombre;
@@ -113,7 +158,7 @@ const usePub = (
 
   useEffect(() => {
     if (escenas?.length > 0) {
-      llamaNPC();
+      llamaPub();
     }
   }, [escenas?.length]);
 
@@ -121,8 +166,8 @@ const usePub = (
     pubCargando,
     pub,
     npc,
-    escena,
     setPub,
+    atributos,
   };
 };
 

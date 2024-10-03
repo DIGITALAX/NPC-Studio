@@ -163,7 +163,7 @@ const Chat: FunctionComponent<ChatProps> = ({
       <Comentario
         setMostrarPerfil={setMostrarPerfil}
         setOpcionAbierta={setOpcionAbierta}
-        elementoTexto={elementoTexto}
+        elementoTexto={elementoTexto as any}
         caretCoord={caretCoord}
         setCaretCoord={setCaretCoord}
         setPerfilesAbiertos={setPerfilesAbiertos}

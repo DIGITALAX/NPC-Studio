@@ -15,6 +15,9 @@ import useDialog from "@/components/game/hooks/useDialog";
 import useAccountPropia from "@/components/game/hooks/useAccount";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
+import useEspectador from "@/components/post/hooks/useEspectador";
+import { AiOutlineLoading } from "react-icons/ai";
+import { Post as PostType } from "../../../../graphql/generated";
 
 export default function Post({
   lang,
@@ -35,25 +38,23 @@ export default function Post({
     ),
   });
   const id = useParams();
-  const { pubCargando, npc, pub, setPub, escena } = usePub(
+  const { pubCargando, pub, setPub, atributos } = usePub(
     id?.id as string,
     contexto?.lensConectado,
-    publicClient,
-    contexto?.setIndexar!,
-    contexto?.setErrorInteraccion!
+    contexto?.setEscenas!,
+    contexto?.escenas!,
+    contexto?.setEscena!
   );
   const { manejarLens, setOpcionAbierta } = useAccountPropia(
     isConnected,
     contexto?.setEsArtista!,
     contexto?.setLensConectado!,
-    openAccountModal,
     contexto?.setMostrarNotificacion!,
     address,
     publicClient,
-    dict,
     contexto?.lensConectado,
-    contexto?.oraculos!,
-    contexto?.setOraculos!
+    contexto?.setOraculos!,
+    openAccountModal
   );
   const {
     comentariosAbiertos,
@@ -79,14 +80,12 @@ export default function Post({
     manejarLens
   );
   const {
-    contenedorMensajesRef,
     setPerfilesAbiertos,
     setMencionarPerfiles,
     setCaretCoord,
     perfilesAbiertos,
     caretCoord,
     mencionarPerfiles,
-    publicacionCargando,
     manejarPublicar,
     manejarArchivo,
   } = useDialog(
@@ -94,7 +93,7 @@ export default function Post({
     publicClient,
     contexto?.setIndexar!,
     contexto?.setErrorInteraccion!,
-    escena,
+    contexto?.escena!,
     contexto?.comentarPublicar!,
     contexto?.setComentarPublicar!,
     isConnected,
@@ -102,9 +101,16 @@ export default function Post({
     manejarLens,
     contexto?.lensConectado
   );
-
-  if (pubCargando || !pub) {
-    return <Cargando />;
+  const { handleVotar, votarCargando, votarTipo, setVotarTipo } =
+    useEspectador();
+  if (
+    pubCargando ||
+    pub?.length < 1 ||
+    !pub ||
+    Number(contexto?.escenas?.length) < 1 ||
+    !contexto?.escena
+  ) {
+    return <Cargando continua />;
   }
 
   return (
@@ -118,12 +124,15 @@ export default function Post({
             draggable={false}
           />
         </div>
-        <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-8 grow">
+        <div className="relative  w-full h-8 lg:h-auto lg:w-32 shrink-0 flex border-y-2 lg:border-x-2 border-white bg-turq text-white text-lg font-clar">
+          <div className="relative lg:rotate-90 w-fit h-fit">palabras</div>
+        </div>
+        <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-2 sm:p-4 md:p-8 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
             <div
               className={`text-white font-lib relative w-full h-fit flex items-start justify-start text-[8vw] 1xl:text-[10vw] overflow-x-hidden`}
             >
-              {dict.Home.espectador}
+              {dict.Home.espectar}
             </div>
             <div className="absolute top-3 right-3 w-fit flex-row flex h-fit items-end justify-start gap-2">
               <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
@@ -152,43 +161,444 @@ export default function Post({
               draggable={false}
             />
           </div>
-          <div className="relative w-1/2 h-fit flex items-center justify-center">
-            <Publicacion
-              menos
-              router={router}
-              setMostrarPerfil={contexto?.setMostrarPerfil!}
-              setMostrarInteracciones={contexto?.setMostrarInteracciones!}
-              setOpcionAbierta={setOpcionAbierta}
-              key={0}
-              setCaretCoord={setCaretCoord}
-              caretCoord={caretCoord}
-              indice={1}
-              dict={dict}
-              publicacion={pub?.[0]}
-              comentariosAbiertos={comentariosAbiertos}
-              setComentariosAbiertos={setComentariosAbiertos}
-              abrirMirrorEleccion={abrirMirrorEleccion}
-              setAbrirMirrorEleccion={setAbrirMirrorEleccion}
-              cargandoInteracciones={cargandoInteracciones[1]}
-              setAbrirCita={contexto?.setAbrirCita!}
-              manejarMeGusta={manejarMeGusta}
-              manejarMirror={manejarMirror}
-              manejarColeccionar={manejarColeccionar}
-              setSeguirColeccionar={contexto?.setSeguirColeccionar!}
-              setComentarPublicar={contexto?.setComentarPublicar!}
-              setMencionarPerfiles={setMencionarPerfiles}
-              setPerfilesAbiertos={setPerfilesAbiertos}
-              comentarPublicar={contexto?.comentarPublicar!}
-              perfilesAbiertos={perfilesAbiertos}
-              publicacionCargando={pubCargando}
-              manejarPublicar={manejarPublicar}
-              mencionarPerfiles={mencionarPerfiles}
-              lensConectado={contexto?.lensConectado}
-              setVerImagen={contexto?.setVerImagen!}
-              manejarArchivo={manejarArchivo}
-            />
+          <div className="relative w-full h-fit flex flex-col gap-10 items-start justify-start">
+            <div className="relative w-2/3 h-fit flex items-center justify-center">
+              <Publicacion
+                menos
+                router={router}
+                setMostrarPerfil={contexto?.setMostrarPerfil!}
+                setMostrarInteracciones={contexto?.setMostrarInteracciones!}
+                setOpcionAbierta={setOpcionAbierta}
+                key={0}
+                sin
+                setCaretCoord={setCaretCoord}
+                caretCoord={caretCoord}
+                indice={1}
+                dict={dict}
+                publicacion={pub?.[0]}
+                comentariosAbiertos={comentariosAbiertos}
+                setComentariosAbiertos={setComentariosAbiertos}
+                abrirMirrorEleccion={abrirMirrorEleccion}
+                setAbrirMirrorEleccion={setAbrirMirrorEleccion}
+                cargandoInteracciones={cargandoInteracciones[1]}
+                setAbrirCita={contexto?.setAbrirCita!}
+                manejarMeGusta={manejarMeGusta}
+                manejarMirror={manejarMirror}
+                manejarColeccionar={manejarColeccionar}
+                setSeguirColeccionar={contexto?.setSeguirColeccionar!}
+                setComentarPublicar={contexto?.setComentarPublicar!}
+                setMencionarPerfiles={setMencionarPerfiles}
+                setPerfilesAbiertos={setPerfilesAbiertos}
+                comentarPublicar={contexto?.comentarPublicar!}
+                perfilesAbiertos={perfilesAbiertos}
+                publicacionCargando={pubCargando}
+                manejarPublicar={manejarPublicar}
+                mencionarPerfiles={mencionarPerfiles}
+                lensConectado={contexto?.lensConectado}
+                setVerImagen={contexto?.setVerImagen!}
+                manejarArchivo={manejarArchivo}
+              />
+            </div>
+            <div className="relative w-2/3 flex items-start justify-center h-fit flex-col gap-2">
+              <div className="text-white text-sm font-lib flex items-center justify-center">
+                {dict.Home.eval}
+              </div>
+              <div className="relative w-full h-fit flex flex-col justify-between items-center gap-6">
+                <div className="relative w-full h-fit flex items-start justify-center flex-col">
+                  <div className="relative w-fit h-fit flex items-center justify-center text-xs font-lib text-[#F6FC8D]">
+                    {dict.Home.hold}
+                  </div>
+                  <div className="relative w-fit h-fit flex items-center justify-center text-xxs font-lib  text-limon">
+                    $MONA, Genesis, PODE, DIGITALAX NFTs
+                  </div>
+                </div>
+                <div className="relative w-full h-fit flex items-center justify-start flex-row gap-4 pt-5">
+                  <div
+                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95 ${
+                      votarTipo == 1 && "opacity-60"
+                    } `}
+                    onClick={() => setVotarTipo(1)}
+                  >
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/QmWTi8TRReCgAeT2zTUa5EtL4kspRtrRz3gonSCaS7aVW7`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-full"
+                      draggable={false}
+                    />
+                  </div>
+                  <div
+                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95 ${
+                      votarTipo == 2 && "opacity-60"
+                    } `}
+                    onClick={() => setVotarTipo(2)}
+                  >
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/QmQYjyM3Syqr1dxtzR1esE6iuLmo8At2NzodVxydBgaweX`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-full"
+                      draggable={false}
+                    />
+                  </div>
+                </div>
+                <div className="relative w-full h-fit items-start justify-center flex flex-col gap-3">
+                  <div className="relative w-fit h-fit flex items-start justify-center font-lib text-white text-xxs">
+                    {dict.Home.addic}
+                  </div>
+                  <div className="relative w-1/2 h-32 flex items-center justify-center rounded-md border border-azulito">
+                    <textarea
+                      className="bg-black p-1 w-full h-full flex text-white font-lib text-sm rounded-md"
+                      style={{
+                        resize: "none",
+                      }}
+                    />
+                  </div>
+                  <div
+                    className={`relative flex items-center justify-center rounded-md border border-azulito w-20 h-8 bg-viol px-2 py-1 font-lib text-xs text-white cursor-pointer active:scale-95`}
+                  >
+                    <div
+                      className={`${
+                        votarCargando && "animate-spin"
+                      } flex items-center justify-center w-fit h-fit flex`}
+                    >
+                      {votarCargando ? (
+                        <AiOutlineLoading size={15} color={"white"} />
+                      ) : (
+                        dict.Home.send
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="relative w-full h-fit flex items-center justify-start flex-col gap-3">
+              <div className="relative w-full h-fit flex items-start justify-start font-lib text-2xl text-white">
+                {dict.Home.datos}
+              </div>
+              {!atributos ? (
+                <div className="relative w-full h-fit flex items-center justify-center text-limon font-lib text-xs">
+                  {dict.Home.nodatos}
+                </div>
+              ) : (
+                <div className="relative p-2 md:p-4 flex flex-col gap-10 items-start justify-start w-full h-full border border-prima">
+                  <div className="relative w-full h-fit flex items-end justify-end flex-col gap-2">
+                    <div className="relative w-fit h-fit flex items-end justify-end font-clar text-costa break-words text-xxs">
+                      {dict.Home.descargar}
+                    </div>
+                    <div
+                      className="relative w-7 h-4 flex items-end justify-end cursor-pointer"
+                      onClick={() =>
+                        window.open(
+                          `${INFURA_GATEWAY}/ipfs/${
+                            (pub?.[0] as PostType)?.metadata?.attributes
+                              ?.find(
+                                (at) => at.key?.toLowerCase() == "llm_info"
+                              )!
+                              ?.value?.split("ipfs://")?.[1]
+                          }`
+                        )
+                      }
+                    >
+                      <Image
+                        draggable={false}
+                        layout="fill"
+                        objectFit="cover"
+                        src={`${INFURA_GATEWAY}/ipfs/QmRwz6Ptd77ocQ7vvns5A7GoDrRyU7VcjtAbZSXyeriUMK`}
+                      />
+                    </div>
+                  </div>
+                  <div className="relative w-full flex flex-col gap-4 text-xs items-start justify-start flex-wrap">
+                    <div className="relative w-full h-fit flex items-center justif-between flex-row gap-6 sm:flex-nowrap flex-wrap">
+                      <div className="relative w-full h-fit flex items-start justify-between flex-row gap-2">
+                        <div className="relative w-fit h-fit flex items-center justify-center py-1 px-3 bg-triste font-clar text-black break-words">
+                          {dict.Home.modelo}
+                        </div>
+                        <div className="relative w-8 h-5 flex items-center justify-center">
+                          <Image
+                            layout="fill"
+                            draggable={false}
+                            src={`${INFURA_GATEWAY}/ipfs/QmZpNKd3zcpQQoqtFLk1KPSh2hgvrd76hrQiTeafX1V2UX`}
+                          />
+                        </div>
+                        <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
+                          {atributos?.options?.model}
+                        </div>
+                      </div>
+                      <div className="relative w-full h-fit flex items-start justify-between flex-row gap-2">
+                        <div className="relative w-fit h-fit flex items-center justify-center py-1 px-3 bg-triste font-clar text-black break-words">
+                          CTX
+                        </div>
+                        <div className="relative w-8 h-5 flex items-center justify-center">
+                          <Image
+                            layout="fill"
+                            draggable={false}
+                            src={`${INFURA_GATEWAY}/ipfs/QmSs3ipShCv4FKFRJWUUEmSGKimVnjBJ1157tAwsW94UNN`}
+                          />
+                        </div>
+                        <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
+                          {atributos?.options?.ctx}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex items-center justif-between flex-row gap-6 sm:flex-nowrap flex-wrap">
+                      <div className="relative w-full h-fit flex items-start justify-between flex-row gap-2">
+                        <div className="relative w-fit h-fit flex items-center justify-center py-1 px-3 bg-triste font-clar text-black break-words">
+                          {dict.Home.num}
+                        </div>
+                        <div className="relative w-8 h-5 flex items-center justify-center">
+                          <Image
+                            layout="fill"
+                            draggable={false}
+                            src={`${INFURA_GATEWAY}/ipfs/QmXCA1mRM4Mg43xUTuwrw2v9HyUGsQsC4HCmFrcMr38ML8`}
+                          />
+                        </div>
+                        <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
+                          {atributos?.options?.num_tokens}
+                        </div>
+                      </div>
+                      <div className="relative w-full h-fit flex items-start justify-between flex-row gap-2">
+                        <div className="relative w-fit h-fit flex items-center justify-center py-1 px-3 bg-triste font-clar text-black break-words">
+                          {dict.Home.tokenizer}
+                        </div>
+                        <div className="relative w-8 h-5 flex items-center justify-center">
+                          <Image
+                            layout="fill"
+                            draggable={false}
+                            src={`${INFURA_GATEWAY}/ipfs/QmcovVHBUaYwVeGivNi7CDp8DrcLqT6smEkvzTtP13eqGC`}
+                          />
+                        </div>
+                        <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
+                          {atributos?.options?.tokenizer}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-full h-fit lg:h-[60rem] flex items-center justify-between flex-col lg:flex-row gap-8">
+                    <div className="relative w-full h-72 lg:h-full flex items-center justify-center border border-ami">
+                      <Image
+                        draggable={false}
+                        layout="fill"
+                        objectFit="cover"
+                        src={`${INFURA_GATEWAY}/ipfs/QmacRtSpqUAuVig7KyGw1uHPwm1QXbUjhqJW4W8RJRjidM`}
+                      />
+                    </div>
+                    <div className="relative w-full h-fit lg:h-full flex flex-col gap-12 items-start justify-between grow">
+                      <div className="relative w-full h-fit flex flex-col gap-8 items-start justify-start">
+                        <div className="relative w-full h-fit flex flex-col gap-2 items-center justify-center">
+                          <div className="relative w-fit h-fit flex items-center justify-center py-1 px-4 bg-triste font-clar text-costa text-xs break-words">
+                            {dict.Home.prompt}
+                          </div>
+                          <div className="relative w-fit h-40 flex items-start justify-start font-at text-costa text-sm break-words p-1.5 border border-[#6FFA95] flex-row justify-between gap-3">
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-8 flex items-center justify-center">
+                                <Image
+                                  draggable={false}
+                                  layout="fill"
+                                  objectFit="contain"
+                                  src={`${INFURA_GATEWAY}/ipfs/QmQPeBDpsLDYZaEcHVdFZusom8rpVfkVyGYyD5z9enqHn3`}
+                                />
+                              </div>
+                            </div>
+                            <div className="relative flex w-full h-full flex items-start justify-start overflow-y-scroll">
+                              <div className="relative w-full h-fit flex items-start justify-start text-right">
+                                {atributos.prompt}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="relative w-full h-fit flex flex-col gap-2 items-center justify-center">
+                          <div className="relative w-fit h-fit flex items-center justify-center py-1 px-4 bg-triste font-clar text-costa text-xs break-words">
+                            {dict.Home.inputs}
+                          </div>
+                          <div className="relative w-full flex flex-row items-center justify-center gap-1">
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-5 flex items-center justify-center">
+                                <Image
+                                  layout="fill"
+                                  draggable={false}
+                                  src={`${INFURA_GATEWAY}/ipfs/QmZpNKd3zcpQQoqtFLk1KPSh2hgvrd76hrQiTeafX1V2UX`}
+                                />
+                              </div>
+                            </div>
+                            <div className="relative w-full flex items-start justify-start text-xs break-all bg-[#CC04FD] p-1.5 h-40 overflow-y-scroll text-white font-bit text-center">
+                              {atributos.mensaje.input_tokens.join(", ")}
+                            </div>
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-5 flex items-center justify-center">
+                                <Image
+                                  layout="fill"
+                                  draggable={false}
+                                  src={`${INFURA_GATEWAY}/ipfs/QmSs3ipShCv4FKFRJWUUEmSGKimVnjBJ1157tAwsW94UNN`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative w-full h-fit flex flex-col gap-8 items-start justify-start">
+                        <div className="relative w-full h-fit flex flex-col gap-2 items-center justify-center">
+                          <div className="relative w-fit h-fit flex items-center justify-center py-1 px-4 bg-triste font-clar text-costa text-xs break-words">
+                            {dict.Home.respuesta}
+                          </div>
+                          <div className="relative w-fit h-40 flex items-start justify-start font-at text-[#F6FC8D] text-sm break-words p-1.5 border border-rosas flex-row justify-between gap-3">
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-8 flex items-center justify-center">
+                                <Image
+                                  draggable={false}
+                                  layout="fill"
+                                  objectFit="contain"
+                                  src={`${INFURA_GATEWAY}/ipfs/QmVaB1MmMHkyEAni1NFb6hkMFC3nWFEiwSWAEibjK9CuFv`}
+                                />
+                              </div>
+                            </div>
+                            <div className="relative flex w-full h-full flex items-start justify-start overflow-y-scroll">
+                              <div className="relative w-full h-fit flex items-start justify-start text-right">
+                                {atributos.mensaje.output}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="relative w-full h-fit flex flex-col gap-2 items-center justify-center">
+                          <div className="relative w-fit h-fit flex items-center justify-center py-1 px-4 bg-triste font-clar text-costa text-xs break-words">
+                            {dict.Home.outputs}
+                          </div>
+                          <div className="relative w-full flex flex-row items-center justify-center gap-1">
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-5 flex items-center justify-center">
+                                <Image
+                                  layout="fill"
+                                  draggable={false}
+                                  src={`${INFURA_GATEWAY}/ipfs/QmXCA1mRM4Mg43xUTuwrw2v9HyUGsQsC4HCmFrcMr38ML8`}
+                                />
+                              </div>
+                            </div>
+                            <div className="relative w-full flex items-start justify-start text-xs break-all bg-prima p-1.5 h-40 overflow-y-scroll text-black font-bit text-center">
+                              {atributos.mensaje.output_tokens.join(", ")}
+                            </div>
+                            <div className="relative w-fit h-full flex items-center justify-center">
+                              <div className="relative w-8 h-5 flex items-center justify-center">
+                                <Image
+                                  layout="fill"
+                                  draggable={false}
+                                  src={`${INFURA_GATEWAY}/ipfs/QmcovVHBUaYwVeGivNi7CDp8DrcLqT6smEkvzTtP13eqGC`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-center">
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start pt-4">
+                      <div className="relative w-1/2 h-fit flex justify-start items-start font-at text-white text-base">
+                        {dict.Home.pca1}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[0]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start">
+                      <div className="relative w-1/2 h-fit flex justify-start items-start font-at text-white text-base">
+                        {dict.Home.pca2}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[1]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start pt-4">
+                      <div className="relative w-1/2 h-fit flex justify-start items-start font-at text-white text-base">
+                        {dict.Home.pca3}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[2]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start">
+                      <div className="relative w-1/2 h-fit flex items-start justify-start font-at text-white text-base">
+                        {dict.Home.pca4}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[3]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start pt-4">
+                      <div className="relative w-1/2 h-fit flex justify-start items-start font-at text-white text-base">
+                        {dict.Home.pca5}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[4]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start">
+                      <div className="relative w-1/2 h-fit flex items-start justify-start font-at text-white text-base">
+                        {dict.Home.pca6}
+                      </div>
+                      <div className="relative w-full h-40 sm:h-72 md:h-96 flex items-center justify-center">
+                        <Image
+                          src={`${INFURA_GATEWAY}/ipfs/${
+                            atributos?.hashes?.[5]?.split("ipfs://")?.[1]
+                          }`}
+                          layout="fill"
+                          objectFit="fill"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>{" "}
+          <div
+            className={`relative mb-0 w-full h-fit flex items-center justify-end`}
+          >
+            <div className="relativew-full h-60 flex items-center justify-end">
+              <Image
+                src={`${INFURA_GATEWAY}/ipfs/QmdRLJ8bWfTgJ92TiXTQU4wU46xtYURebNNRC4qyBMkCN8`}
+                layout="fill"
+                objectFit="cover"
+                draggable={false}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

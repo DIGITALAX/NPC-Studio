@@ -6,6 +6,6 @@ export default async function IndexPage({
 }: {
   params: { lang: string };
 }) {
-  const dict = await getDictionary(lang);
+  const dict = await (getDictionary as  (locale: any) => Promise<any>)(lang);
   return <Entry dict={dict} />;
 }

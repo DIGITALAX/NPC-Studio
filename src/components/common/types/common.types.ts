@@ -6,7 +6,7 @@ import {
   Dictionary,
   Escena,
 } from "@/components/game/types/game.types";
-import { ChangeEvent, RefObject, SetStateAction } from "react";
+import { ChangeEvent, MutableRefObject, RefObject, SetStateAction } from "react";
 import {
   ArticleMetadataV3,
   Comment,
@@ -210,6 +210,7 @@ export type PublicacionProps = {
   setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void;
   caretCoord: { x: number; y: number }[];
   publicacion: Quote | Mirror | Comment | Post;
+  sin?: boolean
   dict: Dictionary;
   menos?: boolean;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
@@ -418,7 +419,7 @@ export type ComentarioProps = {
     tipo: string,
     indice: number
   ) => void;
-  elementoTexto: RefObject<HTMLTextAreaElement>;
+  elementoTexto: MutableRefObject<HTMLTextAreaElement | undefined>;
   comentarioId?: string;
   cita?: boolean;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
@@ -487,179 +488,6 @@ export type VerMediosProps = {
   };
 };
 
-export type ModalsProps = {
-  dict: Dictionary;
-  address: `0x${string}` | undefined;
-  publicClient: PublicClient;
-  conectado: boolean;
-  escenas: Escena[];
-  setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
-  mostrarPerfil: string | undefined;
-  manejarLens: () => Promise<void>;
-  openConnectModal: (() => void) | undefined;
-  setIndexar: (e: SetStateAction<Indexar>) => void;
-  setCarrito: (
-    e: SetStateAction<{
-      compras: Compra[];
-      abierto: boolean;
-    }>
-  ) => void;
-  escena: string;
-  setAbrirCita: (
-    e: SetStateAction<Quote | Post | Comment | Mirror | undefined>
-  ) => void;
-  aprobar: () => Promise<void>;
-  cargandoColeccion: boolean;
-  aprobado: boolean;
-  mostrarInteracciones: {
-    tipo: string;
-    id?: string;
-    abierto: boolean;
-  };
-  setMostrarInteracciones: (
-    e: SetStateAction<{
-      tipo: string;
-      id?: string;
-      abierto: boolean;
-    }>
-  ) => void;
-  manejarColeccionar: () => Promise<void>;
-  seguirColeccionar:
-    | {
-        tipo: string;
-        collecionar: {
-          id: string;
-          stats: number;
-          item: SimpleCollectOpenActionSettings;
-        };
-        seguidor: Profile;
-      }
-    | undefined;
-  setSeguirColeccionar: (
-    e: SetStateAction<
-      | {
-          tipo: string;
-          collecionar: {
-            id: string;
-            stats: number;
-            item: SimpleCollectOpenActionSettings;
-          };
-          seguidor: Profile;
-        }
-      | undefined
-    >
-  ) => void;
-  monedasDisponibles: Erc20[];
-  setDrops: (
-    e: SetStateAction<{
-      award: string;
-      whoCollectsOpen: boolean;
-      creatorAwardOpen: boolean;
-      currencyOpen: boolean;
-      editionOpen: boolean;
-      edition: string;
-      timeOpen: boolean;
-      time: string;
-    }>
-  ) => void;
-  drops: {
-    award: string;
-    whoCollectsOpen: boolean;
-    creatorAwardOpen: boolean;
-    currencyOpen: boolean;
-    editionOpen: boolean;
-    edition: string;
-    timeOpen: boolean;
-    time: string;
-  };
-  setErrorInteraccion: (e: SetStateAction<boolean>) => void;
-  setVerImagen: (
-    e: SetStateAction<{
-      abierto: boolean;
-      tipo: string;
-      url: string;
-    }>
-  ) => void;
-  verImagen: {
-    abierto: boolean;
-    tipo: string;
-    url: string;
-  };
-  coleccionActual: Coleccion;
-  setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
-  mensajeCargando: boolean;
-  router: AppRouterInstance;
-  manejarEnviarMensaje: () => Promise<void>;
-  setMensaje: (e: SetStateAction<string>) => void;
-  mensaje: string;
-  gifCargando: boolean;
-  buscarGifs: {
-    search: string;
-    gifs: any[];
-  };
-  setBuscarGifs: (
-    e: SetStateAction<{
-      search: string;
-      gifs: any[];
-    }>
-  ) => void;
-  manejarGif: (e: string) => Promise<void>;
-  setOpcionAbierta: (
-    e: SetStateAction<
-      | {
-          tipo: string;
-          indice: number;
-        }
-      | undefined
-    >
-  ) => void;
-  opcionAbierta:
-    | {
-        tipo: string;
-        indice: number;
-      }
-    | undefined;
-  errorInteraccion: boolean;
-  indexar: Indexar;
-  hacerPublicacion: () => Promise<void>;
-  conectarPub: boolean;
-  comentarPublicar: ComentarPublicar[];
-  setComentarPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
-  mostrarNotificacion: Notificacion;
-  setConectarPub: (e: SetStateAction<boolean>) => void;
-  cargandoConexion: boolean;
-  setPerfilesAbiertos: (e: SetStateAction<boolean[]>) => void;
-  setMencionarPerfiles: (e: SetStateAction<Profile[]>) => void;
-  lensConectado: Profile | undefined;
-  setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void;
-  elementoTexto: RefObject<HTMLTextAreaElement>;
-  descripcion: string;
-  setDescripcion: (e: SetStateAction<string>) => void;
-  caretCoord: { x: number; y: number }[];
-  perfilesAbiertos: boolean[];
-  mencionarPerfiles: Profile[];
-  hacerCita: () => Promise<void>;
-  citaCargando: boolean;
-  citaPublicar: ComentarPublicar[];
-  setCitaPublicar: (e: SetStateAction<ComentarPublicar[]>) => void;
-  setCitaAbierta: (
-    e: SetStateAction<Post | Comment | Quote | Mirror | undefined>
-  ) => void;
-  citaAbierta: Post | Comment | Quote | Mirror | undefined;
-  setCaretCoordCita: (e: SetStateAction<{ x: number; y: number }[]>) => void;
-  mencionarPerfilesCita: Profile[];
-  manejarArchivoCita: (
-    e: ChangeEvent<HTMLInputElement>,
-    tipo: string,
-    indice: number
-  ) => void;
-  setMencionarPerfilesCita: (e: SetStateAction<Profile[]>) => void;
-  setPerfilesAbiertosCita: (e: SetStateAction<boolean[]>) => void;
-  perfilesAbiertosCita: boolean[];
-  caretCoordCita: { x: number; y: number }[];
-  elementoTextoCita: RefObject<HTMLTextAreaElement>;
-};
-
 export type CitaPubProps = {
   hacerCita: () => Promise<void>;
   citaCargando: boolean;
@@ -694,7 +522,7 @@ export type CitaPubProps = {
     indice: number
   ) => void;
   mencionarPerfiles: Profile[];
-  elementoTexto: RefObject<HTMLTextAreaElement>;
+  elementoTexto: MutableRefObject<HTMLTextAreaElement | undefined>;
   setCaretCoord: (
     e: SetStateAction<
       {

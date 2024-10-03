@@ -6,7 +6,7 @@ import useCuenta from "@/components/npc/hooks/useCuenta";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { useParams, useRouter } from "next/navigation";
-import { useContext } from "react";
+import { MutableRefObject, useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { createPublicClient, http } from "viem";
 import { polygon } from "viem/chains";
@@ -70,18 +70,15 @@ export default function NPC({
     isConnected,
     contexto?.setEsArtista!,
     contexto?.setLensConectado!,
-    openAccountModal,
     contexto?.setMostrarNotificacion!,
     address,
     publicClient,
-    dict,
     contexto?.lensConectado,
-    contexto?.oraculos!,
-    contexto?.setOraculos!
+    contexto?.setOraculos!, openAccountModal
   );
 
   if (cuentaCargando) {
-    return <Cargando />;
+    return <Cargando continua />;
   }
 
   return (
@@ -252,7 +249,7 @@ export default function NPC({
                     0,
                     contexto?.lensConectado,
                     setCaretCoord,
-                    elementoTexto
+                    elementoTexto as MutableRefObject<HTMLTextAreaElement | undefined>
                   );
                 }}
                 ref={elementoTexto as any}

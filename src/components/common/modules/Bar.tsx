@@ -134,26 +134,24 @@ const Bar: FunctionComponent<BarProps> = ({
                   </div>
                 )}
               </div>
-              {image[1] !== dict.Home.espectador && (
-                <div
-                  className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
-                    stats[indexTwo] > 0 && "cursor-pointer active:scale-95"
-                  }`}
-                  onClick={() =>
-                    stats[indexTwo] > 0 &&
-                    setMostrarInteracciones({
-                      abierto: true,
-                      tipo: image[1],
-                      id: (elemento?.__typename == "Mirror"
-                        ? elemento?.mirrorOn
-                        : (elemento as Post)
-                      )?.id,
-                    })
-                  }
-                >
-                  {numeral(stats[indexTwo]).format("0a")}
-                </div>
-              )}
+              <div
+                className={`relative w-fit h-fit flex items-center justify-center text-center text-sm whitespace-nowrap ${
+                  stats[indexTwo] > 0 && "cursor-pointer active:scale-95"
+                }`}
+                onClick={() =>
+                  stats[indexTwo] > 0 &&
+                  setMostrarInteracciones({
+                    abierto: true,
+                    tipo: image[1],
+                    id: (elemento?.__typename == "Mirror"
+                      ? elemento?.mirrorOn
+                      : (elemento as Post)
+                    )?.id,
+                  })
+                }
+              >
+                {numeral(stats[indexTwo]).format("0a")}
+              </div>
             </div>
           );
         })}
@@ -216,7 +214,10 @@ const Bar: FunctionComponent<BarProps> = ({
           className="relative flex items-center justify-center rounded-full w-5 h-5 cursor-pointer border border-white bg-black"
           id="pfp"
           title={dict.Home.Perfil}
-          onClick={() => setMostrarPerfil(elemento?.by?.id)}
+          onClick={() => setMostrarPerfil((elemento?.__typename === "Mirror"
+            ? elemento?.mirrorOn
+            : (elemento as Post)
+          )?.by?.id)}
         >
           {profilePicture && (
             <Image

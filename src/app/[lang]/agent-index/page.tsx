@@ -6,6 +6,6 @@ export default async function AgentIndex({
 }: {
   params: { lang: string };
 }) {
-  const dict = await getDictionary(lang);
+  const dict = await (getDictionary as  (locale: any) => Promise<any>)(lang);
   return <Agents dict={dict} lang={lang} />;
 }

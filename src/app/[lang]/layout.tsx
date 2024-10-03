@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Footer from "./../../components/layout/modules/Footer";
 import Providers from "../providers";
 import Cargando from "@/components/common/modules/Cargando";
+import Modals from "@/components/layout/modules/modals";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.npcstudio.xyz"),
@@ -50,9 +51,10 @@ export default function RootLayout({
     <html lang={params.lang}>
       <body>
         <Providers>
-          <Cargando />
+          <Cargando continua={false} />
           {children}
           <Footer />
+          <Modals lang={params.lang} />
         </Providers>
       </body>
     </html>

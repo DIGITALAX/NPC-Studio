@@ -476,8 +476,27 @@ export enum Movimiento {
 
 export type Dictionary = {
   Home: {
+    datos: string;
     espect: string;
+    raw: string;
+    transformed: string;
+    descargar: string;
+    pca1: string;
+    tokenizer: string;
+    pca2: string;
+    pca3: string;
+    num: string;
+    pca4: string;
+    modelo: string;
+    pca5: string;
+    pca6: string;
+    inputs: string;
+    outputs: string;
+    respuesta: string;
+    prompt: string;
     Quote: string;
+    nodatos: string;
+    espectar: string;
     title: string;
     frase1: string;
     rango: string;
@@ -491,8 +510,11 @@ export type Dictionary = {
     amigos: string;
     indice: string;
     charla: string;
+    eval: string;
+    hold: string;
     espectador: string;
     Collect: string;
+    addic: string;
     Perfil: string;
     Comments: string;
     Mirrors: string;

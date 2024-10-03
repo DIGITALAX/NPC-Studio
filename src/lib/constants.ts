@@ -41,7 +41,7 @@ export const IDIOMAS: { cover: string; key: string; title: string }[] = [
 ];
 
 export const LENS_HUB_PROXY: `0x${string}` =
-  "0xA2574D9DdB6A325Ad2Be838Bd854228B80215148";
+  "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d";
 
 export const AUTOGRAPH_DATA: `0x${string}` =
   "0xd52dA212D5C7Ec8f7Bb3594372530b19f3e5f37E";

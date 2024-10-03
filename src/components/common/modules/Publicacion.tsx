@@ -12,7 +12,7 @@ import TiposPublicaciones from "./TiposPublicaciones";
 import Cita from "./Cita";
 import Bar from "./Bar";
 import Comentario from "./Comentario";
-import { useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import { PiArrowSquareInBold } from "react-icons/pi";
 
 function Publicacion({
@@ -31,6 +31,7 @@ function Publicacion({
   setOpcionAbierta,
   manejarMeGusta,
   manejarMirror,
+  sin,
   manejarColeccionar,
   setSeguirColeccionar,
   setPerfilesAbiertos,
@@ -113,21 +114,23 @@ function Publicacion({
               moment(`${publicacion?.createdAt}`).fromNow()}
           </div>
         </div>
-        <div
-          className="relative cursor-pointer active:scale-95 items-center justify-end w-fit h-fit flex items-center justify-center"
-          onClick={() =>
-            router.push(
-              `/post/${
-                publicacion?.__typename === "Mirror"
-                  ? publicacion?.mirrorOn?.id
-                  : publicacion?.id
-              }`
-            )
-          }
-          title={dict.Home.espectador}
-        >
-          <PiArrowSquareInBold size={15} color="white" />
-        </div>
+        {!sin && (
+          <div
+            className="relative cursor-pointer active:scale-95 items-center justify-end w-fit h-fit flex items-center justify-center"
+            onClick={() =>
+              router.push(
+                `/post/${
+                  publicacion?.__typename === "Mirror"
+                    ? publicacion?.mirrorOn?.id
+                    : publicacion?.id
+                }`
+              )
+            }
+            title={dict.Home.espectar}
+          >
+            <PiArrowSquareInBold size={15} color="white" />
+          </div>
+        )}
       </div>
       <TiposPublicaciones elemento={publicacion} setVerImagen={setVerImagen} />
       {publicacion?.__typename === "Quote" && (
@@ -165,7 +168,7 @@ function Publicacion({
           setPerfilesAbiertos={setPerfilesAbiertos}
           setMencionarPerfiles={setMencionarPerfiles}
           indice={indice}
-          elementoTexto={elementoTexto}
+          elementoTexto={elementoTexto as any}
           lensConectado={lensConectado}
           publicacionCargando={publicacionCargando}
           manejarPublicar={manejarPublicar}

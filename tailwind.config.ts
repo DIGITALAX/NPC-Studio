@@ -42,6 +42,10 @@ const config: Config = {
         limon: "#A9FDCA",
         crema: "#F3EFE6",
         zana: "#FF8B07",
+        ami: "#FFD700",
+        prima: "#00FFCC",
+        triste: "#F9F7F7",
+        rosas: "#FF9AFF"
       },
       fontSize: {
         xxs: "0.6rem",
@@ -71,7 +75,6 @@ const config: Config = {
       screens: {
         tab: "800px",
         "1xl": "1460px",
-        
       },
     },
   },

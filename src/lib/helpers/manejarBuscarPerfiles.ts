@@ -1,4 +1,4 @@
-import { ChangeEvent, RefObject, SetStateAction } from "react";
+import { ChangeEvent, MutableRefObject, RefObject, SetStateAction } from "react";
 import { LimitType, Profile } from "../../../graphql/generated";
 import getCaretPos from "./getCaretCoord";
 import searchProfiles from "../../../graphql/lens/queries/searchProfiles";
@@ -10,7 +10,7 @@ const manejarBuscarPerfiles = async (
   index: number,
   lensConectado: Profile | undefined,
   setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void,
-  textElement: RefObject<HTMLTextAreaElement>
+  textElement: MutableRefObject<HTMLTextAreaElement | undefined>
 ): Promise<void> => {
   try {
     if (
