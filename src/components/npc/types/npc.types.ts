@@ -59,4 +59,5 @@ export type FeedProps = {
   openConnectModal: (() => void) | undefined;
   manejarLens: () => Promise<void>;
   router: AppRouterInstance;
+  escondido?: boolean;
 };

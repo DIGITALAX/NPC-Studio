@@ -19,6 +19,7 @@ import useEspectador from "@/components/post/hooks/useEspectador";
 import { AiOutlineLoading } from "react-icons/ai";
 import { Post as PostType } from "../../../../graphql/generated";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
+import Ticker from "@/components/common/modules/Ticker";
 
 export default function Post({
   lang,
@@ -39,7 +40,7 @@ export default function Post({
     ),
   });
   const id = useParams();
-  const { pubCargando, pub, setPub, atributos } = usePub(
+  const { pubCargando, pub, setPub, atributos, pantalla } = usePub(
     id?.id as string,
     contexto?.lensConectado,
     contexto?.setEscenas!,
@@ -125,105 +126,17 @@ export default function Post({
             draggable={false}
           />
         </div>
-        <div className="relative w-full h-8 h-auto lg:w-32 flex overflow-hidden border-2 border-white bg-turq text-white text-lg font-clar shrink-0">
+        <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
           <div className="absolute w-full h-full top-0 left-0 flex">
-            <VerticalTicker duration={40000}>
-              <div className="flex flex-col items-center justify-start relative gap-72 overflow-hidden h-auto">
-                {[
-                  {
-                    titulo: "K_MEANS",
-                    valor: atributos?.mensaje?.k_means_respuesta,
-                  },
-
-                  {
-                    titulo: "V_MEANS",
-                    valor: atributos?.mensaje?.v_means_respuesta,
-                  },
-                  {
-                    titulo: "K_MAX",
-                    valor: atributos?.mensaje?.key_maxs_respuesta,
-                  },
-                  {
-                    titulo: "V_MAX",
-                    valor: atributos?.mensaje?.value_maxs_respuesta,
-                  },
-                  {
-                    titulo: "K_MIN",
-                    valor: atributos?.mensaje?.key_mins_respuesta,
-                  },
-                  {
-                    titulo: "V_MIN",
-                    valor: atributos?.mensaje?.value_mins_respuesta,
-                  },
-                  {
-                    titulo: "K_ST_D",
-                    valor: atributos?.mensaje?.key_std_devs_respuesta,
-                  },
-                  {
-                    titulo: "V_ST_D",
-                    valor: atributos?.mensaje?.value_std_devs_respuesta,
-                  },
-                  {
-                    titulo: "TOKEN_MEANS",
-                    valor: atributos?.mensaje?.token_means_respuesta,
-                  },
-                  {
-                    titulo: "FFN_INP_MAX",
-                    valor: atributos?.mensaje?.ffn_inp_maxs,
-                  },
-                  {
-                    titulo: "FFN_INP_MIN",
-                    valor: atributos?.mensaje?.ffn_inp_mins,
-                  },
-                  {
-                    titulo: "FFN_INP_MEANS",
-                    valor: atributos?.mensaje?.ffn_inp_means,
-                  },
-                  {
-                    titulo: "FFN_INP_ST_D",
-                    valor: atributos?.mensaje?.ffn_inp_std_devs,
-                  },
-                  {
-                    titulo: "FFN_OUT_MAX",
-                    valor: atributos?.mensaje?.ffn_out_maxs,
-                  },
-                  {
-                    titulo: "FFN_OUT_MIN",
-                    valor: atributos?.mensaje?.ffn_out_mins,
-                  },
-                  {
-                    titulo: "FFN_OUT_MEANS",
-                    valor: atributos?.mensaje?.ffn_out_means,
-                  },
-                  {
-                    titulo: "FFN_OUT_ST_D",
-                    valor: atributos?.mensaje?.ffn_out_std_devs,
-                  },
-                ]?.map(
-                  (
-                    elemento: {
-                      titulo: string;
-                      valor: number | undefined;
-                    },
-                    indice: number
-                  ) => {
-                    return (
-                      <div
-                        key={indice}
-                        className="relative w-fit h-fit flex rotate-90 items-center justify-center flex-row gap-12 overflow-hidden"
-                      >
-                        <div className="relative w-fit h-fit flex items-center justify-center text-limon">
-                          {elemento.titulo}
-                        </div>
-                        <div className="relative w-fit h-fit flex items-center justify-center pr-10">
-                          {elemento.valor || 0.0}
-                        </div>
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-            </VerticalTicker>
+            {pantalla ? (
+              <VerticalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </VerticalTicker>
+            ) : (
+              <HorizontalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </HorizontalTicker>
+            )}
           </div>
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-2 sm:p-4 md:p-8 grow">

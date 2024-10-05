@@ -128,6 +128,7 @@
     "espectador": "Espectador",
     "espect": "ESPECTADOR",
     "espectar": "ESPECTAR",
+    "espectar2": "Espectar",
     "charla": "Charlar",
     "rango": "RANGO",
     "amigos": "Amigos",
@@ -161,7 +162,17 @@
     "num": "Conteo de Tokens",
     "modelo": "Modelo",
     "tokenizer": "Tokenizador",
-    "descargar": "Descargar Todos Los Datos"
+    "descargar": "Descargar Todos Los Datos",
+    "mostrarMas": "Mostrar Más",
+    "mostrarMenos": "Mostrar Menos",
+    "auEarned": "AU Ganado",
+    "activeJobs": "Trabajos Activos",
+    "currentScore": "Puntaje Actual",
+    "rentPaid": "Alquiler pagado",
+    "chatNpc": "Chat del NPC",
+    "eval2": "Evaluar al NPC",
+    "npcDetalles": "Detalles del NPC",
+    "escenasActivas": "Escenas Activas"
   },
   "Nav": {
     "lan": "Elija Idioma"

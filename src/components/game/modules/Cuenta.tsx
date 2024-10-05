@@ -58,7 +58,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
               }
             >
               <div className="relative w-fit h-fit flex items-center justify-center">
-                {dict.Home.espectador}
+                {dict.Home.espectar2}
               </div>
               {/* <Image
                 draggable={false}

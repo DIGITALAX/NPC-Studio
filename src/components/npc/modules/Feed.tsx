@@ -22,7 +22,8 @@ const Feed: FunctionComponent<FeedProps> = ({
   setIndexar,
   openConnectModal,
   manejarLens,
-  router
+  router,
+  escondido
 }): JSX.Element => {
   const {
     feedActual,
@@ -126,25 +127,27 @@ const Feed: FunctionComponent<FeedProps> = ({
               )}
         </InfiniteScroll>
       </div>
-      <Comentario
-        setMostrarPerfil={setMostrarPerfil}
-        setOpcionAbierta={setOpcionAbierta}
-        elementoTexto={elementoTexto as any}
-        caretCoord={caretCoord}
-        setCaretCoord={setCaretCoord}
-        setPerfilesAbiertos={setPerfilesAbiertos}
-        setMencionarPerfiles={setMencionarPerfiles}
-        indice={0}
-        lensConectado={lensConectado}
-        publicacionCargando={publicacionCargando[0]}
-        manejarPublicar={manejarPublicar}
-        dict={dict}
-        mencionarPerfiles={mencionarPerfiles}
-        perfilesAbiertos={perfilesAbiertos}
-        comentarPublicar={comentarPublicar}
-        setComentarPublicar={setComentarPublicar}
-        manejarArchivo={manejarArchivo}
-      />
+      {!escondido && (
+        <Comentario
+          setMostrarPerfil={setMostrarPerfil}
+          setOpcionAbierta={setOpcionAbierta}
+          elementoTexto={elementoTexto as any}
+          caretCoord={caretCoord}
+          setCaretCoord={setCaretCoord}
+          setPerfilesAbiertos={setPerfilesAbiertos}
+          setMencionarPerfiles={setMencionarPerfiles}
+          indice={0}
+          lensConectado={lensConectado}
+          publicacionCargando={publicacionCargando[0]}
+          manejarPublicar={manejarPublicar}
+          dict={dict}
+          mencionarPerfiles={mencionarPerfiles}
+          perfilesAbiertos={perfilesAbiertos}
+          comentarPublicar={comentarPublicar}
+          setComentarPublicar={setComentarPublicar}
+          manejarArchivo={manejarArchivo}
+        />
+      )}
     </div>
   );
 };

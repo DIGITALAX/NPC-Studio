@@ -9,6 +9,13 @@ const Cambio: FunctionComponent<CambioProps> = ({
   pantallaCambio,
   lang,
   dict,
+  todosLosNPCs,
+  router,
+  setMostrarMas,
+  mostrarMas,
+  npcsCargando,
+  informacion,
+  escenas
 }): JSX.Element => {
   switch (pantallaCambio) {
     case Pantalla.Desafiante:
@@ -121,7 +128,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     </div>
                   </div>
                 </div>
-                <div className="relative w-full h-full flex items-center justify-center border-4 p-3 flex-col gap-3 rounded-md border-[#FFFF6E]">
+                <div className="relative w-full h-full flex items-center justify-center border-4 p-3 flex-col gap-3 rounded-md border-sol">
                   <div className="relative w-full h-20 flex border bg-[#00FFFF]/60 border-[#6FFA95] flex-row items-center justify-between p-1 gap-3 text-[#F6FC8D] font-super text-lg">
                     <div className="relative w-fit h-fit items-center justify-start">
                       $AU
@@ -430,7 +437,16 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 algo de texto
               </div>
             </div>
-            <Agentes />
+            <Agentes
+              router={router}
+              mostrarMas={mostrarMas}
+              setMostrarMas={setMostrarMas}
+              todosLosNPCs={todosLosNPCs}
+              dict={dict}
+              npcsCargando={npcsCargando}
+              informacion={informacion}
+              escenas={escenas}
+            />
           </div>
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}

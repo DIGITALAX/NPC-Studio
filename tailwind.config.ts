@@ -46,6 +46,7 @@ const config: Config = {
         prima: "#00FFCC",
         triste: "#F9F7F7",
         rosas: "#FF9AFF",
+        sol: "#FFFF6E",
       },
       fontSize: {
         xxs: "0.6rem",
@@ -76,7 +77,6 @@ const config: Config = {
         tab: "800px",
         "1xl": "1460px",
       },
-   
     },
   },
   plugins: [],

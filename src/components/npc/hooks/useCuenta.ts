@@ -2,13 +2,7 @@ import lensSeguir from "@/lib/helpers/lensSeguir";
 import { SetStateAction, useEffect, useState } from "react";
 import { createWalletClient, custom, PublicClient } from "viem";
 import { polygon } from "viem/chains";
-import {
-  Profile,
-  Quote,
-  Comment,
-  Post,
-  Mirror,
-} from "../../../../graphql/generated";
+import { Profile } from "../../../../graphql/generated";
 import { Indexar } from "@/components/common/types/common.types";
 import { Escena, Sprite } from "@/components/game/types/game.types";
 import getProfile from "../../../../graphql/lens/queries/profile";
@@ -18,22 +12,15 @@ const useCuenta = (
   lensConectado: Profile | undefined,
   publicClient: PublicClient,
   setIndexar: (e: SetStateAction<Indexar>) => void,
-  setErrorInteraccion: (e: SetStateAction<boolean>) => void
+  setErrorInteraccion: (e: SetStateAction<boolean>) => void,
+  setEscenas: (e: SetStateAction<Escena[]>) => void,
+  escenas: Escena[]
 ) => {
   const [cuentaCargando, setCuentaCargando] = useState<boolean>(true);
   const [seguirCargando, setSeguirCargando] = useState<boolean>(false);
   const [perfil, setPerfil] = useState<Profile | undefined>();
   const [npc, setNPC] = useState<Sprite | undefined>();
-  const [feed, setFeed] = useState<(Post | Comment | Quote | Mirror)[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [escenas, setEscenas] = useState<Escena[]>([]);
-  const [detalles, setDetalles] = useState<{
-    tieneMas: boolean;
-    cursor: string | undefined;
-  }>({
-    tieneMas: true,
-    cursor: undefined,
-  });
 
   const seguirNpc = async () => {
     setSeguirCargando(true);
@@ -140,9 +127,9 @@ const useCuenta = (
   useEffect(() => {
     if (!socket && handle) {
       const newSocket = new WebSocket(
-        // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+         // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
 
-        `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+         `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
 
       setSocket(newSocket);
@@ -195,7 +182,6 @@ const useCuenta = (
     cuentaCargando,
     perfil,
     npc,
-    detalles,
     dejarNpc,
     seguirCargando,
     seguirNpc,

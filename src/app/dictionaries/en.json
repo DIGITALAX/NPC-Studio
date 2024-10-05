@@ -127,6 +127,7 @@
     "faq": "All clothing items are  manufactured in New York through <a href='https://www.themanufactory.xyz/'>the manufactory network</a> using sustainable materials while supporting local print shops and creators.\n\nAll orders are shipped expressed, domestic and international. Shipping can take up to 7-14 business days for US domestic delivery and more than 14-21 business days for international delivery. If there are any issues with your shipment, including export restrictions, you will be notified via your account page under order status.\n\nIf you are unsatisfied with your purchase for any reason, you can return eligible items within 30 days of confirmed delivery for a full refund. Please reach out through Lens XMTP secure on-chain messaging to initiate the process. Once received, we will inspect the items and process your refund within 4-5 business days. Refunds are issued to your wallet. If you experience any problems with your order, feel free to reach out via our social media channels for assistance.",
     "espectador": "Spectate",
     "espectar": "SPECTATE",
+    "espectar2": "Spectate",
     "rango": "RANK",
     "espect": "SPECTATOR",
     "charla": "Chat",
@@ -161,7 +162,17 @@
     "num": "Number of Tokens",
     "modelo": "Model",
     "tokenizer": "Tokenizer",
-    "descargar": "Download All Data"
+    "descargar": "Download All Data",
+    "mostrarMas": "Show More",
+    "mostrarMenos": "Show Less",
+    "auEarned": "AU Earned",
+    "activeJobs": "Active Jobs",
+    "currentScore": "Current Score",
+    "rentPaid": "Rent Paid",
+    "chatNpc": "NPC Chat",
+    "eval2": "Rate NPC",
+    "npcDetalles": "NPC Details",
+    "escenasActivas": "Active Scenes"
   },
   "Nav": {
     "lan": "Choose Language"

@@ -5,6 +5,11 @@ import { Dictionary } from "@/components/game/types/game.types";
 import Cambio from "@/components/agentes/modules/Cambio";
 import useAgentes from "@/components/agentes/hooks/useAgentes";
 import { Pantalla } from "@/components/agentes/types/agentes.types";
+import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
+import { ModalContext } from "@/app/providers";
+import { useContext } from "react";
+import Ticker from "@/components/common/modules/Ticker";
+import { useRouter } from "next/navigation";
 
 export default function Agents({
   lang,
@@ -13,7 +18,23 @@ export default function Agents({
   lang: string;
   dict: Dictionary;
 }) {
-  const { pantallaCambio, setPantallaCambio } = useAgentes();
+  const router = useRouter();
+  const contexto = useContext(ModalContext);
+  const {
+    pantallaCambio,
+    setPantallaCambio,
+    atributos,
+    pantalla,
+    todosLosNPCs,
+    mostrarMas,
+    setMostrarMas,
+    npcsCargando,
+    informacion,
+  } = useAgentes(
+    contexto?.lensConectado,
+    contexto?.setEscenas!,
+    contexto?.escenas!
+  );
 
   return (
     <div className="relative w-full h-fit min-w-screen flex items-start justify-start min-h-screen bg-black pb-14 flex-col">
@@ -26,8 +47,18 @@ export default function Agents({
             draggable={false}
           />
         </div>
-        <div className="relative  w-full h-8 lg:h-auto lg:w-32 shrink-0 flex border-y-2 lg:border-x-2 border-white bg-turq text-white text-lg font-clar">
-          <div className="relative lg:rotate-90 w-fit h-fit">palabras</div>
+        <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
+          <div className="absolute w-full h-full top-0 left-0 flex">
+            {pantalla ? (
+              <VerticalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </VerticalTicker>
+            ) : (
+              <HorizontalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </HorizontalTicker>
+            )}
+          </div>
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 lg:pl-10 pr-1 pl-1 lg:pr-3 py-2 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
@@ -156,7 +187,18 @@ export default function Agents({
               draggable={false}
             />
           </div>
-          <Cambio pantallaCambio={pantallaCambio} lang={lang} dict={dict} />
+          <Cambio
+            todosLosNPCs={todosLosNPCs}
+            pantallaCambio={pantallaCambio}
+            lang={lang}
+            dict={dict}
+            router={router}
+            setMostrarMas={setMostrarMas}
+            mostrarMas={mostrarMas}
+            npcsCargando={npcsCargando}
+            informacion={informacion}
+            escenas={contexto?.escenas!}
+          />
         </div>
       </div>
     </div>
