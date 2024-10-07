@@ -476,6 +476,20 @@ export enum Movimiento {
 
 export type Dictionary = {
   Home: {
+    chatContexto: string;
+    training: string;
+    lora: string;
+    completedJobs: string;
+    spriteSheet: string;
+    personalidad: string;
+    appearance: string;
+    historia: string;
+    estilo: string;
+    incon: string;
+    ad: string;
+    imp: string;
+    media: string;
+    global: string;
     datos: string;
     espectar2: string;
     npcDetalles: string;

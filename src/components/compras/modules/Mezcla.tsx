@@ -258,6 +258,7 @@ const Mezcla: FunctionComponent<MezclaProps> = ({
                 value={
                   (articuloSeleccionado?.[0]?.elemento as MezclaTipo)?.maximo
                 }
+                id="range1"
               />
             </div>
           )}

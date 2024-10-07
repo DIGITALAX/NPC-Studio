@@ -168,11 +168,25 @@
     "auEarned": "AU Ganado",
     "activeJobs": "Trabajos Activos",
     "currentScore": "Puntaje Actual",
-    "rentPaid": "Alquiler pagado",
+    "rentPaid": "Alquiler Pagado",
     "chatNpc": "Chat del NPC",
     "eval2": "Evaluar al NPC",
     "npcDetalles": "Detalles del NPC",
-    "escenasActivas": "Escenas Activas"
+    "escenasActivas": "Escenas Activas",
+    "chatContexto": "Contexto del Chat",
+    "personalidad": "Personalidad",
+    "estilo": "Estilo de la Respuesta",
+    "media": "Medios Adjuntos",
+    "global": "Puntaje Global",
+    "incon": "inconsistente",
+    "ad": "adecuado",
+    "imp": "impresionante",
+    "historia": "Historia",
+    "appearance": "Apariencia",
+    "training": "Entrenamiento",
+    "lora": "LoRA",
+    "completedJobs": "Trabajos Completados",
+    "spriteSheet": "Hoja de Sprites"
   },
   "Nav": {
     "lan": "Elija Idioma"

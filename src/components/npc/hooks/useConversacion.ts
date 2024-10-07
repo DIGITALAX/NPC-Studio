@@ -15,6 +15,7 @@ import getPublications from "../../../../graphql/lens/queries/publications";
 import { manejarJSON } from "@/lib/helpers/manejarJSON";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { Info } from "@/components/agentes/types/agentes.types";
+import { NPCVote } from "../types/npc.types";
 
 const useConversacion = (
   publicClient: PublicClient,
@@ -38,7 +39,32 @@ const useConversacion = (
   const [cargandoConexion, setCargandoConexion] = useState<boolean>(false);
   const [atributos, setAtributos] = useState<Atributos | undefined>();
   const [informacion, setInformacion] = useState<Info>();
+  const [votarCargando, setVotarCargando] = useState<boolean>(false);
+  const [npcVotar, setNPCVotar] = useState<NPCVote>({
+    comment: "",
+    model: 50,
+    chatContext: 50,
+    personality: 50,
+    appearance: 50,
+    scene: 50,
+    spriteSheet: 50,
+    style: 50,
+    tokenizer: 50,
+    training: 50,
+    lora: 50,
+    completedJobs: 50,
+    global: 50,
+  });
 
+  const manejarVotar = async () => {
+    setVotarCargando(true);
+    try {
+      // como una cita :)
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setVotarCargando(false);
+  };
   const hacerPublicacion = async (): Promise<void> => {
     setCargandoConexion(true);
 
@@ -196,6 +222,10 @@ const useConversacion = (
     pantalla,
     atributos,
     informacion,
+    manejarVotar,
+    npcVotar,
+    setNPCVotar,
+    votarCargando,
   };
 };
 

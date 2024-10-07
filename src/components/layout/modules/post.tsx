@@ -20,6 +20,8 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { Post as PostType } from "../../../../graphql/generated";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 import Ticker from "@/components/common/modules/Ticker";
+import Evaluacion from "@/components/post/modules/Evaluacion";
+import Historia from "@/components/post/modules/Historia";
 
 export default function Post({
   lang,
@@ -103,7 +105,7 @@ export default function Post({
     manejarLens,
     contexto?.lensConectado
   );
-  const { handleVotar, votarCargando, votarTipo, setVotarTipo } =
+  const { manejarVotar, votarCargando, pubVotar, setPubVotar } =
     useEspectador();
   if (
     pubCargando ||
@@ -211,7 +213,7 @@ export default function Post({
                 manejarArchivo={manejarArchivo}
               />
             </div>
-            <div className="relative w-full md:w-2/3 flex items-start justify-center h-fit flex-col gap-2">
+            <div className="relative w-full flex items-start justify-center h-fit flex-col gap-2">
               <div className="text-white text-sm font-lib flex items-center justify-center">
                 {dict.Home.eval}
               </div>
@@ -224,65 +226,20 @@ export default function Post({
                     $MONA, Genesis, PODE, DIGITALAX NFTs
                   </div>
                 </div>
-                <div className="relative w-full h-fit flex items-center justify-start flex-row gap-4 pt-5">
-                  <div
-                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95 ${
-                      votarTipo == 1 && "opacity-60"
-                    } `}
-                    onClick={() => setVotarTipo(1)}
-                  >
-                    <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmWTi8TRReCgAeT2zTUa5EtL4kspRtrRz3gonSCaS7aVW7`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
-                      draggable={false}
-                    />
-                  </div>
-                  <div
-                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95 ${
-                      votarTipo == 2 && "opacity-60"
-                    } `}
-                    onClick={() => setVotarTipo(2)}
-                  >
-                    <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmQYjyM3Syqr1dxtzR1esE6iuLmo8At2NzodVxydBgaweX`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
-                      draggable={false}
-                    />
-                  </div>
-                </div>
-                <div className="relative w-full h-fit items-start justify-center flex flex-col gap-3">
-                  <div className="relative w-fit h-fit flex items-start justify-center font-lib text-white text-xxs">
-                    {dict.Home.addic}
-                  </div>
-                  <div className="relative w-full md:w-1/2 h-32 flex items-center justify-center rounded-md border border-azulito">
-                    <textarea
-                      className="bg-black p-1 w-full h-full flex text-white font-lib text-sm rounded-md"
-                      style={{
-                        resize: "none",
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={`relative flex items-center justify-center rounded-md border border-azulito w-20 h-8 bg-viol px-2 py-1 font-lib text-xs text-white cursor-pointer active:scale-95`}
-                  >
-                    <div
-                      className={`${
-                        votarCargando && "animate-spin"
-                      } flex items-center justify-center w-fit h-fit flex`}
-                    >
-                      {votarCargando ? (
-                        <AiOutlineLoading size={15} color={"white"} />
-                      ) : (
-                        dict.Home.send
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <Evaluacion
+                  dict={dict}
+                  manejarVotar={manejarVotar}
+                  votarCargando={votarCargando}
+                  pubVotar={pubVotar}
+                  setPubVotar={setPubVotar}
+                />
               </div>
+            </div>
+            <div className="relative w-full flex items-start justify-center h-fit flex-col gap-2">
+              <div className="text-white text-sm font-lib flex items-center justify-center">
+                {dict.Home.historia}
+              </div>
+              <Historia />
             </div>
             <div className="relative w-full h-fit flex items-center justify-start flex-col gap-3">
               <div className="relative w-full h-fit flex items-start justify-start font-lib text-2xl text-white">

@@ -47,6 +47,11 @@ const config: Config = {
         triste: "#F9F7F7",
         rosas: "#FF9AFF",
         sol: "#FFFF6E",
+        nubes: "#FFAA00",
+        rayas: "#F6FC8D",
+        jardin: "#0485FD",
+        fresas: "#DF5B70",
+        vapor: "#D8D8D8",
       },
       fontSize: {
         xxs: "0.6rem",

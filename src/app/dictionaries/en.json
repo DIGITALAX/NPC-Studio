@@ -172,7 +172,21 @@
     "chatNpc": "NPC Chat",
     "eval2": "Rate NPC",
     "npcDetalles": "NPC Details",
-    "escenasActivas": "Active Scenes"
+    "escenasActivas": "Active Scenes",
+    "chatContexto": "Chat Context",
+    "personalidad": "Personality",
+    "estilo": "Response Style",
+    "media": "Attached Media",
+    "global": "Global Score",
+    "incon": "inconsistent",
+    "ad": "adecuate",
+    "imp": "impressive",
+    "historia": "History",
+    "appearance": "Appearance",
+    "training": "Training",
+    "lora": "LoRA",
+    "completedJobs": "Completed Jobs",
+    "spriteSheet": "Sprite Sheet"
   },
   "Nav": {
     "lan": "Choose Language"

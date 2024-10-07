@@ -61,3 +61,27 @@ export type FeedProps = {
   router: AppRouterInstance;
   escondido?: boolean;
 };
+
+export type EvaluacionProps = {
+  dict: Dictionary;
+  votarCargando: boolean;
+  manejarVotar: () => Promise<void>;
+  npcVotar: NPCVote;
+  setNPCVotar: (e: SetStateAction<NPCVote>) => void;
+};
+
+export interface NPCVote {
+  comment: string;
+  model: number;
+  scene: number;
+  chatContext: number;
+  appearance: number;
+  personality: number;
+  training: number;
+  style: number;
+  lora: number;
+  completedJobs: number;
+  spriteSheet: number;
+  tokenizer: number;
+  global: number;
+}

@@ -1,10 +1,21 @@
 import { useState } from "react";
+import { PubVote } from "../types/post.types";
 
 const useEspectador = () => {
   const [votarCargando, setVotarCargando] = useState<boolean>(false);
-  const [votarTipo, setVotarTipo] = useState<number>(0);
+  const [pubVotar, setPubVotar] = useState<PubVote>({
+    comment: "",
+    model: 50,
+    chatContext: 50,
+    prompt: 50,
+    personality: 50,
+    style: 50,
+    media: 50,
+    tokenizer: 50,
+    global: 50,
+  });
 
-  const handleVotar = async () => {
+  const manejarVotar = async () => {
     setVotarCargando(true);
     try {
       // como una cita :)
@@ -16,9 +27,9 @@ const useEspectador = () => {
 
   return {
     votarCargando,
-    handleVotar,
-    votarTipo,
-    setVotarTipo,
+    manejarVotar,
+    pubVotar,
+    setPubVotar,
   };
 };
 

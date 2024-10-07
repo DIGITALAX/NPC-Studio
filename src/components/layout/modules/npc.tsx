@@ -6,21 +6,19 @@ import useCuenta from "@/components/npc/hooks/useCuenta";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { useParams, useRouter } from "next/navigation";
-import { MutableRefObject, useContext } from "react";
+import { useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { createPublicClient, http } from "viem";
 import { polygon } from "viem/chains";
 import { useAccount } from "wagmi";
-import { Profile } from "../../../../graphql/generated";
 import { GiWorld } from "react-icons/gi";
-import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import useConversacion from "@/components/npc/hooks/useConversacion";
-import manejarBuscarPerfiles from "@/lib/helpers/manejarBuscarPerfiles";
 import Feed from "@/components/npc/modules/Feed";
 import useAccountPropia from "@/components/game/hooks/useAccount";
 import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import Ticker from "@/components/common/modules/Ticker";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
+import Evaluacion from "@/components/npc/modules/Evaluacion";
 
 export default function NPC({
   lang,
@@ -53,20 +51,13 @@ export default function NPC({
     );
 
   const {
-    descripcion,
-    caretCoord,
-    setCaretCoord,
-    setMencionarPerfiles,
-    setDescripcion,
-    elementoTexto,
-    mencionarPerfiles,
-    perfilesAbiertos,
-    setPerfilesAbiertos,
-    hacerPublicacion,
-    cargandoConexion,
     pantalla,
     atributos,
     informacion,
+    manejarVotar,
+    npcVotar,
+    setNPCVotar,
+    votarCargando,
   } = useConversacion(
     publicClient,
     contexto?.setIndexar!,
@@ -118,7 +109,12 @@ export default function NPC({
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-3 sm:p-8 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
             <div
-              className={`text-white font-lib relative w-full h-fit flex items-start justify-start text-[8vw] 1xl:text-[10vw] overflow-x-hidden`}
+              className={`text-white font-lib relative w-full h-fit flex items-start justify-start overflow-x-hidden break-all ${
+                Number(perfil?.handle?.suggestedFormatted?.localName?.length) >
+                8
+                  ? "text-[4vw] 1xl:text-[7vw]"
+                  : "text-[8vw] 1xl:text-[10vw]"
+              }`}
             >
               {perfil?.handle?.suggestedFormatted?.localName}
             </div>
@@ -294,179 +290,64 @@ export default function NPC({
               <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
             </div>
           </div>
-          <div className="relative w-full h-fit flex lg:flex-row flex-col justify-between gap-6">
-            <div className="relative w-full flex items-start justify-center h-fit flex-col gap-2 pt-10">
-              <div className="text-white text-2xl font-lib flex items-center justify-center">
-                {dict.Home.eval2}
-              </div>
-              <div className="relative w-full h-fit flex flex-col justify-between items-center gap-6">
-                <div className="relative w-full h-fit flex items-start justify-center flex-col">
-                  <div className="relative w-fit h-fit flex items-center justify-center text-xs font-lib text-[#F6FC8D]">
-                    {dict.Home.hold}
+          <div className="relative w-full h-fit flex items-stretch justify-between flex-col gap-6">
+            <div className="relative w-full h-fit flex flex-col gap-2">
+              <div className="relative w-full h-fit flex flex-row justify-between items-center">
+                <div className="relative w-fit h-fit flex flex-col gap-1 font-lib text-white text-base">
+                  <div className="relative w-fit h-fit flex items-center justify-center">
+                    {dict.Home.modelo}
                   </div>
-                  <div className="relative w-fit h-fit flex items-center justify-center text-xxs font-lib  text-limon">
-                    $MONA, Genesis, PODE, DIGITALAX NFTs
+                  <div className="relative w-fit h-fit flex items-center justify-center text-sm">
+                    Llama3.1 8b
                   </div>
                 </div>
-                <div className="relative w-full h-fit flex items-center justify-start flex-row gap-4 pt-5">
-                  <div
-                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95`}
-                  >
-                    <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmWTi8TRReCgAeT2zTUa5EtL4kspRtrRz3gonSCaS7aVW7`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
-                      draggable={false}
-                    />
-                  </div>
-                  <div
-                    className={`relative w-12 h-12 rounded-full flex items-center justify-center bg-white cursor-pointer active:scale-95  `}
-                  >
-                    <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmQYjyM3Syqr1dxtzR1esE6iuLmo8At2NzodVxydBgaweX`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
-                      draggable={false}
-                    />
-                  </div>
-                </div>
-                <div className="relative w-full h-fit items-start justify-center flex flex-col gap-3">
-                  <div className="relative w-fit h-fit flex items-start justify-center font-lib text-white text-xxs">
-                    {dict.Home.addic}
-                  </div>
-                  <div className="relative w-full h-32 flex items-center justify-center rounded-md border border-azulito">
-                    <textarea
-                      className="bg-black p-1 w-full h-full flex text-white font-lib text-sm rounded-md"
-                      style={{
-                        resize: "none",
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={`relative flex items-center justify-center rounded-md border border-azulito w-20 h-8 bg-viol px-2 py-1 font-lib text-xs text-white cursor-pointer active:scale-95`}
-                  >
-                    <div
-                      className={`flex items-center justify-center w-fit h-fit flex`}
-                    >
-                      {dict.Home.send}
-                    </div>
-                  </div>
+                <div className="relative w-14 h-8 flex items-center justify-center">
+                  <Image
+                    objectFit="contain"
+                    draggable={false}
+                    layout="fill"
+                    src={`${INFURA_GATEWAY}/ipfs/Qmc7CEnyHBDPXqxFkoVpxf9DHxjGee2z9ToAUitRpkscuP`}
+                  />
                 </div>
               </div>
+              <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
             </div>
-            <div className="relative w-full h-fit flex items-start justify-start flex-col gap-2 pt-6">
-              <div className="relative w-fit h-fit flex items-start justify-start font-super text-white text-base">
-                {dict.Home.chatNpc}
-              </div>
-              <div
-                className={`relative w-full h-full sm:h-[20rem] flex flex-col items-center text-white round-md rounded-sm font-vcr justify-stretch p-1.5 gap-3`}
-              >
-                <div className="relative w-full h-full p-2 border border-[#6FFA95] rounded-sm"></div>
-                <textarea
-                  value={descripcion || ""}
-                  onChange={(e) => {
-                    setDescripcion(e.target.value);
-                    manejarBuscarPerfiles(
-                      e,
-                      setPerfilesAbiertos,
-                      setMencionarPerfiles,
-                      0,
-                      contexto?.lensConectado,
-                      setCaretCoord,
-                      elementoTexto as MutableRefObject<
-                        HTMLTextAreaElement | undefined
-                      >
-                    );
-                  }}
-                  ref={elementoTexto as any}
-                  className="relative rounded-sm p-1 bg-black text-xs border border-[#6FFA95] w-full h-40 break-all justify-center items-end flex"
-                  style={{
-                    resize: "none",
-                  }}
-                ></textarea>
-                <div
-                  className={`absolute font-vcr bottom-4 right-4 flex items-center justify-center border border-white rounded-md w-14 text-xxs h-7 ${
-                    !cargandoConexion && "cursor-pointer active:scale-95"
-                  }`}
-                  onClick={() => hacerPublicacion()}
-                >
-                  {cargandoConexion ? (
-                    <div
-                      className={`relative w-fit h-fit flex items-center justify-center ${
-                        cargandoConexion && "animate-spin"
-                      }`}
-                    >
-                      <AiOutlineLoading size={15} color="white" />
-                    </div>
-                  ) : (
-                    dict.Home.send
-                  )}
-                </div>
-                {mencionarPerfiles?.length > 0 && perfilesAbiertos && (
-                  <div
-                    className={`absolute w-40 border border-white max-h-full h-fit flex flex-col overflow-y-auto items-start justify-start z-100`}
-                    style={{
-                      top: caretCoord[0].y + 30,
-                      left: caretCoord[0].x,
-                    }}
-                  >
-                    {mencionarPerfiles?.map(
-                      (user: Profile, indexTwo: number) => {
-                        const profileImage = createProfilePicture(
-                          user?.metadata?.picture
-                        );
-                        return (
-                          <div
-                            key={indexTwo}
-                            className={`relative border-y border-white w-full h-10 px-3 py-2 bg-black flex flex-row gap-3 cursor-pointer items-center justify-center break-all`}
-                            onClick={() => {
-                              setPerfilesAbiertos((prev) => {
-                                const arr = [...prev];
-                                arr[0] = false;
-                                return arr;
-                              });
-
-                              setDescripcion(
-                                (prev) =>
-                                  prev?.substring(0, prev?.lastIndexOf("@")) +
-                                  `${user?.handle?.suggestedFormatted?.localName}`
-                              );
-                            }}
-                          >
-                            <div className="relative flex flex-row w-full h-full text-white font-aust items-center justify-center gap-2">
-                              <div
-                                className={`relative rounded-full flex bg-black w-3 h-3 items-center justify-center`}
-                                id="pfp"
-                              >
-                                {profileImage && (
-                                  <Image
-                                    src={profileImage}
-                                    objectFit="cover"
-                                    alt="pfp"
-                                    layout="fill"
-                                    className="relative w-fit h-fit rounded-full items-center justify-center flex"
-                                    draggable={false}
-                                  />
-                                )}
-                              </div>
-                              <div className="relative items-center justify-center w-fit h-fit text-xs flex break-all">
-                                {user?.handle?.suggestedFormatted?.localName}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    )}
+            <div className="relative w-full h-fit flex flex-col gap-2">
+              <div className="relative w-full h-fit flex flex-row justify-between items-center">
+                <div className="relative w-fit h-fit flex flex-col gap-1 font-lib text-white text-base">
+                  <div className="relative w-fit h-fit flex items-center justify-center">
+                    {dict.Home.escenasActivas}
                   </div>
-                )}
+                  <div className="relative w-fit h-fit flex items-center justify-center text-sm">
+                    {
+                      contexto?.escenas?.find((e) =>
+                        e.sprites?.find(
+                          (spr) => spr.perfil_id == npc?.perfil_id
+                        )
+                      )?.clave
+                    }
+                  </div>
+                </div>
+                <div className="relative w-14 h-8 flex items-center justify-center">
+                  <Image
+                    objectFit="cover"
+                    draggable={false}
+                    layout="fill"
+                    src={`${INFURA_GATEWAY}/ipfs/${
+                      contexto?.escenas?.find((e) =>
+                        e.sprites?.find(
+                          (spr) => spr.perfil_id == npc?.perfil_id
+                        )
+                      )?.imagen
+                    }`}
+                  />
+                </div>
               </div>
+              <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
             </div>
           </div>
-
-          <div className="relative w-full h-auto flex items-start justify-between flex-col lg:flex-row gap-8 lg:gap-3">
-            <div className="relative w-full flex items-center justify-center">
+          <div className="relative w-full h-fit flex items-center justify-center flex-col gap-6">
+            <div className="relative sm:w-1/2 w-full flex items-center justify-center h-auto">
               <Feed
                 perfil={perfil}
                 router={router}
@@ -487,68 +368,27 @@ export default function NPC({
                 escondido
               />
             </div>
-            <div className="relative w-full h-[40rem] flex items-stretch justify-between flex-col gap-2">
-              <div className="relative w-full h-fit flex flex-col gap-2">
-                <div className="relative w-fit h-fit flex items-start justify-start font-super text-white text-base">
-                  {dict.Home.npcDetalles}
+          </div>
+          <div className="relative w-full flex items-start justify-center h-fit flex-col gap-2 pt-10">
+            <div className="text-white text-2xl font-lib flex items-center justify-center">
+              {dict.Home.eval2}
+            </div>
+            <div className="relative w-full h-fit flex flex-col justify-between items-center gap-6">
+              <div className="relative w-full h-fit flex items-start justify-center flex-col">
+                <div className="relative w-fit h-fit flex items-center justify-center text-xs font-lib text-[#F6FC8D]">
+                  {dict.Home.hold}
                 </div>
-                <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
-                <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
-              </div>
-              <div className="relative w-full h-fit flex flex-col gap-2">
-                <div className="relative w-full h-fit flex flex-row justify-between items-center">
-                  <div className="relative w-fit h-fit flex flex-col gap-1 font-lib text-white text-base">
-                    <div className="relative w-fit h-fit flex items-center justify-center">
-                      {dict.Home.modelo}
-                    </div>
-                    <div className="relative w-fit h-fit flex items-center justify-center text-sm">
-                      Llama3.1 8b
-                    </div>
-                  </div>
-                  <div className="relative w-24 h-14 flex items-center justify-center">
-                    <Image
-                      objectFit="contain"
-                      draggable={false}
-                      layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/Qmc7CEnyHBDPXqxFkoVpxf9DHxjGee2z9ToAUitRpkscuP`}
-                    />
-                  </div>
+                <div className="relative w-fit h-fit flex items-center justify-center text-xxs font-lib  text-limon">
+                  $MONA, Genesis, PODE, DIGITALAX NFTs
                 </div>
-                <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
               </div>
-              <div className="relative w-full h-fit flex flex-col gap-2">
-                <div className="relative w-full h-fit flex flex-row justify-between items-center">
-                  <div className="relative w-fit h-fit flex flex-col gap-1 font-lib text-white text-base">
-                    <div className="relative w-fit h-fit flex items-center justify-center">
-                      {dict.Home.escenasActivas}
-                    </div>
-                    <div className="relative w-fit h-fit flex items-center justify-center text-sm">
-                      {
-                        contexto?.escenas?.find((e) =>
-                          e.sprites?.find(
-                            (spr) => spr.perfil_id == npc?.perfil_id
-                          )
-                        )?.clave
-                      }
-                    </div>
-                  </div>
-                  <div className="relative w-32 h-20 flex items-center justify-center">
-                    <Image
-                      objectFit="cover"
-                      draggable={false}
-                      layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${
-                        contexto?.escenas?.find((e) =>
-                          e.sprites?.find(
-                            (spr) => spr.perfil_id == npc?.perfil_id
-                          )
-                        )?.imagen
-                      }`}
-                    />
-                  </div>
-                </div>
-                <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
-              </div>
+              <Evaluacion
+                dict={dict}
+                votarCargando={votarCargando}
+                manejarVotar={manejarVotar}
+                npcVotar={npcVotar}
+                setNPCVotar={setNPCVotar}
+              />
             </div>
           </div>
         </div>
