@@ -16,7 +16,6 @@ import useAccountPropia from "@/components/game/hooks/useAccount";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import useEspectador from "@/components/post/hooks/useEspectador";
-import { AiOutlineLoading } from "react-icons/ai";
 import { Post as PostType } from "../../../../graphql/generated";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 import Ticker from "@/components/common/modules/Ticker";
@@ -105,7 +104,7 @@ export default function Post({
     manejarLens,
     contexto?.lensConectado
   );
-  const { manejarVotar, votarCargando, pubVotar, setPubVotar } =
+  const { manejarVotar, votarCargando, pubVotar, setPubVotar, historia } =
     useEspectador();
   if (
     pubCargando ||
@@ -235,12 +234,7 @@ export default function Post({
                 />
               </div>
             </div>
-            <div className="relative w-full flex items-start justify-center h-fit flex-col gap-2">
-              <div className="text-white text-sm font-lib flex items-center justify-center">
-                {dict.Home.historia}
-              </div>
-              <Historia />
-            </div>
+            <Historia dict={dict} historia={historia} />
             <div className="relative w-full h-fit flex items-center justify-start flex-col gap-3">
               <div className="relative w-full h-fit flex items-start justify-start font-lib text-2xl text-white">
                 {dict.Home.datos}

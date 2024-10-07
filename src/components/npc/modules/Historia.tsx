@@ -1,5 +1,5 @@
+import { HistoriaProps } from "@/components/post/types/post.types";
 import { FunctionComponent } from "react";
-import { HistoriaProps } from "../types/post.types";
 
 const Historia: FunctionComponent<HistoriaProps> = ({
   historia,

@@ -478,10 +478,18 @@ export type Dictionary = {
   Home: {
     chatContexto: string;
     training: string;
+    trainD: string;
     lora: string;
+    noHistoria: string;
+    loraD: string;
+    compD: string;
     completedJobs: string;
+    sceneD: string;
+    appD: string;
+    spriteD: string;
     spriteSheet: string;
     personalidad: string;
+    globalD: string;
     appearance: string;
     historia: string;
     estilo: string;
@@ -661,6 +669,13 @@ export type Dictionary = {
     pais: string;
     todoElCatalogo: string;
     muestra: string;
+    modD: string;
+    conD: string;
+    promptD: string;
+    perD: string;
+    estiloD: string;
+    mediosD: string;
+    tokenD: string;
   };
   Nav: {
     lan: string;

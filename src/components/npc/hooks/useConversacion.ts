@@ -15,7 +15,7 @@ import getPublications from "../../../../graphql/lens/queries/publications";
 import { manejarJSON } from "@/lib/helpers/manejarJSON";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { Info } from "@/components/agentes/types/agentes.types";
-import { NPCVote } from "../types/npc.types";
+import { Historia, NPCVote } from "../types/npc.types";
 
 const useConversacion = (
   publicClient: PublicClient,
@@ -40,6 +40,7 @@ const useConversacion = (
   const [atributos, setAtributos] = useState<Atributos | undefined>();
   const [informacion, setInformacion] = useState<Info>();
   const [votarCargando, setVotarCargando] = useState<boolean>(false);
+  const [historia, setHistoria] = useState<Historia[]>([]);
   const [npcVotar, setNPCVotar] = useState<NPCVote>({
     comment: "",
     model: 50,
@@ -226,6 +227,7 @@ const useConversacion = (
     npcVotar,
     setNPCVotar,
     votarCargando,
+    historia,
   };
 };
 

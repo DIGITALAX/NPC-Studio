@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { PubVote } from "../types/post.types";
+import { Historia, PubVote } from "../types/post.types";
 
 const useEspectador = () => {
   const [votarCargando, setVotarCargando] = useState<boolean>(false);
+  const [historia, setHistoria] = useState<Historia[]>([]);
   const [pubVotar, setPubVotar] = useState<PubVote>({
     comment: "",
     model: 50,
@@ -30,6 +31,7 @@ const useEspectador = () => {
     manejarVotar,
     pubVotar,
     setPubVotar,
+    historia,
   };
 };
 

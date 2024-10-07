@@ -186,7 +186,22 @@
     "training": "Training",
     "lora": "LoRA",
     "completedJobs": "Completed Jobs",
-    "spriteSheet": "Sprite Sheet"
+    "spriteSheet": "Sprite Sheet",
+    "modD": "Evaluate the model's performance. Did it generate a coherent and relevant response? Did it demonstrate understanding of the context and the requested task? Did the quality of the response meet expectations?",
+    "conD": "Evaluate the response context in relation to the prompt and other parameters. How closely did the response follow the prompt context and what was asked of it? Did it maintain coherence with the previous conversation?",
+    "promptD": "How effective was the prompt? Did it correctly guide the model and the response? Was the prompt unnecessarily repeated in the generated response? Did it provide sufficient information to obtain the desired result?",
+    "perD": "How is the NPC's personality in reference to the prompt? Is it unique? Is it untraceable to its origin? Does it maintain consistency throughout the interaction?",
+    "estiloD": "How is the response style correctly reflected in the NPC's personality? Is it consistent with the established character? Does it use appropriate language and tone?",
+    "mediosD": "Was media attached? If so, was it closely related to the prompt? Was it relevant to the conversation context? Did it enhance the quality of the interaction?",
+    "tokenD": "Was the response correctly written in the required language specified in the prompt? Were special characters correctly interpreted? Is the grammar of the response correct? Are there any spelling or punctuation errors?",
+    "globalD": "How did all the components perform overall? How well did the different elements integrate to create a coherent experience? Were there any aspects that particularly stood out or need improvement? Consider the overall effectiveness of the model, prompt, NPC personality, response style, and any attached media. Did the interaction meet the overall established goals?",
+    "sceneD": "Does the NPC integrate well into the scene? Assess its interaction with the environment and other elements.",
+    "spriteD": "Analyze the quality and variety of the NPC's sprites. Are they suitable for representing its actions?",
+    "appD": "Examine the NPC's visual design. Is it consistent with its role and the game environment?",
+    "trainD": "Observe the NPC's progress. Does it show improvements in behavior and responses over time?",
+    "compD": "Review the NPC's productivity. Has it completed tasks and generated value in the system?",
+    "loraD": "Evaluate the effectiveness of the LoRA fine-tuning. Does it adequately reflect the NPC's role and context? How well has the NPC adapted its base knowledge to its specific role? Does it show a deep and nuanced understanding of its character and context?",
+    "noHistoria": "No history yet."
   },
   "Nav": {
     "lan": "Choose Language"

@@ -19,6 +19,7 @@ import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import Ticker from "@/components/common/modules/Ticker";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 import Evaluacion from "@/components/npc/modules/Evaluacion";
+import Historia from "@/components/npc/modules/Historia";
 
 export default function NPC({
   lang,
@@ -58,6 +59,7 @@ export default function NPC({
     npcVotar,
     setNPCVotar,
     votarCargando,
+    historia
   } = useConversacion(
     publicClient,
     contexto?.setIndexar!,
@@ -391,6 +393,7 @@ export default function NPC({
               />
             </div>
           </div>
+          <Historia dict={dict} historia={historia} />
         </div>
       </div>
     </div>

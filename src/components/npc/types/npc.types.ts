@@ -85,3 +85,10 @@ export interface NPCVote {
   tokenizer: number;
   global: number;
 }
+
+export interface Historia {}
+
+export interface HistoriaProps {
+  dict: Dictionary;
+  historia: Historia[];
+}

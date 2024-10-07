@@ -69,3 +69,10 @@ export interface PubVote {
   tokenizer: number;
   global: number;
 }
+
+export interface Historia {}
+
+export type HistoriaProps = {
+  historia: Historia[];
+  dict: Dictionary;
+};
