@@ -15,7 +15,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
   mostrarMas,
   npcsCargando,
   informacion,
-  escenas
+  escenas,
 }): JSX.Element => {
   switch (pantallaCambio) {
     case Pantalla.Desafiante:
@@ -434,7 +434,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 />
               </div>
               <div className="relative w-fit h-fit flex items-center justify-center break-words font-clar text-limon">
-                algo de texto
+                {dict.Home.stats}
               </div>
             </div>
             <Agentes
