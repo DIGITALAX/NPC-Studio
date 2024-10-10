@@ -877,5 +877,6 @@ export type CuentaProps = {
   dejarNpc: () => Promise<void>;
   seguirCargando: boolean;
   lensConectado: Profile | undefined;
+  setMostrarPerfil?: (e: SetStateAction<string | undefined>) => void;
   manejarMensaje?: (e: string) => void;
 };

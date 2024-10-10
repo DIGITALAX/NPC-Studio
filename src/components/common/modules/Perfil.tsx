@@ -52,6 +52,7 @@ function Perfil({
               seguirCargando={seguirCargando}
               seguirNpc={seguirNpc}
               dejarNpc={dejarNpc}
+              setMostrarPerfil={setMostrarPerfil}
               lensConectado={lensConectado}
               npcCargando={npcCargando}
             />

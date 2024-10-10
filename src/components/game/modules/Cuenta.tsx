@@ -18,6 +18,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
   lensConectado,
   npcCargando,
   manejarMensaje,
+  setMostrarPerfil,
 }) => {
   const router = useRouter();
   return (
@@ -51,11 +52,14 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
             </div>
             <div
               className="relative w-fit px-1.5 h-7 font-con rounded-sm text-xxs text-white border border-amarillo bg-black flex items-center justify-center cursor-pointer active:scale-95 hover:opacity-80"
-              onClick={() =>
+              onClick={() => {
+                if (setMostrarPerfil) {
+                  setMostrarPerfil(undefined);
+                }
                 router.push(
                   `/npc/${perfil?.handle?.suggestedFormatted?.localName}`
-                )
-              }
+                );
+              }}
             >
               <div className="relative w-fit h-fit flex items-center justify-center">
                 {dict.Home.espectar2}
@@ -222,7 +226,10 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                 <div
                   className="relative text-sm font-con text-white break-all flex overflow-y-scroll whitespace-preline"
                   dangerouslySetInnerHTML={{
-                    __html: descripcionRegex(npc?.prompt?.personalidad || "", true),
+                    __html: descripcionRegex(
+                      npc?.prompt?.personalidad || "",
+                      true
+                    ),
                   }}
                 ></div>
               </div>
@@ -242,7 +249,13 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                         >
                           <div
                             className="w-32 h-32 cursor-pointer active:scale-95 hover:opacity-70"
-                            onClick={() => router.push(`/npc/${amigo?.handle}`)}
+                            onClick={() => {
+                              if (setMostrarPerfil) {
+                                setMostrarPerfil(undefined);
+                              }
+
+                              router.push(`/npc/${amigo?.handle}`);
+                            }}
                           >
                             <Image
                               layout="fill"

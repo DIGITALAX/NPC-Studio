@@ -96,7 +96,7 @@ const useFeed = (
               PublicationType.Comment,
               PublicationType.Mirror,
             ],
-            from: [],
+            from: [perfile?.id],
             metadata: {
               publishedOn: ["npcStudio"],
             },
@@ -114,6 +114,7 @@ const useFeed = (
               PublicationType.Quote,
               PublicationType.Comment,
             ],
+            from: [perfile?.id],
             metadata: {
               publishedOn: ["npcStudio"],
             },

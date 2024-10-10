@@ -48,7 +48,7 @@ export default function Agents({
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-          <div className="absolute w-full h-full top-0 left-0 flex">
+   <div className="absolute w-full h-full top-0 left-0 flex">
             {pantalla ? (
               <VerticalTicker duration={40000}>
                 <Ticker atributos={atributos} />

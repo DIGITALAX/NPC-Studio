@@ -96,7 +96,7 @@ export default function NPC({
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-          <div className="absolute w-full h-full top-0 left-0 flex">
+  <div className="absolute w-full h-full top-0 left-0 flex">
             {pantalla ? (
               <VerticalTicker duration={40000}>
                 <Ticker atributos={atributos} />
@@ -349,7 +349,7 @@ export default function NPC({
             </div>
           </div>
           <div className="relative w-full h-fit flex items-center justify-center flex-col gap-6">
-            <div className="relative sm:w-1/2 w-full flex items-center justify-center h-auto">
+            <div className="relative sm:w-2/3 lg:w-1/2 w-full flex items-center justify-center h-auto">
               <Feed
                 perfil={perfil}
                 router={router}

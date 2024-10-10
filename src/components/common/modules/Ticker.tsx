@@ -84,6 +84,7 @@ const Ticker: FunctionComponent<{ atributos: Atributos | undefined }> = ({
           },
           indice: number
         ) => {
+   
           return (
             <div
               key={indice}

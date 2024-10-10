@@ -8,7 +8,10 @@ export const manejarJSON = async (ipfsHash: string): Promise<number> => {
       );
 
       const json = await cadena.json();
-      return Number(json?.join(", ")?.[0]);
+
+      return Array.isArray(json) && json.every((item) => Array.isArray(item))
+        ? Number(json?.[0]?.[0]?.toFixed(2))
+        : Number(json?.[0]?.toFixed(2));
     }
     return 0.0;
   } catch (err: any) {

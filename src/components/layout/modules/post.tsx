@@ -128,17 +128,19 @@ export default function Post({
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-          <div className="absolute w-full h-full top-0 left-0 flex">
-            {pantalla ? (
-              <VerticalTicker duration={40000}>
-                <Ticker atributos={atributos} />
-              </VerticalTicker>
-            ) : (
-              <HorizontalTicker duration={40000}>
-                <Ticker atributos={atributos} />
-              </HorizontalTicker>
-            )}
-          </div>
+
+            <div className="absolute w-full h-full top-0 left-0 flex">
+              {pantalla ? (
+                <VerticalTicker duration={40000}>
+                  <Ticker atributos={atributos} />
+                </VerticalTicker>
+              ) : (
+                <HorizontalTicker duration={40000}>
+                  <Ticker atributos={atributos} />
+                </HorizontalTicker>
+              )}
+            </div>
+     
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-2 sm:p-4 md:p-8 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
@@ -285,7 +287,7 @@ export default function Post({
                           />
                         </div>
                         <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
-                          {atributos?.options?.model}
+                          {atributos?.model}
                         </div>
                       </div>
                       <div className="relative w-full h-fit flex items-start justify-between flex-row gap-2">
@@ -300,7 +302,7 @@ export default function Post({
                           />
                         </div>
                         <div className="relative w-fit h-fit flex items-center justify-center text-white text-sm">
-                          {atributos?.options?.ctx}
+                          {atributos?.options?.num_tokens}
                         </div>
                       </div>
                     </div>
@@ -385,7 +387,7 @@ export default function Post({
                               </div>
                             </div>
                             <div className="relative w-full flex items-start justify-start text-xs break-all bg-[#CC04FD] p-1.5 h-40 overflow-y-scroll text-white font-bit text-center">
-                              {atributos.mensaje.input_tokens.join(", ")}
+                              {atributos?.mensaje?.input_tokens}
                             </div>
                             <div className="relative w-fit h-full flex items-center justify-center">
                               <div className="relative w-8 h-5 flex items-center justify-center">
@@ -417,7 +419,7 @@ export default function Post({
                             </div>
                             <div className="relative flex w-full h-full flex items-start justify-start overflow-y-scroll">
                               <div className="relative w-full h-fit flex items-start justify-start text-right">
-                                {atributos.mensaje.output}
+                                {atributos?.mensaje?.output}
                               </div>
                             </div>
                           </div>
@@ -437,7 +439,7 @@ export default function Post({
                               </div>
                             </div>
                             <div className="relative w-full flex items-start justify-start text-xs break-all bg-prima p-1.5 h-40 overflow-y-scroll text-black font-bit text-center">
-                              {atributos.mensaje.output_tokens.join(", ")}
+                              {atributos?.mensaje?.output_tokens}
                             </div>
                             <div className="relative w-fit h-full flex items-center justify-center">
                               <div className="relative w-8 h-5 flex items-center justify-center">

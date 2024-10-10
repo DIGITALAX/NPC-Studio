@@ -41,10 +41,10 @@ export interface Atributos {
   };
   version: number;
   prompt: string;
+  model: string;
   options: {
     tokenizer: string;
     ctx: string;
-    model: string;
     num_tokens: string;
   };
   hashes: string[];
