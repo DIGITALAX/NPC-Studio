@@ -22,7 +22,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
       return (
         <>
           <div
-            className={`text-white font-lib relative w-full h-fit flex items-start justify-start ${
+            className={`text-white font-lib relative w-full h-fit flex items-start justify-start overflow-x-hidden text-[100vw] ${
               lang == "en" ? "text-[8vw]" : "text-[6vw]"
             }`}
           >

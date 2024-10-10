@@ -10,7 +10,7 @@ const Puntaje: FunctionComponent = () => {
           <div className="absolute w-full h-full top-0 left-0 flex">
             <Image
               // src={`${INFURA_GATEWAY}/ipfs/QmfCuETzCFcyrAv9BZ1f9g3HuuU7WqMBdSeuUaKiR3H62y`}
-              src={`${INFURA_GATEWAY}/ipfs/QmfFa8nLEdet2pLLoXdfYnLTGQv1rsRMCVoB5m87brGoRa`}
+              src={`${INFURA_GATEWAY}/ipfs/QmRryoxewnmH13FhEcvPLJJ5KfeqazE1yKquHgEXEpXYxd`}
               
               layout="fill"
               objectFit="fill"
@@ -22,7 +22,7 @@ const Puntaje: FunctionComponent = () => {
           <div className="absolute w-full h-full top-0 left-0 flex">
             <Image
               // src={`${INFURA_GATEWAY}/ipfs/QmfCuETzCFcyrAv9BZ1f9g3HuuU7WqMBdSeuUaKiR3H62y`}
-              src={`${INFURA_GATEWAY}/ipfs/QmPEKw6mahAgwHZAoxC5k54Mg5XkXaacMPG2KXv6oSW3eM`}
+              src={`${INFURA_GATEWAY}/ipfs/QmWjNBWGuHmz2bZaX9cDHkvJu2TXjKKBXpdTXh5hX6h1Ng`}
               layout="fill"
               objectFit="fill"
               draggable={false}
@@ -34,7 +34,7 @@ const Puntaje: FunctionComponent = () => {
         <div className="absolute w-full h-full top-0 left-0 flex">
           <Image
             // src={`${INFURA_GATEWAY}/ipfs/QmfCuETzCFcyrAv9BZ1f9g3HuuU7WqMBdSeuUaKiR3H62y`}
-            src={`${INFURA_GATEWAY}/ipfs/QmZw3WzqwLwxFrk6wVbsg1Fobyi3mJHg1RnWGWci9FX5s9`}
+            src={`${INFURA_GATEWAY}/ipfs/QmVMYCpPJvJ9GAWcf8Q2DfGbt5yfonVpTvaEG9uqRtobyA`}
             layout="fill"
             objectFit="fill"
             draggable={false}

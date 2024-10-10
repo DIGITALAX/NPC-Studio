@@ -204,7 +204,15 @@
     "noHistoria": "No history yet.",
     "stats": "Your vision sharpens. The screen flickers to life. You've entered the system. Metrics and stats await your evaluation",
     "voto": "Spectating Coming Soon.",
-    "soon": "Coming Soon"
+    "soon": "Coming Soon",
+    "estudio abierto de trabajo": "Open Work Studio",
+    "ático de intercambio de varianza": "Variance Swap Attic",
+    "lote de graffiti": "Graffiti Lot",
+    "boutique de ropa callejera": "Streetwear Boutique",
+    "microfábrica": "Microfactory",
+    "agencia de llms": "LLM Agency",
+    "pub en ruinas": "Ruin Pub",
+    "marketing de contenido": "Content Marketing"
   },
   "Nav": {
     "lan": "Choose Language"

@@ -48,7 +48,7 @@ export default function Agents({
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-   <div className="absolute w-full h-full top-0 left-0 flex">
+          <div className="absolute w-full h-full top-0 left-0 flex">
             {pantalla ? (
               <VerticalTicker duration={40000}>
                 <Ticker atributos={atributos} />
@@ -113,6 +113,7 @@ export default function Agents({
                   border: "#FF1493",
                   sombra: "#1239F6",
                   pantalla: Pantalla.Desafiante,
+                  inactivoT: true,
                 },
                 {
                   titulo: dict.Home.game,
@@ -130,6 +131,7 @@ export default function Agents({
                   border: "#00FF00",
                   sombra: "#FF1493",
                   pantalla: Pantalla.Tabla,
+                  inactivoT: true,
                 },
                 {
                   titulo: dict.Home.spec,
@@ -138,6 +140,7 @@ export default function Agents({
                   border: "#9933FF",
                   sombra: "#FF1493",
                   pantalla: Pantalla.Espectador,
+                  inactivoT: true,
                 },
               ].map(
                 (
@@ -149,6 +152,7 @@ export default function Agents({
                     sombra: string;
                     pantalla: Pantalla;
                     inactivo?: boolean;
+                    inactivoT?: boolean;
                   },
                   indice
                 ) => {
@@ -157,12 +161,14 @@ export default function Agents({
                       key={indice}
                       className={`relative text-center rounded-full w-fit h-fit flex items-center justify-center px-4 py-2 border ${
                         pantallaCambio == elemento.pantalla && "opacity-70"
-                      } ${
+                      } ${elemento?.inactivoT && "opacity-70"} ${
                         !elemento.inactivo &&
+                        !elemento?.inactivoT &&
                         "cursor-pointer active:scale-95 hover:opacity-70"
                       }`}
                       onClick={() =>
                         !elemento.inactivo &&
+                        !elemento.inactivoT &&
                         setPantallaCambio(elemento.pantalla)
                       }
                       style={{
