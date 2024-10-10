@@ -136,6 +136,8 @@ export const ModalContext = createContext<
       conectarPub: boolean;
       escena: undefined | string;
       setEscena: (e: SetStateAction<undefined | string>) => void;
+      voto: boolean;
+      setVoto: (e: SetStateAction<boolean>) => void;
     }
   | undefined
 >(undefined);
@@ -212,6 +214,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [abrirCita, setAbrirCita] = useState<
     Quote | Post | Comment | Mirror | undefined
   >();
+  const [voto, setVoto] = useState<boolean>(false);
   const [seguirColeccionar, setSeguirColeccionar] = useState<
     | {
         tipo: string;
@@ -234,6 +237,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               value={{
                 escena,
                 setEscena,
+                voto,
+                setVoto,
                 mint,
                 setMint,
                 conectarPub,

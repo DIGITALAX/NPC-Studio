@@ -104,6 +104,13 @@ export type ErrorProps = {
   dict: Dictionary;
 };
 
+
+export type VotoProps = {
+  setVoto: (e: SetStateAction<boolean>) => void;
+  dict: Dictionary;
+};
+
+
 export type NotificacionProps = {
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
   dict: Dictionary;

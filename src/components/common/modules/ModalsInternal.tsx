@@ -26,6 +26,7 @@ import { Post } from "../../../../graphql/generated";
 import { Dictionary } from "@/components/game/types/game.types";
 import usePublicar from "@/components/game/hooks/usePublicar";
 import useElements from "@/components/game/hooks/useElements";
+import Voto from "./Voto";
 
 export default function ModalsInternal({ dict }: { dict: Dictionary }) {
   const context = useContext(ModalContext);
@@ -248,6 +249,7 @@ export default function ModalsInternal({ dict }: { dict: Dictionary }) {
           setSeguirColeccionar={context?.setSeguirColeccionar}
         />
       )}
+      {context?.voto && <Voto dict={dict} setVoto={context?.setVoto!} />}
       {context?.indexar !== Indexar.Inactivo && (
         <Index dict={dict} tipo={context?.indexar!} />
       )}

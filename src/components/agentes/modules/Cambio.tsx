@@ -28,7 +28,10 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.chall}
           </div>
-          <div className="relative w-full h-fit flex items-center justify-center flex-col lg:flex-row gap-14 ">
+          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
+            {dict.Home.soon}
+          </div>
+          {/* <div className="relative w-full h-fit flex items-center justify-center flex-col lg:flex-row gap-14 ">
             <div className="relative flex w-full h-96 items-center justify-center flex-col">
               <div className="absolute items-center justify-center flex w-full xl:w-3/4 h-full">
                 <Image
@@ -59,8 +62,8 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 />
               </div>
             </div>
-          </div>
-          <div className="rounded-sm py-10 relative w-full h-[80rem] border-4 border-flor bg-gris"></div>
+          </div>*/}
+          {/* <div className="rounded-sm py-10 relative w-full h-[80rem] border-4 border-flor bg-gris"></div> */}
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >
@@ -86,7 +89,10 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.espectar}
           </div>
-          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
+          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
+            {dict.Home.soon}
+          </div>
+          {/* <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col xl:flex-row gap-10 items-center justify-center">
               <div className="relative w-full h-[32rem] flex items-center justify-center">
                 <Image
@@ -161,7 +167,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >
@@ -187,7 +193,10 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.leader}
           </div>
-          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
+          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
+            {dict.Home.soon}
+          </div>
+          {/* <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col gap-10 items-start justify-center">
               <div className="relative w-full h-fit flex items-center justify-center flex-col gap-6 font-vcr">
                 <div className="relative w-full h-fit flex items-center justify-between flex-col sm:flex-row gap-8">
@@ -396,7 +405,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >
@@ -433,7 +442,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                   draggable={false}
                 />
               </div>
-              <div className="relative w-fit h-fit flex items-center justify-center break-words font-clar text-limon">
+              <div className="relative lg:w-1/2 w-4/5 h-fit flex items-center justify-center break-words text-xs text-center font-clar text-limon">
                 {dict.Home.stats}
               </div>
             </div>

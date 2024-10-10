@@ -390,6 +390,7 @@ export default function NPC({
                 manejarVotar={manejarVotar}
                 npcVotar={npcVotar}
                 setNPCVotar={setNPCVotar}
+                setVoto={contexto?.setVoto!}
               />
             </div>
           </div>

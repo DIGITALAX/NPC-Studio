@@ -53,6 +53,7 @@ export interface Atributos {
 export type EvaluacionProps = {
   dict: Dictionary;
   votarCargando: boolean;
+  setVoto: (e: SetStateAction<boolean>) => void;
   manejarVotar: () => Promise<void>;
   pubVotar: PubVote;
   setPubVotar: (e: SetStateAction<PubVote>) => void;

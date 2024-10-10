@@ -233,6 +233,7 @@ export default function Post({
                   votarCargando={votarCargando}
                   pubVotar={pubVotar}
                   setPubVotar={setPubVotar}
+                  setVoto={contexto?.setVoto!}
                 />
               </div>
             </div>

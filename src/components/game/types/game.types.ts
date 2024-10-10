@@ -478,10 +478,12 @@ export type Dictionary = {
   Home: {
     chatContexto: string;
     training: string;
+    soon: string;
     stats: string;
     trainD: string;
     lora: string;
     noHistoria: string;
+    voto: string;
     loraD: string;
     compD: string;
     completedJobs: string;

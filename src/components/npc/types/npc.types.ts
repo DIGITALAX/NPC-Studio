@@ -68,6 +68,7 @@ export type EvaluacionProps = {
   manejarVotar: () => Promise<void>;
   npcVotar: NPCVote;
   setNPCVotar: (e: SetStateAction<NPCVote>) => void;
+  setVoto: (e: SetStateAction<boolean>) => void;
 };
 
 export interface NPCVote {

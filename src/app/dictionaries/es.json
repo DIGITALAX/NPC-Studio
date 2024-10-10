@@ -202,7 +202,9 @@
     "compD": "Revise la productividad del NPC. ¿Ha completado tareas y generado valor en el sistema?",
     "loraD": "Evalúe la efectividad del ajuste fino LoRA. ¿Refleja adecuadamente el rol y contexto del NPC? ¿Qué tan bien ha adaptado el NPC sus conocimientos base a su rol específico? ¿Muestra una comprensión profunda y matizada de su personaje y contexto?",
     "noHistoria": "Aún, no hay historial.",
-    "stats": "Su visión se agudiza. La pantalla cobra vida. Usted ha entrado al sistema. Métricas y estadísticas esperan su evaluación."
+    "stats": "Su visión se agudiza. La pantalla cobra vida. Usted ha entrado al sistema. Métricas y estadísticas esperan su evaluación.",
+    "voto": "Especte Pronto.",
+    "soon": "Muy Pronto."
   },
   "Nav": {
     "lan": "Elija Idioma"
