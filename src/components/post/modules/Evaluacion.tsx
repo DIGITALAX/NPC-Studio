@@ -10,7 +10,6 @@ const Evaluacion: FunctionComponent<EvaluacionProps> = ({
   manejarVotar,
   pubVotar,
   setPubVotar,
-  setVoto,
 }): JSX.Element => {
   return (
     <div className="relative flex flex-col w-full h-fit gap-6 items-start justify-start font-clar text-xs text-white">
@@ -329,8 +328,8 @@ const Evaluacion: FunctionComponent<EvaluacionProps> = ({
         </div>
       </div>
       <div
-        className={`relative flex items-center justify-center rounded-sm border border-azulito w-20 h-8 bg-viol px-2 py-1 font-lib text-xs text-white cursor-pointer active:scale-95`} // onClick={() => !votarCargando && manejarVotar()}
-        onClick={() => setVoto(true)}
+        className={`relative flex items-center justify-center rounded-sm border border-azulito w-20 h-8 bg-viol px-2 py-1 font-lib text-xs text-white cursor-pointer active:scale-95`}
+        onClick={() => !votarCargando && manejarVotar()}
       >
         <div
           className={`${

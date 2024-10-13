@@ -61,6 +61,12 @@ export const DIGITALAX_ADDRESS: `0x${string}` =
 export const AUTOGRAPH_OPEN_ACTION: `0x${string}` =
   "0x749Da95bC493AF77A695dEc621C733d6317aa8Fc";
 
+export const NPC_SPECTATE: `0x${string}` =
+  "0x6B92Fb260e98dAEb1c4C613b16CC9D4bc5d6F184";
+
+export const NPC_RENT: `0x${string}` =
+  "0x7fb6f7EF8dfFb0bB8d82b64E6b90BcC5162621F6";
+
 export const ACCEPTED_TOKENS: string[][] = [
   [
     "QmcyKazTx7gQAmFLrX4uwM5pub1LmNQRngM4ns6ydoETkZ",

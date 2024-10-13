@@ -212,7 +212,9 @@
     "microfábrica": "Microfactory",
     "agencia de llms": "LLM Agency",
     "pub en ruinas": "Ruin Pub",
-    "marketing de contenido": "Content Marketing"
+    "marketing de contenido": "Content Marketing",
+    "votarNPC": "NPC Vote Successful!",
+    "votarPub": "Publication Vote Successful!"
   },
   "Nav": {
     "lan": "Choose Language"

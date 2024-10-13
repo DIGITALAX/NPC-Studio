@@ -212,7 +212,9 @@
     "microfábrica": "Microfábrica",
     "agencia de llms": "Agencia de LLMs",
     "pub en ruinas": "Pub en Ruinas",
-    "marketing de contenido": "Marketing de Contenido"
+    "marketing de contenido": "Marketing de Contenido",
+    "votarNPC": "Voto NPC Exitoso!",
+    "votarPub": "Voto Publicación Exitoso!"
   },
   "Nav": {
     "lan": "Elija Idioma"

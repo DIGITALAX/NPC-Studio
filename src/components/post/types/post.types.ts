@@ -1,5 +1,6 @@
 import { Dictionary } from "@/components/game/types/game.types";
 import { SetStateAction } from "react";
+import { Profile } from "../../../../graphql/generated";
 
 export interface Atributos {
   images: string[];
@@ -53,7 +54,6 @@ export interface Atributos {
 export type EvaluacionProps = {
   dict: Dictionary;
   votarCargando: boolean;
-  setVoto: (e: SetStateAction<boolean>) => void;
   manejarVotar: () => Promise<void>;
   pubVotar: PubVote;
   setPubVotar: (e: SetStateAction<PubVote>) => void;
@@ -71,9 +71,27 @@ export interface PubVote {
   global: number;
 }
 
-export interface Historia {}
+export interface HistoriaPub {
+  spectator: Profile | undefined;
+  profileId: string;
+  pubId: string;
+  blockNumber: string;
+  blockTimestamp: string;
+  transactionHash: string;
+  comment: string;
+  npc: string;
+  model: string;
+  chatContext: string;
+  prompt: string;
+  style: string;
+  personality: string;
+  tokenizer: string;
+  media: string;
+  global: string;
+}
 
-export type HistoriaProps = {
-  historia: Historia[];
+export type HistoriaPubProps = {
+  historia: HistoriaPub[];
   dict: Dictionary;
+  votosCargando: boolean;
 };

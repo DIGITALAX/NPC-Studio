@@ -119,8 +119,7 @@ const usePub = (
               ffn_inp_maxs: await manejarJSON(json?.mensaje?.ffn_inp_maxs),
               ffn_inp_mins: await manejarJSON(json?.mensaje?.ffn_inp_mins),
               ffn_inp_means: await manejarJSON(json?.mensaje?.ffn_inp_means),
-            }
-        
+            },
           });
         }
       }
@@ -135,9 +134,9 @@ const usePub = (
   useEffect(() => {
     if (!socket && id) {
       const newSocket = new WebSocket(
-       // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+        // `ws://127.0.0.1:8080?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
 
-       `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
+        `wss://npc-rust-engine.onrender.com?key=${process.env.NEXT_PUBLIC_RENDER_KEY}`
       );
 
       setSocket(newSocket);

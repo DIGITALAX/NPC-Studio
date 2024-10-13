@@ -106,8 +106,8 @@ export type ErrorProps = {
 
 
 export type VotoProps = {
-  setVoto: (e: SetStateAction<boolean>) => void;
-  dict: Dictionary;
+  setVoto: (e: SetStateAction<string | undefined>) => void;
+  voto: string | undefined;
 };
 
 

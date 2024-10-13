@@ -60,13 +60,17 @@ export default function NPC({
     setNPCVotar,
     votarCargando,
     historia,
+    votosCargando,
   } = useConversacion(
     publicClient,
     contexto?.setIndexar!,
     contexto?.setErrorInteraccion!,
     address,
     contexto?.lensConectado,
-    perfil?.id
+    perfil?.id,
+    perfil?.ownedBy?.address,
+    contexto?.setVoto!,
+    dict
   );
   const { manejarLens } = useAccountPropia(
     isConnected,
@@ -392,11 +396,14 @@ export default function NPC({
                 manejarVotar={manejarVotar}
                 npcVotar={npcVotar}
                 setNPCVotar={setNPCVotar}
-                setVoto={contexto?.setVoto!}
               />
             </div>
           </div>
-          <Historia dict={dict} historia={historia} />
+          <Historia
+            dict={dict}
+            historia={historia}
+            votosCargando={votosCargando}
+          />
         </div>
       </div>
     </div>

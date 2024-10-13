@@ -68,7 +68,6 @@ export type EvaluacionProps = {
   manejarVotar: () => Promise<void>;
   npcVotar: NPCVote;
   setNPCVotar: (e: SetStateAction<NPCVote>) => void;
-  setVoto: (e: SetStateAction<boolean>) => void;
 };
 
 export interface NPCVote {
@@ -87,9 +86,30 @@ export interface NPCVote {
   global: number;
 }
 
-export interface Historia {}
 
-export interface HistoriaProps {
-  dict: Dictionary;
-  historia: Historia[];
+export interface HistoriaNPC {
+  spectator: Profile | undefined;
+  npc: string;
+  blockNumber: string;
+  blockTimestamp: string;
+  transactionHash: string;
+  comment: string;
+  model: string;
+  chatContext: string;
+  lora: string;
+  style: string;
+  personality: string;
+  tokenizer: string;
+  completedJobs: string;
+  training: string;
+  spriteSheet: string;
+  appearance: string;
+  global: string;
 }
+
+
+export type HistoriaNPCProps = {
+  historia: HistoriaNPC[];
+  dict: Dictionary;
+  votosCargando: boolean;
+};

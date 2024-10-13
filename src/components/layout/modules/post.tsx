@@ -104,8 +104,22 @@ export default function Post({
     manejarLens,
     contexto?.lensConectado
   );
-  const { manejarVotar, votarCargando, pubVotar, setPubVotar, historia } =
-    useEspectador();
+  const {
+    manejarVotar,
+    votarCargando,
+    pubVotar,
+    setPubVotar,
+    historia,
+    votosCargando,
+  } = useEspectador(
+    (pub?.[0]?.__typename == "Mirror"
+      ? pub?.[0]?.mirrorOn
+      : pub?.[0]) as PostType,
+    address,
+    publicClient,
+    contexto?.setVoto!,
+    dict
+  );
   if (
     pubCargando ||
     pub?.length < 1 ||
@@ -128,19 +142,17 @@ export default function Post({
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-
-            <div className="absolute w-full h-full top-0 left-0 flex">
-              {pantalla ? (
-                <VerticalTicker duration={40000}>
-                  <Ticker atributos={atributos} />
-                </VerticalTicker>
-              ) : (
-                <HorizontalTicker duration={40000}>
-                  <Ticker atributos={atributos} />
-                </HorizontalTicker>
-              )}
-            </div>
-     
+          <div className="absolute w-full h-full top-0 left-0 flex">
+            {pantalla ? (
+              <VerticalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </VerticalTicker>
+            ) : (
+              <HorizontalTicker duration={40000}>
+                <Ticker atributos={atributos} />
+              </HorizontalTicker>
+            )}
+          </div>
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-2 sm:p-4 md:p-8 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">
@@ -233,11 +245,14 @@ export default function Post({
                   votarCargando={votarCargando}
                   pubVotar={pubVotar}
                   setPubVotar={setPubVotar}
-                  setVoto={contexto?.setVoto!}
                 />
               </div>
             </div>
-            <Historia dict={dict} historia={historia} />
+            <Historia
+              dict={dict}
+              historia={historia}
+              votosCargando={votosCargando}
+            />
             <div className="relative w-full h-fit flex items-center justify-start flex-col gap-3">
               <div className="relative w-full h-fit flex items-start justify-start font-lib text-2xl text-white">
                 {dict.Home.datos}

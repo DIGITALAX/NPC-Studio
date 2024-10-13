@@ -7,15 +7,20 @@ import {
 } from "../../../../graphql/generated";
 import subirContenido from "@/lib/helpers/subirContenido";
 import { createWalletClient, custom, PublicClient } from "viem";
-import { polygon } from "viem/chains";
+import { polygon, polygonAmoy } from "viem/chains";
 import publicarLens from "@/lib/helpers/publicarLens";
 import { Indexar } from "@/components/common/types/common.types";
 import { Atributos } from "@/components/post/types/post.types";
 import getPublications from "../../../../graphql/lens/queries/publications";
 import { manejarJSON } from "@/lib/helpers/manejarJSON";
-import { INFURA_GATEWAY } from "@/lib/constants";
+import { INFURA_GATEWAY, NPC_SPECTATE } from "@/lib/constants";
 import { Info } from "@/components/agentes/types/agentes.types";
-import { Historia, NPCVote } from "../types/npc.types";
+import { HistoriaNPC, NPCVote } from "../types/npc.types";
+import NPCSpectate from "./../../../../abis/NPCSpectate.json";
+import { Dictionary } from "@/components/game/types/game.types";
+import { getNPCVotes } from "../../../../graphql/npc/queries/getNPCVotes";
+import getProfile from "../../../../graphql/lens/queries/profile";
+import getDefaultProfile from "../../../../graphql/lens/queries/default";
 
 const useConversacion = (
   publicClient: PublicClient,
@@ -23,8 +28,12 @@ const useConversacion = (
   setErrorInteraccion: (e: SetStateAction<boolean>) => void,
   address: `0x${string}` | undefined,
   lensConectado: Profile | undefined,
-  npc: string
+  npc: string,
+  npcDireccion: string,
+  setVoto: (e: SetStateAction<string | undefined>) => void,
+  dict: Dictionary
 ) => {
+  const [votosCargando, setVotosCargando] = useState<boolean>(false);
   const [caretCoord, setCaretCoord] = useState<
     {
       x: number;
@@ -40,7 +49,7 @@ const useConversacion = (
   const [atributos, setAtributos] = useState<Atributos | undefined>();
   const [informacion, setInformacion] = useState<Info>();
   const [votarCargando, setVotarCargando] = useState<boolean>(false);
-  const [historia, setHistoria] = useState<Historia[]>([]);
+  const [historia, setHistoria] = useState<HistoriaNPC[]>([]);
   const [npcVotar, setNPCVotar] = useState<NPCVote>({
     comment: "",
     model: 50,
@@ -57,10 +66,116 @@ const useConversacion = (
     global: 50,
   });
 
+  const cogerTodosLosVotos = async () => {
+    setVotosCargando(true);
+    try {
+      const datos = await getNPCVotes(npcDireccion);
+      const cachePerfiles: { [spectator: string]: any } = {};
+
+      const historiaNueva = await Promise.all(
+        datos?.data?.npcVotes?.map((data: any) =>
+          data?.spectator?.map(async (_: any, i: number) => {
+            let perfil;
+            if (cachePerfiles[data?.spectator?.[i]]) {
+              perfil = cachePerfiles[data?.spectator?.[i]];
+            } else {
+              perfil = await getDefaultProfile(
+                {
+                  for: data?.spectator?.[i],
+                },
+                lensConectado?.id
+              );
+              cachePerfiles[data?.spectator?.[i]] =
+                perfil?.data?.defaultProfile;
+            }
+
+            let comment = data?.comment?.[i];
+
+            if (comment?.trim() !== "") {
+              const cadena = await fetch(
+                `${INFURA_GATEWAY}/ipfs/${comment.split("ipfs://")?.[1]}`
+              );
+              comment = await cadena.json();
+            }
+
+            return {
+              spectator: perfil,
+              npc: data?.npc,
+              blockNumber: data?.blockNumber?.[i],
+              blockTimestamp: data?.blockTimestamp?.[i],
+              transactionHash: data?.transactionHash?.[i],
+              comment,
+              model: data?.model?.[i],
+              chatContext: data?.chatContext?.[i],
+              lora: data?.lora?.[i],
+              style: data?.style?.[i],
+              personality: data?.personality?.[i],
+              tokenizer: data?.tokenizer?.[i],
+              completedJobs: data?.completedJobs?.[i],
+              training: data?.training?.[i],
+              spriteSheet: data?.spriteSheet?.[i],
+              appearance: data?.appearance?.[i],
+              global: data?.global?.[i],
+            };
+          })
+        )
+      );
+      setHistoria(historiaNueva);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setVotosCargando(false);
+  };
+
   const manejarVotar = async () => {
     setVotarCargando(true);
     try {
-      // como una cita :)
+      const clientWallet = createWalletClient({
+        chain: polygonAmoy,
+        transport: custom((window as any).ethereum),
+      });
+
+      let comment: string = npcVotar.comment;
+
+      if (comment?.trim() !== "") {
+        const imagen = await fetch(`/api/ipfs`, {
+          method: "POST",
+          body: comment,
+        });
+        const res = await imagen.json();
+
+        comment = "ipfs://" + res?.cid;
+      }
+
+      const { request } = await publicClient.simulateContract({
+        address: NPC_SPECTATE,
+        abi: NPCSpectate,
+        functionName: "voteForNPC",
+        chain: polygonAmoy,
+        args: [
+          {
+            comment,
+            npc: npcDireccion,
+            spectator: address,
+            model: npcVotar.model,
+            scene: npcVotar.scene,
+            chatContext: npcVotar.chatContext,
+            appearance: npcVotar.appearance,
+            completedJobs: npcVotar.completedJobs,
+            personality: npcVotar.personality,
+            training: npcVotar.training,
+            tokenizer: npcVotar.tokenizer,
+            lora: npcVotar.lora,
+            spriteSheet: npcVotar.spriteSheet,
+            global: npcVotar.global,
+          },
+        ],
+        account: address,
+      });
+
+      const res = await clientWallet.writeContract(request);
+      await publicClient.waitForTransactionReceipt({ hash: res });
+      setVoto(dict.Home.votarNPC);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -191,7 +306,7 @@ const useConversacion = (
               ffn_inp_maxs: await manejarJSON(json?.mensaje?.ffn_inp_maxs),
               ffn_inp_mins: await manejarJSON(json?.mensaje?.ffn_inp_mins),
               ffn_inp_means: await manejarJSON(json?.mensaje?.ffn_inp_means),
-            }
+            },
           });
         }
       }
@@ -216,6 +331,12 @@ const useConversacion = (
     }
   }, [npc]);
 
+  useEffect(() => {
+    if (historia?.length < 1 && npcDireccion) {
+      cogerTodosLosVotos();
+    }
+  }, [npcDireccion]);
+
   return {
     descripcion,
     caretCoord,
@@ -236,6 +357,7 @@ const useConversacion = (
     setNPCVotar,
     votarCargando,
     historia,
+    votosCargando,
   };
 };
 
