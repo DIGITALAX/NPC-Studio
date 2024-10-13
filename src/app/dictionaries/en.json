@@ -166,8 +166,11 @@
     "mostrarMas": "Show More",
     "mostrarMenos": "Show Less",
     "auEarned": "AU Earned",
+    "activeWeeks": "Active Weeks",
     "activeJobs": "Active Jobs",
     "currentScore": "Current Score",
+    "rentMissedTotal": "Rent Missed",
+    "currentScoreWeekly": "Current Score (Weekly)",
     "rentPaid": "Rent Paid",
     "chatNpc": "NPC Chat",
     "eval2": "Rate NPC",
@@ -214,7 +217,11 @@
     "pub en ruinas": "Ruin Pub",
     "marketing de contenido": "Content Marketing",
     "votarNPC": "NPC Vote Successful!",
-    "votarPub": "Publication Vote Successful!"
+    "votarPub": "Publication Vote Successful!",
+    "reclamar": "Claim $AU",
+    "claimedAU": "$AU Claimed",
+    "weeklyWeight": "Weekly Weight",
+    "auClaimed": "$AU Claimed!"
   },
   "Nav": {
     "lan": "Choose Language"

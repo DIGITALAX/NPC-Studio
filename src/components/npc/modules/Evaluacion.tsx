@@ -204,41 +204,6 @@ const Evaluacion: FunctionComponent<EvaluacionProps> = ({
         <div className="relative w-full h-fit flex flex-col gap-5 items-start justify-start">
           <div className="relative text-left w-fit h-fit flex items-start justify-start flex-col gap-2">
             <div className="relative w-fit h-fit flex items-start justify-start break-all">
-              {dict.Home.estilo}
-            </div>
-            <div className="relative w-fit h-fit flex items-start justify-start font-lib break-words text-xxs text-white/70">
-              {dict.Home.estiloD}
-            </div>
-          </div>
-          <input
-            type="range"
-            id="input5"
-            className="w-full"
-            max="100"
-            min="0"
-            onChange={(e) =>
-              setNPCVotar((prev) => ({
-                ...prev,
-                style: Number(e.target.value),
-              }))
-            }
-            value={npcVotar.style}
-          />
-          <div className="relative w-full flex items-center justify-between gap-1 font-lib text-xxs break-all text-center text-jardin">
-            <div className="relative w-fit h-fit flex items-center justify-center">
-              {dict.Home.incon}
-            </div>
-            <div className="relative w-fit h-fit flex items-center justify-center">
-              {dict.Home.ad}
-            </div>
-            <div className="relative w-fit h-fit flex items-center justify-center">
-              {dict.Home.imp}
-            </div>
-          </div>
-        </div>
-        <div className="relative w-full h-fit flex flex-col gap-5 items-start justify-start">
-          <div className="relative text-left w-fit h-fit flex items-start justify-start flex-col gap-2">
-            <div className="relative w-fit h-fit flex items-start justify-start break-all">
               {dict.Home.appearance}
             </div>
             <div className="relative w-fit h-fit flex items-start justify-start font-lib break-words text-xxs text-white/70">

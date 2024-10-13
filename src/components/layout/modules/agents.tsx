@@ -10,6 +10,11 @@ import { ModalContext } from "@/app/providers";
 import { useContext } from "react";
 import Ticker from "@/components/common/modules/Ticker";
 import { useRouter } from "next/navigation";
+import useAccountPropia from "@/components/game/hooks/useAccount";
+import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import { http, useAccount } from "wagmi";
+import { polygon } from "viem/chains";
+import { createPublicClient } from "viem";
 
 export default function Agents({
   lang,
@@ -19,6 +24,15 @@ export default function Agents({
   dict: Dictionary;
 }) {
   const router = useRouter();
+  const { openConnectModal } = useConnectModal();
+  const { openAccountModal } = useAccountModal();
+  const { address, isConnected } = useAccount();
+  const publicClient = createPublicClient({
+    chain: polygon,
+    transport: http(
+      `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+    ),
+  });
   const contexto = useContext(ModalContext);
   const {
     pantallaCambio,
@@ -30,10 +44,29 @@ export default function Agents({
     setMostrarMas,
     npcsCargando,
     informacion,
+    espectadorInfo,
+    cogerCargando,
+    manejarCoger,
   } = useAgentes(
     contexto?.lensConectado,
     contexto?.setEscenas!,
-    contexto?.escenas!
+    contexto?.escenas!,
+    publicClient,
+    address!,
+    contexto?.setVoto!,
+    dict
+  );
+
+  const { manejarLens, manejarSalir, lensCargando } = useAccountPropia(
+    isConnected,
+    contexto?.setEsArtista!,
+    contexto?.setLensConectado!,
+    contexto?.setMostrarNotificacion!,
+    address,
+    publicClient,
+    contexto?.lensConectado,
+    contexto?.setOraculos!,
+    openAccountModal
   );
 
   return (
@@ -140,7 +173,7 @@ export default function Agents({
                   border: "#9933FF",
                   sombra: "#FF1493",
                   pantalla: Pantalla.Espectador,
-                  inactivoT: true,
+                  inactivoT: false,
                 },
               ].map(
                 (
@@ -194,9 +227,12 @@ export default function Agents({
             />
           </div>
           <Cambio
+            espectadorInfo={espectadorInfo!}
             todosLosNPCs={todosLosNPCs}
             pantallaCambio={pantallaCambio}
             lang={lang}
+            manejarCoger={manejarCoger}
+            cogerCargando={cogerCargando}
             dict={dict}
             router={router}
             setMostrarMas={setMostrarMas}
@@ -204,6 +240,12 @@ export default function Agents({
             npcsCargando={npcsCargando}
             informacion={informacion}
             escenas={contexto?.escenas!}
+            manejarLens={manejarLens}
+            manejarSalir={manejarSalir}
+            lensCargando={lensCargando}
+            openConnectModal={openConnectModal}
+            isConnected={isConnected}
+            lensConectado={contexto?.lensConectado}
           />
         </div>
       </div>

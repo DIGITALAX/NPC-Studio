@@ -263,7 +263,7 @@ export default function NPC({
                   {dict.Home.auEarned}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {informacion?.auEarned} $AU
+                  {informacion?.auEarnedTotal || 0} $AU
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
@@ -272,7 +272,7 @@ export default function NPC({
                   {dict.Home.activeJobs}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {informacion?.activeJobs}
+                  {informacion?.activeJobs || 0}
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
@@ -281,7 +281,16 @@ export default function NPC({
                   {dict.Home.currentScore}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {informacion?.currentScore}
+                  {informacion?.currentGlobalScore || 0}
+                </div>
+              </div>
+              <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
+              <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {dict.Home.currentScoreWeekly}
+                </div>
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {informacion?.currentWeeklyScore || 0}
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
@@ -290,10 +299,28 @@ export default function NPC({
                   {dict.Home.rentPaid}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {informacion?.rentPaid} $AU
+                  {informacion?.auPaidTotal || 0} $AU
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
+              <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {dict.Home.activeWeeks}
+                </div>
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {informacion?.activeWeeks || 0} $AU
+                </div>
+              </div>
+              <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
+              <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {dict.Home.rentMissedTotal}
+                </div>
+                <div className="relative w-fit h-fit flex items-center justify-center">
+                  {informacion?.rentMissedTotal || 0} $AU
+                </div>
+              </div>
+              <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
             </div>
           </div>
           <div className="relative w-full h-fit flex items-stretch justify-between flex-col gap-6">

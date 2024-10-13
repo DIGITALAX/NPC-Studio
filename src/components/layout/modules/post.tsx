@@ -118,7 +118,8 @@ export default function Post({
     address,
     publicClient,
     contexto?.setVoto!,
-    dict
+    dict,
+    contexto?.lensConectado
   );
   if (
     pubCargando ||

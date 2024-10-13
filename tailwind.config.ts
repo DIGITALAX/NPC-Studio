@@ -54,6 +54,7 @@ const config: Config = {
         vapor: "#D8D8D8",
       },
       fontSize: {
+        xxxs: "0.4rem",
         xxs: "0.6rem",
       },
       fontFamily: {

@@ -19,8 +19,8 @@ import { HistoriaNPC, NPCVote } from "../types/npc.types";
 import NPCSpectate from "./../../../../abis/NPCSpectate.json";
 import { Dictionary } from "@/components/game/types/game.types";
 import { getNPCVotes } from "../../../../graphql/npc/queries/getNPCVotes";
-import getProfile from "../../../../graphql/lens/queries/profile";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
+import { getNPCInformacion } from "../../../../graphql/npc/queries/getNPCInformacion";
 
 const useConversacion = (
   publicClient: PublicClient,
@@ -58,7 +58,6 @@ const useConversacion = (
     appearance: 50,
     scene: 50,
     spriteSheet: 50,
-    style: 50,
     tokenizer: 50,
     training: 50,
     lora: 50,
@@ -108,7 +107,7 @@ const useConversacion = (
               model: data?.model?.[i],
               chatContext: data?.chatContext?.[i],
               lora: data?.lora?.[i],
-              style: data?.style?.[i],
+              scene: data?.scene?.[i],
               personality: data?.personality?.[i],
               tokenizer: data?.tokenizer?.[i],
               completedJobs: data?.completedJobs?.[i],
@@ -236,13 +235,9 @@ const useConversacion = (
         lensConectado?.id
       );
 
-      setInformacion({
-        perfil: undefined,
-        auEarned: 0,
-        activeJobs: 0,
-        currentScore: 0,
-        rentPaid: 0,
-      });
+      const data = await getNPCInformacion(npcDireccion);
+
+      setInformacion(data?.data?.npcInfo);
 
       const atro = (
         datos?.data?.publications?.items?.[0] as Post

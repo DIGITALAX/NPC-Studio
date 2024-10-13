@@ -112,8 +112,8 @@ const Agentes: FunctionComponent<AgentesProps> = ({
                           <div className="relative w-fit h-fit flex items-center justify-center">
                             {dict.Home.auEarned}
                           </div>
-                          <div className="relative w-fit h-fit flex items-center justify-center">
-                            {informacion?.[i]?.auEarned} $AU
+                          <div className="relative w-fit h-fit flex items-center justify-center text-xxxs">
+                            {informacion?.[i]?.auEarnedTotal || 0} $AU
                           </div>
                         </div>
                         <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
@@ -121,8 +121,8 @@ const Agentes: FunctionComponent<AgentesProps> = ({
                           <div className="relative w-fit h-fit flex items-center justify-center">
                             {dict.Home.activeJobs}
                           </div>
-                          <div className="relative w-fit h-fit flex items-center justify-center">
-                            {informacion?.[i]?.activeJobs}
+                          <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                            {informacion?.[i]?.activeJobs || 0}
                           </div>
                         </div>
                         <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
@@ -130,8 +130,8 @@ const Agentes: FunctionComponent<AgentesProps> = ({
                           <div className="relative w-fit h-fit flex items-center justify-center">
                             {dict.Home.currentScore}
                           </div>
-                          <div className="relative w-fit h-fit flex items-center justify-center">
-                            {informacion?.[i]?.currentScore}
+                          <div className="relative w-fit h-fit text-xxxs flex items-center justify-center">
+                            {informacion?.[i]?.currentGlobalScore || 0}
                           </div>
                         </div>
                         <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
@@ -139,8 +139,8 @@ const Agentes: FunctionComponent<AgentesProps> = ({
                           <div className="relative w-fit h-fit flex items-center justify-center">
                             {dict.Home.rentPaid}
                           </div>
-                          <div className="relative w-fit h-fit flex items-center justify-center">
-                            {informacion?.[i]?.rentPaid} $AU
+                          <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                            {informacion?.[i]?.auPaidTotal || 0} $AU
                           </div>
                         </div>
                         <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>

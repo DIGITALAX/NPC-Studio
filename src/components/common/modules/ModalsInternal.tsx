@@ -249,7 +249,9 @@ export default function ModalsInternal({ dict }: { dict: Dictionary }) {
           setSeguirColeccionar={context?.setSeguirColeccionar}
         />
       )}
-      {context?.voto && <Voto dict={dict} setVoto={context?.setVoto!} />}
+      {context?.voto && (
+        <Voto voto={context?.voto} setVoto={context?.setVoto!} />
+      )}
       {context?.indexar !== Indexar.Inactivo && (
         <Index dict={dict} tipo={context?.indexar!} />
       )}

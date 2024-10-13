@@ -477,10 +477,17 @@ export enum Movimiento {
 export type Dictionary = {
   Home: {
     chatContexto: string;
+    activeWeeks: string;
+    currentScoreWeekly: string;
+    rentMissedTotal: string;
+    weeklyWeight: string;
     votarNPC: string;
     votarPub: string;
+    claimedAU: string;
+    auClaimed: string;
     training: string;
     soon: string;
+    reclamar: string;
     stats: string;
     trainD: string;
     lora: string;

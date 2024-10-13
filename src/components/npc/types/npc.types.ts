@@ -78,7 +78,6 @@ export interface NPCVote {
   appearance: number;
   personality: number;
   training: number;
-  style: number;
   lora: number;
   completedJobs: number;
   spriteSheet: number;
@@ -97,7 +96,7 @@ export interface HistoriaNPC {
   model: string;
   chatContext: string;
   lora: string;
-  style: string;
+  scene: string;
   personality: string;
   tokenizer: string;
   completedJobs: string;

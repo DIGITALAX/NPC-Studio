@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { Info, Pantalla } from "../types/agentes.types";
+import { EspectadorInfo, Info, Pantalla } from "../types/agentes.types";
 import { Atributos } from "@/components/post/types/post.types";
 import getPublications from "../../../../graphql/lens/queries/publications";
 import {
@@ -8,19 +8,31 @@ import {
   Profile,
   PublicationType,
 } from "../../../../graphql/generated";
-import { INFURA_GATEWAY } from "@/lib/constants";
+import { INFURA_GATEWAY, NPC_RENT } from "@/lib/constants";
 import { manejarJSON } from "@/lib/helpers/manejarJSON";
-import { Escena, Sprite } from "@/components/game/types/game.types";
+import { Dictionary, Escena, Sprite } from "@/components/game/types/game.types";
 import getProfiles from "../../../../graphql/lens/queries/profiles";
+import { getNPCInformacionTodo } from "../../../../graphql/npc/queries/getNPCInformacion";
+import { getEspectadorInformacion } from "../../../../graphql/npc/queries/getInfoEspectador";
+import { createWalletClient, custom, PublicClient } from "viem";
+import { polygonAmoy } from "viem/chains";
+import NPCRent from "./../../../../abis/NPCRent.json";
 
 const useAgentes = (
   lensConectado: Profile | undefined,
   setEscenas: (e: SetStateAction<Escena[]>) => void,
-  escenas: Escena[]
+  escenas: Escena[],
+  publicClient: PublicClient,
+  address: `0x${string}`,
+  setVoto: (e: SetStateAction<string | undefined>) => void,
+  dict: Dictionary
 ) => {
   const [pantallaCambio, setPantallaCambio] = useState<Pantalla>(
     Pantalla.Puntaje
   );
+  const [espectadorInfoLoading, setEspectadorInfoLoading] =
+    useState<boolean>(false);
+  const [espectadorInfo, setEspectadorInfo] = useState<EspectadorInfo>();
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [pantalla, setPantalla] = useState(window.innerWidth > 1280);
   const [atributos, setAtributos] = useState<Atributos>();
@@ -28,6 +40,39 @@ const useAgentes = (
   const [npcsCargando, setNPCsCargando] = useState<boolean>(false);
   const [mostrarMas, setMostrarMas] = useState<boolean>(false);
   const [informacion, setInformacion] = useState<Info[]>([]);
+  const [cogerCargando, setCogerCargando] = useState<boolean>(false);
+
+  const manejarCoger = async (): Promise<void> => {
+    setCogerCargando(true);
+    try {
+      const clientWallet = createWalletClient({
+        chain: polygonAmoy,
+        transport: custom((window as any).ethereum),
+      });
+
+      const semana = await publicClient.readContract({
+        address: NPC_RENT,
+        abi: NPCRent,
+        functionName: "weekCounter",
+      });
+
+      const { request } = await publicClient.simulateContract({
+        address: NPC_RENT,
+        abi: NPCRent,
+        functionName: "spectatorClaimAU",
+        chain: polygonAmoy,
+        args: ["0x", true, semana],
+        account: address,
+      });
+
+      const res = await clientWallet.writeContract(request);
+      await publicClient.waitForTransactionReceipt({ hash: res });
+      setVoto(dict.Home.auClaimed);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setCogerCargando(false);
+  };
 
   const llamarAtributos = async (): Promise<void> => {
     try {
@@ -115,6 +160,19 @@ const useAgentes = (
     }
   };
 
+  const cogerInfoEspectador = async () => {
+    setEspectadorInfoLoading(true);
+    try {
+      const datos = await getEspectadorInformacion(
+        lensConectado?.ownedBy?.address
+      );
+      setEspectadorInfo(datos?.data?.spectatorInfo);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setEspectadorInfoLoading(false);
+  };
+
   const llamaNPC = async () => {
     setNPCsCargando(true);
     try {
@@ -132,18 +190,55 @@ const useAgentes = (
       );
 
       setTodosLosNPCs(sprites);
+
+      const data = await getNPCInformacionTodo();
+
       setInformacion(
-        sprites?.map((sprite) => ({
-          perfil: datos?.data?.profiles?.items?.find(
+        sprites?.map((sprite) => {
+          let perfil = datos?.data?.profiles?.items?.find(
             (per) =>
               per.id ==
               "0x0" + sprite?.perfil_id?.toString(16)?.split("0x")?.[1]
-          ) as Profile,
-          auEarned: 0,
-          activeJobs: 0,
-          currentScore: 0,
-          rentPaid: 0,
-        }))
+          ) as Profile;
+          return {
+            perfil,
+            auEarnedTotal: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.auEarnedTotal,
+            auPaidTotal: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.auPaidTotal,
+            activeJobs: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.activeJobs,
+            currentWeeklyScore: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.currentWeeklyScore,
+            currentGlobalScore: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.currentGlobalScore,
+            activeWeeks: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.activeWeeks,
+            rentMissedTotal: data?.data?.npcInfos?.find(
+              (npc: any) =>
+                npc.npc?.toLowercase() ==
+                perfil?.ownedBy?.address?.toLowerCase()
+            )?.rentMissedTotal,
+          };
+        })
       );
     } catch (err: any) {
       console.error(err.message);
@@ -221,6 +316,12 @@ const useAgentes = (
     }
   }, [escenas?.length]);
 
+  useEffect(() => {
+    if (lensConectado?.id && !espectadorInfo) {
+      cogerInfoEspectador();
+    }
+  }, [lensConectado?.id]);
+
   return {
     pantallaCambio,
     setPantallaCambio,
@@ -231,6 +332,10 @@ const useAgentes = (
     mostrarMas,
     setMostrarMas,
     informacion,
+    espectadorInfo,
+    espectadorInfoLoading,
+    cogerCargando,
+    manejarCoger,
   };
 };
 

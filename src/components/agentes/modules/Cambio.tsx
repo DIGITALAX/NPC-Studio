@@ -4,6 +4,8 @@ import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Puntaje from "./Puntaje";
 import { CambioProps, Pantalla } from "../types/agentes.types";
+import createProfilePicture from "@/lib/helpers/createProfilePicture";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const Cambio: FunctionComponent<CambioProps> = ({
   pantallaCambio,
@@ -16,6 +18,15 @@ const Cambio: FunctionComponent<CambioProps> = ({
   npcsCargando,
   informacion,
   escenas,
+  espectadorInfo,
+  manejarLens,
+  manejarSalir,
+  openConnectModal,
+  isConnected,
+  lensCargando,
+  lensConectado,
+  manejarCoger,
+  cogerCargando,
 }): JSX.Element => {
   switch (pantallaCambio) {
     case Pantalla.Desafiante:
@@ -80,6 +91,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
       );
 
     case Pantalla.Espectador:
+      const pfp = createProfilePicture(lensConectado?.metadata?.picture);
       return (
         <>
           <div
@@ -89,10 +101,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.espectar}
           </div>
-          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
-            {dict.Home.soon}
-          </div>
-          {/* <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
+          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col xl:flex-row gap-10 items-center justify-center">
               <div className="relative w-full h-[32rem] flex items-center justify-center">
                 <Image
@@ -103,30 +112,66 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 />
               </div>
               <div className="relative w-full h-[32rem] flex flex-col items-center justify-center gap-6">
+                <div className="relative w-full flex font-at text-sm text-white h-fit items-end justify-end">
+                  <div
+                    className={`relative border-azulito border rounded-md bg-viol w-20 h-10 flex items-center justify-center ${
+                      !lensCargando &&
+                      "cursor-pointer active:scale-90 hover:scale-95 hover:opacity-80"
+                    }`}
+                    onClick={
+                      !lensCargando
+                        ? !isConnected
+                          ? openConnectModal
+                          : !lensConectado && isConnected
+                          ? () => manejarLens()
+                          : () => manejarSalir()
+                        : () => {}
+                    }
+                  >
+                    {lensCargando && (
+                      <div className="absolute w-fit h-fit flex items-center justify-center animate-spin">
+                        <AiOutlineLoading color={"white"} size={15} />
+                      </div>
+                    )}
+                    <div
+                      className={`relative w-fit h-fit flex items-center justify-center ${
+                        lensCargando && "opacity-40"
+                      }`}
+                    >
+                      {!lensConectado && !isConnected
+                        ? dict.Home.connect
+                        : isConnected && !lensConectado
+                        ? "Lens"
+                        : dict.Home.exit}
+                    </div>
+                  </div>
+                </div>
                 <div className="relative w-full h-full flex items-center justify-end flex-row gap-3">
                   <div className="relative text-base flex items-center justify-center font-lib text-white rotate-90">
-                    {dict.Home.rango + " 100"}
+                    {dict.Home.weeklyWeight} {espectadorInfo?.weekWeight}
                   </div>
                   <div className="relative w-3/5 h-full flex items-center justify-center border-4 rounded-md border-azulito bg-viol flex-col justify-between gap-4 items-stretch p-2">
                     <div className="relative w-full h-full flex flex-row gap-4 justify-between items-start">
-                      <div className="relative w-fit h-fit items-center justify-start font-at text-white text-2xl">
-                        @handle
+                      <div className="relative w-fit h-fit items-center justify-start font-at text-white text-2xl break-all">
+                        {lensConectado?.handle?.localName}
                       </div>
                       <div className="relative w-fit h-fit items-center justify-start">
-                        <div className="rounded-full w-28 h-28 border border-azulito">
-                          <Image
-                            src={`${INFURA_GATEWAY}/ipfs/`}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-full"
-                            draggable={false}
-                          />
+                        <div className="rounded-full w-28 h-28 border border-azulito bg-azulito">
+                          {pfp && (
+                            <Image
+                              src={pfp}
+                              layout="fill"
+                              objectFit="cover"
+                              className="rounded-full"
+                              draggable={false}
+                            />
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="relative w-full h-full flex flex-row gap-4 justify-between items-end font-vcr text-3xl">
                       <div className="relative w-fit h-fit items-center justify-start">
-                        193
+                        {espectadorInfo?.auEarnedTotal}
                       </div>
                       <div className="relative w-fit h-fit items-center justify-start text-white">
                         $AU
@@ -140,34 +185,60 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       $AU
                     </div>
                     <div className="relative w-fit h-fit items-center justify-start">
-                      300
+                      {espectadorInfo?.auClaimedTotal}
                     </div>
                   </div>
                   <div className="h-px w-full bg-[#CC04FD]"></div>
                   <div className="relative w-full h-full flex items-start justify-start flex-row gap-3">
                     <div className="relative w-full h-full items-start justify-between flex-col flex gap-3 text-white">
                       <div className="font-vcr text-2xl text-left w-fit h-fit flex">
-                        algo
+                        {dict.Home.claimedAU}
                       </div>
                       <div className="font-super text-lg text-left w-fit h-fit flex">
-                        algo $AU
+                        {espectadorInfo?.auUnclaimedTotal} $AU
                       </div>
                     </div>
-                    <div className="relative w-fit h-full flex items-end justify-end">
-                      <div className="relative w-20 h-8 flex items-center justify-center cursor-pointer hover:opacity-70">
+                    <div
+                      className={`relative w-fit h-full flex items-end justify-end`}
+                    >
+                      <div
+                        className={`relative w-24 h-8 flex items-center justify-center text-xs font-bit text-viol text-center ${
+                          Number(espectadorInfo?.auUnclaimedTotal) <= 0 ||
+                          !lensConectado?.id
+                            ? "opacity-70"
+                            : "cursor-pointer hover:opacity-70"
+                        }`}
+                        onClick={() =>
+                          Number(espectadorInfo?.auUnclaimedTotal) > 0 &&
+                          !cogerCargando &&
+                          lensConectado?.id &&
+                          manejarCoger()
+                        }
+                      >
                         <Image
                           src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
                           layout="fill"
                           objectFit="fill"
                           draggable={false}
                         />
+                        <div
+                          className={`absolute w-full h-full flex items-center justify-center whitespace-nowrap ${
+                            cogerCargando && "animate-spin"
+                          }`}
+                        >
+                          {cogerCargando ? (
+                            <AiOutlineLoading color="white" size={15} />
+                          ) : (
+                            dict.Home.reclamar
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >

@@ -127,8 +127,8 @@ const Historia: FunctionComponent<HistoriaNPCProps> = ({
                       valor: hist?.training,
                     },
                     {
-                      titulo: dict.Home.estilo,
-                      valor: hist?.style,
+                      titulo: dict.Home.scene,
+                      valor: hist?.scene,
                     },
                     {
                       titulo: dict.Home.tokenizer,

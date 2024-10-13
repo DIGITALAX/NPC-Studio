@@ -4,11 +4,14 @@ import { SetStateAction } from "react";
 import { Profile } from "../../../../graphql/generated";
 
 export interface Info {
-  perfil: Profile | undefined;
-  auEarned: number;
+  perfil?: Profile | undefined;
+  auEarnedTotal: number;
+  auPaidTotal: number;
   activeJobs: number;
-  currentScore: number;
-  rentPaid: number;
+  currentWeeklyScore: number;
+  currentGlobalScore: number;
+  activeWeeks: number;
+  rentMissedTotal: number;
 }
 export type CambioProps = {
   pantallaCambio: Pantalla;
@@ -21,7 +24,24 @@ export type CambioProps = {
   router: AppRouterInstance;
   npcsCargando: boolean;
   informacion: Info[];
+  espectadorInfo: EspectadorInfo;
+  isConnected: boolean;
+  lensCargando: boolean;
+  openConnectModal: (() => void) | undefined;
+  manejarLens: () => Promise<void>;
+  manejarSalir: () => void;
+  lensConectado: Profile | undefined;
+  manejarCoger: () => Promise<void>;
+  cogerCargando: boolean;
 };
+
+export interface EspectadorInfo {
+  auEarnedTotal: number;
+  weeklyPortion: number;
+  auClaimedTotal: number;
+  auUnclaimedTotal: number;
+  weekWeight: number;
+}
 
 export enum Pantalla {
   Puntaje,
