@@ -10,6 +10,7 @@ const NPC_INFO = gql`
       activeJobs
       currentWeeklyScore
       currentGlobalScore
+      allGlobalScore
       activeWeeks
       rentMissedTotal
     }
@@ -24,6 +25,7 @@ const NPC_INFO_ALL = gql`
       auPaidTotal
       activeJobs
       currentWeeklyScore
+      allGlobalScore
       currentGlobalScore
       rentMissedTotal
       activeWeeks

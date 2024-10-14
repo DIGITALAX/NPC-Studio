@@ -6,6 +6,9 @@ import Puntaje from "./Puntaje";
 import { CambioProps, Pantalla } from "../types/agentes.types";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { AiOutlineLoading } from "react-icons/ai";
+import Seleccion from "./Seleccion";
+import moment from "moment";
+import Petalos from "./Petalos";
 
 const Cambio: FunctionComponent<CambioProps> = ({
   pantallaCambio,
@@ -27,9 +30,19 @@ const Cambio: FunctionComponent<CambioProps> = ({
   lensConectado,
   manejarCoger,
   cogerCargando,
+  tokensGuardados,
+  desafiantes,
+  setDesafiantes,
+  todosLosDesafiantes,
 }): JSX.Element => {
   switch (pantallaCambio) {
     case Pantalla.Desafiante:
+      const des0 = createProfilePicture(
+        desafiantes?.[0]?.perfil?.metadata?.picture
+      );
+      const des1 = createProfilePicture(
+        desafiantes?.[1]?.perfil?.metadata?.picture
+      );
       return (
         <>
           <div
@@ -39,19 +52,134 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.chall}
           </div>
-          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
-            {dict.Home.soon}
-          </div>
-          {/* <div className="relative w-full h-fit flex items-center justify-center flex-col lg:flex-row gap-14 ">
-            <div className="relative flex w-full h-96 items-center justify-center flex-col">
-              <div className="absolute items-center justify-center flex w-full xl:w-3/4 h-full">
-                <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmPQaDcs5gEYtrqXsz3pvLzu3919a4BXmBAE8McrZyJEor`}
-                  layout="fill"
-                  objectFit="fill"
-                  draggable={false}
-                />
+          <div className="relative w-full h-fit flex items-center justify-center flex-col lg:flex-row gap-6 xl:gap-14">
+            <div
+              className={`relative w-full gal:w-60 xl:w-80 h-fit flex items-center justify-between flex-col gap-3`}
+            >
+              <div className="relative w-full h-fit flex items-center justify-center">
+                <div
+                  className={`relative w-full h-96 flex items-stretch justify-start flex-col gap-4 p-5`}
+                >
+                  <div className={`absolute top-0 left-0 w-full h-full flex `}>
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/QmPQaDcs5gEYtrqXsz3pvLzu3919a4BXmBAE8McrZyJEor`}
+                      layout="fill"
+                      objectFit="fill"
+                      draggable={false}
+                      className={` ${
+                        (npcsCargando || todosLosNPCs?.length < 1) &&
+                        "animate-pulse"
+                      }`}
+                    />
+                  </div>
+                  {todosLosNPCs?.length > 0 && (
+                    <>
+                      <div className="relative w-full h-fit flex flex-row items-center justify-between gap-3 bg-black/40 p-1 rounded-md">
+                        <div className="relative flex flex-row w-full h-full text-white font-aust items-center justify-start gap-2">
+                          <div
+                            className={`relative rounded-full flex bg-black w-6 h-6 items-center justify-center`}
+                            id="pfp"
+                          >
+                            {des0 && (
+                              <Image
+                                src={des0}
+                                objectFit="cover"
+                                alt="pfp"
+                                layout="fill"
+                                className="relative w-fit h-fit rounded-full items-center justify-center flex"
+                                draggable={false}
+                              />
+                            )}
+                          </div>
+                          <div className="relative items-center justify-center w-fit h-fit text-xs flex break-all">
+                            {
+                              desafiantes?.[0]?.perfil?.handle
+                                ?.suggestedFormatted?.localName
+                            }
+                          </div>
+                        </div>
+                        <div className="relative w-full h-fit flex items-center justify-end">
+                          <div
+                            className="relative w-24 text-xs font-bit text-viol h-8 flex items-center justify-center cursor-pointer hover:opacity-70"
+                            onClick={() =>
+                              router.push(
+                                `/npc/${desafiantes?.[0]?.perfil?.handle?.suggestedFormatted?.localName}`
+                              )
+                            }
+                          >
+                            <Image
+                              src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                              layout="fill"
+                              objectFit="fill"
+                              draggable={false}
+                            />
+                            <div className="absolute w-full h-full flex items-center justify-center whitespace-nowrap">
+                              {dict.Home.espectar}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative w-full h-full flex flex-row items-center justify-between gap-3">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Image
+                            src={`${INFURA_GATEWAY}/ipfs/${desafiantes?.[0]?.tapa_dos}`}
+                            layout="fill"
+                            objectFit="contain"
+                            draggable={false}
+                          />
+                        </div>
+                        <div className="realtive w-full h-fit bg-black/80 p-2 flex flex-col items-center justify-between gap-2 text-xxs font-super text-sol">
+                          <div className="relative w-full h-px flex items-start justify-start bg-azulito"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.auEarned}
+                            </div>
+                            <div className="relative w-fit h-fit flex items-center justify-center text-xxxs">
+                              {desafiantes?.[0]?.auEarnedTotal || 0} $AU
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.activeJobs}
+                            </div>
+                            <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                              {desafiantes?.[0]?.activeJobs || 0}
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.currentScore}
+                            </div>
+                            <div className="relative w-fit h-fit text-xxxs flex items-center justify-center">
+                              {desafiantes?.[0]?.currentGlobalScore || 0}
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.rentPaid}
+                            </div>
+                            <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                              {desafiantes?.[0]?.auPaidTotal || 0} $AU
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
+              {todosLosNPCs?.length > 0 && (
+                <Seleccion
+                  desafiantes={desafiantes}
+                  setDesafiantes={setDesafiantes}
+                  todosLosDesafiantes={todosLosDesafiantes}
+                  indice={0}
+                />
+              )}
             </div>
             <div className="relative w-fit h-fit flex items-center justify-center">
               <div className="relative flex w-20 h-20 items-center justify-center">
@@ -63,18 +191,446 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 />
               </div>
             </div>
-            <div className="relative w-full h-96 items-center justify-center flex flex-col">
-              <div className="absolute flex w-full xl:w-3/4 h-full items-center justify-center">
-                <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmXBVuPh7ZAC6wsPRNiGAwFuWzm1XGjQprD6wYYtk2XzAh`}
-                  layout="fill"
-                  objectFit="fill"
-                  draggable={false}
-                />
+            <div
+              className={`relative w-full gal:w-60 xl:w-80 h-fit flex items-center justify-between flex-col gap-3`}
+            >
+              <div className="relative w-full h-fit flex items-center justify-center">
+                <div
+                  className={`relative w-full h-96 flex items-stretch justify-start flex-col gap-4 p-5`}
+                >
+                  <div className={`absolute top-0 left-0 w-full h-full flex`}>
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/QmXBVuPh7ZAC6wsPRNiGAwFuWzm1XGjQprD6wYYtk2XzAh`}
+                      layout="fill"
+                      objectFit="fill"
+                      draggable={false}
+                      className={` ${
+                        (npcsCargando || todosLosNPCs?.length < 1) &&
+                        "animate-pulse"
+                      }`}
+                    />
+                  </div>
+                  {todosLosNPCs?.length > 0 && (
+                    <>
+                      <div className="relative w-full h-fit flex flex-row items-center justify-between gap-3 bg-black/40 p-1 rounded-md">
+                        <div className="relative flex flex-row w-full h-full text-white font-aust items-center justify-start gap-2">
+                          <div
+                            className={`relative rounded-full flex bg-black w-6 h-6 items-center justify-center`}
+                            id="pfp"
+                          >
+                            {des1 && (
+                              <Image
+                                src={des1}
+                                objectFit="cover"
+                                alt="pfp"
+                                layout="fill"
+                                className="relative w-fit h-fit rounded-full items-center justify-center flex"
+                                draggable={false}
+                              />
+                            )}
+                          </div>
+                          <div className="relative items-center justify-center w-fit h-fit text-xs flex break-all">
+                            {
+                              desafiantes?.[1]?.perfil?.handle
+                                ?.suggestedFormatted?.localName
+                            }
+                          </div>
+                        </div>
+                        <div className="relative w-full h-fit flex items-center justify-end">
+                          <div
+                            className="relative w-24 text-xs font-bit text-viol h-8 flex items-center justify-center cursor-pointer hover:opacity-70"
+                            onClick={() =>
+                              router.push(
+                                `/npc/${desafiantes?.[1]?.perfil?.handle?.suggestedFormatted?.localName}`
+                              )
+                            }
+                          >
+                            <Image
+                              src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                              layout="fill"
+                              objectFit="fill"
+                              draggable={false}
+                            />
+                            <div className="absolute w-full h-full flex items-center justify-center whitespace-nowrap">
+                              {dict.Home.espectar}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative w-full h-full flex flex-row items-center justify-between gap-3">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Image
+                            src={`${INFURA_GATEWAY}/ipfs/${desafiantes?.[1]?.tapa_dos}`}
+                            layout="fill"
+                            objectFit="contain"
+                            draggable={false}
+                          />
+                        </div>
+                        <div className="realtive w-full h-fit bg-black/80 p-2 flex flex-col items-center justify-between gap-2 text-xxs font-super text-sol">
+                          <div className="relative w-full h-px flex items-start justify-start bg-azulito"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.auEarned}
+                            </div>
+                            <div className="relative w-fit h-fit flex items-center justify-center text-xxxs">
+                              {desafiantes?.[1]?.auEarnedTotal || 0} $AU
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#FF4EFF]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.activeJobs}
+                            </div>
+                            <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                              {desafiantes?.[1]?.activeJobs || 0}
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.currentScore}
+                            </div>
+                            <div className="relative w-fit h-fit text-xxxs flex items-center justify-center">
+                              {desafiantes?.[1]?.currentGlobalScore || 0}
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#65B0FF]"></div>
+                          <div className="relative w-full h-fit flex items-center justify-between flex-row gap-1.5">
+                            <div className="relative w-fit h-fit flex items-center justify-center">
+                              {dict.Home.rentPaid}
+                            </div>
+                            <div className="relative w-fit text-xxxs h-fit flex items-center justify-center">
+                              {desafiantes?.[1]?.auPaidTotal || 0} $AU
+                            </div>
+                          </div>
+                          <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
+              {todosLosNPCs?.length > 0 && (
+                <Seleccion
+                  desafiantes={desafiantes}
+                  setDesafiantes={setDesafiantes}
+                  todosLosDesafiantes={todosLosDesafiantes}
+                  indice={1}
+                />
+              )}
             </div>
-          </div>*/}
-          {/* <div className="rounded-sm py-10 relative w-full h-[80rem] border-4 border-flor bg-gris"></div> */}
+          </div>
+          <div className="rounded-sm p-2 sm:p-4 md:p-10 relative w-full h-fit sm:h-[60rem] border-4 border-flor bg-gris">
+            <div
+              className={`relative w-full h-full flex items-start justify-start border-2 border-[#35C3E6] bg-[#35C3E6] font-lib ${
+                todosLosNPCs?.length < 1 && "animate-pulse"
+              }`}
+            >
+              {todosLosNPCs?.length > 0 && (
+                <div className="relative w-full h-fit sm:h-full flex flex-col sm:flex-row items-stretch justify-between gap-7 border-8 border-[#0000B0] bg-black p-3">
+                  <div className="relative w-full h-fit sm:h-full justify-between flex flex-col gap-8 items-center overflow-y-scroll">
+                    <div className="relative w-full h-fit flex flex-row gap-3 items-center justify-between">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-2xl">
+                        {dict.Home.activeWeeks}
+                      </div>
+                      <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar text-viol2">
+                        {desafiantes?.[0]?.activeWeeks || 0}
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex items-center justify-center gap-3 xl:flex-nowrap flex-wrap">
+                      <Petalos
+                        puntaje={desafiantes?.[0]?.currentWeeklyScore}
+                        total={desafiantes?.[0]?.currentGlobalScore}
+                        colorUno="#FFAA00"
+                        colorDos="#3274FF"
+                        titulo={dict.Home.globalW}
+                      />
+                      <Petalos
+                        puntaje={desafiantes?.[0]?.currentGlobalScore}
+                        total={desafiantes?.[0]?.allGlobalScore}
+                        colorUno="#00FFFF"
+                        colorDos="#CC04FD"
+                        titulo={dict.Home.globalN}
+                      />
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.lensStats}
+                      </div>
+                      <div className="relative w-full h-fit flex flex-row justify-between items-start gap-3 text-viol2 xl:flex-nowrap flex-wrap">
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-2xl">
+                            {desafiantes?.[0]?.perfil?.stats?.followers}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar">
+                            {dict.Home.seguidores}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-2xl">
+                            {desafiantes?.[0]?.perfil?.stats?.following}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar">
+                            {dict.Home.siguiendo}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative w-full h-fit flex flex-wrap justify-between items-start gap-3 text-viol2">
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[0]?.perfil?.stats?.posts || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Pubs}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[0]?.perfil?.stats?.mirrors || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Mirrors}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[0]?.perfil?.stats?.comments || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Comments}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[0]?.perfil?.stats?.reactions || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Likes}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.rentPaid}
+                      </div>
+                      {desafiantes?.[0]?.rentTransactions?.length > 0 ? (
+                        <div className="relative w-full h-fit max-h-[10rem] overflow-y-scroll flex flex-col gap-1.5 items-start justify-start">
+                          {desafiantes?.[0]?.rentTransactions?.map(
+                            (
+                              alquiler: {
+                                amount: number;
+                                transactionHash: number;
+                                blockTimestamp: number;
+                              },
+                              indice: number
+                            ) => {
+                              return (
+                                <div
+                                  key={indice}
+                                  className="relative w-full h-12 flex items-center justify-between flex-row px-1.5 py-1 cursor-pointer hover:opacity-70 border-viol2 bg-gris border text-black"
+                                  onClick={() =>
+                                    window.open(
+                                      `https://polygonscan.com/tx/${alquiler.transactionHash}`
+                                    )
+                                  }
+                                >
+                                  <div className="relative cursor-pointer w-fit h-fit break-all text-sm">
+                                    {moment
+                                      .unix(Number(alquiler?.blockTimestamp))
+                                      .format("YYYY-MM-DD HH:mm:ss")}
+                                  </div>
+                                  <div className="relative cursor-pointer w-fit h-fit break-all text-lg text-viol2">
+                                    {Number(alquiler?.amount || 0)}
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      ) : (
+                        <div className="relative w-full h-fit flex items-start justify-start text-viol2 break-all text-sm">
+                          {dict.Home.noRentPaid}
+                        </div>
+                      )}
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.escenasActivas}
+                      </div>
+                      <div className="relative w-fit h-fit flex items-center justify-center text-sm flex-row">
+                        <div className="relative w-32 h-24 flex items-center justify-center">
+                          <Image
+                            objectFit="cover"
+                            draggable={false}
+                            layout="fill"
+                            src={`${INFURA_GATEWAY}/ipfs/${
+                              escenas?.find((e) =>
+                                e.sprites?.find(
+                                  (spr) =>
+                                    spr.perfil_id == desafiantes?.[0]?.perfil_id
+                                )
+                              )?.imagen
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-full sm:w-2 h-2 sm:h-full bg-[#0000B0] flex"></div>
+                  <div className="relative w-full h-fit sm:h-full justify-between flex flex-col gap-8 items-center overflow-y-scroll">
+                    <div className="relative w-full h-fit flex flex-row gap-3 items-center justify-between">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-2xl">
+                        {dict.Home.activeWeeks}
+                      </div>
+                      <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar text-flor">
+                        {desafiantes?.[1]?.activeWeeks || "0"}
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex items-center justify-center gap-3  xl:flex-nowrap flex-wrap">
+                      <Petalos
+                        puntaje={desafiantes?.[1]?.currentWeeklyScore}
+                        total={desafiantes?.[1]?.currentGlobalScore}
+                        colorUno="#4B0099"
+                        colorDos="#FBFF24"
+                        titulo={dict.Home.globalW}
+                      />
+                      <Petalos
+                        puntaje={desafiantes?.[1]?.currentGlobalScore}
+                        total={desafiantes?.[1]?.allGlobalScore}
+                        colorUno="#C993FF"
+                        colorDos="#23DBAA"
+                        titulo={dict.Home.globalN}
+                      />
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.lensStats}
+                      </div>
+                      <div className="relative w-full h-fit flex flex-row justify-between items-start gap-3 text-flor xl:flex-nowrap flex-wrap">
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-2xl">
+                            {desafiantes?.[1]?.perfil?.stats?.followers}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar">
+                            {dict.Home.seguidores}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-2xl">
+                            {desafiantes?.[1]?.perfil?.stats?.following}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-lg font-clar">
+                            {dict.Home.siguiendo}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative w-full h-fit flex flex-wrap justify-between items-start gap-3 text-flor">
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[1]?.perfil?.stats?.posts || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Pubs}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[1]?.perfil?.stats?.mirrors || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Mirrors}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[1]?.perfil?.stats?.comments || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Comments}
+                          </div>
+                        </div>
+                        <div className="relative w-fit h-fit flex flex-col items-start justify-start text-left gap-1">
+                          <div className="flex w-fit h-fit items-center justify-center text-lg">
+                            {desafiantes?.[1]?.perfil?.stats?.reactions || 0}
+                          </div>
+                          <div className="text-white flex w-fit h-fit items-center justify-center text-xs font-clar">
+                            {dict.Home.Likes}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.rentPaid}
+                      </div>
+                      {desafiantes?.[1]?.rentTransactions?.length > 0 ? (
+                        <div className="relative w-full h-fit max-h-[10rem] overflow-y-scroll flex flex-col gap-1.5 items-start justify-start">
+                          {desafiantes?.[1]?.rentTransactions?.map(
+                            (
+                              alquiler: {
+                                amount: number;
+                                transactionHash: number;
+                                blockTimestamp: number;
+                              },
+                              indice: number
+                            ) => {
+                              return (
+                                <div
+                                  key={indice}
+                                  className="relative w-full h-12 flex items-center justify-between flex-row px-1.5 py-1 cursor-pointer hover:opacity-70 border-flor bg-gris border text-black"
+                                  onClick={() =>
+                                    window.open(
+                                      `https://polygonscan.com/tx/${alquiler.transactionHash}`
+                                    )
+                                  }
+                                >
+                                  <div className="relative cursor-pointer w-fit h-fit break-all text-sm">
+                                    {moment
+                                      .unix(Number(alquiler?.blockTimestamp))
+                                      .format("YYYY-MM-DD HH:mm:ss")}
+                                  </div>
+                                  <div className="relative cursor-pointer w-fit h-fit break-all text-lg text-flor">
+                                    {Number(alquiler?.amount || 0)}
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      ) : (
+                        <div className="relative w-full h-fit flex items-start justify-start text-flor break-all text-sm">
+                          {dict.Home.noRentPaid}
+                        </div>
+                      )}
+                    </div>
+                    <div className="relative w-full h-fit flex flex-col gap-3 items-start justify-start">
+                      <div className="relative w-fit h-fit text-white flex items-start justify-start text-xl">
+                        {dict.Home.escenasActivas}
+                      </div>
+                      <div className="relative w-fit h-fit flex items-center justify-center text-sm flex-row">
+                        <div className="relative w-32 h-24 flex items-center justify-center">
+                          <Image
+                            objectFit="cover"
+                            draggable={false}
+                            layout="fill"
+                            src={`${INFURA_GATEWAY}/ipfs/${
+                              escenas?.find((e) =>
+                                e.sprites?.find(
+                                  (spr) =>
+                                    spr.perfil_id == desafiantes?.[1]?.perfil_id
+                                )
+                              )?.imagen
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >
@@ -103,15 +659,75 @@ const Cambio: FunctionComponent<CambioProps> = ({
           </div>
           <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col xl:flex-row gap-10 items-center justify-center">
-              <div className="relative w-full h-[32rem] flex items-center justify-center">
-                <Image
-                  src={`${INFURA_GATEWAY}/ipfs/Qmab2a5syZ5rVB6oHQV12Lrruzyzx5A1oyC1RWdQsK8Mt6`}
-                  layout="fill"
-                  objectFit="fill"
-                  draggable={false}
-                />
+              <div className="relative w-full h-[48rem] flex flex-col items-center justify-center gap-6">
+                <div className="relative w-full h-fit flex items-start justify-between flex-col gap-2">
+                  <div className="relative w-full h-fit flex items-start justify-start font-at text-sm text-white">
+                    {dict.Home.tokensH}
+                  </div>
+                  <div className="relative w-full flex flex-wrap gap-6 justify-between h-fit">
+                    {[
+                      {
+                        titulo: "MONA",
+                        valor: tokensGuardados?.mona,
+                      },
+                      {
+                        titulo: "AU",
+                        valor: tokensGuardados?.au,
+                      },
+                      {
+                        titulo: "DLTA",
+                        valor: tokensGuardados?.delta,
+                      },
+                      {
+                        titulo: "Genesis",
+                        valor: tokensGuardados?.genesis,
+                      },
+                      {
+                        titulo: "Fashion",
+                        valor: tokensGuardados?.fashion,
+                      },
+                      {
+                        titulo: "PODE",
+                        valor: tokensGuardados?.pode,
+                      },
+                    ]?.map(
+                      (
+                        elem: {
+                          titulo: string;
+                          valor: bigint;
+                        },
+                        indice: number
+                      ) => {
+                        return (
+                          <div
+                            key={indice}
+                            className="relative w-28 px-1 py-px border-2 border-azulito rounded-sm h-fit flex flex-row gap-2 items-center justify-between bg-offNegro"
+                          >
+                            <div className="relative w-fit h-fit flex items-center justify-start text-sol">
+                              {elem?.titulo}
+                              {": "}
+                            </div>
+                            <div className="relative w-fit h-fit flex items-center justify-end text-white">
+                              {indice < 3
+                                ? Number(elem?.valor || 0) / 10 ** 18
+                                : elem?.valor}
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <Image
+                    src={`${INFURA_GATEWAY}/ipfs/Qmab2a5syZ5rVB6oHQV12Lrruzyzx5A1oyC1RWdQsK8Mt6`}
+                    layout="fill"
+                    objectFit="fill"
+                    draggable={false}
+                  />
+                </div>
               </div>
-              <div className="relative w-full h-[32rem] flex flex-col items-center justify-center gap-6">
+              <div className="relative w-full h-[48rem] flex flex-col items-center justify-center gap-6">
                 <div className="relative w-full flex font-at text-sm text-white h-fit items-end justify-end">
                   <div
                     className={`relative border-azulito border rounded-md bg-viol w-20 h-10 flex items-center justify-center ${
@@ -202,7 +818,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       className={`relative w-fit h-full flex items-end justify-end`}
                     >
                       <div
-                        className={`relative w-24 h-8 flex items-center justify-center text-xs font-bit text-viol text-center ${
+                        className={`relative w-28 h-8 flex items-center justify-center text-xs font-bit text-viol text-center ${
                           Number(espectadorInfo?.auUnclaimedTotal) <= 0 ||
                           !lensConectado?.id
                             ? "opacity-70"

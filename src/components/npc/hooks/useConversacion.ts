@@ -177,6 +177,11 @@ const useConversacion = (
       setVoto(dict.Home.votarNPC);
     } catch (err: any) {
       console.error(err.message);
+      if (err.message?.toLowerCase()?.includes("insufficienttokenbalance")) {
+        setVoto(dict.Home.tokensInvalidos);
+      } else {
+        setVoto(dict.Home.error2);
+      }
     }
     setVotarCargando(false);
   };

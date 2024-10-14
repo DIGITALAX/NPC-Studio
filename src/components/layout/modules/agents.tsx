@@ -47,6 +47,10 @@ export default function Agents({
     espectadorInfo,
     cogerCargando,
     manejarCoger,
+    tokensGuardados,
+    setDesafiantes,
+    desafiantes,
+    todosLosDesafiantes,
   } = useAgentes(
     contexto?.lensConectado,
     contexto?.setEscenas!,
@@ -146,7 +150,6 @@ export default function Agents({
                   border: "#FF1493",
                   sombra: "#1239F6",
                   pantalla: Pantalla.Desafiante,
-                  inactivoT: true,
                 },
                 {
                   titulo: dict.Home.game,
@@ -227,7 +230,11 @@ export default function Agents({
             />
           </div>
           <Cambio
+            desafiantes={desafiantes}
+            setDesafiantes={setDesafiantes}
+            tokensGuardados={tokensGuardados!}
             espectadorInfo={espectadorInfo!}
+            todosLosDesafiantes={todosLosDesafiantes}
             todosLosNPCs={todosLosNPCs}
             pantallaCambio={pantallaCambio}
             lang={lang}

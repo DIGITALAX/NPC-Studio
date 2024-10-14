@@ -1,5 +1,11 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { EspectadorInfo, Info, Pantalla } from "../types/agentes.types";
+import {
+  Desafiante,
+  EspectadorInfo,
+  Info,
+  Pantalla,
+  TokensGuardados,
+} from "../types/agentes.types";
 import { Atributos } from "@/components/post/types/post.types";
 import getPublications from "../../../../graphql/lens/queries/publications";
 import {
@@ -17,6 +23,7 @@ import { getEspectadorInformacion } from "../../../../graphql/npc/queries/getInf
 import { createWalletClient, custom, PublicClient } from "viem";
 import { polygonAmoy } from "viem/chains";
 import NPCRent from "./../../../../abis/NPCRent.json";
+import { getNPCRentTodo } from "../../../../graphql/npc/queries/getNPCRentTodo";
 
 const useAgentes = (
   lensConectado: Profile | undefined,
@@ -41,7 +48,11 @@ const useAgentes = (
   const [mostrarMas, setMostrarMas] = useState<boolean>(false);
   const [informacion, setInformacion] = useState<Info[]>([]);
   const [cogerCargando, setCogerCargando] = useState<boolean>(false);
-
+  const [tokensGuardados, setTokenesGuardados] = useState<TokensGuardados>();
+  const [desafiantes, setDesafiantes] = useState<Desafiante[]>([]);
+  const [todosLosDesafiantes, setTodosLosDesafiantes] = useState<Desafiante[]>(
+    []
+  );
   const manejarCoger = async (): Promise<void> => {
     setCogerCargando(true);
     try {
@@ -54,6 +65,7 @@ const useAgentes = (
         address: NPC_RENT,
         abi: NPCRent,
         functionName: "weekCounter",
+        account: address,
       });
 
       const { request } = await publicClient.simulateContract({
@@ -167,6 +179,111 @@ const useAgentes = (
         lensConectado?.ownedBy?.address
       );
       setEspectadorInfo(datos?.data?.spectatorInfo);
+
+      setTokenesGuardados({
+        mona: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        delta: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        fashion: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        pode: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        genesis: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        au: await publicClient.readContract({
+          address: "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address],
+          account: address,
+          functionName: "balanceOf",
+        }),
+      });
     } catch (err: any) {
       console.error(err.message);
     }
@@ -189,56 +306,78 @@ const useAgentes = (
         lensConectado?.id
       );
 
-      setTodosLosNPCs(sprites);
-
       const data = await getNPCInformacionTodo();
 
-      setInformacion(
-        sprites?.map((sprite) => {
-          let perfil = datos?.data?.profiles?.items?.find(
-            (per) =>
-              per.id ==
-              "0x0" + sprite?.perfil_id?.toString(16)?.split("0x")?.[1]
-          ) as Profile;
-          return {
-            perfil,
-            auEarnedTotal: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.auEarnedTotal,
-            auPaidTotal: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.auPaidTotal,
-            activeJobs: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.activeJobs,
-            currentWeeklyScore: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.currentWeeklyScore,
-            currentGlobalScore: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.currentGlobalScore,
-            activeWeeks: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.activeWeeks,
-            rentMissedTotal: data?.data?.npcInfos?.find(
-              (npc: any) =>
-                npc.npc?.toLowercase() ==
-                perfil?.ownedBy?.address?.toLowerCase()
-            )?.rentMissedTotal,
-          };
-        })
+      const info = sprites?.map((sprite) => {
+        let perfil = datos?.data?.profiles?.items?.find(
+          (per) =>
+            per.id == "0x0" + sprite?.perfil_id?.toString(16)?.split("0x")?.[1]
+        ) as Profile;
+        return {
+          perfil,
+          auEarnedTotal: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.auEarnedTotal,
+          auPaidTotal: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.auPaidTotal,
+          activeJobs: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.activeJobs,
+          currentWeeklyScore: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.currentWeeklyScore,
+          currentGlobalScore: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.currentGlobalScore,
+          allGlobalScore: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.allGlobalScore,
+          activeWeeks: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.activeWeeks,
+          rentMissedTotal: data?.data?.npcInfos?.find(
+            (npc: any) =>
+              npc.npc?.toLowercase() == perfil?.ownedBy?.address?.toLowerCase()
+          )?.rentMissedTotal,
+        };
+      });
+
+      const alquileres = await getNPCRentTodo();
+
+      setTodosLosNPCs(sprites);
+      setInformacion(info);
+      setDesafiantes([
+        {
+          ...sprites[0],
+          ...info[0],
+          rentTransactions: alquileres?.data?.rentPaidNPCs?.find(
+            (al: any) => al.npc == sprites[0].billetera
+          ),
+        },
+        {
+          ...sprites[1],
+          ...info[1],
+          rentTransactions: alquileres?.data?.rentPaidNPCs?.find(
+            (al: any) => al.npc == sprites[1].billetera
+          ),
+        },
+      ]);
+      setTodosLosDesafiantes(
+        sprites?.map((spr, i) => ({
+          ...spr,
+          ...info[i],
+          rentTransactions: alquileres?.data?.rentPaidNPCs?.find(
+            (al: any) => al.npc == spr.billetera
+          ),
+        }))
       );
     } catch (err: any) {
       console.error(err.message);
@@ -336,6 +475,10 @@ const useAgentes = (
     espectadorInfoLoading,
     cogerCargando,
     manejarCoger,
+    tokensGuardados,
+    setDesafiantes,
+    desafiantes,
+    todosLosDesafiantes,
   };
 };
 

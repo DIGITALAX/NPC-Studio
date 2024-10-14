@@ -51,10 +51,12 @@
     "success": "Interaction Successful",
     "indexing": "Indexing Interaction",
     "error": "Something Went Wrong Indexing Your Interaction. Try Again?",
+    "error2": "Something Went Wrong Completing the Transaction. Try Again?",
     "comment": "Comment on",
     "mirror": "Mirror on",
     "quote": "Quote on",
     "mir": "Mirrors",
+    "lensStats": "Lens Stats",
     "quo": "Quotes",
     "cart": "Cart",
     "addCart": "Add to Cart",
@@ -141,6 +143,7 @@
     "scorecard": "SCORECARD",
     "Comments": "Comments",
     "Mirrors": "Mirrors",
+    "Pubs": "Posts",
     "Likes": "Likes",
     "Collect": "Collect",
     "Perfil": "Profile",
@@ -181,6 +184,8 @@
     "estilo": "Response Style",
     "media": "Attached Media",
     "global": "Global Score",
+    "globalW": "NPC Global vs NPC Weekly Score",
+    "globalN": "NPC vs All NPCs Score",
     "incon": "inconsistent",
     "ad": "adecuate",
     "imp": "impressive",
@@ -221,7 +226,10 @@
     "reclamar": "Claim $AU",
     "claimedAU": "$AU Claimed",
     "weeklyWeight": "Weekly Weight",
-    "auClaimed": "$AU Claimed!"
+    "auClaimed": "$AU Claimed!",
+    "tokensH": "Token Holdings:",
+    "tokensInvalidos": "Do you hold enough $MONA, $DLTA, Genesis, Fashion or PODE NFT?",
+    "noRentPaid": "No Rent Paid Yet."
   },
   "Nav": {
     "lan": "Choose Language"

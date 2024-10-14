@@ -52,6 +52,7 @@ const config: Config = {
         jardin: "#0485FD",
         fresas: "#DF5B70",
         vapor: "#D8D8D8",
+        viol2: "#C479FF",
       },
       fontSize: {
         xxxs: "0.4rem",
@@ -80,6 +81,7 @@ const config: Config = {
         300: "300",
       },
       screens: {
+        gal: "480px",
         tab: "800px",
         "1xl": "1460px",
       },

@@ -10,6 +10,7 @@ export interface Info {
   activeJobs: number;
   currentWeeklyScore: number;
   currentGlobalScore: number;
+  allGlobalScore: number;
   activeWeeks: number;
   rentMissedTotal: number;
 }
@@ -33,7 +34,62 @@ export type CambioProps = {
   lensConectado: Profile | undefined;
   manejarCoger: () => Promise<void>;
   cogerCargando: boolean;
+  tokensGuardados: TokensGuardados;
+  desafiantes: Desafiante[];
+  setDesafiantes: (e: SetStateAction<Desafiante[]>) => void;
+  todosLosDesafiantes: Desafiante[];
 };
+
+export interface Desafiante {
+  etiqueta: string;
+  uri: string;
+  x: number;
+  y: number;
+  tapa: string;
+  altura: number;
+  anchura: number;
+  anchura_borde: number;
+  altura_borde: number;
+  margen: number;
+  marco_inicio: number;
+  marco_final: number;
+  billetera: string;
+  prompt: {
+    personalidad: string;
+    idiomas: string[];
+    amigos: number[];
+  };
+  amigos: (Sprite & { handle: string })[];
+  perfil_id: number;
+  tapa_dos: string;
+  escala: {
+    x: number;
+    y: number;
+  };
+  perfil?: Profile | undefined;
+  auEarnedTotal: number;
+  auPaidTotal: number;
+  activeJobs: number;
+  currentWeeklyScore: number;
+  currentGlobalScore: number;
+  allGlobalScore: number;
+  activeWeeks: number;
+  rentMissedTotal: number;
+  rentTransactions: {
+    amount: number;
+    transactionHash: number;
+    blockTimestamp: number;
+  }[];
+}
+
+export interface TokensGuardados {
+  mona: bigint;
+  au: bigint;
+  delta: bigint;
+  genesis: bigint;
+  fashion: bigint;
+  pode: bigint;
+}
 
 export interface EspectadorInfo {
   auEarnedTotal: number;
@@ -60,4 +116,11 @@ export type AgentesProps = {
   npcsCargando: boolean;
   escenas: Escena[];
   informacion: Info[];
+};
+
+export type SeleccionProps = {
+  desafiantes: Desafiante[];
+  setDesafiantes: (e: SetStateAction<Desafiante[]>) => void;
+  todosLosDesafiantes: Desafiante[];
+  indice: number;
 };
