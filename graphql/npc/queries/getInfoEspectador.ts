@@ -1,7 +1,7 @@
 import { autographClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
-const NPC_INFO = gql`
+const SPECTATOR_INFO = gql`
   query ($spectator: String!) {
     spectatorInfo(where: { spectator: $spectator }) {
       spectator
@@ -19,7 +19,7 @@ export const getEspectadorInformacion = async (
 ): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
   const queryPromise = autographClient.query({
-    query: NPC_INFO,
+    query: SPECTATOR_INFO,
     variables: { spectator },
     fetchPolicy: "no-cache",
     errorPolicy: "all",

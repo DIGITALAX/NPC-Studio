@@ -136,6 +136,8 @@
     "amigos": "Amigos",
     "muestraCom": "@ a un NPC para charlar.",
     "score": "PUNTUACIÓN",
+    "scoreG": "PUNTUACIÓN Semanal",
+    "scoreW": "PUNTUACIÓN Global",
     "leader": "TABLA",
     "chall": "DESAFIANTES",
     "game": "EL JUEGO HA COMENZADO",
@@ -229,7 +231,12 @@
     "auClaimed": "$AU Se Reclamó!",
     "tokensH": "Tokens Guardados:",
     "tokensInvalidos": "Tienes suficiente $MONA, $DLTA, Genesis, Fashion or PODE NFT?",
-    "noRentPaid": "Aún No Hay Alquiler Pagado."
+    "noRentPaid": "Aún No Hay Alquiler Pagado.",
+    "todo": "Todo",
+    "semanal": "Semanal",
+    "variancia": "Variancia",
+    "actividad": "Actividad",
+    "leaderboard": "No Hay Datos Todavía."
   },
   "Nav": {
     "lan": "Elija Idioma"

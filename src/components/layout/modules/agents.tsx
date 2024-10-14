@@ -51,6 +51,7 @@ export default function Agents({
     setDesafiantes,
     desafiantes,
     todosLosDesafiantes,
+    tabla,
   } = useAgentes(
     contexto?.lensConectado,
     contexto?.setEscenas!,
@@ -167,7 +168,6 @@ export default function Agents({
                   border: "#00FF00",
                   sombra: "#FF1493",
                   pantalla: Pantalla.Tabla,
-                  inactivoT: true,
                 },
                 {
                   titulo: dict.Home.spec,
@@ -176,7 +176,6 @@ export default function Agents({
                   border: "#9933FF",
                   sombra: "#FF1493",
                   pantalla: Pantalla.Espectador,
-                  inactivoT: false,
                 },
               ].map(
                 (
@@ -188,7 +187,6 @@ export default function Agents({
                     sombra: string;
                     pantalla: Pantalla;
                     inactivo?: boolean;
-                    inactivoT?: boolean;
                   },
                   indice
                 ) => {
@@ -197,14 +195,12 @@ export default function Agents({
                       key={indice}
                       className={`relative text-center rounded-full w-fit h-fit flex items-center justify-center px-4 py-2 border ${
                         pantallaCambio == elemento.pantalla && "opacity-70"
-                      } ${elemento?.inactivoT && "opacity-70"} ${
+                      }  ${
                         !elemento.inactivo &&
-                        !elemento?.inactivoT &&
                         "cursor-pointer active:scale-95 hover:opacity-70"
                       }`}
                       onClick={() =>
                         !elemento.inactivo &&
-                        !elemento.inactivoT &&
                         setPantallaCambio(elemento.pantalla)
                       }
                       style={{
@@ -230,6 +226,7 @@ export default function Agents({
             />
           </div>
           <Cambio
+            tabla={tabla}
             desafiantes={desafiantes}
             setDesafiantes={setDesafiantes}
             tokensGuardados={tokensGuardados!}

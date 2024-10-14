@@ -9,6 +9,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import Seleccion from "./Seleccion";
 import moment from "moment";
 import Petalos from "./Petalos";
+import { Profile } from "../../../../graphql/generated";
 
 const Cambio: FunctionComponent<CambioProps> = ({
   pantallaCambio,
@@ -34,6 +35,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
   desafiantes,
   setDesafiantes,
   todosLosDesafiantes,
+  tabla,
 }): JSX.Element => {
   switch (pantallaCambio) {
     case Pantalla.Desafiante:
@@ -871,6 +873,9 @@ const Cambio: FunctionComponent<CambioProps> = ({
       );
 
     case Pantalla.Tabla:
+      const led1 = createProfilePicture(tabla?.[0]?.perfil?.metadata?.picture);
+      const led2 = createProfilePicture(tabla?.[1]?.perfil?.metadata?.picture);
+      const led3 = createProfilePicture(tabla?.[2]?.perfil?.metadata?.picture);
       return (
         <>
           <div
@@ -880,10 +885,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             {dict.Home.leader}
           </div>
-          <div className="text-left flex text-xs break-words font-lib text-white w-full h-fit flex items-start justify-start">
-            {dict.Home.soon}
-          </div>
-          {/* <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
+          <div className="relative w-full h-fit py-20 flex items-center justify-center sm:pr-4">
             <div className="relative w-full h-fit flex flex-col gap-10 items-start justify-center">
               <div className="relative w-full h-fit flex items-center justify-center flex-col gap-6 font-vcr">
                 <div className="relative w-full h-fit flex items-center justify-between flex-col sm:flex-row gap-8">
@@ -899,20 +901,22 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
-                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-full"
-                              draggable={false}
-                            />
+                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa bg-costa">
+                            {led1 && (
+                              <Image
+                                src={led1}
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-full"
+                                draggable={false}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                         <div className="relative w-full h-fit flex items-center justify-end text-2xl">
-                          193
+                          {tabla?.[0]?.totalScore || 0}
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
                           <Image
@@ -940,20 +944,22 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
-                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-full"
-                              draggable={false}
-                            />
+                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa bg-costa">
+                            {led2 && (
+                              <Image
+                                src={led2}
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-full"
+                                draggable={false}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                         <div className="relative w-full h-fit flex items-center justify-end text-2xl">
-                          193
+                          {tabla?.[1]?.totalScore || 0}
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
                           <Image
@@ -981,20 +987,22 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     <div className="relative w-full h-full flex items-center justify-center flex-col sm:flex-row gap-4 p-1">
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
-                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa">
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-full"
-                              draggable={false}
-                            />
+                          <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa bg-costa">
+                            {led3 && (
+                              <Image
+                                src={led3}
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-full"
+                                draggable={false}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                         <div className="relative w-full h-fit flex items-center justify-end break-all text-2xl">
-                          193
+                          {tabla?.[2]?.totalScore || 0}
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
                           <Image
@@ -1011,28 +1019,28 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     </div>
                   </div>
                 </div>
-                <div className="relative w-full h-fit sm:h-20 flex items-stretch justify-between flex-col gap-3 border-t-4 border-b border-x-4 border-white rounded-md">
+                {/* <div className="relative w-full h-fit sm:h-20 flex items-stretch justify-between flex-col gap-3 border-t-4 border-b border-x-4 border-white rounded-md">
                   <div className="relative w-full h-fit sm:h-full bg-gris flex flex-row items-center justify-center sm:justify-between text-xxs font-clar text-black sm:flex-nowrap flex-wrap">
                     <div className="relative justify-start items-center gap-1.5 flex flex-row">
                       <div className="bg-limon w-fit h-fit py-1 px-2 rounded-sm flex items-center justify-center text-center">
-                        score
+                        {dict.Home.score}
                       </div>
                       <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center">
                         $AU
                       </div>
                       <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit break-all rounded-sm flex items-center justify-center text-center">
-                        Activity
+                        {dict.Home.actividad}
                       </div>
                       <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit break-all rounded-sm flex items-center justify-center text-center">
-                        Variance
+                        {dict.Home.variancia}
                       </div>
                     </div>
                     <div className="relative justify-end items-center gap-1.5 flex flex-row">
                       <div className="bg-zana w-fit h-fit py-1 px-2 rounded-sm flex items-center break-all justify-center text-center">
-                        Weekly
+                        {dict.Home.semanal}
                       </div>
                       <div className="bg-crema border py-1 px-2 border-zana w-fit h-fit rounded-sm flex items-center justify-center text-center break-all">
-                        All Time
+                        {dict.Home.todo}
                       </div>
                     </div>
                   </div>
@@ -1042,7 +1050,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                       placeholder={dict.Home.buscar}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="relative w-full h-[80rem] flex flex-col items-center justify-center gap-6">
                 <div
@@ -1053,9 +1061,9 @@ const Cambio: FunctionComponent<CambioProps> = ({
                     {[
                       dict.Home.rango,
                       dict.Home.espectador,
-                      dict.Home.score,
+                      dict.Home.scoreW,
+                      dict.Home.scoreG,
                       "$AU",
-                      "Total $AU",
                     ].map((texto: string, indice: number) => {
                       return (
                         <div
@@ -1069,16 +1077,83 @@ const Cambio: FunctionComponent<CambioProps> = ({
                   </div>
                   <div className="relative flex w-full h-full overflow-y-scroll overflow-x-scroll">
                     <div className="relative w-full h-fit items-start justify-start overflow-y-scroll  overflow-x-scroll flex flex-col">
-                      {Array.from({ length: 100 }).map((_, i) => {
-                        return (
-                          <div
-                            key={i}
-                            className={`relative w-full h-10 flex text-left items-start gap-3 flex-row justify-between ${
-                              i % 2 == 0 ? "bg-costa" : "bg-black"
-                            }`}
-                          ></div>
-                        );
-                      })}
+                      {tabla?.length > 0
+                        ? tabla.map(
+                            (
+                              tab: {
+                                perfil: Profile | undefined;
+                                totalScore: number;
+                                weeklyScore: number;
+                                tipo: number;
+                                totalAU: number
+                              },
+                              i
+                            ) => {
+                              const pfp = createProfilePicture(
+                                tab?.perfil?.metadata?.picture
+                              );
+                              return (
+                                <div
+                                  key={i}
+                                  className={`relative w-full h-10 flex text-left items-start gap-3 flex-row justify-between font-clar text-white ${
+                                    i % 2 == 0 ? "bg-costa" : "bg-black"
+                                  }`}
+                                >
+                                  <div className="relative w-fit h-fit flex items-center justify-center">
+                                    {i + 1}
+                                  </div>
+                                  <div className="relative w-fit h-fit flex items-center justify-center">
+                                    <div className="relative w-6 h-6 rounded-full flex items-center justify-center border border-costa bg-costa">
+                                      {pfp && (
+                                        <Image
+                                          src={pfp}
+                                          layout="fill"
+                                          objectFit="cover"
+                                          className="rounded-full"
+                                          draggable={false}
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="relative font-at w-fit h-fit flex items-center justify-center">
+                                    {Number(
+                                      tab?.perfil?.handle?.localName?.length
+                                    ) > 10
+                                      ? tab?.perfil?.handle?.localName?.substring(
+                                          0,
+                                          10
+                                        )
+                                      : tab?.perfil?.handle?.localName}
+                                  </div>
+                                  <div className="relative w-fit h-fit flex items-center justify-center">
+                                    {tab?.weeklyScore}
+                                  </div>
+                                  <div className="relative w-fit h-fit flex items-center justify-center text-rayas">
+                                    {tab?.totalScore}
+                                  </div>
+                                  <div className="relative w-fit h-fit flex items-center justify-center text-rayas">
+                                    {tab?.totalAU}
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )
+                        : Array.from({ length: 100 }).map((_, i) => {
+                            return (
+                              <div
+                                key={i}
+                                className={`relative w-full h-10 flex text-left items-center gap-3 flex-row justify-between ${
+                                  i % 2 == 0 ? "bg-costa" : "bg-black"
+                                }`}
+                              >
+                                {i == 0 && (
+                                  <div className="text-xxs break-all text-white font-lib text-center w-full h-fit">
+                                    {dict.Home.leaderboard}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                     </div>
                   </div>
                 </div>
@@ -1092,7 +1167,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <div
             className={`relative mb-0 w-full h-fit flex items-center justify-end`}
           >

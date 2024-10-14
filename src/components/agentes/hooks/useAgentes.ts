@@ -24,6 +24,11 @@ import { createWalletClient, custom, PublicClient } from "viem";
 import { polygonAmoy } from "viem/chains";
 import NPCRent from "./../../../../abis/NPCRent.json";
 import { getNPCRentTodo } from "../../../../graphql/npc/queries/getNPCRentTodo";
+import {
+  getLeaderboardNPC,
+  getLeaderboardSpectator,
+} from "../../../../graphql/npc/queries/getLeaderboard";
+import getDefaultProfile from "../../../../graphql/lens/queries/default";
 
 const useAgentes = (
   lensConectado: Profile | undefined,
@@ -53,6 +58,16 @@ const useAgentes = (
   const [todosLosDesafiantes, setTodosLosDesafiantes] = useState<Desafiante[]>(
     []
   );
+  const [tabla, setTabla] = useState<
+    {
+      perfil: Profile | undefined;
+      totalScore: number;
+      weeklyScore: number;
+      tipo: number;
+      totalAU: number;
+    }[]
+  >([]);
+
   const manejarCoger = async (): Promise<void> => {
     setCogerCargando(true);
     try {
@@ -352,6 +367,9 @@ const useAgentes = (
 
       const alquileres = await getNPCRentTodo();
 
+      const todosNPCs = await getLeaderboardNPC();
+      const spectators = await getLeaderboardSpectator();
+
       setTodosLosNPCs(sprites);
       setInformacion(info);
       setDesafiantes([
@@ -378,6 +396,46 @@ const useAgentes = (
             (al: any) => al.npc == spr.billetera
           ),
         }))
+      );
+
+      const cachePerfiles: { [spectator: string]: any } = {};
+      const specs = await Promise.all(
+        spectators?.data?.leaderboardSpectators?.map(async (spec: any) => {
+          let perfil;
+          if (cachePerfiles[spec?.spectator]) {
+            perfil = cachePerfiles[spec?.spectator];
+          } else {
+            perfil = await getDefaultProfile(
+              {
+                for: spec?.spectator,
+              },
+              lensConectado?.id
+            );
+            cachePerfiles[spec?.spectator] = perfil?.data?.defaultProfile;
+          }
+          return {
+            perfil,
+            totalScore: spec?.totalScore,
+            weeklyScore: spec?.weeklyScore,
+            totalAU: spec?.totalAU,
+            tipo: 1,
+          };
+        })
+      );
+
+      const npcs = todosNPCs?.data?.leaderboardNPCs?.map(async (npc: any) => {
+        return {
+          perfil: info?.find((spr) => spr?.perfil?.ownedBy?.address == npc?.npc)
+            ?.perfil,
+          totalScore: npc?.totalScore,
+          weeklyScore: npc?.weeklyScore,
+          totalAU: npc?.totalAU,
+          tipo: 0,
+        };
+      });
+
+      setTabla(
+        [...specs, ...npcs]?.sort((a, b) => b.totalScore - a.totalScore)
       );
     } catch (err: any) {
       console.error(err.message);
@@ -479,6 +537,7 @@ const useAgentes = (
     setDesafiantes,
     desafiantes,
     todosLosDesafiantes,
+    tabla,
   };
 };
 

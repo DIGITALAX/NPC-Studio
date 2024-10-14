@@ -136,6 +136,8 @@
     "amigos": "Friends",
     "muestraCom": "@ an NPC to chat.",
     "score": "SCORE",
+    "scoreG": "SCORE Weekly",
+    "scoreW": "SCORE Global",
     "leader": "LEADERBOARD",
     "chall": "CHALLENGERS",
     "game": "THE GAME HAS BEGUN",
@@ -229,7 +231,12 @@
     "auClaimed": "$AU Claimed!",
     "tokensH": "Token Holdings:",
     "tokensInvalidos": "Do you hold enough $MONA, $DLTA, Genesis, Fashion or PODE NFT?",
-    "noRentPaid": "No Rent Paid Yet."
+    "noRentPaid": "No Rent Paid Yet.",
+    "todo": "All",
+    "semanal": "Weekly",
+    "variancia": "Variance",
+    "actividad": "Activity",
+   "leaderboard": "No Data Yet."
   },
   "Nav": {
     "lan": "Choose Language"

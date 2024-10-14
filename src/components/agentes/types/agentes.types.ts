@@ -38,6 +38,13 @@ export type CambioProps = {
   desafiantes: Desafiante[];
   setDesafiantes: (e: SetStateAction<Desafiante[]>) => void;
   todosLosDesafiantes: Desafiante[];
+  tabla: {
+    perfil: Profile | undefined;
+    totalScore: number;
+    weeklyScore: number;
+    totalAU: number;
+    tipo: number;
+  }[];
 };
 
 export interface Desafiante {
