@@ -33,7 +33,7 @@ import getDefaultProfile from "../../../../graphql/lens/queries/default";
 const useAgentes = (
   lensConectado: Profile | undefined,
   setEscenas: (e: SetStateAction<Escena[]>) => void,
-  escenas: Escena[],
+  escenas: Escena[], 
   publicClient: PublicClient,
   address: `0x${string}`,
   setVoto: (
