@@ -141,16 +141,16 @@ const useConversacion = (
   const manejarVotar = async () => {
     if (!address) return;
     setVotarCargando(true);
-    // const datos = await comprobarTokens(address, publicClient);
+    const datos = await comprobarTokens(address, publicClient);
 
-    // if (!datos?.suficiente) {
-    //   setVoto({
-    //     mensaje: dict.Home.tokensInvalidos,
-    //     tokens: datos?.tokens,
-    //   });
-    //   setVotarCargando(false);
-    //   return;
-    // }
+    if (!datos?.suficiente) {
+      setVoto({
+        mensaje: dict.Home.tokensInvalidos,
+        tokens: datos?.tokens,
+      });
+      setVotarCargando(false);
+      return;
+    }
 
     try {
       const clientWallet = createWalletClient({
@@ -169,7 +169,7 @@ const useConversacion = (
 
         comment = "ipfs://" + res?.cid;
       }
-      
+
       const { request } = await publicClient.simulateContract({
         address: NPC_SPECTATE,
         abi: NPCSpectate,
