@@ -39,7 +39,7 @@ const useAgentes = (
   setVoto: (
     e: SetStateAction<
       | {
-          mensaje?: string;
+          mensaje: string;
           tokens?: {
             titulo: string;
             enlace: string;
