@@ -1,4 +1,4 @@
-import { autographClient } from "@/lib/graph/client";
+import { npcClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
 const NPC_LEADER = gql`
@@ -25,7 +25,7 @@ const SPECTATOR_LEADER = gql`
 
 export const getLeaderboardNPC = async (): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
-  const queryPromise = autographClient.query({
+  const queryPromise = npcClient.query({
     query: NPC_LEADER,
     fetchPolicy: "no-cache",
     errorPolicy: "all",
@@ -51,7 +51,7 @@ export const getLeaderboardNPC = async (): Promise<FetchResult | void> => {
 export const getLeaderboardSpectator =
   async (): Promise<FetchResult | void> => {
     let timeoutId: NodeJS.Timeout | undefined;
-    const queryPromise = autographClient.query({
+    const queryPromise = npcClient.query({
       query: SPECTATOR_LEADER,
       fetchPolicy: "no-cache",
       errorPolicy: "all",

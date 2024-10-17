@@ -2,10 +2,16 @@ import { INFURA_GATEWAY } from "../constants";
 
 export const manejarJSON = async (ipfsHash: string): Promise<number> => {
   try {
-    if (ipfsHash) {
+    if (ipfsHash?.includes("ipfs://")) {
       const cadena = await fetch(
         `${INFURA_GATEWAY}/ipfs/${ipfsHash.split("ipfs://")?.[1]}`
       );
+
+      const contentType = cadena.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        return 0.0;
+      }
 
       const json = await cadena.json();
 

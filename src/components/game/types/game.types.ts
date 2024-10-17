@@ -478,9 +478,11 @@ export type Dictionary = {
   Home: {
     chatContexto: string;
     lensStats: string;
+    saldo: string;
     scoreG: string;
     scoreW: string;
     todo: string;
+    comment1: string;
     semanal: string;
     variancia: string;
     actividad: string;

@@ -21,6 +21,7 @@ import { Dictionary } from "@/components/game/types/game.types";
 import { getNPCVotes } from "../../../../graphql/npc/queries/getNPCVotes";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
 import { getNPCInformacion } from "../../../../graphql/npc/queries/getNPCInformacion";
+import { comprobarTokens } from "@/lib/helpers/comprobarTokens";
 
 const useConversacion = (
   publicClient: PublicClient,
@@ -30,7 +31,21 @@ const useConversacion = (
   lensConectado: Profile | undefined,
   npc: string,
   npcDireccion: string,
-  setVoto: (e: SetStateAction<string | undefined>) => void,
+  setVoto: (
+    e: SetStateAction<
+      | {
+          mensaje: string;
+          tokens?: {
+            titulo: string;
+            enlace: string;
+            tapa: string;
+            cantidad: number;
+            umbral: number;
+          }[];
+        }
+      | undefined
+    >
+  ) => void,
   dict: Dictionary
 ) => {
   const [votosCargando, setVotosCargando] = useState<boolean>(false);
@@ -69,36 +84,33 @@ const useConversacion = (
     setVotosCargando(true);
     try {
       const datos = await getNPCVotes(npcDireccion);
-      const cachePerfiles: { [spectator: string]: any } = {};
+      const cachePerfiles: { [spectator: string]: Profile | undefined } = {};
 
       const historiaNueva = await Promise.all(
-        datos?.data?.npcVotes?.map((data: any) =>
+        datos?.data?.npcvotes?.flatMap((data: any) =>
           data?.spectator?.map(async (_: any, i: number) => {
-            let perfil;
-            if (cachePerfiles[data?.spectator?.[i]]) {
-              perfil = cachePerfiles[data?.spectator?.[i]];
-            } else {
-              perfil = await getDefaultProfile(
+            if (!cachePerfiles[data?.spectator?.[i]?.toString()]) {
+              const perfil = await getDefaultProfile(
                 {
                   for: data?.spectator?.[i],
                 },
                 lensConectado?.id
               );
-              cachePerfiles[data?.spectator?.[i]] =
-                perfil?.data?.defaultProfile;
-            }
 
+              cachePerfiles[data?.spectator?.[i]?.toString()] = perfil?.data
+                ?.defaultProfile as Profile;
+            }
             let comment = data?.comment?.[i];
 
             if (comment?.trim() !== "") {
               const cadena = await fetch(
                 `${INFURA_GATEWAY}/ipfs/${comment.split("ipfs://")?.[1]}`
               );
-              comment = await cadena.json();
+              comment = await cadena.text();
             }
 
             return {
-              spectator: perfil,
+              spectator: cachePerfiles[data?.spectator?.[i]?.toString()],
               npc: data?.npc,
               blockNumber: data?.blockNumber?.[i],
               blockTimestamp: data?.blockTimestamp?.[i],
@@ -127,7 +139,19 @@ const useConversacion = (
   };
 
   const manejarVotar = async () => {
+    if (!address) return;
     setVotarCargando(true);
+    // const datos = await comprobarTokens(address, publicClient);
+
+    // if (!datos?.suficiente) {
+    //   setVoto({
+    //     mensaje: dict.Home.tokensInvalidos,
+    //     tokens: datos?.tokens,
+    //   });
+    //   setVotarCargando(false);
+    //   return;
+    // }
+
     try {
       const clientWallet = createWalletClient({
         chain: polygonAmoy,
@@ -145,7 +169,7 @@ const useConversacion = (
 
         comment = "ipfs://" + res?.cid;
       }
-
+      
       const { request } = await publicClient.simulateContract({
         address: NPC_SPECTATE,
         abi: NPCSpectate,
@@ -173,14 +197,34 @@ const useConversacion = (
       });
 
       const res = await clientWallet.writeContract(request);
+      setNPCVotar({
+        comment: "",
+        model: 50,
+        chatContext: 50,
+        personality: 50,
+        appearance: 50,
+        scene: 50,
+        spriteSheet: 50,
+        tokenizer: 50,
+        training: 50,
+        lora: 50,
+        completedJobs: 50,
+        global: 50,
+      });
       await publicClient.waitForTransactionReceipt({ hash: res });
-      setVoto(dict.Home.votarNPC);
+      setVoto({
+        mensaje: dict.Home.votarNPC,
+      });
     } catch (err: any) {
       console.error(err.message);
       if (err.message?.toLowerCase()?.includes("insufficienttokenbalance")) {
-        setVoto(dict.Home.tokensInvalidos);
+        setVoto({
+          mensaje: dict.Home.tokensInvalidos,
+        });
       } else {
-        setVoto(dict.Home.error2);
+        setVoto({
+          mensaje: dict.Home.error2,
+        });
       }
     }
     setVotarCargando(false);

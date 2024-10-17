@@ -94,7 +94,6 @@ const useFeed = (
               PublicationType.Post,
               PublicationType.Quote,
               PublicationType.Comment,
-              PublicationType.Mirror,
             ],
             from: [perfile?.id],
             metadata: {
@@ -187,7 +186,7 @@ const useFeed = (
             where: {
               publicationTypes: [
                 PublicationType.Post,
-                PublicationType.Mirror,
+                PublicationType.Comment,
                 PublicationType.Quote,
               ],
               from: [perfile?.id],
@@ -209,7 +208,7 @@ const useFeed = (
             where: {
               publicationTypes: [
                 PublicationType.Post,
-                PublicationType.Mirror,
+                PublicationType.Comment,
                 PublicationType.Quote,
               ],
               from: [perfile?.id],

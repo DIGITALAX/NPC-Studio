@@ -53,6 +53,7 @@
     "error": "Something Went Wrong Indexing Your Interaction. Try Again?",
     "error2": "Something Went Wrong Completing the Transaction. Try Again?",
     "comment": "Comment on",
+    "comment1": "Comment",
     "mirror": "Mirror on",
     "quote": "Quote on",
     "mir": "Mirrors",
@@ -236,7 +237,8 @@
     "semanal": "Weekly",
     "variancia": "Variance",
     "actividad": "Activity",
-   "leaderboard": "No Data Yet."
+    "leaderboard": "No Data Yet.",
+    "saldo": "Meet the Threshold for at Least One Token."
   },
   "Nav": {
     "lan": "Choose Language"

@@ -150,3 +150,24 @@ export const CARTAS: string[] = [
   "QmYxKdnVPkATDXLXvdS1y4EZwjLk5upmrzjYXhY9VkmgU8",
   "QmdUBA6YXaCTNuhxCsJribUDSVA59rXGJGnCKtvpiytNNj",
 ];
+
+export const TOKEN_TAPAS: { [key in string]: string } = {
+  ["0xAfFd1A81C63f2Aa7a0d692a4262aE81A1c170f34"]:
+    "QmWZq2N7yvFRxpvD7WZZLhKNRA7CiaNno1HAveHaH3xLME",
+  ["0xd50602AFf4ae1B24975052418bd47a588d75170B"]:
+    "QmYiH7gPYdZ7mwBtFEZuzx61GTvrbxqywSxa1RAz4sT1aM",
+  ["0xe16b625521CCcdE32cdDF9897adE134B1bA89247"]:
+    "QmVdLdjSq2MGiUiqBexbNJFAnBRuGKYYnkaQo8tgRnJc8U",
+  ["0xA836a9c35449D74Ab9f56975C39C02aa26ea4cF8"]:
+    "QmSEyyFCu8CDxzyBcU3m1LVqLZmtijWrJShk3Mg8ohuc5p",
+  ["0xe16b625521CCcdE32cdDF9897adE134B1bA89287"]:
+    "QmVvzoi95AgZgZjEsbPsbYnaoGF2xmquXp4ZbQ6PouCWTR",
+};
+
+export const TOKEN_TITULOS: { [key in string]: string } = {
+  ["0xAfFd1A81C63f2Aa7a0d692a4262aE81A1c170f34"]: "genesis",
+  ["0xd50602AFf4ae1B24975052418bd47a588d75170B"]: "fashion",
+  ["0xe16b625521CCcdE32cdDF9897adE134B1bA89247"]: "mona",
+  ["0xA836a9c35449D74Ab9f56975C39C02aa26ea4cF8"]: "delta",
+  ["0xe16b625521CCcdE32cdDF9897adE134B1bA89287"]: "pode",
+};

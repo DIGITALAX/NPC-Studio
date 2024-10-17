@@ -33,7 +33,7 @@ function Notificacion({
             src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
           />
           <div
-            className={`flex flex-col items-center py-10 px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll ${
+            className={`flex flex-col items-center py-10 px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center overflow-y-scroll ${
               tipo == NotificacionType.Diseñador
                 ? "justify-start"
                 : "justify-center"

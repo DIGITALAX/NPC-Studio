@@ -53,6 +53,7 @@
     "error2": "Algo salió mal al completar la transación. ¿Inténtelo de nuevo?",
     "lensStats": "Estadísticas Lens",
     "comment": "Comentario de",
+    "comment1": "Comentario",
     "mirror": "Mirror de",
     "quote": "Cita de",
     "cart": "Carrito",
@@ -236,7 +237,8 @@
     "semanal": "Semanal",
     "variancia": "Variancia",
     "actividad": "Actividad",
-    "leaderboard": "No Hay Datos Todavía."
+    "leaderboard": "No Hay Datos Todavía.",
+    "saldo": "Alcance el Umbral de al menos Un Token."
   },
   "Nav": {
     "lan": "Elija Idioma"

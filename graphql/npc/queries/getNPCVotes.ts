@@ -1,12 +1,10 @@
-import { autographClient } from "@/lib/graph/client";
+import { npcClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
 const PUB_VOTES = gql`
   query ($npc: String!) {
-    npcVotes(where: { npc: $npc }) {
+    npcvotes(where: { npc: $npc }) {
       spectator
-      profileId
-      pubId
       npc
       blockNumber
       blockTimestamp
@@ -29,7 +27,7 @@ const PUB_VOTES = gql`
 
 export const getNPCVotes = async (npc: string): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
-  const queryPromise = autographClient.query({
+  const queryPromise = npcClient.query({
     query: PUB_VOTES,
     variables: { npc },
     fetchPolicy: "no-cache",

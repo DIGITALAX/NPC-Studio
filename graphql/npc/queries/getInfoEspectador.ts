@@ -1,4 +1,4 @@
-import { autographClient } from "@/lib/graph/client";
+import { npcClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
 const SPECTATOR_INFO = gql`
@@ -18,7 +18,7 @@ export const getEspectadorInformacion = async (
   spectator: string
 ): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
-  const queryPromise = autographClient.query({
+  const queryPromise = npcClient.query({
     query: SPECTATOR_INFO,
     variables: { spectator },
     fetchPolicy: "no-cache",

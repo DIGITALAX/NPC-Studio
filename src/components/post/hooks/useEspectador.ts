@@ -8,12 +8,27 @@ import { INFURA_GATEWAY, NPC_SPECTATE } from "@/lib/constants";
 import NPCSpectate from "./../../../../abis/NPCSpectate.json";
 import { Dictionary } from "@/components/game/types/game.types";
 import getDefaultProfile from "../../../../graphql/lens/queries/default";
+import { comprobarTokens } from "@/lib/helpers/comprobarTokens";
 
 const useEspectador = (
   pub: Post,
   address: `0x${string}` | undefined,
   publicClient: PublicClient,
-  setVoto: (e: SetStateAction<string | undefined>) => void,
+  setVoto: (
+    e: SetStateAction<
+      | {
+          mensaje: string;
+          tokens?: {
+            titulo: string;
+            enlace: string;
+            tapa: string;
+            cantidad: number;
+            umbral: number;
+          }[];
+        }
+      | undefined
+    >
+  ) => void,
   dict: Dictionary,
   lensConectado: Profile | undefined
 ) => {
@@ -40,50 +55,52 @@ const useEspectador = (
         Number(pub?.id?.split("-")?.[1])
       );
 
-      const cachePerfiles: { [spectator: string]: any } = {};
+      const cachePerfiles: { [spectator: string]: Profile | undefined } = {};
 
-      const historiaNueva = datos?.data?.pubVotes?.map((data: any) =>
-        data?.spectator?.map(async (_: any, i: number) => {
-          let perfil;
-          if (cachePerfiles[data?.spectator?.[i]]) {
-            perfil = cachePerfiles[data?.spectator?.[i]];
-          } else {
-            perfil = await getDefaultProfile(
-              {
-                for: data?.spectator?.[i],
-              },
-              lensConectado?.id
-            );
-            cachePerfiles[data?.spectator?.[i]] = perfil?.data?.defaultProfile;
-          }
+      const historiaNueva = await Promise.all(
+        datos?.data?.pubVotes?.flatMap((data: any) =>
+          data?.spectator?.map(async (_: any, i: number) => {
+            if (!cachePerfiles[data?.spectator?.[i]?.toString()]) {
+              const perfil = await getDefaultProfile(
+                {
+                  for: data?.spectator?.[i],
+                },
+                lensConectado?.id
+              );
 
-          let comment = data?.comment?.[i];
+              cachePerfiles[data?.spectator?.[i]?.toString()] = perfil?.data
+                ?.defaultProfile as Profile;
+            }
 
-          if (comment?.trim() !== "") {
-            const cadena = await fetch(
-              `${INFURA_GATEWAY}/ipfs/${comment.split("ipfs://")?.[1]}`
-            );
-            comment = await cadena.json();
-          }
+            let comment = data?.comment?.[i];
 
-          return {
-            spectator: perfil,
-            npc: data?.npc,
-            profileId: data?.profileId,
-            pubId: data?.pubId,
-            blockNumber: data?.blockNumber?.[i],
-            blockTimestamp: data?.blockTimestamp?.[i],
-            transactionHash: data?.transactionHash?.[i],
-            comment,
-            model: data?.model?.[i],
-            chatContext: data?.chatContext?.[i],
-            style: data?.style?.[i],
-            personality: data?.personality?.[i],
-            tokenizer: data?.tokenizer?.[i],
-            media: data?.media?.[i],
-            global: data?.global?.[i],
-          };
-        })
+            if (comment?.trim() !== "") {
+              const cadena = await fetch(
+                `${INFURA_GATEWAY}/ipfs/${comment.split("ipfs://")?.[1]}`
+              );
+              comment = await cadena.text();
+            }
+
+            return {
+              spectator: cachePerfiles[data?.spectator?.[i]?.toString()],
+              npc: data?.npc,
+              profileId: data?.profileId,
+              pubId: data?.pubId,
+              blockNumber: data?.blockNumber?.[i],
+              blockTimestamp: data?.blockTimestamp?.[i],
+              transactionHash: data?.transactionHash?.[i],
+              comment,
+              model: data?.model?.[i],
+              chatContext: data?.chatContext?.[i],
+              style: data?.style?.[i],
+              personality: data?.personality?.[i],
+              tokenizer: data?.tokenizer?.[i],
+              media: data?.media?.[i],
+              global: data?.global?.[i],
+              prompt: data?.prompt?.[i],
+            };
+          })
+        )
       );
       setHistoria(historiaNueva);
     } catch (err: any) {
@@ -93,7 +110,19 @@ const useEspectador = (
   };
 
   const manejarVotar = async () => {
+    if (!address) return;
     setVotarCargando(true);
+    const datos = await comprobarTokens(address, publicClient);
+
+    if (!datos?.suficiente) {
+      setVoto({
+        mensaje: dict.Home.tokensInvalidos,
+        tokens: datos?.tokens,
+      });
+      setVotarCargando(false);
+      return;
+    }
+
     try {
       const clientWallet = createWalletClient({
         chain: polygonAmoy,
@@ -136,16 +165,32 @@ const useEspectador = (
         ],
         account: address,
       });
-
       const res = await clientWallet.writeContract(request);
+      setPubVotar({
+        comment: "",
+        model: 50,
+        chatContext: 50,
+        prompt: 50,
+        personality: 50,
+        style: 50,
+        media: 50,
+        tokenizer: 50,
+        global: 50,
+      });
       await publicClient.waitForTransactionReceipt({ hash: res });
-      setVoto(dict.Home.votarPub);
+      setVoto({
+        mensaje: dict.Home.votarPub,
+      });
     } catch (err: any) {
       console.error(err.message);
       if (err.message?.toLowerCase()?.includes("insufficienttokenbalance")) {
-        setVoto(dict.Home.tokensInvalidos);
+        setVoto({
+          mensaje: dict.Home.tokensInvalidos,
+        });
       } else {
-        setVoto(dict.Home.error2);
+        setVoto({
+          mensaje: dict.Home.error2,
+        });
       }
     }
     setVotarCargando(false);

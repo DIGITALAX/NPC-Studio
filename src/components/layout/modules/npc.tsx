@@ -414,7 +414,7 @@ export default function NPC({
                   {dict.Home.hold}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center text-xxs font-lib  text-limon">
-                  $MONA, Genesis, PODE, DIGITALAX NFTs
+                  $MONA, $DLTA, Genesis, PODE, DIGITALAX NFTs
                 </div>
               </div>
               <Evaluacion

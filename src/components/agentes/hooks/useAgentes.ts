@@ -36,7 +36,21 @@ const useAgentes = (
   escenas: Escena[],
   publicClient: PublicClient,
   address: `0x${string}`,
-  setVoto: (e: SetStateAction<string | undefined>) => void,
+  setVoto: (
+    e: SetStateAction<
+      | {
+          mensaje?: string;
+          tokens?: {
+            titulo: string;
+            enlace: string;
+            tapa: string;
+            cantidad: number;
+            umbral: number;
+          }[];
+        }
+      | undefined
+    >
+  ) => void,
   dict: Dictionary
 ) => {
   const [pantallaCambio, setPantallaCambio] = useState<Pantalla>(
@@ -94,7 +108,9 @@ const useAgentes = (
 
       const res = await clientWallet.writeContract(request);
       await publicClient.waitForTransactionReceipt({ hash: res });
-      setVoto(dict.Home.auClaimed);
+      setVoto({
+        mensaje: dict.Home.auClaimed,
+      });
     } catch (err: any) {
       console.error(err.message);
     }

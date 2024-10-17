@@ -136,8 +136,33 @@ export const ModalContext = createContext<
       conectarPub: boolean;
       escena: undefined | string;
       setEscena: (e: SetStateAction<undefined | string>) => void;
-      voto: string | undefined;
-      setVoto: (e: SetStateAction<string | undefined>) => void;
+      voto:
+        | {
+            mensaje: string;
+            tokens?: {
+              titulo: string;
+              enlace: string;
+              tapa: string;
+              cantidad: number;
+              umbral: number;
+            }[];
+          }
+        | undefined;
+      setVoto: (
+        e: SetStateAction<
+          | {
+              mensaje: string;
+              tokens?: {
+                titulo: string;
+                enlace: string;
+                tapa: string;
+                cantidad: number;
+                umbral: number;
+              }[];
+            }
+          | undefined
+        >
+      ) => void;
     }
   | undefined
 >(undefined);
@@ -214,7 +239,19 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [abrirCita, setAbrirCita] = useState<
     Quote | Post | Comment | Mirror | undefined
   >();
-  const [voto, setVoto] = useState<string | undefined>();
+  const [voto, setVoto] = useState<
+    | {
+        mensaje: string;
+        tokens?: {
+          titulo: string;
+          enlace: string;
+          tapa: string;
+          cantidad: number;
+          umbral: number;
+        }[];
+      }
+    | undefined
+  >();
   const [seguirColeccionar, setSeguirColeccionar] = useState<
     | {
         tipo: string;

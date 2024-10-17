@@ -1,22 +1,25 @@
-import { npcClient } from "@/lib/graph/client";
+import { autographClient } from "@/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
-const NPC_RENT_ALL = gql`
+const TOKENS = gql`
   query {
-    rentPaidNPCs {
-      npc
-      amount
-      transactionHash
-      blockTimestamp
+    eRC20Addeds {
+      weight
+      token
+      threshold
+    }
+    eRC721Addeds {
+      weight
+      token
+      threshold
     }
   }
 `;
 
-
-export const getNPCRentTodo = async (): Promise<FetchResult | void> => {
+export const getTokenBalance = async (): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
-  const queryPromise = npcClient.query({
-    query: NPC_RENT_ALL,
+  const queryPromise = autographClient.query({
+    query: TOKENS,
     fetchPolicy: "no-cache",
     errorPolicy: "all",
   });

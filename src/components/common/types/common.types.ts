@@ -6,7 +6,12 @@ import {
   Dictionary,
   Escena,
 } from "@/components/game/types/game.types";
-import { ChangeEvent, MutableRefObject, RefObject, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  MutableRefObject,
+  RefObject,
+  SetStateAction,
+} from "react";
 import {
   ArticleMetadataV3,
   Comment,
@@ -104,12 +109,36 @@ export type ErrorProps = {
   dict: Dictionary;
 };
 
-
 export type VotoProps = {
-  setVoto: (e: SetStateAction<string | undefined>) => void;
-  voto: string | undefined;
+  dict: Dictionary;
+  setVoto: (
+    e: SetStateAction<
+      | {
+          mensaje: string;
+          tokens?: {
+            titulo: string;
+            enlace: string;
+            tapa: string;
+            cantidad: number;
+            umbral: number;
+          }[];
+        }
+      | undefined
+    >
+  ) => void;
+  voto:
+    | {
+        mensaje: string;
+        tokens?: {
+          titulo: string;
+          enlace: string;
+          tapa: string;
+          cantidad: number;
+          umbral: number;
+        }[];
+      }
+    | undefined;
 };
-
 
 export type NotificacionProps = {
   setMostrarNotificacion: (e: SetStateAction<Notificacion>) => void;
@@ -217,7 +246,7 @@ export type PublicacionProps = {
   setCaretCoord: (e: SetStateAction<{ x: number; y: number }[]>) => void;
   caretCoord: { x: number; y: number }[];
   publicacion: Quote | Mirror | Comment | Post;
-  sin?: boolean
+  sin?: boolean;
   dict: Dictionary;
   menos?: boolean;
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
