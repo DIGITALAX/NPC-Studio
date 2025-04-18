@@ -1,7 +1,6 @@
 "use client";
 import { INFURA_GATEWAY } from "@/app/lib/constants";
 import Image from "next/legacy/image";
-import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 import Ticker from "./Ticker";
 import { Pantalla } from "../types/index.type";
 import useAgents from "../hooks/useAgents";
@@ -27,17 +26,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-          <div className="absolute w-full h-full top-0 left-0 flex">
-            {pantalla ? (
-              <VerticalTicker  duration={9000}>
-                <Ticker pantalla={pantalla} agentCollections={agentCollections} />
-              </VerticalTicker>
-            ) : (
-              <HorizontalTicker duration={9000}>
-                <Ticker pantalla={pantalla} agentCollections={agentCollections} />
-              </HorizontalTicker>
-            )}
-          </div>
+          <Ticker agentCollections={agentCollections} pantalla={pantalla} />
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 lg:pl-10 pr-1 pl-1 lg:pr-3 py-2 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">

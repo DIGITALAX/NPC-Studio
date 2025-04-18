@@ -22,7 +22,7 @@ const usePedidos = (address: `0x${string}` | undefined) => {
   const [todosLosPedidos, setTodosLosPedidos] = useState<Pedido[]>([]);
   const [pedidoAbierto, setPedidoAbierto] = useState<boolean[]>([]);
   const client = new LitNodeClient({
-    litNetwork: LIT_NETWORK.DatilDev,
+    litNetwork: LIT_NETWORK.Datil,
     debug: false,
   });
 
