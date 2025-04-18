@@ -52,7 +52,7 @@ const usePublicacion = (
     transport: http("https://rpc.lens.xyz"),
   });
   const client = new LitNodeClient({
-    litNetwork: LIT_NETWORK.DatilDev,
+    litNetwork: LIT_NETWORK.Datil,
     debug: false,
   });
   const { address } = useAccount();

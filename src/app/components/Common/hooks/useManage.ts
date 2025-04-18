@@ -25,8 +25,8 @@ const useManage = (
           localStorage?.getItem("escena") !== null &&
           localStorage?.getItem("escena") !== undefined
           ? (localStorage?.getItem("escena") as string)
-          : // : "estudio abierto de trabajo"
-            "ático de intercambio de varianza"
+          :  "estudio abierto de trabajo"
+           
       );
     }
   }, []);

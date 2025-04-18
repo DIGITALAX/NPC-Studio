@@ -208,9 +208,7 @@ const useAgents = () => {
         newSocket.send(
           JSON.stringify({
             tipo: "datosDeEscenas",
-            clave:
-              // : "estudio abierto de trabajo"
-              "ático de intercambio de varianza",
+            clave: "estudio abierto de trabajo",
           })
         );
       };
