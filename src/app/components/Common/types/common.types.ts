@@ -214,13 +214,11 @@ export interface Coleccion {
   cantidad: number;
   tokenes: `0x${string}`[];
   precio: number;
-  colors: string[];
   tipo: AutographType;
   profile: Account | undefined;
   titulo: string;
   descripcion: string;
   etiquetas: string;
-  npcInstrucciones: string;
   npcs: string;
   tokenesMinteados: number[];
   galeriaId?: number;

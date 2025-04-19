@@ -16,7 +16,6 @@ import {
 } from "../types/common.types";
 import { ModalContext } from "@/app/providers";
 import {
-  ACCEPTED_TOKENS,
   autographTypeToNumber,
   INFURA_GATEWAY,
   numberToAutograph,
@@ -26,7 +25,6 @@ import {
   getAll,
   getArticulo,
 } from "../../../../../graphql/queries/getArticulo";
-import isEqual from "lodash.isequal";
 
 const useArticulo = (
   manejarMostrarArticulo:
@@ -54,7 +52,6 @@ const useArticulo = (
 
       if (manejarMostrarArticulo?.tipo == AutographType.Catalog) {
         const datos = await getCatalogo();
-
 
         const accounts = await fetchAccountsAvailable(
           contexto?.clienteLens ?? contexto?.lensConectado?.sessionClient!,
@@ -119,7 +116,6 @@ const useArticulo = (
                   disenador!,
                   autographTypeToNumber[manejarMostrarArticulo?.tipo as string]!
                 );
-       
                 datos.push(...(valores?.data?.collections || []));
                 const accounts = await fetchAccountsAvailable(
                   contexto?.clienteLens ??
@@ -164,7 +160,6 @@ const useArticulo = (
               titulo: col.metadata?.title,
               descripcion: col.metadata?.description,
               etiquetas: col.metadata?.tags,
-              npcInstrucciones: col.metadata?.instructions,
               imagenes: col.metadata?.images,
               npcs: col.metadata?.npcs,
               postIds: col.postIds,

@@ -50,6 +50,12 @@ function NotificacionCambio({ tipo, dict }: NotificacionCambioProps) {
           {dict.Home.cumplimiento}
         </div>
       );
+    case Notificacion.Diseñador:
+      return (
+        <div className="relative w-3/4 h-fit flex items-center justify-center text-xs sm:text-lg text-center">
+          {dict.Home.designer}
+        </div>
+      );
   }
 }
 

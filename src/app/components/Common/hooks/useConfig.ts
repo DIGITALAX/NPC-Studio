@@ -1,7 +1,11 @@
 "use client";
 
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { AutographType, Escena, PhaserGameElement} from "../types/common.types";
+import {
+  AutographType,
+  Escena,
+  PhaserGameElement,
+} from "../types/common.types";
 import NPCEnginePhaser from "../class/Renderer";
 
 const useConfig = (
@@ -82,7 +86,9 @@ const useConfig = (
               );
 
               scene.events.once("npcs", (todoInfo: Escena[]) => {
-                setEscenas(todoInfo);
+                if (!escenas || escenas?.length < 1) {
+                  setEscenas(todoInfo);
+                }
               });
 
               scene.events.on("grab", () => {
@@ -145,7 +151,18 @@ const useConfig = (
           scene.scene.key === "NPCEnginePhaser" || scene.scene.key === "default"
       );
       if (customScene) {
-        (customScene as any).setCameraTarget(escenas?.flatMap((es) => es.sprites.find((spr) => spr.account_address == chosenNpc)?.etiqueta)?.[0]);
+        (customScene as any).setCameraTarget(
+          escenas
+            ?.flatMap(
+              (es) =>
+                es.sprites.find(
+                  (spr) =>
+                    spr.account_address?.toLowerCase() ==
+                    chosenNpc?.toLowerCase()
+                )?.etiqueta
+            )
+            ?.filter(Boolean)?.[0]
+        );
       }
     }
   }, [chosenNpc, juego?.scene?.scenes, gameRef.current, socket]);

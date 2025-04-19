@@ -68,7 +68,6 @@ const useMint = (publicClient: PublicClient) => {
                 titulo: col.metadata?.title,
                 descripcion: col.metadata?.description,
                 etiquetas: col.metadata?.tags,
-                npcInstrucciones: col.metadata?.instructions,
                 npcs: col?.npcs?.map(
                   (npc: string) =>
                     contexto?.escenas
@@ -81,7 +80,6 @@ const useMint = (publicClient: PublicClient) => {
                 profile: undefined,
                 imagenes: col.metadata?.images,
                 postIds: [],
-                colors: col.metadata?.colors,
               };
             })
           );
@@ -176,8 +174,6 @@ const useMint = (publicClient: PublicClient) => {
               description: col.descripcion,
               tags: col.etiquetas,
               images,
-              type: col.tipo,
-              instructions: col.npcInstrucciones,
             }),
           });
 
@@ -244,10 +240,8 @@ const useMint = (publicClient: PublicClient) => {
         titulo: "",
         descripcion: "",
         etiquetas: "",
-        npcInstrucciones: "",
         npcs: "",
         id: colecciones?.length,
-        colors: ["black", "white"],
         tokenesMinteados: [],
         profile: contexto?.lensConectado?.profile,
         postIds: [],
@@ -312,12 +306,10 @@ const useMint = (publicClient: PublicClient) => {
         tokenes: [],
         precio: 0,
         id: colecciones?.length,
-        colors: ["black", "white"],
         tipo: "NFT" as any,
         titulo: "",
         descripcion: "",
         etiquetas: "",
-        npcInstrucciones: "",
         npcs: "",
         tokenesMinteados: [],
         postIds: [],
@@ -412,13 +404,11 @@ const useMint = (publicClient: PublicClient) => {
         imagenes: Array.from({ length: 3 }, () => ""),
         tokenes: [],
         precio: 0,
-        colors: ["black", "white"],
         id: 0,
         tipo: "NFT" as any,
         titulo: "",
         descripcion: "",
         etiquetas: "",
-        npcInstrucciones: "",
         npcs: "",
         tokenesMinteados: [],
         postIds: [],

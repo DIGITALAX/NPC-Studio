@@ -16,12 +16,10 @@ const GALLERIES = gql(
         price
         type
         metadata {
-          description
-          images
-          instructions
-          tags
-          title
-          tipo
+        title
+        tags
+        images
+        description
         }
         uri
       }

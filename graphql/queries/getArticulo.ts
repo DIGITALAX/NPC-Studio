@@ -14,9 +14,7 @@ const ARTICULO = gql`
       designer
       metadata {
         title
-        tipo
         tags
-        instructions
         images
         description
       }
@@ -48,9 +46,7 @@ const ARTICULO_ALL = gql`
       designer
       metadata {
         title
-        tipo
         tags
-        instructions
         images
         description
       }

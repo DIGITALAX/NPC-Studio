@@ -13,9 +13,7 @@ const COLECCION = gql`
       designer
       metadata {
         title
-        tipo
         tags
-        instructions
         images
         description
       }
