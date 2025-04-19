@@ -146,7 +146,7 @@ const useLens = (
 
         if (authenticatedOnboarding.isErr()) {
           console.error(authenticatedOnboarding.error);
-          contexto?.setError?.(dict.Home.onboard);
+          contexto?.setError?.(dict.Home.error1);
 
           setLensCargando(false);
           return;

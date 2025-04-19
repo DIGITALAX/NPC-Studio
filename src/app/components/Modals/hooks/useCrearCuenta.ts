@@ -71,7 +71,7 @@ const useCrearCuenta = (dict: any) => {
 
       if (!authenticatedOnboarding?.isOk()) {
         console.error((authenticatedOnboarding as any)?.error);
-        contexto?.setError?.(dict.Home.onboard);
+        contexto?.setError?.(dict.Home.error1);
 
         setAccountLoading(false);
         return;
