@@ -139,13 +139,18 @@ const useFeed = (perfil?: string) => {
 
   useEffect(() => {
     if (
-      Number(feedActual?.length) < 1 &&
       contexto?.clienteLens &&
-      Number(contexto?.escenas?.length) > 0 && contexto?.escena
+      Number(contexto?.escenas?.length) > 0 &&
+      contexto?.escena
     ) {
       llamarFeed();
     }
-  }, [contexto?.clienteLens, contexto?.escenas?.length, perfil, contexto?.escena]);
+  }, [
+    contexto?.clienteLens,
+    contexto?.escenas?.length,
+    perfil,
+    contexto?.escena,
+  ]);
 
   return {
     feedCargando,

@@ -129,7 +129,7 @@ const useLens = (
         }
 
         const sessionClient = authenticated.value;
- 
+
         contexto?.setLensConectado?.({
           address: contexto?.lensConectado?.address,
 
@@ -173,7 +173,7 @@ const useLens = (
     setLensCargando(true);
     try {
       const auth =
-        await contexto?.lensConectado?.sessionClient?.getAuthenticatedUser();
+        contexto?.lensConectado?.sessionClient?.getAuthenticatedUser();
 
       if (auth?.isOk()) {
         await revokeAuthentication(contexto?.lensConectado?.sessionClient!, {
