@@ -76,7 +76,7 @@ const usePublicacion = (
     try {
       const res = await deposit(contexto?.lensConectado?.sessionClient!, {
         erc20: {
-          value: bigDecimal(
+          value:
             (Number(articuloSeleccionado[articuloIndice]?.elemento?.precio) /
               10 ** 18 /
               Number(
@@ -86,14 +86,13 @@ const usePublicacion = (
                     articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
                 )?.rate
               )) *
-              Number(
-                contexto?.oraculos?.find(
-                  (oraculo) =>
-                    oraculo.currency?.toLowerCase() ===
-                    articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
-                )?.wei
-              )
-          ),
+            Number(
+              contexto?.oraculos?.find(
+                (oraculo) =>
+                  oraculo.currency?.toLowerCase() ===
+                  articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
+              )?.wei
+            ),
           currency: evmAddress(articuloSeleccionado[articuloIndice]?.token),
         },
       });
@@ -177,24 +176,23 @@ const usePublicacion = (
 
       const approveData = erc20.interface.encodeFunctionData("approve", [
         AUTOGRAPH_MARKET,
-        bigDecimal(
-          ((Number(articuloSeleccionado[articuloIndice]?.elemento?.precio) *
-            1.1) /
-            Number(
-              contexto?.oraculos?.find(
-                (oraculo) =>
-                  oraculo.currency?.toLowerCase() ===
-                  articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
-              )?.rate
-            )) *
-            Number(
-              contexto?.oraculos?.find(
-                (oraculo) =>
-                  oraculo.currency?.toLowerCase() ===
-                  articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
-              )?.wei
-            )
-        ),
+
+        ((Number(articuloSeleccionado[articuloIndice]?.elemento?.precio) *
+          1.1) /
+          Number(
+            contexto?.oraculos?.find(
+              (oraculo) =>
+                oraculo.currency?.toLowerCase() ===
+                articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
+            )?.rate
+          )) *
+          Number(
+            contexto?.oraculos?.find(
+              (oraculo) =>
+                oraculo.currency?.toLowerCase() ===
+                articuloSeleccionado[articuloIndice]?.token?.toLowerCase()
+            )?.wei
+          ),
       ]);
 
       const clientWallet = createWalletClient({
