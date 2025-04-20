@@ -141,11 +141,11 @@ const useFeed = (perfil?: string) => {
     if (
       Number(feedActual?.length) < 1 &&
       contexto?.clienteLens &&
-      Number(contexto?.escenas?.length) > 0
+      Number(contexto?.escenas?.length) > 0 && contexto?.escena
     ) {
       llamarFeed();
     }
-  }, [contexto?.clienteLens, contexto?.escenas?.length, perfil]);
+  }, [contexto?.clienteLens, contexto?.escenas?.length, perfil, contexto?.escena]);
 
   return {
     feedCargando,
