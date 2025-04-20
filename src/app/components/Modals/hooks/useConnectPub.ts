@@ -36,12 +36,9 @@ const useConnectPub = (dict: any) => {
       const acl = immutable(chains.mainnet.id);
       const schema = image({
         content: descripcion!,
-        tags: ["npcStudio"]?.filter(
-          Boolean
-        ) as string[],
+        tags: ["npcStudio"]?.filter(Boolean) as string[],
         image: {
-          item : "ipfs://QmcEhvhEkXTHTxJwy1VU6rzpaMLq97E7qAmxZjJyzgnX9J",
-          // item: contexto?.coleccionActual?.imagenes?.[0]!,
+          item: contexto?.coleccionActual?.imagenes?.[0]!,
           type: MediaImageMimeType.PNG,
         },
       });
