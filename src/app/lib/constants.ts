@@ -125,3 +125,5 @@ export const TOKEN_TITULOS: { [key in string]: string } = {
   ["0xA836a9c35449D74Ab9f56975C39C02aa26ea4cF8"]: "delta",
   ["0xe16b625521CCcdE32cdDF9897adE134B1bA89287"]: "pode",
 };
+
+export const LOCALES: string[] = ["en", "es"];
