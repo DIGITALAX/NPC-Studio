@@ -1,4 +1,3 @@
-import { DIGITALAX_ADDRESS } from "@/app/lib/constants";
 import { ModalContext } from "@/app/providers";
 import { MainContentFocus, PageSize, Post } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
@@ -33,7 +32,7 @@ const useFeed = (perfil?: string) => {
             : {
                 metadata: {
                   tags: {
-                    oneOf: [
+                    all: [
                       "npcStudio",
                       contexto?.escena?.replaceAll(" ", "")!,
                     ]?.filter(Boolean),
@@ -52,6 +51,7 @@ const useFeed = (perfil?: string) => {
               },
         }
       );
+
       if (!data?.isOk()) {
         setFeedCargando(false);
         return;
@@ -141,7 +141,7 @@ const useFeed = (perfil?: string) => {
     if (
       contexto?.clienteLens &&
       Number(contexto?.escenas?.length) > 0 &&
-      contexto?.escena
+      contexto?.escena && feedActual?.length
     ) {
       llamarFeed();
     }

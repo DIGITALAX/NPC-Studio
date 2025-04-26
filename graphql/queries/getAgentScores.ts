@@ -1,30 +1,31 @@
-import { autographClient } from "@/app/lib/graph/client";
+import { spectatorClient } from "@/app/lib/graph/client";
 import { FetchResult, gql } from "@apollo/client";
 
 const AGENTS = gql`
   query {
-    agentScores_collection {
-      npc
-      auEarnedTotal
-      auEarnedCurrent
-      scores {
-        scorer
+    agents {
+      id
+      address
+      au
+      auTotal
+      cycleSpectators
+      activity {
+        id
+        data
+        spectator
         blockTimestamp
-        blockNumber
-        transactionHash
-        npc
-        metadata {
+        spectateMetadata {
           comment
           model
           scene
           chatContext
           appearance
+          collections
           personality
           training
-          lora
-          collections
-          spriteSheet
           tokenizer
+          lora
+          spriteSheet
           global
         }
       }
@@ -34,7 +35,7 @@ const AGENTS = gql`
 
 export const getAgentScores = async (): Promise<FetchResult | void> => {
   let timeoutId: NodeJS.Timeout | undefined;
-  const queryPromise = autographClient.query({
+  const queryPromise = spectatorClient.query({
     query: AGENTS,
     fetchPolicy: "no-cache",
     errorPolicy: "all",

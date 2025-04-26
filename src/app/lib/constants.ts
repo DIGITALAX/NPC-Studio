@@ -14,14 +14,15 @@ export const DIGITALAX_ADDRESS: `0x${string}` =
 export const AUTOGRAPH_ACTION: `0x${string}` =
   "0x92A1d3260559D755D7EdbFcb0A2280C7506937c7";
 export const AU_ADDRESS: `0x${string}` =
-  "0x187292F18E282a45d69b0aD20274918ed4f8e855";
+  "0x0109e3567f8470F94BCdc15113889926aEa71b3c";
 export const SPECTATOR_REWARDS: `0x${string}` =
-  "0xEBF04050D02F3Fa1a9428170e2E42e9608280a12";
+  "0x8fb47EB90dcEb3FFaC576da3fdBbDb047Bcb2f6e";
 
-export const DELTA_ADDRESS: `0x${string}` = "0x";
-export const FASHION_ADDRESS: `0x${string}` = "0x";
-export const PODE_ADDRESS: `0x${string}` = "0x";
-export const GENESIS_ADDRESS: `0x${string}` = "0x";
+// export const DELTA_ADDRESS: `0x${string}` = "0x";
+// export const FASHION_ADDRESS: `0x${string}` = "0x";
+// export const PODE_ADDRESS: `0x${string}` = "0x";
+// export const GENESIS_ADDRESS: `0x${string}` = "0x";
+export const TRIPLEA_ADDRESS: `0x${string}` = "0xeBd613aD9324D912Fcb3778baFc666c296deDd27";
 
 export const ASSETS: {
   name: string;

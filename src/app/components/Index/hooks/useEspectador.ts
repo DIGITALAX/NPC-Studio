@@ -7,14 +7,15 @@ import { getInfoSpectator } from "../../../../../graphql/queries/getInfoSpectato
 import {
   ACCEPTED_TOKENS,
   AU_ADDRESS,
-  DELTA_ADDRESS,
-  FASHION_ADDRESS,
-  GENESIS_ADDRESS,
-  PODE_ADDRESS,
+  TRIPLEA_ADDRESS,
 } from "@/app/lib/constants";
 import AUAbi from "./../../../../../abis/AU.json";
 
-const useEspectador = (dict: any, publicClient: PublicClient) => {
+const useEspectador = (
+  dict: any,
+  publicClient: PublicClient,
+  address: `0x${string}` | undefined
+) => {
   const contexto = useContext(ModalContext);
   const [tokenesGuardados, setTokenesGuardados] = useState<TokensGuardados>();
   const [espectadorInfo, setEspectadorInfo] = useState<EspectadorInfo>();
@@ -36,7 +37,7 @@ const useEspectador = (dict: any, publicClient: PublicClient) => {
         functionName: "mintSpectator",
         chain: chains.mainnet,
         args: [],
-        account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
+        account: address,
       });
       const res = await clientWallet.writeContract(request);
       await publicClient.waitForTransactionReceipt({ hash: res });
@@ -50,9 +51,7 @@ const useEspectador = (dict: any, publicClient: PublicClient) => {
   const cogerInfoEspectador = async () => {
     setEspectadorInfoLoading(true);
     try {
-      const datos = await getInfoSpectator(
-        contexto?.lensConectado?.profile?.address?.toLowerCase()
-      );
+      const datos = await getInfoSpectator(address!);
       setEspectadorInfo({
         auClaimed:
           Number(datos?.data?.spectatorInfos?.[0]?.auClaimed) / 10 ** 18,
@@ -78,76 +77,8 @@ const useEspectador = (dict: any, publicClient: PublicClient) => {
               stateMutability: "view",
             },
           ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
-          functionName: "balanceOf",
-        }),
-        delta: await publicClient.readContract({
-          address: DELTA_ADDRESS,
-          abi: [
-            {
-              type: "function",
-              name: "balanceOf",
-              inputs: [
-                { name: "account", type: "address", internalType: "address" },
-              ],
-              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-              stateMutability: "view",
-            },
-          ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
-          functionName: "balanceOf",
-        }),
-        fashion: await publicClient.readContract({
-          address: FASHION_ADDRESS,
-          abi: [
-            {
-              type: "function",
-              name: "balanceOf",
-              inputs: [
-                { name: "account", type: "address", internalType: "address" },
-              ],
-              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-              stateMutability: "view",
-            },
-          ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
-          functionName: "balanceOf",
-        }),
-        pode: await publicClient.readContract({
-          address: PODE_ADDRESS,
-          abi: [
-            {
-              type: "function",
-              name: "balanceOf",
-              inputs: [
-                { name: "account", type: "address", internalType: "address" },
-              ],
-              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-              stateMutability: "view",
-            },
-          ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
-          functionName: "balanceOf",
-        }),
-        genesis: await publicClient.readContract({
-          address: GENESIS_ADDRESS,
-          abi: [
-            {
-              type: "function",
-              name: "balanceOf",
-              inputs: [
-                { name: "account", type: "address", internalType: "address" },
-              ],
-              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-              stateMutability: "view",
-            },
-          ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
+          args: [address!],
+          account: address,
           functionName: "balanceOf",
         }),
         au: await publicClient.readContract({
@@ -163,8 +94,25 @@ const useEspectador = (dict: any, publicClient: PublicClient) => {
               stateMutability: "view",
             },
           ],
-          args: [contexto?.lensConectado?.profile?.address?.toLowerCase()],
-          account: contexto?.lensConectado?.profile?.address?.toLowerCase(),
+          args: [address!],
+          account: address,
+          functionName: "balanceOf",
+        }),
+        tripleA: await publicClient.readContract({
+          address: TRIPLEA_ADDRESS,
+          abi: [
+            {
+              type: "function",
+              name: "balanceOf",
+              inputs: [
+                { name: "account", type: "address", internalType: "address" },
+              ],
+              outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+              stateMutability: "view",
+            },
+          ],
+          args: [address!],
+          account: address,
           functionName: "balanceOf",
         }),
       });
@@ -175,10 +123,10 @@ const useEspectador = (dict: any, publicClient: PublicClient) => {
   };
 
   useEffect(() => {
-    if (contexto?.lensConectado?.profile && !espectadorInfo) {
+    if (address && !espectadorInfo) {
       cogerInfoEspectador();
     }
-  }, [contexto?.lensConectado?.profile]);
+  }, [address]);
 
   return {
     tokenesGuardados,

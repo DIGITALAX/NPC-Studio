@@ -28,7 +28,7 @@ const Espectador: FunctionComponent<{ lang: string; dict: any }> = ({
     espectadorInfoLoading,
     cogerCargando,
     manejarCoger,
-  } = useEspectador(dict, publicClient);
+  } = useEspectador(dict, publicClient, address);
   const { lensCargando, handleConectarse } = useLens(
     isConnected,
     address,

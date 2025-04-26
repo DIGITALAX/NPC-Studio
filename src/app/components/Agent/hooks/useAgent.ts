@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { AgentScore } from "../../Index/types/index.type";
+import { Activity, AgentScore } from "../../Index/types/index.type";
 import { Coleccion } from "../../Common/types/common.types";
 import { getAgentScore } from "../../../../../graphql/queries/getAgentScore";
 import { getAgent } from "../../../../../graphql/queries/getAgent";
 import { Account, evmAddress } from "@lens-protocol/client";
-import { numberToAutograph } from "@/app/lib/constants";
+import { INFURA_GATEWAY, numberToAutograph } from "@/app/lib/constants";
 import { fetchAccountsAvailable } from "@lens-protocol/client/actions";
 import { ModalContext } from "@/app/providers";
 
@@ -13,10 +13,6 @@ const useAgent = (agente: string | undefined) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [infoCargando, setInfoCargando] = useState<boolean>(false);
   const profileCache = new Map<string, Account>();
-  const scorerProfileCache = new Map<string, Account>();
-  const [pantalla, setPantalla] = useState<boolean>(
-    typeof window !== "undefined" ? window.innerWidth > 1280 : true
-  );
   const [informacion, setInformacion] = useState<
     AgentScore & {
       colecciones: Coleccion[];
@@ -28,7 +24,7 @@ const useAgent = (agente: string | undefined) => {
     setInfoCargando(true);
     try {
       const datos = await getAgent(agente?.toLowerCase());
-      const scoresDatos = await getAgentScore(agente?.toLowerCase());
+      const scores = await getAgentScore(agente?.toLowerCase());
       const colecciones = await Promise.all(
         (datos?.data?.agentCollections_collection?.[0]?.collections || [])?.map(
           async (col: any) => {
@@ -54,73 +50,69 @@ const useAgent = (agente: string | undefined) => {
               }
             }
 
+            let metadata = col?.metadata;
+
+            if (!col?.metadata) {
+              const res = await fetch(
+                `${INFURA_GATEWAY}/ipfs/${col?.uri?.split("ipfs://")?.[1]}`
+              );
+              const json = await res.json();
+
+              metadata = {
+                titulo: json?.title,
+                imagenes: json?.images,
+              };
+            }
+
             return {
               precio: Number(col.price),
               tipo: numberToAutograph[Number(col.type)],
-              titulo: col.metadata?.title,
-              imagenes: col.metadata?.images,
               coleccionId: col.collectionId,
               profile,
+              ...metadata,
             };
           }
         )
       );
 
       const info = {
-        ...{
-          npc: scoresDatos?.data?.agentScores_collection?.[0]?.npc,
-          auEarnedCurrent:
-            scoresDatos?.data?.agentScores_collection?.[0]?.auEarnedCurrent,
-          auEarnedTotal:
-            scoresDatos?.data?.agentScores_collection?.[0]?.auEarnedTotal,
-          scores: await Promise.all(
-            (scoresDatos?.data?.agentScores_collection?.[0]?.scores || [])?.map(
-              async (sc: any) => {
-                let scorerProfile = scorerProfileCache.get(sc?.scorer);
+        npc: scores?.data?.agents?.[0]?.address,
+        au: scores?.data?.agents?.[0]?.au,
+        auTotal: scores?.data?.agents?.[0]?.auTotal,
+        cycleSpectators: scores?.data?.agents?.[0]?.cycleSpectators,
+        activity: (await Promise.all(
+          (scores?.data?.agents?.[0]?.activity || [])?.map(async (sc: any) => {
+            let spectatorProfile = profileCache.get(sc?.spectator);
 
-                if (!scorerProfile) {
-                  const accounts = await fetchAccountsAvailable(
-                    contexto?.clienteLens ??
-                      contexto?.lensConectado?.sessionClient!,
-                    {
-                      managedBy: evmAddress(sc?.scorer),
-                      includeOwned: true,
-                    }
-                  );
-
-                  if (accounts.isOk()) {
-                    scorerProfile = accounts?.value?.items?.[0]?.account;
-
-                    scorerProfileCache.set(
-                      sc?.scorer,
-                      accounts?.value?.items?.[0]?.account
-                    );
-                  }
+            if (!spectatorProfile) {
+              const accounts = await fetchAccountsAvailable(
+                contexto?.clienteLens ??
+                  contexto?.lensConectado?.sessionClient!,
+                {
+                  managedBy: evmAddress(sc?.spectator),
+                  includeOwned: true,
                 }
+              );
 
-                return {
-                  scorer: sc?.scorer,
-                  blockTimestamp: sc?.blockTimestamp,
-                  scorerProfile,
-                  metadata: {
-                    comment: sc?.comment,
-                    model: Number(sc?.model),
-                    scene: Number(sc?.scene),
-                    chatContext: Number(sc?.chatContext),
-                    appearance: Number(sc?.appearance),
-                    personality: Number(sc?.personality),
-                    training: Number(sc?.training),
-                    lora: Number(sc?.lora),
-                    collections: Number(sc?.collections),
-                    spriteSheet: Number(sc?.spriteSheet),
-                    tokenizer: Number(sc?.tokenizer),
-                    global: Number(sc?.global),
-                  },
-                };
+              if (accounts.isOk()) {
+                spectatorProfile = accounts?.value?.items?.[0]?.account;
+
+                profileCache.set(
+                  sc?.spectator,
+                  accounts?.value?.items?.[0]?.account
+                );
               }
-            )
-          ),
-        },
+            }
+
+            return {
+              data: sc?.data,
+              spectator: sc?.spectator,
+              spectatorProfile: spectatorProfile,
+              blockTimestamp: sc?.blockTimestamp,
+              spectateMetadata: sc?.spectateMetadata,
+            };
+          })
+        )) as Activity[],
         colecciones,
       };
       setInformacion(info);
@@ -135,16 +127,6 @@ const useAgent = (agente: string | undefined) => {
       manejarAgente();
     }
   }, [agente]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setPantalla(window.innerWidth > 1280);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     if (!socket) {
@@ -195,7 +177,6 @@ const useAgent = (agente: string | undefined) => {
   }, []);
 
   return {
-    pantalla,
     informacion,
     infoCargando,
   };

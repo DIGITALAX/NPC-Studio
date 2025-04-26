@@ -9,7 +9,6 @@ import Cambio from "./Cambio";
 export default function Agents({ lang, dict }: { lang: string; dict: any }) {
   const {
     pantallaCambiada,
-    pantalla,
     setPantallaCambiada,
     agentCollections,
     agentCollectionsCargando,
@@ -26,7 +25,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
           />
         </div>
         <div className="relative w-full h-8 lg:h-auto lg:w-20 flex overflow-hidden border-2 border-white bg-turq text-white text-sm font-clar shrink-0">
-          <Ticker agentCollections={agentCollections} pantalla={pantalla} />
+          <Ticker agentCollections={agentCollections} />
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 lg:pl-10 pr-1 pl-1 lg:pr-3 py-2 grow">
           <div className="relative w-full h-fit flex items-center justify-between gap-3 flex-row">

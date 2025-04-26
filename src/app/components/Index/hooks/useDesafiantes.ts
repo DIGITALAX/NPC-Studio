@@ -1,24 +1,8 @@
 import { useEffect, useState } from "react";
-import { Coleccion, Sprite } from "../../Common/types/common.types";
-import { AgentScore } from "../types/index.type";
-import { AccountStats } from "@lens-protocol/client";
+import { AgentDetails } from "../types/index.type";
 
-const useDesafiantes = (
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[]
-) => {
-  const [desafiantes, setDesafiantes] = useState<
-    (Sprite & {
-      collections?: Coleccion[];
-      historial?: AgentScore & {
-        stats?: AccountStats;
-      };
-    })[]
-  >([]);
+const useDesafiantes = (agentCollections: AgentDetails[]) => {
+  const [desafiantes, setDesafiantes] = useState<AgentDetails[]>([]);
 
   useEffect(() => {
     if (agentCollections?.length > 0) {

@@ -1,83 +1,92 @@
 import { useContext, useEffect, useState } from "react";
-import { AgentScore, Pantalla } from "../types/index.type";
-import { Coleccion, Sprite } from "../../Common/types/common.types";
+import { Activity, AgentDetails, Pantalla } from "../types/index.type";
 import { ModalContext } from "@/app/providers";
 import { getAgents } from "../../../../../graphql/queries/getAgents";
 import {
   fetchAccountsAvailable,
   fetchAccountStats,
 } from "@lens-protocol/client/actions";
-import { numberToAutograph } from "@/app/lib/constants";
+import { INFURA_GATEWAY, numberToAutograph } from "@/app/lib/constants";
 import { Account, AccountStats, evmAddress } from "@lens-protocol/client";
 import { getAgentScores } from "../../../../../graphql/queries/getAgentScores";
 
 const useAgents = () => {
   const contexto = useContext(ModalContext);
-  const [pantalla, setPantalla] = useState<boolean>(
-    typeof window !== "undefined" ? window.innerWidth > 1280 : true
-  );
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [pantallaCambiada, setPantallaCambiada] = useState<Pantalla>(
     Pantalla.Puntaje
   );
   const profileCache = new Map<string, Account>();
-  const scorerProfileCache = new Map<string, Account>();
+  const metadataCache = new Map<
+    string,
+    {
+      imagenes: string;
+      titulo: string;
+    }
+  >();
+  const statsCache = new Map<string, AccountStats>();
   const [agentCollectionsCargando, setAgentsCollectionsCargando] =
     useState<boolean>(false);
-  const [agentCollections, setAgentsCollections] = useState<
-    (Sprite & {
-      collections?: Coleccion[];
-      historial?: AgentScore & {
-        stats?: AccountStats;
-      };
-    })[]
-  >([]);
+  const [agentCollections, setAgentsCollections] = useState<AgentDetails[]>([]);
 
   const getAgentsCollections = async () => {
     setAgentsCollectionsCargando(true);
 
     try {
       const datos = await getAgents();
-      const scores = await getAgentScores();
+      const activity = await getAgentScores();
       const agents = await Promise.all(
         (contexto?.escenas?.flatMap((es) => es?.sprites) || [])?.map(
           async (sprite) => {
-            const agent = datos?.data?.agentCollections_collection?.find(
+            const agent = (
+              datos?.data?.agentCollections_collection || []
+            )?.find(
               (sp: any) =>
                 sprite.billetera?.toLowerCase() == sp?.npc?.toLowerCase()
             );
-            const score = scores?.data?.agentScores_collection?.find(
+            const score = (activity?.data?.agents || [])?.find(
               (sp: any) =>
                 sprite.billetera?.toLowerCase() == sp?.npc?.toLowerCase()
             );
 
-            let profile, collections, stats;
-            const accounts = await fetchAccountsAvailable(
-              contexto?.clienteLens ?? contexto?.lensConectado?.sessionClient!,
-              {
-                managedBy: evmAddress(sprite?.billetera),
-                includeOwned: true,
-              }
-            );
+            let collections = [];
+            let account = profileCache.get(sprite?.billetera);
+            let stats = statsCache.get(sprite?.billetera);
 
-            const statsRes = await fetchAccountStats(
-              contexto?.lensConectado?.sessionClient || contexto?.clienteLens!,
-              {
-                account: evmAddress(sprite?.billetera),
-              }
-            );
+            if (!account) {
+              const accounts = await fetchAccountsAvailable(
+                contexto?.clienteLens ??
+                  contexto?.lensConectado?.sessionClient!,
+                {
+                  managedBy: evmAddress(sprite?.billetera),
+                  includeOwned: true,
+                }
+              );
 
-            if (accounts.isOk()) {
-              profile = accounts?.value?.items?.[0]?.account;
+              if (accounts.isOk()) {
+                account = accounts?.value?.items?.[0]?.account;
+                profileCache.set(sprite?.billetera, account);
+              }
             }
 
-            if (statsRes.isOk()) {
-              stats = statsRes?.value as AccountStats;
+            if (!stats) {
+              const statsRes = await fetchAccountStats(
+                contexto?.lensConectado?.sessionClient ||
+                  contexto?.clienteLens!,
+                {
+                  account: evmAddress(sprite?.billetera),
+                }
+              );
+
+              if (statsRes.isOk()) {
+                stats = statsRes?.value as AccountStats;
+                statsCache.set(sprite?.billetera, stats);
+              }
             }
 
             if (agent) {
               collections = await Promise.all(
-                agent?.collections?.map(async (col: any) => {
+                (agent?.collections || [])?.map(async (col: any) => {
                   let profile = profileCache.get(col?.designer);
 
                   if (!profile) {
@@ -100,13 +109,30 @@ const useAgents = () => {
                     }
                   }
 
+                  let metadata = metadataCache.get(col?.uri);
+
+                  if (!metadata && !col?.metadata) {
+                    const res = await fetch(
+                      `${INFURA_GATEWAY}/ipfs/${
+                        col?.uri?.split("ipfs://")?.[1]
+                      }`
+                    );
+                    const json = await res.json();
+
+                    metadata = {
+                      titulo: json?.title,
+                      imagenes: json?.images,
+                    };
+
+                    metadataCache.set(col?.uri, metadata);
+                  }
+
                   return {
                     precio: Number(col.price),
                     tipo: numberToAutograph[Number(col.type)],
-                    titulo: col.metadata?.title,
-                    imagenes: col.metadata?.images,
                     coleccionId: col.collectionId,
                     profile,
+                    ...metadata,
                   };
                 })
               );
@@ -114,58 +140,47 @@ const useAgents = () => {
 
             return {
               ...sprite,
-              account: profile,
+              account,
               collections,
-              historial: {
-                stats,
-                npc: score?.npc,
-                auEarnedTotal: score?.auEarnedTotal,
-                auEarnedCurrent: score?.auEarnedCurrent,
-                scores: await Promise.all(
-                  score?.scores?.map(async (sc: any) => {
-                    let scorerProfile = scorerProfileCache.get(sc?.scorer);
+              stats,
+              score: {
+                npc: score?.address,
+                au: score?.au,
+                auTotal: score?.auTotal,
+                cycleSpectators: score?.cycleSpectators,
+                activity: (await Promise.all(
+                  (score?.activity || [])?.map(async (sc: any) => {
+                    let spectatorProfile = profileCache.get(sc?.spectator);
 
-                    if (!scorerProfile) {
+                    if (!spectatorProfile) {
                       const accounts = await fetchAccountsAvailable(
                         contexto?.clienteLens ??
                           contexto?.lensConectado?.sessionClient!,
                         {
-                          managedBy: evmAddress(sc?.scorer),
+                          managedBy: evmAddress(sc?.spectator),
                           includeOwned: true,
                         }
                       );
 
                       if (accounts.isOk()) {
-                        scorerProfile = accounts?.value?.items?.[0]?.account;
+                        spectatorProfile = accounts?.value?.items?.[0]?.account;
 
-                        scorerProfileCache.set(
-                          sc?.scorer,
+                        profileCache.set(
+                          sc?.spectator,
                           accounts?.value?.items?.[0]?.account
                         );
                       }
                     }
 
                     return {
-                      scorer: sc?.scorer,
+                      data: sc?.data,
+                      spectator: sc?.spectator,
+                      spectatorProfile: spectatorProfile,
                       blockTimestamp: sc?.blockTimestamp,
-                      scorerProfile,
-                      metadata: {
-                        comment: sc?.comment,
-                        model: Number(sc?.model),
-                        scene: Number(sc?.scene),
-                        chatContext: Number(sc?.chatContext),
-                        appearance: Number(sc?.appearance),
-                        personality: Number(sc?.personality),
-                        training: Number(sc?.training),
-                        lora: Number(sc?.lora),
-                        collections: Number(sc?.collections),
-                        spriteSheet: Number(sc?.spriteSheet),
-                        tokenizer: Number(sc?.tokenizer),
-                        global: Number(sc?.global),
-                      },
+                      spectateMetadata: sc?.spectateMetadata,
                     };
                   })
-                ),
+                )) as Activity[],
               },
             };
           }
@@ -183,16 +198,6 @@ const useAgents = () => {
       getAgentsCollections();
     }
   }, [contexto?.escenas]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setPantalla(window.innerWidth > 1280);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     if (!socket) {
@@ -243,7 +248,6 @@ const useAgents = () => {
   }, []);
 
   return {
-    pantalla,
     agentCollectionsCargando,
     pantallaCambiada,
     setPantallaCambiada,

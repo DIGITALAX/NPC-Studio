@@ -101,7 +101,7 @@ const Desafiante: FunctionComponent<DesafianteProps> = ({
                     </div>
                     <div className="relative w-fit h-fit flex items-center justify-center text-xxxs">
                       {(
-                        desafiantes?.[indice]?.historial?.auEarnedTotal || 0
+                        Number(desafiantes?.[indice]?.score?.auTotal) || 0
                       )?.toFixed(2) || "0"}{" "}
                       $AU
                     </div>
@@ -112,8 +112,8 @@ const Desafiante: FunctionComponent<DesafianteProps> = ({
                       {dict.Home.currentScore}
                     </div>
                     <div className="relative w-fit h-fit text-xxxs flex items-center justify-center">
-                      {desafiantes?.[indice]?.historial?.scores?.reduce(
-                        (sum, el) => el?.metadata?.global + sum,
+                      {desafiantes?.[indice]?.score?.activity?.reduce(
+                        (sum, el) => Number(el?.spectateMetadata?.global) + sum,
                         0
                       ) || 0}
                     </div>

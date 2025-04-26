@@ -10,6 +10,7 @@ const AGENTS = gql`
         price
         type
         designer
+        uri
         metadata {
           images
           title

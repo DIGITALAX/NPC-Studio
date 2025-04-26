@@ -178,7 +178,7 @@ const Pedidos: FunctionComponent<{ dict: any }> = ({ dict }) => {
                           className="relative w-fit h-fit flex sm:items-center sm:justify-end break-all cursor-pointer text-xs text-ligero items-start justify-start"
                           onClick={() =>
                             window.open(
-                              `https://block-explorer.mainnet.lens.dev/tx/${pedido.transactionHash}`
+                              `https://explorer.lens.xyz/tx/${pedido.transactionHash}`
                             )
                           }
                         >

@@ -1,9 +1,7 @@
 import { INFURA_GATEWAY } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
-import { Coleccion, Sprite } from "../../Common/types/common.types";
-import { AgentScore } from "../types/index.type";
-import { AccountStats } from "@lens-protocol/client";
+import { AgentDetails } from "../types/index.type";
 import { ModalContext } from "@/app/providers";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
 
@@ -11,12 +9,7 @@ const Tabla: FunctionComponent<{
   lang: string;
   dict: any;
   agentCollectionsCargando: boolean;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  agentCollections: AgentDetails[];
 }> = ({
   lang,
   dict,
@@ -73,8 +66,8 @@ const Tabla: FunctionComponent<{
                   </div>
                   <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                     <div className="relative w-full h-fit flex items-center justify-end text-2xl">
-                      {agentCollections?.[0]?.historial?.scores?.reduce(
-                        (sum, el) => sum + Number(el.metadata?.global),
+                      {agentCollections?.[0]?.score?.activity?.reduce(
+                        (sum, el) => sum + Number(el.spectateMetadata?.global),
                         0
                       ) || 0}
                     </div>
@@ -128,8 +121,8 @@ const Tabla: FunctionComponent<{
                   </div>
                   <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                     <div className="relative w-full h-fit flex items-center justify-end text-2xl">
-                      {agentCollections?.[1]?.historial?.scores?.reduce(
-                        (sum, el) => sum + Number(el.metadata?.global),
+                      {agentCollections?.[1]?.score?.activity?.reduce(
+                        (sum, el) => sum + Number(el.spectateMetadata?.global),
                         0
                       ) || 0}
                     </div>
@@ -183,8 +176,8 @@ const Tabla: FunctionComponent<{
                   </div>
                   <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                     <div className="relative w-full h-fit flex items-center justify-end break-all text-2xl">
-                      {agentCollections?.[2]?.historial?.scores?.reduce(
-                        (sum, el) => sum + Number(el.metadata?.global),
+                      {agentCollections?.[2]?.score?.activity?.reduce(
+                        (sum, el) => sum + Number(el.spectateMetadata?.global),
                         0
                       ) || 0}
                     </div>
@@ -228,17 +221,17 @@ const Tabla: FunctionComponent<{
                 })}
               </div>
               <div className="relative flex w-full h-full overflow-y-scroll overflow-x-scroll">
-                <div className="relative w-full h-fit items-start justify-start overflow-y-scroll  overflow-x-scroll flex flex-col">
+                <div className="relative w-full h-fit items-start justify-start overflow-y-scroll  overflow-x-scroll flex flex-col pb-10">
                   {agentCollections?.length > 0 && !agentCollectionsCargando
                     ? agentCollections.map((tab, i: number) => {
                         return (
                           <div
                             key={i}
-                            className={`relative w-full h-10 flex text-left items-center px-3 sm:px-8 md:px-14 ${
+                            className={`relative w-full h-fit sm:h-10 flex text-left items-center sm:py-0 py-3 px-3 sm:px-8 md:px-14 ${
                               i % 2 == 0 ? "bg-costa" : "bg-black"
                             }`}
                           >
-                            <div className="relative w-full h-full flex items-center justify-between z-100 gap-3 flex-row justify-between font-clar text-white">
+                            <div className="relative w-full h-full flex items-center justify-between z-100 gap-3 flex-row justify-between font-clar text-white sm:flex-nowrap flex-wrap">
                               <div className="relative w-fit h-fit flex items-center justify-center">
                                 <div className="relative w-6 h-fit flex items-center justify-center">
                                   {i + 1}
@@ -280,27 +273,28 @@ const Tabla: FunctionComponent<{
                               </div>
                               <div className="relative w-fit h-fit flex items-center justify-center">
                                 <div className="relative w-6 h-fit flex items-center justify-center">
-                                  {tab?.historial?.scores?.reduce(
+                                  {tab?.score?.activity?.reduce(
                                     (sum, el) =>
-                                      sum + Number(el.metadata?.collections),
+                                      sum +
+                                      Number(el.spectateMetadata?.collections),
                                     0
                                   ) || 0}
                                 </div>
                               </div>
                               <div className="relative w-fit h-fit flex items-center justify-center">
                                 <div className="relative w-6 h-fit flex items-center justify-center text-rayas">
-                                  {tab?.historial?.scores?.reduce(
+                                  {tab?.score?.activity?.reduce(
                                     (sum, el) =>
-                                      sum + Number(el.metadata?.global),
+                                      sum + Number(el.spectateMetadata?.global),
                                     0
                                   ) || 0}
                                 </div>
                               </div>
                               <div className="relative w-fit h-fit flex items-center justify-center">
                                 <div className="relative w-12 h-fit flex items-center justify-center text-rayas">
-                                  {(
-                                    tab?.historial?.auEarnedTotal || 0
-                                  )?.toFixed(2)}
+                                  {(Number(tab?.score?.auTotal) || 0)?.toFixed(
+                                    2
+                                  )}
                                 </div>
                               </div>
                             </div>

@@ -10,28 +10,24 @@ export enum Pantalla {
   Juego,
 }
 
+export interface AgentDetails extends Sprite {
+  collections?: Coleccion[];
+  score?: AgentScore;
+  stats?: AccountStats;
+}
+
 export type CambioProps = {
   setPantallaCambiada: (e: SetStateAction<Pantalla>) => void;
   lang: string;
   agentCollectionsCargando: boolean;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  agentCollections: AgentDetails[];
   dict: any;
   pantallaCambiada: Pantalla;
 };
 
 export type AgentMapProps = {
   agentCollectionsCargando: boolean;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  agentCollections: AgentDetails[];
   dict: any;
 };
 
@@ -39,116 +35,67 @@ export type DesafiantesProps = {
   lang: string;
   dict: any;
   agentCollectionsCargando: boolean;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  agentCollections: AgentDetails[];
 };
 
 export type TickerProps = {
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
-  pantalla: boolean;
+  agentCollections: AgentDetails[];
 };
 
 export interface AgentScore {
   npc: string;
-  auEarnedTotal?: number;
-  auEarnedCurrent?: number;
-  scores: Score[];
+  au: string;
+  auTotal: string;
+  cycleSpectators: string[];
+  activity: Activity[];
 }
 
-export interface Score {
-  npc: string;
-  scorerProfile?: Account;
-  scorer: string;
+export interface Activity {
+  data: string;
+  spectator: string;
+  spectatorProfile?: Account;
   blockTimestamp: string;
-  transactionHash: string;
-  blockNumber: string;
-  metadata: {
+  spectateMetadata: {
     comment: string;
-    model: number;
-    scene: number;
-    chatContext: number;
-    appearance: number;
-    personality: number;
-    training: number;
-    lora: number;
-    collections: number;
-    spriteSheet: number;
-    tokenizer: number;
-    global: number;
+    model: string;
+    scene: string;
+    chatContext: string;
+    appearance: string;
+    collections: string;
+    personality: string;
+    training: string;
+    tokenizer: string;
+    lora: string;
+    spriteSheet: string;
+    global: string;
   };
 }
 
 export type SeleccionProps = {
-  desafiantes: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
-  setDesafiantes: (
-    e: SetStateAction<
-      (Sprite & {
-        collections?: Coleccion[];
-        historial?: AgentScore & {
-          stats?: AccountStats;
-        };
-      })[]
-    >
-  ) => void;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  desafiantes: AgentDetails[];
+  setDesafiantes: (e: SetStateAction<AgentDetails[]>) => void;
+  agentCollections: AgentDetails[];
   indice: number;
 };
 
 export type DesafianteProps = {
   dict: any;
   indice: number;
-  setDesafiantes: (
-    e: SetStateAction<
-      (Sprite & {
-        collections?: Coleccion[];
-        historial?: AgentScore & {
-          stats?: AccountStats;
-        };
-      })[]
-    >
-  ) => void;
+  setDesafiantes: (e: SetStateAction<AgentDetails[]>) => void;
   agentCollectionsCargando: boolean;
-  agentCollections: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
-  desafiantes: (Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  })[];
+  agentCollections: AgentDetails[];
+  desafiantes: AgentDetails[];
   setMostrarPerfil: (e: SetStateAction<string | undefined>) => void;
 };
 
 export interface TokensGuardados {
-  mona: bigint;
-  au: bigint;
-  delta: bigint;
-  genesis: bigint;
-  fashion: bigint;
-  pode: bigint;
+  mona?: bigint;
+  au?: bigint;
+  delta?: bigint;
+  genesis?: bigint;
+  fashion?: bigint;
+  pode?: bigint;
+  tripleA?: bigint;
 }
 
 export interface EspectadorInfo {
@@ -160,12 +107,7 @@ export interface EspectadorInfo {
 
 export type DesafianteInfoProps = {
   dict: any;
-  desafiante: Sprite & {
-    collections?: Coleccion[];
-    historial?: AgentScore & {
-      stats?: AccountStats;
-    };
-  };
+  desafiante: AgentDetails;
   escenas: Escena[];
   colorUno: string;
   colorDos: string;

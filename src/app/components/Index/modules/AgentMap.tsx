@@ -111,7 +111,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                             {dict.Home.auEarned}
                           </div>
                           <div className="relative w-fit h-fit flex items-center justify-center text-xxxs">
-                            {(sprite?.historial?.auEarnedTotal || 0)?.toFixed(
+                            {(Number(sprite?.score?.auTotal) || 0)?.toFixed(
                               2
                             ) || 0}{" "}
                             $AU
@@ -123,8 +123,9 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                             {dict.Home.currentScore}
                           </div>
                           <div className="relative w-fit h-fit text-xxxs flex items-center justify-center">
-                            {sprite?.historial?.scores.reduce(
-                              (sum, el) => sum + Number(el?.metadata?.global),
+                            {sprite?.score?.activity.reduce(
+                              (sum, el) =>
+                                sum + Number(el?.spectateMetadata?.global),
                               0
                             ) || 0}
                           </div>

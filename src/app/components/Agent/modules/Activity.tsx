@@ -1,12 +1,11 @@
 import { FunctionComponent, JSX, useState } from "react";
 import moment from "moment";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
 import { HistorialProps } from "../types/agent.types";
-import { Score } from "../../Index/types/index.type";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
+import { Activity } from "../../Index/types/index.type";
 
-const Historial: FunctionComponent<HistorialProps> = ({
+const Activity: FunctionComponent<HistorialProps> = ({
   dict,
   scores,
 }): JSX.Element => {
@@ -19,7 +18,7 @@ const Historial: FunctionComponent<HistorialProps> = ({
       </div>
       {scores?.length < 1 ? (
         <div className="relative w-full h-fit flex flex-col gap-3">
-          {scores?.map((hist: Score, indice: number) => {
+          {scores?.map((hist: Activity, indice: number) => {
             return (
               <div
                 className={`"relative w-full flex items-start justify-start rounded-sm border-2 border-morado p-3 bg-offNegro h-fit`}
@@ -223,4 +222,4 @@ const Historial: FunctionComponent<HistorialProps> = ({
   );
 };
 
-export default Historial;
+export default Activity;

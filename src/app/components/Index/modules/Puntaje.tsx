@@ -15,7 +15,7 @@ const Puntaje: FunctionComponent<{
         juego ? "h-full" : "h-fit"
       }`}
     >
-      <div className="relative w-full h-fit items-start justify-between overflow-y-scroll grid grid-cols-3 gap-3">
+      <div className="relative w-full h-fit items-start justify-between overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         {historial?.length < 1 || puntajeCargando
           ? Array.from({ length: juego ? 20 : 6 }).map((_, indice) => {
               return (

@@ -15,15 +15,13 @@ import Feed from "./Feed";
 import Evaluacion from "./Evaluacion";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
 
-export default function Agent({ lang, dict }: { lang: string; dict: any }) {
+export default function Agent({dict }: {  dict: any }) {
   const contexto = useContext(ModalContext);
   const router = useRouter();
   const handle = useParams();
   const { perfil, seguirCargando, seguirNpc, dejarNpc, npcCargando } =
     useCuenta(dict, undefined, (handle?.handle as string)?.replace("%40", ""));
-  const { pantalla, informacion, infoCargando } = useAgent(
-    perfil?.account?.owner
-  );
+  const { informacion, infoCargando } = useAgent(perfil?.account?.owner);
 
   if (npcCargando || infoCargando) {
     return <Cargando />;
@@ -48,7 +46,6 @@ export default function Agent({ lang, dict }: { lang: string; dict: any }) {
                 collections: informacion?.colecciones,
               },
             ]}
-            pantalla={pantalla}
           />
         </div>
         <div className="relative w-full h-full items-stretch justify-start flex flex-col gap-6 p-3 sm:p-8 grow">
@@ -190,7 +187,7 @@ export default function Agent({ lang, dict }: { lang: string; dict: any }) {
                   {dict.Home.auEarned}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {(informacion?.auEarnedTotal || 0)?.toFixed(2)} $AU
+                  {(Number(informacion?.auTotal) || 0)?.toFixed(2)} $AU
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#F6FC8D]"></div>
@@ -199,8 +196,8 @@ export default function Agent({ lang, dict }: { lang: string; dict: any }) {
                   {dict.Home.currentScore}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {(informacion?.scores || [])?.reduce(
-                    (sum, el) => sum + Number(el?.metadata?.global),
+                  {(informacion?.activity || [])?.reduce(
+                    (sum, el) => sum + Number(el?.spectateMetadata?.global),
                     0
                   ) || 0}
                 </div>
@@ -211,7 +208,7 @@ export default function Agent({ lang, dict }: { lang: string; dict: any }) {
                   {dict.Home.currentEarnedAU}
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center">
-                  {informacion?.auEarnedCurrent || 0}
+                  {informacion?.au || 0}
                 </div>
               </div>
               <div className="relative w-full h-px flex items-start justify-start bg-[#09FF6B]"></div>
@@ -362,7 +359,7 @@ export default function Agent({ lang, dict }: { lang: string; dict: any }) {
                         </div>
                       </div>
                       <div className="relative w-fit h-fit flex">
-                        <div className="relative w-32 h-24 flex items-center justify-center">
+                        <div className="relative w-32 h-24 border border-white flex items-center justify-center">
                           <Image
                             objectFit="cover"
                             draggable={false}
