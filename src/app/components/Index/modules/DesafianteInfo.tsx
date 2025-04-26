@@ -300,7 +300,7 @@ const DesafianteInfo: FunctionComponent<DesafianteInfoProps> = ({
                     </div>
                   </div>
                   <div className="relative w-fit h-fit flex">
-                    <div className="relative w-32 h-24 flex items-center justify-center border border-white">
+                    <div className="relative w-32 h-24 flex items-center justify-center bg-brillo border border-white">
                       <Image
                         objectFit="cover"
                         draggable={false}

@@ -1,10 +1,12 @@
 import { ModalContext } from "@/app/providers";
 import { MainContentFocus, PageSize, Post } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
+import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 const useFeed = (perfil?: string) => {
   const contexto = useContext(ModalContext);
+  const path = usePathname();
   const [comentariosAbiertos, setComentariosAbiertos] = useState<boolean[]>([]);
   const [feedCargando, setFeedCargando] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<{
@@ -141,16 +143,22 @@ const useFeed = (perfil?: string) => {
     if (
       contexto?.clienteLens &&
       Number(contexto?.escenas?.length) > 0 &&
-      contexto?.escena && feedActual?.length
+      contexto?.escena
     ) {
       llamarFeed();
     }
-  }, [
-    contexto?.clienteLens,
-    contexto?.escenas?.length,
-    perfil,
-    contexto?.escena,
-  ]);
+  }, [contexto?.clienteLens, contexto?.escenas?.length, contexto?.escena]);
+
+  useEffect(() => {
+    if (
+      contexto?.clienteLens &&
+      Number(feedActual?.length) < 1 &&
+      path?.includes("agent-index") &&
+      Number(contexto?.escenas?.length) > 0
+    ) {
+      llamarFeed();
+    }
+  }, [perfil, contexto?.escenas?.length]);
 
   return {
     feedCargando,

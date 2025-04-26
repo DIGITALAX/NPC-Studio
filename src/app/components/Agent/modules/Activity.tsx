@@ -16,7 +16,7 @@ const Activity: FunctionComponent<ActivityProps> = ({
       <div className="text-white text-sm font-lib flex items-center justify-center">
         {dict.Home.historia}
       </div>
-      {activity?.length < 1 ? (
+      {Number(activity?.length) < 1 ? (
         <div className="relative w-full h-fit flex flex-col gap-3">
           {activity?.map((hist: ActivityType, indice: number) => {
             return (

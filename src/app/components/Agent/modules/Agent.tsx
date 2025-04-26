@@ -360,7 +360,7 @@ export default function Agent({ dict }: { dict: any }) {
                         </div>
                       </div>
                       <div className="relative w-fit h-fit flex">
-                        <div className="relative w-32 h-24 border border-white flex items-center justify-center">
+                        <div className="relative bg-brillo w-32 h-24 border border-white flex items-center justify-center">
                           <Image
                             objectFit="cover"
                             draggable={false}
