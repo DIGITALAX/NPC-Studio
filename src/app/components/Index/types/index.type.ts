@@ -52,6 +52,7 @@ export interface AgentScore {
 
 export interface Activity {
   data: string;
+  id: string;
   spectator: string;
   spectatorProfile?: Account;
   blockTimestamp: string;

@@ -1,5 +1,5 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Score } from "../../Index/types/index.type";
+import { Activity } from "../../Index/types/index.type";
 
 export type FeedProps = {
   perfil: string;
@@ -22,4 +22,7 @@ export interface NPCVote {
   global: number;
 }
 
-export type HistorialProps = { dict: any; scores: Score[] };
+export type ActivityProps = {
+  dict: any;
+  activity: Activity[];
+};

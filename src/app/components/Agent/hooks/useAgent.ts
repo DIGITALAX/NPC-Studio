@@ -106,6 +106,7 @@ const useAgent = (agente: string | undefined) => {
 
             return {
               data: sc?.data,
+              id: sc?.id,
               spectator: sc?.spectator,
               spectatorProfile: spectatorProfile,
               blockTimestamp: sc?.blockTimestamp,

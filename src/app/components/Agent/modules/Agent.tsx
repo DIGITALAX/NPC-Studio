@@ -14,8 +14,9 @@ import moment from "moment";
 import Feed from "./Feed";
 import Evaluacion from "./Evaluacion";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
+import Activity from "./Activity";
 
-export default function Agent({dict }: {  dict: any }) {
+export default function Agent({ dict }: { dict: any }) {
   const contexto = useContext(ModalContext);
   const router = useRouter();
   const handle = useParams();
@@ -385,13 +386,7 @@ export default function Agent({dict }: {  dict: any }) {
               />
             </div>
           </div>
-          {/* <Historia
-            dict={dict}
-            historia={historia}
-            votosCargando={votosCargando}
-            setHistoriaAbierta={setHistoriaAbierta}
-            historiaAbierta={historiaAbierta}
-          /> */}
+          <Activity dict={dict} activity={informacion?.activity || []} />
         </div>
       </div>
     </div>

@@ -1,13 +1,13 @@
 import { FunctionComponent, JSX, useState } from "react";
 import moment from "moment";
 import Image from "next/legacy/image";
-import { HistorialProps } from "../types/agent.types";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
-import { Activity } from "../../Index/types/index.type";
+import { Activity as ActivityType } from "../../Index/types/index.type";
+import { ActivityProps } from "../types/agent.types";
 
-const Activity: FunctionComponent<HistorialProps> = ({
+const Activity: FunctionComponent<ActivityProps> = ({
   dict,
-  scores,
+  activity,
 }): JSX.Element => {
   const [historialAbierta, setHistorialAbierta] = useState<boolean[]>([]);
 
@@ -16,9 +16,9 @@ const Activity: FunctionComponent<HistorialProps> = ({
       <div className="text-white text-sm font-lib flex items-center justify-center">
         {dict.Home.historia}
       </div>
-      {scores?.length < 1 ? (
+      {activity?.length < 1 ? (
         <div className="relative w-full h-fit flex flex-col gap-3">
-          {scores?.map((hist: Activity, indice: number) => {
+          {activity?.map((hist: ActivityType, indice: number) => {
             return (
               <div
                 className={`"relative w-full flex items-start justify-start rounded-sm border-2 border-morado p-3 bg-offNegro h-fit`}
@@ -43,23 +43,16 @@ const Activity: FunctionComponent<HistorialProps> = ({
                       <div
                         className="relative cursor-pointer w-fit h-fit break-all"
                         onClick={() =>
-                          window.open(
-                            `https://polygonscan.com/tx/${hist?.transactionHash}`
-                          )
+                          window.open(`https://polygonscan.com/tx/${hist?.id}`)
                         }
                       >
-                        {hist?.transactionHash?.substring(0, 15) + "..."}
+                        {hist?.id?.substring(0, 15) + "..."}
                       </div>
                     </div>
-                    <div className="relative w-full h-fit justify-between flex-row gap-1 flex items-center font-lib text-xs text-white">
-                      <div className="relative w-fit h-fit break-all">
-                        {moment
-                          .unix(Number(hist?.blockTimestamp))
-                          .format("YYYY-MM-DD HH:mm:ss")}
-                      </div>
-                      <div className="relative w-fit h-fit break-all">
-                        {hist?.blockNumber}
-                      </div>
+                    <div className="relative font-lib text-white text-xs w-fit h-fit break-all">
+                      {moment
+                        .unix(Number(hist?.blockTimestamp))
+                        .format("YYYY-MM-DD HH:mm:ss")}
                     </div>
                     <div className="relative w-full h-fit flex items-start justify-start flex-row gap-2">
                       <div
@@ -68,7 +61,7 @@ const Activity: FunctionComponent<HistorialProps> = ({
                           e.stopPropagation();
                           window.open(
                             `https://cypher.digitalax.xyz/autograph/${
-                              hist?.scorerProfile?.username?.localName?.split(
+                              hist?.spectatorProfile?.username?.localName?.split(
                                 "@"
                               )?.[1]
                             }`
@@ -76,12 +69,12 @@ const Activity: FunctionComponent<HistorialProps> = ({
                         }}
                       >
                         <div className="relative w-6 h-6 rounded-full flex items-center justify-center p-1 bg-black border border-rosa">
-                          {hist?.scorerProfile?.metadata?.picture && (
+                          {hist?.spectatorProfile?.metadata?.picture && (
                             <Image
                               layout="fill"
                               objectFit="cover"
                               src={handleProfilePicture(
-                                hist?.scorerProfile?.metadata?.picture
+                                hist?.spectatorProfile?.metadata?.picture
                               )}
                               draggable={false}
                               className="rounded-full"
@@ -95,14 +88,14 @@ const Activity: FunctionComponent<HistorialProps> = ({
                           e.stopPropagation();
                           window.open(
                             `https://cypher.digitalax.xyz/autograph/${
-                              hist?.scorerProfile?.username?.localName?.split(
+                              hist?.spectatorProfile?.username?.localName?.split(
                                 "@"
                               )?.[1]
                             }`
                           );
                         }}
                       >
-                        {hist?.scorerProfile?.username?.localName}
+                        {hist?.spectatorProfile?.username?.localName}
                       </div>
                     </div>
                   </div>
@@ -113,16 +106,16 @@ const Activity: FunctionComponent<HistorialProps> = ({
                           Global
                         </div>
                         <div className="relative w-fit h-fit flex items-center justify-center">
-                          {hist?.metadata?.global}
+                          {hist?.spectateMetadata?.global}
                         </div>
                       </div>
-                      {hist?.metadata?.comment?.trim() !== "" && (
+                      {hist?.spectateMetadata?.comment?.trim() !== "" && (
                         <div className="relative w-full h-fit flex flex-col gap-1 items-start justify-start pt-6">
                           <div className="relative w-full h-fit flex h-fit items-start justify-start text-xs font-lib text-white">
                             {dict.Home?.comment1}:
                           </div>
                           <div className="relative w-full h-fit flex h-fit max-h-[10rem] overflow-y-scroll items-start justify-start text-xs font-lib text-white/90">
-                            {hist?.metadata?.comment}
+                            {hist?.spectateMetadata?.comment}
                           </div>
                         </div>
                       )}
@@ -130,59 +123,59 @@ const Activity: FunctionComponent<HistorialProps> = ({
                         {[
                           {
                             titulo: dict.Home.appearance,
-                            valor: hist?.metadata?.appearance,
+                            valor: hist?.spectateMetadata?.appearance,
                             color: "#00CCFF",
                           },
                           {
                             titulo: dict.Home.modelo,
-                            valor: hist?.metadata?.model,
+                            valor: hist?.spectateMetadata?.model,
                             color: "#FFAA00",
                           },
                           {
                             titulo: dict.Home.chatContexto,
-                            valor: hist?.metadata?.chatContext,
+                            valor: hist?.spectateMetadata?.chatContext,
                             color: "#F6FC8D",
                           },
                           {
                             titulo: dict.Home.personalidad,
-                            valor: hist?.metadata?.personality,
+                            valor: hist?.spectateMetadata?.personality,
                             color: "#00FF00",
                           },
                           {
                             titulo: dict.Home.spriteSheet,
-                            valor: hist?.metadata?.spriteSheet,
+                            valor: hist?.spectateMetadata?.spriteSheet,
                             color: "#D8D8D8",
                           },
                           {
                             titulo: dict.Home.lora,
-                            valor: hist?.metadata?.lora,
+                            valor: hist?.spectateMetadata?.lora,
                             color: "#C993FF",
                           },
                           {
                             titulo: dict.Home.collections,
-                            valor: hist?.metadata?.collections,
+                            valor: hist?.spectateMetadata?.collections,
                             color: "#F6FC8D",
                           },
                           {
                             titulo: dict.Home.training,
-                            valor: hist?.metadata?.training,
+                            valor: hist?.spectateMetadata?.training,
                             color: "#FFAA00",
                           },
                           {
                             titulo: dict.Home.scene,
-                            valor: hist?.metadata?.scene,
+                            valor: hist?.spectateMetadata?.scene,
                             color: "#C993FF",
                           },
                           {
                             titulo: dict.Home.tokenizer,
-                            valor: hist?.metadata?.tokenizer,
+                            valor: hist?.spectateMetadata?.tokenizer,
                             color: "#DF5B70",
                           },
                         ]?.map(
                           (
                             valor: {
                               titulo: string;
-                              valor: number;
+                              valor: string;
                               color: string;
                             },
                             indice: number

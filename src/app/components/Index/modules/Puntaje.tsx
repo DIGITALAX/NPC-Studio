@@ -49,10 +49,10 @@ const Puntaje: FunctionComponent<{
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
                           <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa bg-costa">
-                            {elemento?.scorerProfile?.metadata?.picture && (
+                            {elemento?.spectatorProfile?.metadata?.picture && (
                               <Image
                                 src={handleProfilePicture(
-                                  elemento?.scorerProfile?.metadata?.picture
+                                  elemento?.spectatorProfile?.metadata?.picture
                                 )}
                                 layout="fill"
                                 objectFit="cover"
@@ -65,7 +65,7 @@ const Puntaje: FunctionComponent<{
                       </div>
                       <div className="relative w-3/5 justify-between items-center flex h-full flex-col">
                         <div className="relative w-full h-fit flex items-center justify-end text-2xl">
-                          {elemento?.metadata?.global || 0}
+                          {elemento?.spectateMetadata?.global || 0}
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
                           <Image

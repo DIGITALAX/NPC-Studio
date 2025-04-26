@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
-import { Score } from "../types/index.type";
 import { getAgentScores } from "../../../../../graphql/queries/getAgentScores";
 import { Account, evmAddress } from "@lens-protocol/client";
 import { fetchAccountsAvailable } from "@lens-protocol/client/actions";
 import { ModalContext } from "@/app/providers";
+import { Activity } from "../types/index.type";
 
 const usePuntaje = () => {
   const contexto = useContext(ModalContext);
   const [puntajeCargando, setPuntajeCargando] = useState<boolean>(false);
-  const [historial, setHistorial] = useState<Score[]>([]);
+  const [historial, setHistorial] = useState<Activity[]>([]);
   const profileCache = new Map<string, Account>();
 
   const manejarHistorial = async () => {
@@ -16,7 +16,7 @@ const usePuntaje = () => {
     try {
       const datos = await getAgentScores();
       const res = await Promise.all(
-        (datos?.data?.agentScores_collection || [])
+        (datos?.data?.agents || [])
           ?.flatMap((ag: any) => ag?.scores)
           ?.map(async (score: any) => {
             let profile = profileCache.get(score?.scorer);
@@ -38,24 +38,44 @@ const usePuntaje = () => {
             }
 
             return {
-              npc: score?.npc,
-              profile,
-              scorer: score?.scorer,
-              blockTimestamp: score?.blockTimestamp,
-              metadata: {
-                comment: score?.comment,
-                model: Number(score?.model),
-                scene: Number(score?.scene),
-                chatContext: Number(score?.chatContext),
-                appearance: Number(score?.appearance),
-                personality: Number(score?.personality),
-                training: Number(score?.training),
-                lora: Number(score?.lora),
-                collections: Number(score?.collections),
-                spriteSheet: Number(score?.spriteSheet),
-                tokenizer: Number(score?.tokenizer),
-                global: Number(score?.global),
-              },
+              npc: score?.address,
+              au: score?.au,
+              auTotal: score?.auTotal,
+              cycleSpectators: score?.cycleSpectators,
+              activity: (await Promise.all(
+                (score?.activity || [])?.map(async (sc: any) => {
+                  let spectatorProfile = profileCache.get(sc?.spectator);
+
+                  if (!spectatorProfile) {
+                    const accounts = await fetchAccountsAvailable(
+                      contexto?.clienteLens ??
+                        contexto?.lensConectado?.sessionClient!,
+                      {
+                        managedBy: evmAddress(sc?.spectator),
+                        includeOwned: true,
+                      }
+                    );
+
+                    if (accounts.isOk()) {
+                      spectatorProfile = accounts?.value?.items?.[0]?.account;
+
+                      profileCache.set(
+                        sc?.spectator,
+                        accounts?.value?.items?.[0]?.account
+                      );
+                    }
+                  }
+
+                  return {
+                    data: sc?.data,
+                    id: sc?.id,
+                    spectator: sc?.spectator,
+                    spectatorProfile: spectatorProfile,
+                    blockTimestamp: sc?.blockTimestamp,
+                    spectateMetadata: sc?.spectateMetadata,
+                  };
+                })
+              )) as Activity[],
             };
           })
       );
