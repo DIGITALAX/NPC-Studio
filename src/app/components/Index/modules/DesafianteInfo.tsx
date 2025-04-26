@@ -292,8 +292,8 @@ const DesafianteInfo: FunctionComponent<DesafianteInfoProps> = ({
                       className={`relative w-fit h-fit text-xxs flex items-center justify-center font-bit top-px break-all text-white`}
                     >
                       {col?.profile?.username?.localName
-                        ? col?.profile?.username?.localName.length > 25
-                          ? col?.profile?.username?.localName.substring(0, 20) +
+                        ? col?.profile?.username?.localName.length > 14
+                          ? col?.profile?.username?.localName.substring(0, 12) +
                             "..."
                           : col?.profile?.username?.localName
                         : ""}

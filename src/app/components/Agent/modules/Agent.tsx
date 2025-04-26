@@ -350,10 +350,10 @@ export default function Agent({ dict }: { dict: any }) {
                           className={`relative w-fit h-fit text-xxs flex items-center justify-center text-white font-bit top-px break-all`}
                         >
                           {col?.profile?.username?.localName
-                            ? col?.profile?.username?.localName.length > 25
+                            ? col?.profile?.username?.localName.length > 14
                               ? col?.profile?.username?.localName.substring(
                                   0,
-                                  20
+                                  12
                                 ) + "..."
                               : col?.profile?.username?.localName
                             : ""}
