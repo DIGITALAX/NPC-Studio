@@ -143,7 +143,8 @@ const useFeed = (perfil?: string) => {
     if (
       contexto?.clienteLens &&
       Number(contexto?.escenas?.length) > 0 &&
-      contexto?.escena
+      contexto?.escena &&
+      !path?.includes("agent-index")
     ) {
       llamarFeed();
     }
