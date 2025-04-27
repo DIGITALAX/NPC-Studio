@@ -58,11 +58,7 @@ function Footer() {
             className="relative flex items-center justify-center w-fit h-fit active:scale-95 cursor-pointer"
             onClick={() => {
               animContexto?.setPageChange(false);
-              router.push(
-                path.includes("/en/")
-                  ? path.replace("/en/", "/es/")
-                  : path.replace("/es/", "/en/")
-              );
+              changeLanguage(path.includes("/en/") ? "es" : "en");
             }}
           >
             <PiArrowFatLinesRightFill size={15} color={"white"} />
