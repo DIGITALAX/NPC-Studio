@@ -9,11 +9,13 @@ import {
 } from "react-icons/pi";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimationContext } from "@/app/providers";
+import useFooter from "../hooks/useFooter";
 
 function Footer() {
   const router = useRouter();
   const path = usePathname();
   const animContexto = useContext(AnimationContext);
+  const { changeLanguage } = useFooter();
 
   return (
     <div
@@ -36,11 +38,7 @@ function Footer() {
             className="relative flex items-center justify-center w-fit h-fit active:scale-95 cursor-pointer"
             onClick={() => {
               animContexto?.setPageChange(false);
-              router.push(
-                path.includes("/en/")
-                  ? path.replace("/en/", "/es/")
-                  : path.replace("/es/", "/en/")
-              );
+              changeLanguage(path.includes("/en/") ? "es" : "en");
             }}
           >
             <PiArrowFatLinesLeftFill size={15} color={"white"} />
