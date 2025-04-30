@@ -31,6 +31,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/images") ||
     pathname.startsWith("/fonts") ||
     pathname.startsWith("/favicon.ico") ||
+    pathname.startsWith("/opengraph_image.png") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/sitemap.xml")
   ) {
