@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { ModalContext } from "@/app/providers";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
@@ -37,7 +37,7 @@ const Desafiantes: FunctionComponent<DesafiantesProps> = ({
         <div className="relative w-fit h-fit flex items-center justify-center">
           <div className="relative flex w-20 h-20 items-center justify-center">
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/QmXLzPsvnzcEnLgBWpkVFSCbG3gKUU2Sfewi6JoNzmvrTs`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmXLzPsvnzcEnLgBWpkVFSCbG3gKUU2Sfewi6JoNzmvrTs`}
               layout="fill"
               objectFit="contain"
               draggable={false}
@@ -94,7 +94,7 @@ const Desafiantes: FunctionComponent<DesafiantesProps> = ({
       >
         <div className="relativew-full h-60 flex items-center justify-end">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmRAcBfJGebTPihDVgryhVUa3PtmtVEb4UMvbdqmwC3RUi`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmRAcBfJGebTPihDVgryhVUa3PtmtVEb4UMvbdqmwC3RUi`}
             layout="fill"
             objectFit="cover"
             draggable={false}

@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext } from "react";
-import { INFURA_GATEWAY } from "../../../lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "../../../lib/constants";
 import Image from "next/legacy/image";
 import { Escena, SceneProps, Sprite } from "../types/common.types";
 import { ModalContext } from "@/app/providers";
@@ -18,7 +18,7 @@ const Scene: FunctionComponent<SceneProps> = ({ npc, setNpc, dict }) => {
         <div className="relative w-full xl:w-fit h-[45rem] xl:h-full flex items-center justify-center xl:order-1 order-2">
           <div className="relative w-full xl:w-[35rem] h-full flex items-center justify-center round-sm">
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/QmSaYHPU7FHybxWyXVSBva64qMYyPZN5vW8igAZ2GeeL2U`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmSaYHPU7FHybxWyXVSBva64qMYyPZN5vW8igAZ2GeeL2U`}
               objectFit="cover"
               layout="fill"
               objectPosition={"top"}
@@ -57,7 +57,7 @@ const Scene: FunctionComponent<SceneProps> = ({ npc, setNpc, dict }) => {
                       >
                         <div className="relative w-full h-full flex items-center justify-center">
                           <Image
-                            src={`${INFURA_GATEWAY}/ipfs/QmeEg8JFR14AQAyLheisTbYy1Diidak3FaFhEaryZh8s1o`}
+                            src={`${INFURA_GATEWAY_INTERNAL}QmeEg8JFR14AQAyLheisTbYy1Diidak3FaFhEaryZh8s1o`}
                             layout="fill"
                             draggable={false}
                           />
@@ -66,7 +66,7 @@ const Scene: FunctionComponent<SceneProps> = ({ npc, setNpc, dict }) => {
                           <Image
                             layout="fill"
                             draggable={false}
-                            src={`${INFURA_GATEWAY}/ipfs/${
+                            src={`${INFURA_GATEWAY_INTERNAL}${
                               sprite?.prompt?.cover?.split("ipfs://")?.[1]
                             }`}
                           />
@@ -108,7 +108,7 @@ const Scene: FunctionComponent<SceneProps> = ({ npc, setNpc, dict }) => {
                       >
                         <div className="relative w-full h-full flex items-center justify-center">
                           <Image
-                            src={`${INFURA_GATEWAY}/ipfs/QmPVdB75z3KbPdK1X5xkLwrTHZSCzXQnudjWqeHorv7NHZ`}
+                            src={`${INFURA_GATEWAY_INTERNAL}QmPVdB75z3KbPdK1X5xkLwrTHZSCzXQnudjWqeHorv7NHZ`}
                             layout="fill"
                             draggable={false}
                           />
@@ -118,7 +118,7 @@ const Scene: FunctionComponent<SceneProps> = ({ npc, setNpc, dict }) => {
                             layout="fill"
                             className="rounded-sm"
                             draggable={false}
-                            src={`${INFURA_GATEWAY}/ipfs/${cuarto.imagen}`}
+                            src={`${INFURA_GATEWAY_INTERNAL}${cuarto.imagen}`}
                           />
                         </div>
                       </div>

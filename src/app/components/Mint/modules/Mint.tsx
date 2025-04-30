@@ -2,7 +2,7 @@ import { ChangeEvent, FunctionComponent, JSX, useContext } from "react";
 import { MintProps } from "../types/mint.types";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { AutographType, Coleccion } from "../../Common/types/common.types";
 import { ModalContext } from "@/app/providers";
 import { useAccount } from "wagmi";
@@ -46,7 +46,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
       return (
         <div className="relative w-full h-full flex items-center justify-center">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmanpFJZmunhedHndu398hbgkB1z48EH1iX3gK5nVZnoaC`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmanpFJZmunhedHndu398hbgkB1z48EH1iX3gK5nVZnoaC`}
             draggable={false}
             layout="fill"
             priority
@@ -64,7 +64,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
               layout="fill"
               priority
             />
@@ -73,7 +73,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
             <div className="relative w-[80vw] sm:w-[55vw] h-full xl:w-[35vw] items-center justify-center flex border-dorado rounded-sm border-2">
               <Image
                 draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/QmehJ5XtHxAv9zvfHBLs1rG7SS3zaAKaptDQC15dmKXvDD`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmehJ5XtHxAv9zvfHBLs1rG7SS3zaAKaptDQC15dmKXvDD`}
                 layout="fill"
                 className="rounded-sm"
               />
@@ -108,7 +108,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
                   >
                     <Image
                       draggable={false}
-                      src={`${INFURA_GATEWAY}/ipfs/${imagen}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${imagen}`}
                       className="rounded-sm"
                       layout="fill"
                       objectFit="cover"
@@ -127,7 +127,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
               layout="fill"
               priority
             />
@@ -189,7 +189,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
                                 draggable={false}
                                 layout="fill"
                                 objectFit="cover"
-                                src={`${INFURA_GATEWAY}/ipfs/${
+                                src={`${INFURA_GATEWAY_INTERNAL}${
                                   gal.colecciones?.[0]?.imagenes?.[0]?.split(
                                     "ipfs://"
                                   )?.[1]
@@ -680,7 +680,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
                                     }}
                                   >
                                     <Image
-                                      src={`${INFURA_GATEWAY}/ipfs/${elemento[0]}`}
+                                      src={`${INFURA_GATEWAY_INTERNAL}${elemento[0]}`}
                                       className="flex rounded-full"
                                       draggable={false}
                                       layout="fill"
@@ -952,7 +952,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
           <div className="absolute h-full w-full flex items-center justify-center">
             <Image
               draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmR3LnrzJT7N33hTsdHtALAq23uKXi41Ru96CSi64FE4QJ`}
               layout="fill"
               priority
             />

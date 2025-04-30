@@ -3,7 +3,7 @@ import Image from "next/legacy/image";
 import { FunctionComponent, useContext, useState } from "react";
 import { PantallaComprarProps } from "../types/common.types";
 import { ModalContext } from "@/app/providers";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import ComprasCambio from "./ComprasCambio";
 
 const PantallaComprar: FunctionComponent<PantallaComprarProps> = ({
@@ -69,7 +69,7 @@ const PantallaComprar: FunctionComponent<PantallaComprarProps> = ({
                 draggable={false}
                 layout="fill"
                 objectFit="cover"
-                src={`${INFURA_GATEWAY}/ipfs/${
+                src={`${INFURA_GATEWAY_INTERNAL}${
                   contexto?.carrito?.abierto
                     ? "QmPewgB2C1MEzQfyeewVRu8xeseYg5hBZ7WUTnpTvJWSyW"
                     : "QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC"
@@ -90,7 +90,7 @@ const PantallaComprar: FunctionComponent<PantallaComprarProps> = ({
                       draggable={false}
                       layout="fill"
                       objectFit="contain"
-                      src={`${INFURA_GATEWAY}/ipfs/QmausveiBy11XUa4y3qurkaPGCPeV437XzUoPJTAG8H9qi`}
+                      src={`${INFURA_GATEWAY_INTERNAL}QmausveiBy11XUa4y3qurkaPGCPeV437XzUoPJTAG8H9qi`}
                     />
                   </div>
                 </div>

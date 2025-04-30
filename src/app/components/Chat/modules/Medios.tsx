@@ -1,4 +1,3 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
 import descripcionRegex from "@/app/lib/helpers/descripcionRegex";
 import { ModalContext } from "@/app/providers";
 import {

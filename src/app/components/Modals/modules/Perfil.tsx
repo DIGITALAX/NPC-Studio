@@ -1,5 +1,5 @@
 "use client";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import Cuenta from "./Cuenta";
 import useCuenta from "../hooks/useCuenta";
@@ -27,7 +27,7 @@ function Perfil({ setMostrarPerfil, dict }: PerfileProps) {
             draggable={false}
             layout="fill"
             objectFit="cover"
-            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
           />
 
           <div

@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
 import { ModalContext } from "@/app/providers";
@@ -35,7 +35,7 @@ export const SimpleCollect: FunctionComponent<{ dict: any }> = ({
             draggable={false}
             layout="fill"
             objectFit="cover"
-            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
           />
           <div
             className={`flex flex-col items-center py-2 sm:py-10 px-2 sm:px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center flex overflow-y-scroll`}
@@ -49,7 +49,7 @@ export const SimpleCollect: FunctionComponent<{ dict: any }> = ({
                 </div>
                 <div className="relative w-3/4 xl:w-1/2 items-center justify-center rounded-md border border-white h-60 flex">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/QmQf3pEG3AXMn5xqRN8Kd8eAC7pEvFoCKvXoycZDpB44Km`}
+                    src={`${INFURA_GATEWAY_INTERNAL}QmQf3pEG3AXMn5xqRN8Kd8eAC7pEvFoCKvXoycZDpB44Km`}
                     objectFit="cover"
                     layout="fill"
                     className="rounded-md"

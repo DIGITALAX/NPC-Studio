@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import useVotar from "../hooks/useVotar";
 import { useAccount } from "wagmi";
 import { ModalContext } from "@/app/providers";
@@ -40,7 +40,7 @@ const Evaluacion: FunctionComponent<{ dict: any; agente: string }> = ({
           <div className="relative w-12 h-12 flex items-center justify-center">
             <Image
               layout="fill"
-              src={`${INFURA_GATEWAY}/ipfs/QmPMxS2CJ1P4oYPDtfUY7Y2kmwdzg4yD3f5rLzmvTwg42g`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmPMxS2CJ1P4oYPDtfUY7Y2kmwdzg4yD3f5rLzmvTwg42g`}
               draggable={false}
               objectFit="contain"
             />

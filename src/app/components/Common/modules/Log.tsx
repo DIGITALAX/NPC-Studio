@@ -2,7 +2,7 @@ import { FunctionComponent, JSX, useContext } from "react";
 import { LogProps } from "../types/common.types";
 import { AnimationContext, ModalContext } from "@/app/providers";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY , INFURA_GATEWAY_INTERNAL} from "@/app/lib/constants";
 import { AiOutlineLoading } from "react-icons/ai";
 import { http, useAccount } from "wagmi";
 import { useModal } from "connectkit";
@@ -180,7 +180,7 @@ const Log: FunctionComponent<LogProps> = ({
           >
             {cargando && (
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmT5jkuAxfjuV8p4v7vRDGm6FsZt1WCWHdj4TEvGJZMcYr`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmT5jkuAxfjuV8p4v7vRDGm6FsZt1WCWHdj4TEvGJZMcYr`}
                 draggable={false}
                 objectFit="cover"
                 layout="fill"

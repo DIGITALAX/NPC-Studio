@@ -1,6 +1,6 @@
 "use client";
 
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 
 export default function Cargando() {
@@ -16,7 +16,7 @@ export default function Cargando() {
             height={226}
             priority
             draggable={false}
-            src={`${INFURA_GATEWAY}/ipfs/QmXMzhCBRuwFY6tbvTpNvPVageuK63eNzJ2KWkMGNrUCrw`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmXMzhCBRuwFY6tbvTpNvPVageuK63eNzJ2KWkMGNrUCrw`}
           />
         </div>
       </div>

@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { GiWorld } from "react-icons/gi";
 import Cargando from "./Cargando";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Ticker from "../../Index/modules/Ticker";
 import useCuenta from "../../Modals/hooks/useCuenta";
 import useAgent from "../hooks/useAgent";
@@ -33,7 +33,7 @@ export default function Agent({ dict }: { dict: any }) {
       <div className="relative w-full h-full flex items-center lg:items-stretch justify-start flex-col lg:flex-row">
         <div className="relative w-full lg:w-60 h-12 lg:h-auto shrink-0 flex">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmSfZKsL8SySAa2FhSmw6cH9rqwDhnXM58HcqKMxT4E8Mo`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmSfZKsL8SySAa2FhSmw6cH9rqwDhnXM58HcqKMxT4E8Mo`}
             layout="fill"
             objectFit="fill"
             draggable={false}
@@ -63,7 +63,7 @@ export default function Agent({ dict }: { dict: any }) {
             <div className="absolute top-3 right-3 w-fit flex-row flex h-fit items-end justify-start gap-2">
               <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmUfJojpNhnpGhrynj9edpJPBm4johzGvNcyMnAADgqdDC`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmUfJojpNhnpGhrynj9edpJPBm4johzGvNcyMnAADgqdDC`}
                   layout="fill"
                   objectFit="contain"
                   draggable={false}
@@ -71,7 +71,7 @@ export default function Agent({ dict }: { dict: any }) {
               </div>
               <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmWmfupyTZwUAM85VAJBNaXhek8ATnqLGZeZFS5msPHY4c`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmWmfupyTZwUAM85VAJBNaXhek8ATnqLGZeZFS5msPHY4c`}
                   layout="fill"
                   objectFit="contain"
                   draggable={false}
@@ -164,7 +164,7 @@ export default function Agent({ dict }: { dict: any }) {
               </div>
               <div className="relative w-full h-10 flex items-center justify-center">
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmZM3fAAnxgCn4a2Uz3L5dARVeGCnQYPpJL3q7hoFL2x7D`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmZM3fAAnxgCn4a2Uz3L5dARVeGCnQYPpJL3q7hoFL2x7D`}
                   layout="fill"
                   objectFit="cover"
                   draggable={false}
@@ -175,7 +175,7 @@ export default function Agent({ dict }: { dict: any }) {
           <div className="relative w-full h-fit sm:h-[30rem] flex flex-col sm:flex-row gap-6 items-center justify-center sm:justify-between">
             <div className="relative w-full h-[30rem] sm:h-full flex items-center justify-center">
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/${perfil?.sprite?.tapa}`}
+                src={`${INFURA_GATEWAY_INTERNAL}${perfil?.sprite?.tapa}`}
                 layout="fill"
                 objectFit="contain"
                 draggable={false}
@@ -240,7 +240,7 @@ export default function Agent({ dict }: { dict: any }) {
                     objectFit="contain"
                     draggable={false}
                     layout="fill"
-                    src={`${INFURA_GATEWAY}/ipfs/Qmc7CEnyHBDPXqxFkoVpxf9DHxjGee2z9ToAUitRpkscuP`}
+                    src={`${INFURA_GATEWAY_INTERNAL}Qmc7CEnyHBDPXqxFkoVpxf9DHxjGee2z9ToAUitRpkscuP`}
                   />
                 </div>
               </div>
@@ -269,7 +269,7 @@ export default function Agent({ dict }: { dict: any }) {
                     objectFit="cover"
                     draggable={false}
                     layout="fill"
-                    src={`${INFURA_GATEWAY}/ipfs/${
+                    src={`${INFURA_GATEWAY_INTERNAL}${
                       contexto?.escenas?.find((e) =>
                         e.sprites?.find(
                           (spr) => spr.billetera == perfil?.sprite?.billetera
@@ -365,7 +365,7 @@ export default function Agent({ dict }: { dict: any }) {
                             objectFit="cover"
                             draggable={false}
                             layout="fill"
-                            src={`${INFURA_GATEWAY}/ipfs/${
+                            src={`${INFURA_GATEWAY_INTERNAL}${
                               col?.imagenes?.[0]?.split("ipfs://")?.[1]
                             }`}
                           />

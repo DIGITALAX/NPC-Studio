@@ -1,6 +1,6 @@
 import { FunctionComponent, JSX } from "react";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { SeleccionProps } from "../types/index.type";
 
 const Seleccion: FunctionComponent<SeleccionProps> = ({
@@ -34,7 +34,7 @@ const Seleccion: FunctionComponent<SeleccionProps> = ({
                 draggable={false}
                 layout="fill"
                 objectFit="contain"
-                src={`${INFURA_GATEWAY}/ipfs/${des?.tapa}`}
+                src={`${INFURA_GATEWAY_INTERNAL}${des?.tapa}`}
               />
             </div>
           );

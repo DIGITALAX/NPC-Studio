@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://npcstudio.xyz/sitemap.xml

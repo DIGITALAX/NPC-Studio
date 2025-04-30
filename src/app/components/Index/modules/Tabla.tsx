@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
 import { AgentDetails } from "../types/index.type";
@@ -33,7 +33,7 @@ const Tabla: FunctionComponent<{
               <div className="relative w-full h-fit sm:h-44 flex sm:flex-row flex-col items-center justify-center border-4 border-flor bg-salmon">
                 <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/QmfBWguNxhoJqvuom7hc5r3FNztMnLZNgyA1CX3GjAugFs`}
+                    src={`${INFURA_GATEWAY_INTERNAL}QmfBWguNxhoJqvuom7hc5r3FNztMnLZNgyA1CX3GjAugFs`}
                     layout="fill"
                     objectFit="fill"
                     draggable={false}
@@ -73,7 +73,7 @@ const Tabla: FunctionComponent<{
                     </div>
                     <div className="relative w-full h-8 flex items-center justify-center">
                       <Image
-                        src={`${INFURA_GATEWAY}/ipfs/QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
+                        src={`${INFURA_GATEWAY_INTERNAL}QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
                         layout="fill"
                         objectFit="fill"
                         draggable={false}
@@ -88,7 +88,7 @@ const Tabla: FunctionComponent<{
               <div className="relative w-full h-fit sm:h-44 flex items-center justify-center border-4 border-flor bg-viol sm:-top-20 sm:flex-row flex-col">
                 <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/QmaT9VM3Rqb4NRGmrjm7EAKMFXFZertxadqTTA7CeKy7NN`}
+                    src={`${INFURA_GATEWAY_INTERNAL}QmaT9VM3Rqb4NRGmrjm7EAKMFXFZertxadqTTA7CeKy7NN`}
                     layout="fill"
                     objectFit="fill"
                     draggable={false}
@@ -128,7 +128,7 @@ const Tabla: FunctionComponent<{
                     </div>
                     <div className="relative w-full h-8 flex items-center justify-center">
                       <Image
-                        src={`${INFURA_GATEWAY}/ipfs/QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
+                        src={`${INFURA_GATEWAY_INTERNAL}QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
                         layout="fill"
                         objectFit="fill"
                         draggable={false}
@@ -143,7 +143,7 @@ const Tabla: FunctionComponent<{
               <div className="relative w-full h-fit sm:h-44 flex items-center justify-center border-4 border-flor bg-salmon sm:flex-row flex-col">
                 <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-60 sm:h-full flex">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/QmV3Tu48mvZ5p7F3yktSW6KHr23FqjucY2XWvr8x5nM9UV`}
+                    src={`${INFURA_GATEWAY_INTERNAL}QmV3Tu48mvZ5p7F3yktSW6KHr23FqjucY2XWvr8x5nM9UV`}
                     layout="fill"
                     objectFit="fill"
                     draggable={false}
@@ -183,7 +183,7 @@ const Tabla: FunctionComponent<{
                     </div>
                     <div className="relative w-full h-8 flex items-center justify-center">
                       <Image
-                        src={`${INFURA_GATEWAY}/ipfs/QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
+                        src={`${INFURA_GATEWAY_INTERNAL}QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
                         layout="fill"
                         objectFit="fill"
                         draggable={false}
@@ -322,7 +322,7 @@ const Tabla: FunctionComponent<{
             </div>
             <div className="relative flex w-full h-full">
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmaYXpZxX8mc2G52aRycB5eHofvmGYtEKotJsuze9gehUH`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmaYXpZxX8mc2G52aRycB5eHofvmGYtEKotJsuze9gehUH`}
                 layout="fill"
                 objectFit="fill"
                 draggable={false}
@@ -336,7 +336,7 @@ const Tabla: FunctionComponent<{
       >
         <div className="relativew-full h-60 flex items-center justify-end">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmZ3fqF7shCsNbAUuFLvSz3Mg8ARKsvXmJaTmN6GWA3SNB`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmZ3fqF7shCsNbAUuFLvSz3Mg8ARKsvXmJaTmN6GWA3SNB`}
             layout="fill"
             objectFit="cover"
             draggable={false}

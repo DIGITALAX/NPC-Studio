@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import manejarBuscarPerfiles from "@/app/lib/helpers/manejarBuscarPerfiles";
 import { ModalContext } from "@/app/providers";
 import { Account } from "@lens-protocol/client";
@@ -43,7 +43,7 @@ const PublicacionConectada: FunctionComponent<{ dict: any }> = ({
             <div className="relative w-60 h-60 flex items-center justify-center border border-ligero rounded-md">
               <Image
                 draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/${
+                src={`${INFURA_GATEWAY_INTERNAL}${
                   contexto?.coleccionActual.imagenes?.[0]?.split("ipfs://")?.[1]
                 }`}
                 layout="fill"

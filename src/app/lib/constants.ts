@@ -1,4 +1,5 @@
 export const INFURA_GATEWAY: string = "https://thedial.infura-ipfs.io";
+export const INFURA_GATEWAY_INTERNAL: string = "https://npcstudio.xyz/api/infura/";
 export const GROVE_GATEWAY: string = "https://api.grove.storage/";
 export const IPFS_REGEX: RegExp = /\b(Qm[1-9A-Za-z]{44}|ba[A-Za-z2-7]{57})\b/;
 export const AUTOGRAPH_ACCESS_CONTROLS: `0x${string}` =

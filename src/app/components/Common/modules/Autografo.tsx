@@ -6,7 +6,7 @@ import {
   AutographType,
   Coleccion,
 } from "../types/common.types";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY , INFURA_GATEWAY_INTERNAL} from "@/app/lib/constants";
 import { ModalContext } from "@/app/providers";
 import usePublicacion from "../hooks/usePublicacion";
 
@@ -59,7 +59,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                 contexto?.setVerImagen({
                   abierto: true,
                   tipo: "png",
-                  url: `${INFURA_GATEWAY}/ipfs/${
+                  url: `${INFURA_GATEWAY_INTERNAL}${
                     articulos?.[articuloIndice]?.imagenes?.[0]?.split(
                       "ipfs://"
                     )?.[1]
@@ -70,7 +70,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
               <Image
                 layout="fill"
                 draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/${
+                src={`${INFURA_GATEWAY_INTERNAL}${
                   articulos?.[articuloIndice]?.imagenes?.[0]?.split(
                     "ipfs://"
                   )?.[1]
@@ -136,7 +136,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                   <Image
                     layout="fill"
                     objectFit="cover"
-                    src={`${INFURA_GATEWAY}/ipfs/${
+                    src={`${INFURA_GATEWAY_INTERNAL}${
                       (
                         articuloSeleccionado?.[articuloIndice]
                           ?.elemento as Coleccion
@@ -170,7 +170,7 @@ const Autografo: FunctionComponent<AutografoProps> = ({
                       draggable={false}
                       objectFit="cover"
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${
+                      src={`${INFURA_GATEWAY_INTERNAL}${
                         el?.imagenes?.[0]?.split("ipfs://")?.[1]
                       }`}
                       className="rounded-md"

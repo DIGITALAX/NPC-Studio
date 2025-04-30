@@ -4,7 +4,7 @@ import { FunctionComponent, JSX, useContext } from "react";
 import { PiArrowSquareInBold } from "react-icons/pi";
 import { PublicacionProps } from "../types/chat.types";
 import { Post, TextOnlyMetadata } from "@lens-protocol/client";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import TiposPublicaciones from "./TiposPublicaciones";
 import Cita from "./Cita";
 import Comentario from "./Comentario";
@@ -54,7 +54,7 @@ const Publicacion: FunctionComponent<PublicacionProps> = ({
             <div className="relative w-3.5 h-3.5 col-start-2 place-self-center">
               <Image
                 layout="fill"
-                src={`${INFURA_GATEWAY}/ipfs/${
+                src={`${INFURA_GATEWAY_INTERNAL}${
                   elemento?.__typename === "Post" && elemento?.commentOn
                     ? "QmXD3LnHiiLSqG2TzaNd1Pmhk2nVqDHDqn8k7RtwVspE6n"
                     : "QmfDNH347Vph4b1tEuegydufjMU2QwKzYnMZCjygGvvUMM"

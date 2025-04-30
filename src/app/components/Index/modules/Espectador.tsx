@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { ModalContext } from "@/app/providers";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
@@ -107,7 +107,7 @@ const Espectador: FunctionComponent<{ lang: string; dict: any }> = ({
             </div>
             <div className="relative w-full h-full flex items-center justify-center">
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/Qmab2a5syZ5rVB6oHQV12Lrruzyzx5A1oyC1RWdQsK8Mt6`}
+                src={`${INFURA_GATEWAY_INTERNAL}Qmab2a5syZ5rVB6oHQV12Lrruzyzx5A1oyC1RWdQsK8Mt6`}
                 layout="fill"
                 objectFit="fill"
                 draggable={false}
@@ -218,7 +218,7 @@ const Espectador: FunctionComponent<{ lang: string; dict: any }> = ({
                     }
                   >
                     <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                      src={`${INFURA_GATEWAY_INTERNAL}QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
                       layout="fill"
                       objectFit="fill"
                       draggable={false}
@@ -246,7 +246,7 @@ const Espectador: FunctionComponent<{ lang: string; dict: any }> = ({
       >
         <div className="relativew-full h-60 flex items-center justify-end">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmdRLJ8bWfTgJ92TiXTQU4wU46xtYURebNNRC4qyBMkCN8`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmdRLJ8bWfTgJ92TiXTQU4wU46xtYURebNNRC4qyBMkCN8`}
             layout="fill"
             objectFit="cover"
             draggable={false}

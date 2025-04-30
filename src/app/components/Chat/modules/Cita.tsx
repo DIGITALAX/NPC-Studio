@@ -3,7 +3,6 @@ import Image from "next/legacy/image";
 import moment from "moment";
 import TiposPublicaciones from "./TiposPublicaciones";
 import { CitaProps } from "../types/chat.types";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
 
 const Cita: FunctionComponent<CitaProps> = ({

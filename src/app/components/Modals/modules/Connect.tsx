@@ -2,7 +2,7 @@ import { FunctionComponent, JSX } from "react";
 import { useModal } from "connectkit";
 import { http, useAccount } from "wagmi";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import useLens from "../../Common/hooks/useLens";
 import { ConnectProps } from "../types/modals.types";
 import { createPublicClient } from "viem";
@@ -81,7 +81,7 @@ const Connect: FunctionComponent<ConnectProps> = ({
               <div className="relative w-fit h-fit flex">
                 <div className="relative w-5 h-5 animate-spin flex">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/QmNcoHPaFjhDciiHjiMNpfTbzwnJwKEZHhNfziFeQrqTkX`}
+                    src={`${INFURA_GATEWAY_INTERNAL}QmNcoHPaFjhDciiHjiMNpfTbzwnJwKEZHhNfziFeQrqTkX`}
                     layout="fill"
                     objectFit="cover"
                     className="rounded-full"

@@ -2,7 +2,7 @@
 import Image from "next/legacy/image";
 import { ReactElement, useContext } from "react";
 import { BsTwitter } from "react-icons/bs";
-import { INFURA_GATEWAY } from "../../../lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "../../../lib/constants";
 import {
   PiArrowFatLinesLeftFill,
   PiArrowFatLinesRightFill,
@@ -47,7 +47,7 @@ function Footer() {
             <Image
               draggable={false}
               layout="fill"
-              src={`${INFURA_GATEWAY}/ipfs/${
+              src={`${INFURA_GATEWAY_INTERNAL}${
                 path.includes("/en/")
                   ? "QmWDGpLPFi3cejfF3uBdFfjE9v2yeyFRShn5DQhiKXgDdo"
                   : "QmNTNfAqo6v4T1fQc8YVPAnKmLTVdyripzBYyLc6HXMSEA"
@@ -114,7 +114,7 @@ function Footer() {
                     item.component
                   ) : (
                     <Image
-                      src={`${INFURA_GATEWAY}/ipfs/${item.image}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${item.image}`}
                       layout="fill"
                       draggable={false}
                     />

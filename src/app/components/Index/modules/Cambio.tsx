@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX } from "react";
 import Image from "next/legacy/image";
 import { CambioProps, Pantalla } from "../types/index.type";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import AgentMap from "./AgentMap";
 import Puntaje from "./Puntaje";
 import Desafiantes from "./Desafiantes";
@@ -65,7 +65,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
                 }
               >
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
                   layout="fill"
                   objectFit="fill"
                   draggable={false}
@@ -89,7 +89,7 @@ const Cambio: FunctionComponent<CambioProps> = ({
           >
             <div className="relativew-full h-60 flex items-center justify-end">
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmTPTQ7w3ZWETDBwsC5HB2TkcHTik85Hpy9thbXZg6nREw`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmTPTQ7w3ZWETDBwsC5HB2TkcHTik85Hpy9thbXZg6nREw`}
                 layout="fill"
                 objectFit="cover"
                 draggable={false}

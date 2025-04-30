@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { useRouter } from "next/navigation";
 import { FunctionComponent, JSX } from "react";
@@ -26,7 +26,7 @@ const Desafiante: FunctionComponent<DesafianteProps> = ({
         >
           <div className={`absolute top-0 left-0 w-full h-full flex `}>
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/QmPQaDcs5gEYtrqXsz3pvLzu3919a4BXmBAE8McrZyJEor`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmPQaDcs5gEYtrqXsz3pvLzu3919a4BXmBAE8McrZyJEor`}
               layout="fill"
               objectFit="fill"
               draggable={false}
@@ -73,7 +73,7 @@ const Desafiante: FunctionComponent<DesafianteProps> = ({
                     }
                   >
                     <Image
-                      src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                      src={`${INFURA_GATEWAY_INTERNAL}QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
                       layout="fill"
                       objectFit="fill"
                       draggable={false}
@@ -87,7 +87,7 @@ const Desafiante: FunctionComponent<DesafianteProps> = ({
               <div className="relative w-full h-full flex flex-row items-center justify-between gap-3">
                 <div className="relative w-full h-full flex items-center justify-center">
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/${desafiantes?.[indice]?.tapa}`}
+                    src={`${INFURA_GATEWAY_INTERNAL}${desafiantes?.[indice]?.tapa}`}
                     layout="fill"
                     objectFit="contain"
                     draggable={false}

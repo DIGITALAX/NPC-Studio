@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/legacy/image";
 import NotificacionCambio from "./NotificacionCambio";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import {
   NotificacionProps,
   Notificacion as NotificacionType,
@@ -29,7 +29,7 @@ function Notificacion({ dict }: NotificacionProps) {
             draggable={false}
             layout="fill"
             objectFit="cover"
-            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
           />
           <div
             className={`flex flex-col items-center py-10 px-4 gap-5 text-white font-bit relative w-[75%] h-[65%] items-start justify-center overflow-y-scroll ${

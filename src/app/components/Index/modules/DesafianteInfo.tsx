@@ -1,7 +1,7 @@
 import moment from "moment";
 import { FunctionComponent, JSX } from "react";
 import Petalos from "./Petalos";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { DesafianteInfoProps } from "../types/index.type";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
@@ -229,7 +229,7 @@ const DesafianteInfo: FunctionComponent<DesafianteInfoProps> = ({
               objectFit="cover"
               draggable={false}
               layout="fill"
-              src={`${INFURA_GATEWAY}/ipfs/${
+              src={`${INFURA_GATEWAY_INTERNAL}${
                 escenas?.find((e) =>
                   e.sprites?.find(
                     (spr) =>
@@ -305,7 +305,7 @@ const DesafianteInfo: FunctionComponent<DesafianteInfoProps> = ({
                         objectFit="cover"
                         draggable={false}
                         layout="fill"
-                        src={`${INFURA_GATEWAY}/ipfs/${
+                        src={`${INFURA_GATEWAY_INTERNAL}${
                           col?.imagenes?.[0]?.split("ipfs://")?.[1]
                         }`}
                       />

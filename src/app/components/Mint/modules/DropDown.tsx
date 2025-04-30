@@ -1,4 +1,4 @@
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX } from "react";
 import { DropDownProps } from "../types/mint.types";
@@ -28,7 +28,7 @@ const DropDown: FunctionComponent<DropDownProps> = ({
             <Image
               layout="fill"
               draggable={false}
-              src={`${INFURA_GATEWAY}/ipfs/QmRKmMYJj7KAwf4BDGwrd51tKWoS8djnLGWT5XNdrJMztk`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmRKmMYJj7KAwf4BDGwrd51tKWoS8djnLGWT5XNdrJMztk`}
             />
           </div>
           <input
@@ -64,7 +64,7 @@ const DropDown: FunctionComponent<DropDownProps> = ({
                     >
                       <Image
                         layout="fill"
-                        src={`${INFURA_GATEWAY}/ipfs/${value.cover}`}
+                        src={`${INFURA_GATEWAY_INTERNAL}${value.cover}`}
                         title={value.key}
                         objectFit={"contain"}
                         draggable={false}

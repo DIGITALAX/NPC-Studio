@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useContext } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/legacy/image";
-import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import {
   AutographType,
   BotonesProps,
@@ -90,7 +90,7 @@ const Botones: FunctionComponent<BotonesProps> = ({
                     }
                   >
                     <Image
-                      src={`${INFURA_GATEWAY}/ipfs/${moneda[0]}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${moneda[0]}`}
                       className="flex rounded-full"
                       draggable={false}
                       layout="fill"
@@ -166,7 +166,7 @@ const Botones: FunctionComponent<BotonesProps> = ({
           >
             <div className="relative rounded-full p-2 h-10 w-10  flex items-center justify-center">
               <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmeUvktErG1LkwLYRZjU7FqWj9nCXkHcMoy7kpfwTe3WSM`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmeUvktErG1LkwLYRZjU7FqWj9nCXkHcMoy7kpfwTe3WSM`}
                 layout="fill"
                 objectFit="cover"
                 draggable={false}

@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useContext } from "react";
 import Cumplimiento from "./Cumplimiento";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import usePagina from "../hooks/usePagina";
 import Botones from "./Botones";
 import { ModalContext } from "@/app/providers";
@@ -54,7 +54,7 @@ const Catalogo: FunctionComponent<CatalogoProps> = ({
             className="page relative flex items-center justify-center"
           >
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/${pagina.split("ipfs://")[1]}`}
+              src={`${INFURA_GATEWAY_INTERNAL}${pagina.split("ipfs://")[1]}`}
               layout="fill"
               objectFit="contain"
               draggable={false}

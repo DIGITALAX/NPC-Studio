@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { AutographType } from "../types/common.types";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { ModalContext } from "@/app/providers";
 
 const Carrito: FunctionComponent<{
@@ -56,7 +56,7 @@ const Carrito: FunctionComponent<{
         title={dict.Home.cart}
       >
         <Image
-          src={`${INFURA_GATEWAY}/ipfs/QmeUvktErG1LkwLYRZjU7FqWj9nCXkHcMoy7kpfwTe3WSM`}
+          src={`${INFURA_GATEWAY_INTERNAL}QmeUvktErG1LkwLYRZjU7FqWj9nCXkHcMoy7kpfwTe3WSM`}
           layout="fill"
           objectFit="cover"
           draggable={false}

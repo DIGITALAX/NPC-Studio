@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useEffect } from "react";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { AnimationContext } from "@/app/providers";
 
 export default function Animation({ children }: { children: React.ReactNode }) {
@@ -34,7 +34,7 @@ export default function Animation({ children }: { children: React.ReactNode }) {
                 height={226}
                 priority
                 draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/QmXMzhCBRuwFY6tbvTpNvPVageuK63eNzJ2KWkMGNrUCrw`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmXMzhCBRuwFY6tbvTpNvPVageuK63eNzJ2KWkMGNrUCrw`}
               />
             </div>
           </div>

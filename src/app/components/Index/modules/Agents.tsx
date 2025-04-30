@@ -1,5 +1,5 @@
 "use client";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import Ticker from "./Ticker";
 import { Pantalla } from "../types/index.type";
@@ -18,7 +18,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
       <div className="relative w-full h-full flex items-center lg:items-stretch justify-start flex-col lg:flex-row">
         <div className="relative w-full lg:w-60 h-12 lg:h-auto shrink-0 flex">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmSfZKsL8SySAa2FhSmw6cH9rqwDhnXM58HcqKMxT4E8Mo`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmSfZKsL8SySAa2FhSmw6cH9rqwDhnXM58HcqKMxT4E8Mo`}
             layout="fill"
             objectFit="fill"
             draggable={false}
@@ -41,7 +41,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
             <div className="absolute top-3 right-3 w-fit flex-row flex h-fit items-end justify-start gap-2">
               <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmUfJojpNhnpGhrynj9edpJPBm4johzGvNcyMnAADgqdDC`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmUfJojpNhnpGhrynj9edpJPBm4johzGvNcyMnAADgqdDC`}
                   layout="fill"
                   objectFit="contain"
                   draggable={false}
@@ -49,7 +49,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
               </div>
               <div className="relative flex w-4 md:w-8 h-4 md:h-8 flex items-center justify-center">
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/QmWmfupyTZwUAM85VAJBNaXhek8ATnqLGZeZFS5msPHY4c`}
+                  src={`${INFURA_GATEWAY_INTERNAL}QmWmfupyTZwUAM85VAJBNaXhek8ATnqLGZeZFS5msPHY4c`}
                   layout="fill"
                   objectFit="contain"
                   draggable={false}
@@ -140,7 +140,7 @@ export default function Agents({ lang, dict }: { lang: string; dict: any }) {
           </div>
           <div className="relative w-full h-10 flex items-center justify-center">
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/QmZM3fAAnxgCn4a2Uz3L5dARVeGCnQYPpJL3q7hoFL2x7D`}
+              src={`${INFURA_GATEWAY_INTERNAL}QmZM3fAAnxgCn4a2Uz3L5dARVeGCnQYPpJL3q7hoFL2x7D`}
               layout="fill"
               objectFit="cover"
               draggable={false}

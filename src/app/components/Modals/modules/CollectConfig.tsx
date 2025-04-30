@@ -1,4 +1,4 @@
-import { ASSETS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { ASSETS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
 import { ModalContext } from "@/app/providers";
@@ -28,7 +28,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
       >
         <div className="relative relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center">
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
             draggable={false}
             layout="fill"
             objectFit="cover"

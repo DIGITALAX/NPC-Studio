@@ -4,7 +4,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import MediosCambio from "./MediosCambio";
 import { ImCross } from "react-icons/im";
 import { ModalContext } from "@/app/providers";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import useMencionar from "../hooks/useMencionar";
 import manejarBuscarPerfiles from "@/app/lib/helpers/manejarBuscarPerfiles";
 import { Account } from "@lens-protocol/client";
@@ -138,7 +138,7 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
                   >
                     <Image
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${elemento.imagen}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${elemento.imagen}`}
                       draggable={false}
                       className="rounded-sm"
                     />
@@ -169,7 +169,7 @@ const Comentario: FunctionComponent<ComentarioProps> = ({
                   >
                     <Image
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${elemento.imagen}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${elemento.imagen}`}
                       draggable={false}
                       className="rounded-sm"
                     />

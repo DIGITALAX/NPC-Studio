@@ -1,4 +1,4 @@
-import { CARTAS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { CARTAS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { AnimationContext, ModalContext } from "@/app/providers";
 import Image from "next/legacy/image";
 import { FunctionComponent, useContext } from "react";
@@ -30,7 +30,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                   className="relative w-full h-96 flex items-stretch justify-start flex-col animate-pulse"
                 >
                   <Image
-                    src={`${INFURA_GATEWAY}/ipfs/${elemento}`}
+                    src={`${INFURA_GATEWAY_INTERNAL}${elemento}`}
                     layout="fill"
                     objectFit="fill"
                     draggable={false}
@@ -47,7 +47,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                   >
                     <div className="absolute top-0 left-0 w-full h-full flex">
                       <Image
-                        src={`${INFURA_GATEWAY}/ipfs/${CARTAS[i % 9]}`}
+                        src={`${INFURA_GATEWAY_INTERNAL}${CARTAS[i % 9]}`}
                         layout="fill"
                         objectFit="fill"
                         draggable={false}
@@ -84,7 +84,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                           }}
                         >
                           <Image
-                            src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+                            src={`${INFURA_GATEWAY_INTERNAL}QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
                             layout="fill"
                             objectFit="fill"
                             draggable={false}
@@ -98,7 +98,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
                     <div className="relative w-full h-full flex flex-row items-center justify-between gap-3">
                       <div className="relative w-full h-full flex items-center justify-center">
                         <Image
-                          src={`${INFURA_GATEWAY}/ipfs/${sprite?.tapa}`}
+                          src={`${INFURA_GATEWAY_INTERNAL}${sprite?.tapa}`}
                           layout="fill"
                           objectFit="contain"
                           draggable={false}
@@ -146,7 +146,7 @@ const AgentMap: FunctionComponent<AgentMapProps> = ({
           }
         >
           <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
+            src={`${INFURA_GATEWAY_INTERNAL}QmY45n5J9eJxGpb74KkU9BYUqv6K2bXKvJUUigEKtHWy9s`}
             layout="fill"
             objectFit="fill"
             draggable={false}

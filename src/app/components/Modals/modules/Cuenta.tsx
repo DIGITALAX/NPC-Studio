@@ -3,7 +3,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { GiWorld } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import Image from "next/legacy/image";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { AnimationContext, ModalContext } from "@/app/providers";
 import { CuentaProps } from "../types/modals.types";
 import descripcionRegex from "@/app/lib/helpers/descripcionRegex";
@@ -161,7 +161,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                   layout="fill"
                   objectFit="contain"
                   draggable={false}
-                  src={`${INFURA_GATEWAY}/ipfs/${perfil?.sprite?.tapa}`}
+                  src={`${INFURA_GATEWAY_INTERNAL}${perfil?.sprite?.tapa}`}
                 />
               </div>
               <div className="relative w-full h-96 overflow-y-scroll flex items-start justify-start text-left gap-2 flex-col">
@@ -208,7 +208,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                               layout="fill"
                               objectFit="contain"
                               draggable={false}
-                              src={`${INFURA_GATEWAY}/ipfs/${amigo.tapa}`}
+                              src={`${INFURA_GATEWAY_INTERNAL}${amigo.tapa}`}
                             />
                           </div>
                         </div>

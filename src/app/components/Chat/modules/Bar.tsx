@@ -1,7 +1,7 @@
 import { FunctionComponent, JSX, useContext } from "react";
 import Image from "next/legacy/image";
 import { AiOutlineLoading } from "react-icons/ai";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import numeral from "numeral";
 import useInteraccion from "../hooks/useInteraccion";
 import { BarProps } from "../types/chat.types";
@@ -93,7 +93,7 @@ const Bar: FunctionComponent<BarProps> = ({
                   >
                     <Image
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${image[0]}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${image[0]}`}
                       draggable={false}
                     />
                   </div>
@@ -157,7 +157,7 @@ const Bar: FunctionComponent<BarProps> = ({
                   >
                     <Image
                       layout="fill"
-                      src={`${INFURA_GATEWAY}/ipfs/${image[0]}`}
+                      src={`${INFURA_GATEWAY_INTERNAL}${image[0]}`}
                       draggable={false}
                     />
                   </div>
@@ -215,7 +215,7 @@ const Bar: FunctionComponent<BarProps> = ({
               <Image
                 layout="fill"
                 draggable={false}
-                src={`${INFURA_GATEWAY}/ipfs/QmZ4v5pzdnCBeyKnS9VrjZiEAbUpAVy8ECArNcpxBt6Tw4`}
+                src={`${INFURA_GATEWAY_INTERNAL}QmZ4v5pzdnCBeyKnS9VrjZiEAbUpAVy8ECArNcpxBt6Tw4`}
               />
             )}
           </div>

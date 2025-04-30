@@ -15,7 +15,6 @@ import { useAccount } from "wagmi";
 import AutographCollection from "./../../../../../abis/AutographCollection.json";
 import { getGalleries } from "../../../../../graphql/queries/getGalleries";
 import { chains } from "@lens-chain/sdk/viem";
-import { number } from "zod";
 
 const useMint = (publicClient: PublicClient) => {
   const contexto = useContext(ModalContext);

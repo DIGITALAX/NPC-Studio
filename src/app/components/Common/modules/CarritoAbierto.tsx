@@ -4,7 +4,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FunctionComponent, JSX, useContext } from "react";
 import { ModalContext } from "@/app/providers";
-import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import {
   AutographType,
   CarritoAbiertoProps,
@@ -89,7 +89,7 @@ const CarritoAbierto: FunctionComponent<CarritoAbiertoProps> = ({
                           draggable={false}
                           objectFit="cover"
                           className="rounded-md"
-                          src={`${INFURA_GATEWAY}/ipfs/${
+                          src={`${INFURA_GATEWAY_INTERNAL}${
                             (elemento.elemento as Coleccion)?.imagenes?.[0]
                               ? (
                                   elemento.elemento as Coleccion
@@ -227,7 +227,7 @@ const CarritoAbierto: FunctionComponent<CarritoAbiertoProps> = ({
                         }
                       >
                         <Image
-                          src={`${INFURA_GATEWAY}/ipfs/${token[0]}`}
+                          src={`${INFURA_GATEWAY_INTERNAL}${token[0]}`}
                           className="flex rounded-full"
                           draggable={false}
                           layout="fill"

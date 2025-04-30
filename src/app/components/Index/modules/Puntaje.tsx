@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import usePuntaje from "../hooks/usePuntaje";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import { INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { handleProfilePicture } from "@/app/lib/helpers/handleProfilePicture";
 
@@ -39,7 +39,7 @@ const Puntaje: FunctionComponent<{
                   >
                     <div className="relative w-full sm:absolute z-10 top-0 left-0 sm:w-1/2 h-full flex">
                       <Image
-                        src={`${INFURA_GATEWAY}/ipfs/QmfBWguNxhoJqvuom7hc5r3FNztMnLZNgyA1CX3GjAugFs`}
+                        src={`${INFURA_GATEWAY_INTERNAL}QmfBWguNxhoJqvuom7hc5r3FNztMnLZNgyA1CX3GjAugFs`}
                         layout="fill"
                         objectFit="fill"
                         draggable={false}
@@ -69,7 +69,7 @@ const Puntaje: FunctionComponent<{
                         </div>
                         <div className="relative w-full h-8 flex items-center justify-center">
                           <Image
-                            src={`${INFURA_GATEWAY}/ipfs/QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
+                            src={`${INFURA_GATEWAY_INTERNAL}QmY827FfqYeW6JMXjtcAhh8FEa8K6eckjf7R5VVaXZrBp3`}
                             layout="fill"
                             objectFit="fill"
                             draggable={false}

@@ -4,7 +4,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import useConversacion from "../hooks/useConversacion";
 import usePedidos from "../hooks/usePedidos";
 import { Details, Pedido, SubOrder } from "../types/orders.types";
-import { ACCEPTED_TOKENS, INFURA_GATEWAY } from "@/app/lib/constants";
+import { ACCEPTED_TOKENS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
 import { useAccount } from "wagmi";
 import dynamic from "next/dynamic";
 import {
@@ -157,7 +157,7 @@ const Pedidos: FunctionComponent<{ dict: any }> = ({ dict }) => {
                             layout="fill"
                             objectFit="cover"
                             draggable={false}
-                            src={`${INFURA_GATEWAY}/ipfs/QmbTE1oZ1uS5cKDRoD7DBJSsbtHercNCSvvyWA144fgUDz`}
+                            src={`${INFURA_GATEWAY_INTERNAL}QmbTE1oZ1uS5cKDRoD7DBJSsbtHercNCSvvyWA144fgUDz`}
                             className="rounded-md"
                           />
                         </div>
@@ -302,7 +302,7 @@ const Pedidos: FunctionComponent<{ dict: any }> = ({ dict }) => {
                                   <div className="relative w-full h-fit flex items-center justify-start flex-row gap-2">
                                     <div className="relative w-8 h-8 rounded-md flex items-center justify-center bg-offNegro border border-ligero">
                                       <Image
-                                        src={`${INFURA_GATEWAY}/ipfs/${
+                                        src={`${INFURA_GATEWAY_INTERNAL}${
                                           (subOrder?.autographType ==
                                           AutographType.Catalog
                                             ? (subOrder?.collection as Catalogo)
@@ -343,7 +343,7 @@ const Pedidos: FunctionComponent<{ dict: any }> = ({ dict }) => {
                                     </div>
                                     <div className="relative flex items-center w-7 h-7 rounded-full  justify-center border border-white">
                                       <Image
-                                        src={`${INFURA_GATEWAY}/ipfs/${
+                                        src={`${INFURA_GATEWAY_INTERNAL}${
                                           ACCEPTED_TOKENS?.find(
                                             (tok) =>
                                               tok[2].toLocaleLowerCase() ==
