@@ -11,7 +11,7 @@ const Puntaje: FunctionComponent<{
   const { historial, puntajeCargando } = usePuntaje();
   return (
     <div
-      className={`relative w-full flex flex-col md:flex-row gap-3 items-center justify-center ${
+      className={`relative w-full flex flex-col md:flex-row gap-3 items-center justify-center font-clar ${
         juego ? "h-full" : "h-fit"
       }`}
     >
@@ -28,7 +28,7 @@ const Puntaje: FunctionComponent<{
               );
             })
           : historial
-              ?.slice(0, juego ? 20 : 6)
+              ?.slice(0, juego ? historial.length : 6)
               .map((elemento, indice: number) => {
                 return (
                   <div
@@ -49,17 +49,15 @@ const Puntaje: FunctionComponent<{
                       <div className="relative w-full justify-end items-center flex h-fit">
                         <div className="relative w-fit h-fit flex items-center justify-center">
                           <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-costa bg-costa">
-                            {elemento?.spectatorProfile?.metadata?.picture && (
-                              <Image
-                                src={handleProfilePicture(
-                                  elemento?.spectatorProfile?.metadata?.picture
-                                )}
-                                layout="fill"
-                                objectFit="cover"
-                                className="rounded-full"
-                                draggable={false}
-                              />
-                            )}
+                            <Image
+                              src={handleProfilePicture(
+                                elemento?.spectatorProfile?.metadata?.picture
+                              )}
+                              layout="fill"
+                              objectFit="cover"
+                              className="rounded-full"
+                              draggable={false}
+                            />
                           </div>
                         </div>
                       </div>
@@ -75,7 +73,7 @@ const Puntaje: FunctionComponent<{
                             draggable={false}
                           />
                         </div>
-                        <div className="relative w-full h-fit flex items-center justify-end text-white text-2xl">
+                        <div className="relative w-full h-fit flex items-center justify-end text-white text-xs">
                           {dict.Home.global}
                         </div>
                       </div>

@@ -34,8 +34,8 @@ const useFeed = (perfil?: string) => {
             : {
                 metadata: {
                   tags: {
-                    all: [
-                      "npcStudio",
+                    oneOf: [
+                      // "npcStudio",
                       contexto?.escena?.replaceAll(" ", "")!,
                     ]?.filter(Boolean),
                   },
@@ -80,7 +80,8 @@ const useFeed = (perfil?: string) => {
   };
 
   const llamarMasFeed = async () => {
-    if (!contexto?.clienteLens) return;
+    if (!contexto?.clienteLens || !hasMore.hasMore || !hasMore.paginated)
+      return;
     setFeedCargando(true);
     try {
       const data = await fetchPosts(
@@ -144,7 +145,7 @@ const useFeed = (perfil?: string) => {
       contexto?.clienteLens &&
       Number(contexto?.escenas?.length) > 0 &&
       contexto?.escena &&
-      !path?.includes("agent-index")
+      !path?.includes("agent")
     ) {
       llamarFeed();
     }
@@ -154,8 +155,9 @@ const useFeed = (perfil?: string) => {
     if (
       contexto?.clienteLens &&
       Number(feedActual?.length) < 1 &&
-      path?.includes("agent-index") &&
-      Number(contexto?.escenas?.length) > 0
+      path?.includes("agent") &&
+      Number(contexto?.escenas?.length) > 0 &&
+      perfil
     ) {
       llamarFeed();
     }

@@ -26,6 +26,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   return (
     <div
       className={`relative w-full flex flex-col items-start justify-between font-at text-base leading-4 max-w-full text-white break-all gap-6 overflow-y-scroll h-[40rem]`}
+      id="scrollTarget"
     >
       <div
         className={`relative h-full flex items-center justify-start overflow-y-scroll max-w-full flex-col w-full`}

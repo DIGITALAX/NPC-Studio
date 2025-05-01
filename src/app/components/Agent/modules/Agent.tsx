@@ -24,7 +24,7 @@ export default function Agent({ dict }: { dict: any }) {
     useCuenta(dict, undefined, (handle?.handle as string)?.replace("%40", ""));
   const { informacion, infoCargando } = useAgent(perfil?.account?.owner);
 
-  if (npcCargando || infoCargando) {
+  if (npcCargando || infoCargando || !perfil || !informacion) {
     return <Cargando />;
   }
 

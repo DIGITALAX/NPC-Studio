@@ -10,13 +10,12 @@ const Activity: FunctionComponent<ActivityProps> = ({
   activity,
 }): JSX.Element => {
   const [historialAbierta, setHistorialAbierta] = useState<boolean[]>([]);
-
   return (
     <div className="relative w-full flex items-start justify-start h-fit flex-col gap-2 pt-10">
       <div className="text-white text-sm font-lib flex items-center justify-center">
         {dict.Home.historia}
       </div>
-      {Number(activity?.length) < 1 ? (
+      {Number(activity?.length) >0 ? (
         <div className="relative w-full h-fit flex flex-col gap-3">
           {activity?.map((hist: ActivityType, indice: number) => {
             return (

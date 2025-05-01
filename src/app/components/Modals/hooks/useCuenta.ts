@@ -6,6 +6,7 @@ import {
   fetchAccount,
   fetchAccounts,
   fetchAccountStats,
+  fetchUsername,
   follow,
   unfollow,
 } from "@lens-protocol/client/actions";
@@ -103,80 +104,69 @@ const useCuenta = (
     setNPCCargando(true);
     try {
       let account;
-      if (handle) {
-        const datos = await fetchAccount(
-          contexto?.lensConectado?.sessionClient || contexto?.clienteLens,
-          {
-            username: {
-              localName: handle,
-            },
-          }
-        );
 
-        if (!datos?.isOk()) {
-          setNPCCargando(false);
-          return;
+      const datos = await fetchAccount(
+        contexto?.lensConectado?.sessionClient || contexto?.clienteLens,
+        {
+          address: handle
+            ? contexto?.escenas
+                ?.flatMap((es) => es?.sprites)
+                ?.find((spr) => spr?.etiqueta?.toLowerCase() == handle)
+                ?.account_address
+            : direccionNPC ?? contexto?.mostrarPerfil,
         }
+      );
 
-        account = datos?.value as Account;
-      } else {
-        const datos = await fetchAccount(
-          contexto?.lensConectado?.sessionClient || contexto?.clienteLens,
-          {
-            address: direccionNPC ?? contexto?.mostrarPerfil,
-          }
-        );
-
-        if (!datos?.isOk()) {
-          setNPCCargando(false);
-          return;
-        }
-
-        account = datos?.value as Account;
+      if (!datos?.isOk()) {
+        setNPCCargando(false);
+        return;
       }
+      account = datos?.value as Account;
 
       let npc;
-
       const sprite = contexto?.escenas
         ?.flatMap((es) => es?.sprites)
         ?.find(
           (sprite) =>
-            sprite?.billetera?.toLowerCase() == account?.owner?.toLowerCase()
+            sprite?.account_address?.toLowerCase() ==
+            account?.address?.toLowerCase()
         );
-
       if (sprite) {
         const amigos = (await Promise.all(
           sprite?.amigos?.map(async (npc) => {
             const datos = await fetchAccount(
               contexto?.lensConectado?.sessionClient || contexto?.clienteLens!,
               {
-                address: npc?.account_address,
+                address: npc,
               }
             );
 
             if (datos?.isOk()) {
               return {
-                ...npc,
+                ...contexto?.escenas
+                  ?.flatMap((es) => es?.sprites)
+                  ?.find(
+                    (sprite) =>
+                      sprite?.billetera?.toLowerCase() ==
+                      (npc as unknown as string)?.toLowerCase()
+                  ),
                 account: datos?.value as Account,
               };
             }
           })
         )) as Sprite[];
-
         npc = {
           ...sprite,
           account,
           amigos,
         };
       }
-
       const statsRes = await fetchAccountStats(
         contexto?.lensConectado?.sessionClient || contexto?.clienteLens!,
         {
           account: account?.owner,
         }
       );
-
       let stats;
 
       if (statsRes.isOk()) {

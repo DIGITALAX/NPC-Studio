@@ -25,13 +25,15 @@ const Chat: FunctionComponent<ChatProps> = ({
   return (
     <div
       className={`relative w-full flex flex-col items-start justify-between font-at text-base leading-4 max-w-full text-white break-all gap-6 ${
-        abierto ? "h-96 overflow-y-scroll" : "h-[33rem] xl:h-80 max-h-full"
+        abierto ? "h-96" : "h-[33rem] xl:h-80"
       }`}
     >
       <div
-        className={`relative h-full flex items-center justify-start overflow-y-scroll max-w-full flex-col w-full`}
+        className={`relative w-full flex flex-col overflow-y-scroll `}
+        id="scroll-chat"
       >
         <InfiniteScroll
+          scrollableTarget="scroll-chat"
           dataLength={feedActual?.length}
           loader={<></>}
           hasMore={hasMore?.hasMore}
