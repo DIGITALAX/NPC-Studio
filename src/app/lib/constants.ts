@@ -15,9 +15,9 @@ export const DIGITALAX_ADDRESS: `0x${string}` =
 export const AUTOGRAPH_ACTION: `0x${string}` =
   "0x92A1d3260559D755D7EdbFcb0A2280C7506937c7";
 export const AU_ADDRESS: `0x${string}` =
-  "0x0109e3567f8470F94BCdc15113889926aEa71b3c";
+  "0x82C6380105eb593995A674ca25ECA8a8CA5434D7";
 export const SPECTATOR_REWARDS: `0x${string}` =
-  "0x8fb47EB90dcEb3FFaC576da3fdBbDb047Bcb2f6e";
+  "0x176e1c5083565d3D9591BDEE12F5f4D47B0Eb19E";
 
 // export const DELTA_ADDRESS: `0x${string}` = "0x";
 // export const FASHION_ADDRESS: `0x${string}` = "0x";
