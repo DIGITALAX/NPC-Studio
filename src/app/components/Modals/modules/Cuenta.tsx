@@ -200,7 +200,7 @@ const Cuenta: FunctionComponent<CuentaProps> = ({
                               }
                               animContexto?.setPageChange(false);
                               router.push(
-                                `/agent/${amigo?.account?.username?.localName}`
+                                `/agent/${amigo?.etiqueta}`
                               );
                             }}
                           >

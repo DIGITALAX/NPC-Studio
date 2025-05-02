@@ -132,33 +132,19 @@ const useCuenta = (
             account?.address?.toLowerCase()
         );
       if (sprite) {
-        const amigos = (await Promise.all(
-          sprite?.amigos?.map(async (npc) => {
-            const datos = await fetchAccount(
-              contexto?.lensConectado?.sessionClient || contexto?.clienteLens!,
-              {
-                address: npc,
-              }
-            );
-
-            if (datos?.isOk()) {
-              return {
-                ...contexto?.escenas
-                  ?.flatMap((es) => es?.sprites)
-                  ?.find(
-                    (sprite) =>
-                      sprite?.billetera?.toLowerCase() ==
-                      (npc as unknown as string)?.toLowerCase()
-                  ),
-                account: datos?.value as Account,
-              };
-            }
-          })
-        )) as Sprite[];
         npc = {
           ...sprite,
           account,
-          amigos,
+          amigos: sprite?.amigos?.map(
+            (npc) =>
+              contexto?.escenas
+                ?.flatMap((es) => es?.sprites)
+                ?.find(
+                  (sprite) =>
+                    sprite?.billetera?.toLowerCase() ==
+                    (npc as unknown as string)?.toLowerCase()
+                ) as Sprite
+          ),
         };
       }
       const statsRes = await fetchAccountStats(
