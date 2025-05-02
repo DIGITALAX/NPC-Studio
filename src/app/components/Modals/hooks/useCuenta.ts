@@ -111,8 +111,9 @@ const useCuenta = (
           address: handle
             ? contexto?.escenas
                 ?.flatMap((es) => es?.sprites)
-                ?.find((spr) => spr?.etiqueta?.toLowerCase() == handle)
-                ?.account_address
+                ?.find(
+                  (spr) => spr?.etiqueta?.toLowerCase() == handle?.toLowerCase()
+                )?.account_address
             : direccionNPC ?? contexto?.mostrarPerfil,
         }
       );
