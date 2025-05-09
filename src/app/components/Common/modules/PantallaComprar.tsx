@@ -51,7 +51,7 @@ const PantallaComprar: FunctionComponent<PantallaComprarProps> = ({
         }}
       >
         <div
-          className="relative relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center"
+          className="relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center"
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();

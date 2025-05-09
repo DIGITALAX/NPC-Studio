@@ -917,7 +917,7 @@ const Mint: FunctionComponent<MintProps> = ({ dict }): JSX.Element => {
                           >
                             {cargandoBorrar[0] ? (
                               <div
-                                className={`animate-spin relative relative flex items-center justify-center w-fit h-fit`}
+                                className={`animate-spin relative flex items-center justify-center w-fit h-fit`}
                               >
                                 <AiOutlineLoading color="white" size={15} />
                               </div>

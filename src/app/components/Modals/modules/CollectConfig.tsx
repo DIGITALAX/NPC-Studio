@@ -1,9 +1,14 @@
-import { ASSETS, INFURA_GATEWAY_INTERNAL } from "@/app/lib/constants";
+import {
+  ACCEPTED_TOKENS,
+  ASSETS,
+  INFURA_GATEWAY_INTERNAL,
+} from "@/app/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent, JSX, useContext } from "react";
 import { ModalContext } from "@/app/providers";
 import useCollectConfig from "../hooks/useCollectConfig";
 import { SimpleCollect } from "../../Common/types/common.types";
+import { evmAddress } from "@lens-protocol/client";
 
 export const CollectConfig: FunctionComponent<{ dict: any }> = ({
   dict,
@@ -26,7 +31,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
         className="relative flex w-fit h-fit overflow-y-scroll place-self-center bg-oscuro border border-white cursor-default rounded-md"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center">
+        <div className="relative w-[100vw] max-w-[64rem] h-[calc(100vw*(40/64))] max-h-[40rem] flex items-center justify-center">
           <Image
             src={`${INFURA_GATEWAY_INTERNAL}QmUsrPxWX5wcnmVGt5WykDgTNDM3KHsjSrMZSxZui5u4rC`}
             draggable={false}
@@ -74,9 +79,19 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                                   },
                                 }
                               : {};
+
+                          if (!followerOnGraph?.followerOnGraph) {
+                            const { followerOnGraph, ...all } = col!;
+                            col = all;
+                          }
+
                           col =
                             drops?.award == "No"
-                              ? followerOnGraph
+                              ? {
+                                  ...col,
+                                  ...followerOnGraph,
+                                  payToCollect: null,
+                                }
                               : {
                                   ...col,
                                   ...followerOnGraph,
@@ -117,7 +132,10 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             : {};
 
                           let followerOnGraph =
-                            item === dict.Home.seguidor
+                            contexto?.comentarPublicar?.[
+                              contexto?.collectOptions?.index
+                            ]?.coleccionar?.followerOnGraph ===
+                            dict.Home.seguidor
                               ? {
                                   followerOnGraph: {
                                     globalGraph: true as true,
@@ -125,13 +143,31 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                                 }
                               : {};
 
+                          if (!followerOnGraph?.followerOnGraph) {
+                            const { followerOnGraph, ...all } = col!;
+                            col = all;
+                          }
+
                           col =
-                            drops?.award == "No"
-                              ? followerOnGraph
+                            item == "No"
+                              ? {
+                                  ...col,
+                                  ...followerOnGraph,
+                                  payToCollect: null,
+                                }
                               : ({
-                                  ...(arr[contexto?.collectOptions?.index]
-                                    ?.coleccionar || {}),
-                                } as SimpleCollect);
+                                  ...col,
+                                  payToCollect: {
+                                    ...col?.payToCollect,
+                                    referralShare: 0,
+                                    amount: {
+                                      value: "10",
+                                      currency: evmAddress(
+                                        ASSETS[0]?.contract?.address?.toLowerCase()
+                                      ),
+                                    },
+                                  },
+                                } as any);
 
                           arr[contexto?.collectOptions?.index] = {
                             ...arr[contexto?.collectOptions?.index],
@@ -155,7 +191,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                         contexto?.comentarPublicar[
                           contexto?.collectOptions?.index
                         ]?.coleccionar?.payToCollect?.amount?.value.toString() ||
-                        "0",
+                        "10",
                       showObject: drops.award === dict.Home.yes ? true : false,
                       setValue: (item: string) => {
                         if (isNaN(Number(item))) return;
@@ -167,7 +203,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             : {
                                 payToCollect: {
                                   amount: {
-                                    value: "0",
+                                    value: "10",
                                     currency:
                                       ASSETS[0]?.contract?.address?.toLowerCase(),
                                   },
@@ -179,8 +215,6 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             payToCollect: {
                               ...col?.payToCollect,
                               amount: {
-                                ...col?.payToCollect?.amount,
-
                                 currency:
                                   ASSETS?.find(
                                     (at) =>
@@ -240,7 +274,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             : {
                                 payToCollect: {
                                   amount: {
-                                    value: "0",
+                                    value: "10",
                                     currency:
                                       ASSETS[0]?.contract?.address?.toLowerCase(),
                                   },
@@ -288,7 +322,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             : {
                                 payToCollect: {
                                   amount: {
-                                    value: "0",
+                                    value: "10",
                                     curency:
                                       ASSETS[0]?.contract?.address?.toLowerCase(),
                                   },
@@ -338,7 +372,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                             : {};
 
                           col =
-                            drops?.edition == "No"
+                            item == "No"
                               ? ({
                                   ...col,
                                   collectLimit: null,
@@ -367,7 +401,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                       chosenValue: String(
                         contexto?.comentarPublicar?.[
                           contexto?.collectOptions?.index
-                        ]?.coleccionar?.collectLimit || "0"
+                        ]?.coleccionar?.collectLimit || "1"
                       ),
                       showObject:
                         drops?.edition === dict.Home.yes ? true : false,
@@ -478,7 +512,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                               {item?.title}
                             </div>
                             <div
-                              className="relative w-full h-12 p-px rounded-sm flex flex-row items-center justify-center font-bit text-amarillotext-center"
+                              className="relative w-full h-12 p-px rounded-sm flex flex-row items-center justify-center font-bit text-amarillo text-center"
                               id="borderSearch"
                             >
                               <div className="relative bg-offNegro flex flex-row w-full h-full justify-start items-center rounded-sm p-2 gap-2">
@@ -511,7 +545,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                                       return (
                                         <div
                                           key={indiceTres}
-                                          className="relative w-full h-8 py-px bg-offNegro items-center justify-center flex text-amarillotext-xs uppercase font-bit hover:bg-oscuro hover:text-white cursor-pointer"
+                                          className="relative w-full h-8 py-px bg-offNegro items-center justify-center flex text-amarillo text-xs uppercase font-bit hover:bg-oscuro hover:text-white cursor-pointer"
                                           onClick={() => {
                                             item.setValue(
                                               indexTwo === 4
@@ -539,7 +573,7 @@ export const CollectConfig: FunctionComponent<{ dict: any }> = ({
                               {item?.title}
                             </div>
                             <div
-                              className="relative w-full h-12 p-px rounded-sm flex flex-row items-center justify-center font-bit text-amarillotext-center"
+                              className="relative w-full h-12 p-px rounded-sm flex flex-row items-center justify-center font-bit text-amarillo text-center"
                               id="borderSearch"
                             >
                               <div
