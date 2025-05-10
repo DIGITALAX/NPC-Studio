@@ -16,11 +16,11 @@ export async function GET() {
         ${locales
           .map(
             (locale) => `
-          <xhtml:link rel="alternate" hreflang="${locale}" href="${baseUrl}/${locale}/" />
+          <link rel="alternate" hreflang="${locale}" href="${baseUrl}/${locale}/" ></link>
           `
           )
           .join("")}
-        <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/" />
+        <link rel="alternate" hreflang="x-default" href="${baseUrl}/"  ></link>
       </url>
 
       <url>
@@ -28,11 +28,11 @@ export async function GET() {
         ${locales
           .map(
             (locale) => `
-          <xhtml:link rel="alternate" hreflang="${locale}" href="${baseUrl}/${locale}/agent-index/" />
+          <link rel="alternate" hreflang="${locale}" href="${baseUrl}/${locale}/agent-index/"  ></link>
           `
           )
           .join("")}
-        <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/agent-index/" />
+        <link rel="alternate" hreflang="x-default" href="${baseUrl}/agent-index/"  ></link>
       </url>
 
      
