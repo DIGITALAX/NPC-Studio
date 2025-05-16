@@ -108,13 +108,16 @@ const useCuenta = (
       const datos = await fetchAccount(
         contexto?.lensConectado?.sessionClient || contexto?.clienteLens,
         {
-          address: handle
-            ? contexto?.escenas
-                ?.flatMap((es) => es?.sprites)
-                ?.find(
-                  (spr) => spr?.etiqueta?.toLowerCase() == handle?.toLowerCase()
-                )?.account_address
-            : direccionNPC ?? contexto?.mostrarPerfil,
+          username: {
+            localName: handle!
+          },
+          // address: handle
+          //   ? contexto?.escenas
+          //       ?.flatMap((es) => es?.sprites)
+          //       ?.find(
+          //         (spr) => spr?.etiqueta?.toLowerCase() == handle?.toLowerCase()
+          //       )?.account_address
+          //   : direccionNPC ?? contexto?.mostrarPerfil,
         }
       );
 
