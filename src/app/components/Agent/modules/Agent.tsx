@@ -323,7 +323,7 @@ export default function Agent({ dict }: { dict: any }) {
                       className="relative flex w-fit h-fit flex flex-col gap-2"
                     >
                       <div className="relative w-fit h-fit flex">
-                        {col?.titulo}
+                        {(col as any)?.title}
                       </div>
                       <div
                         className="relative w-fit h-fit flex items-center justify-center gap-1 mr-auto cursor-pointer active:scale-95"
@@ -366,7 +366,7 @@ export default function Agent({ dict }: { dict: any }) {
                             draggable={false}
                             layout="fill"
                             src={`${INFURA_GATEWAY_INTERNAL}${
-                              col?.imagenes?.[0]?.split("ipfs://")?.[1]
+                              (col as any)?.images?.[0]?.split("ipfs://")?.[1]
                             }`}
                           />
                         </div>

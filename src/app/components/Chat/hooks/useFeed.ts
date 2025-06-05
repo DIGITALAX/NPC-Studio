@@ -82,7 +82,7 @@ const useFeed = (perfil?: string) => {
   const llamarMasFeed = async () => {
     if (!contexto?.clienteLens || !hasMore.hasMore || !hasMore.paginated)
       return;
-    setFeedCargando(true);
+
     try {
       const data = await fetchPosts(
         contexto?.lensConectado?.sessionClient ?? contexto?.clienteLens,
@@ -137,7 +137,6 @@ const useFeed = (perfil?: string) => {
     } catch (err: any) {
       console.error(err.message);
     }
-    setFeedCargando(false);
   };
 
   useEffect(() => {

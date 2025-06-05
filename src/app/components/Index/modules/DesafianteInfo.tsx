@@ -306,7 +306,7 @@ const DesafianteInfo: FunctionComponent<DesafianteInfoProps> = ({
                         draggable={false}
                         layout="fill"
                         src={`${INFURA_GATEWAY_INTERNAL}${
-                          col?.imagenes?.[0]?.split("ipfs://")?.[1]
+                          (col as any)?.images?.[0]?.split("ipfs://")?.[1]
                         }`}
                       />
                     </div>
