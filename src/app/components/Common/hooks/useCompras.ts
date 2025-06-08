@@ -105,6 +105,11 @@ const useCompras = (
             (c) => c.tipo !== AutographType.NFT
           )
         );
+
+        if (!cadenasCifradas) {
+          setCarritoCargando(false);
+          return;
+        }
       }
 
       const clientWallet = createWalletClient({
