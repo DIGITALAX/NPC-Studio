@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Providers from "./providers";
 import Animation from "./components/Common/modules/Animation";
 import Footer from "./components/Common/modules/Footer";
+import { LOCALES } from "./lib/constants";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.npcstudio.xyz"),
@@ -26,6 +27,13 @@ export const metadata: Metadata = {
     title: "NPC Studio",
     description:
       "Equip your AI workforce. Train for less idle time. Try to survive in style.",
+  },
+  alternates: {
+    canonical: `https://npcstudio.xyz/`,
+    languages: LOCALES.reduce((acc, item) => {
+      acc[item] = `https://npcstudio.xyz/${item}/`;
+      return acc;
+    }, {} as { [key: string]: string }),
   },
   creator: "Emma-Jane MacKinnon-Lee",
   publisher: "Emma-Jane MacKinnon-Lee",
