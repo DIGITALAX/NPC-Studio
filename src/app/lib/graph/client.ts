@@ -1,20 +1,35 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
-const autographLink = new HttpLink({
-  uri: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/41wxYK53EBTYKtUAe97fHJk6mtHzm6cu9dLAC4nUiYvc`,
-});
+const getSpectatorUri = () => {
+  if (typeof window === "undefined") {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    return `${baseUrl}/api/graphql/spectator`;
+  }
+  return "/api/graphql/spectator";
+};
 
-export const autographClient = new ApolloClient({
-  link: autographLink,
-  cache: new InMemoryCache(),
-});
-
-const spectatorLink = new HttpLink({
-  uri: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/2gspF99UDwMQFt3dcVeTogWcMWPspQFFDf828Zv2RNMH`,
+const httpLinkSpectator = new HttpLink({
+  uri: getSpectatorUri(),
 });
 
 export const spectatorClient = new ApolloClient({
-  link: spectatorLink,
+  link: httpLinkSpectator,
   cache: new InMemoryCache(),
 });
 
+const getAutographUri = () => {
+  if (typeof window === "undefined") {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    return `${baseUrl}/api/graphql/autograph`;
+  }
+  return "/api/graphql/autograph";
+};
+
+const httpLinkAutograph = new HttpLink({
+  uri: getAutographUri(),
+});
+
+export const autographClient = new ApolloClient({
+  link: httpLinkAutograph,
+  cache: new InMemoryCache(),
+});
