@@ -508,3 +508,12 @@ export type RopasProps = {
   articuloIndice: number;
   setArticuloIndice: (e: SetStateAction<number>) => void;
 };
+
+
+export interface EncryptedData {
+  [address: string]: {
+    ephemPublicKey: string;
+    iv: string;
+    ciphertext: string;
+  };
+}

@@ -36,7 +36,7 @@ const Pedidos: FunctionComponent<{ dict: any }> = ({ dict }) => {
     todosLosPedidos,
     setPedidoAbierto,
     pedidoAbierto,
-  } = usePedidos(address);
+  } = usePedidos(address, dict);
 
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start overflow-y-scroll bg-black gap-8 p-4">

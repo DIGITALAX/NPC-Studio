@@ -1,35 +1,28 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  checkAndSignAuthMessage,
-  LitNodeClient,
-  uint8arrayToString,
-} from "@lit-protocol/lit-node-client";
-import { EncryptedDetails, Pedido, SubOrder } from "../types/orders.types";
+import { Pedido, SubOrder } from "../types/orders.types";
 import { INFURA_GATEWAY, numberToAutograph } from "@/app/lib/constants";
 import {
   AutographType,
   Catalogo,
   Coleccion,
+  EncryptedData,
 } from "../../Common/types/common.types";
 import { ModalContext } from "@/app/providers";
-import { LIT_NETWORK } from "@lit-protocol/constants";
 import { getPedidos } from "../../../../../graphql/queries/getPedidos";
+import { decryptData } from "@/app/lib/helpers/encryption";
 
-const usePedidos = (address: `0x${string}` | undefined) => {
+const usePedidos = (address: `0x${string}` | undefined, dict: any) => {
   const contexto = useContext(ModalContext);
   const [pedidosCargando, setPedidosCargando] = useState<boolean>(false);
   const [descifrarCargando, setDescifrarCargando] = useState<boolean[]>([]);
   const [todosLosPedidos, setTodosLosPedidos] = useState<Pedido[]>([]);
   const [pedidoAbierto, setPedidoAbierto] = useState<boolean[]>([]);
-  const client = new LitNodeClient({
-    litNetwork: LIT_NETWORK.Datil,
-    debug: false,
-  });
+  const [privateKey, setPrivateKey] = useState<string | null>(null);
 
   const manejarDescifrar = async (indice: number) => {
     if (
-      !(todosLosPedidos[indice]?.fulfillment as EncryptedDetails)?.ciphertext ||
-      !(todosLosPedidos[indice]?.fulfillment as EncryptedDetails)
+      !(todosLosPedidos[indice]?.fulfillment as EncryptedData)?.ciphertext ||
+      !(todosLosPedidos[indice]?.fulfillment as EncryptedData)
         ?.dataToEncryptHash ||
       !address ||
       todosLosPedidos[indice]?.decrypted
@@ -43,30 +36,30 @@ const usePedidos = (address: `0x${string}` | undefined) => {
       return arr;
     });
     try {
-      let nonce = await client.getLatestBlockhash();
+      let key = privateKey;
 
-      const authSig = await checkAndSignAuthMessage({
-        chain: "polygon",
-        nonce,
-      });
+      if (!key) {
+        const promptMessage = dict?.Home?.decryptPrompt;
+        const promptValue = window.prompt(promptMessage);
 
-      await client.connect();
-      const { decryptedData } = await client.decrypt({
-        dataToEncryptHash: (
-          todosLosPedidos[indice]?.fulfillment as EncryptedDetails
-        ).dataToEncryptHash,
-        accessControlConditions: (
-          todosLosPedidos[indice]?.fulfillment as EncryptedDetails
-        ).accessControlConditions,
-        chain:
-          (todosLosPedidos[indice]?.fulfillment as EncryptedDetails).chain ||
-          "polygon",
-        ciphertext: (todosLosPedidos[indice]?.fulfillment as EncryptedDetails)
-          .ciphertext,
-        authSig,
-      });
+        if (!promptValue) {
+          return;
+        }
 
-      const fulfillment = await JSON.parse(uint8arrayToString(decryptedData));
+        key = promptValue.trim();
+
+        if (!key.startsWith("0x")) {
+          key = `0x${key}`;
+        }
+
+        setPrivateKey(key);
+      }
+
+      const fulfillment = await decryptData(
+        todosLosPedidos[indice]?.fulfillment as EncryptedData,
+        key,
+        address
+      );
 
       setTodosLosPedidos((prev) => {
         const pedidos = [...prev];
@@ -109,7 +102,6 @@ const usePedidos = (address: `0x${string}` | undefined) => {
         address!,
         contexto?.lensConectado?.profile?.address ?? address
       );
-
 
       const pedidos = await Promise.all(
         datos?.data?.orderCreateds.map(async (pedido: any, i: number) => {

@@ -1,14 +1,7 @@
-import { AccessControlConditions } from "@lit-protocol/types";
 import { DecodedMessage } from "@xmtp/browser-sdk";
 import { RefObject, SetStateAction } from "react";
-import { Catalogo, Coleccion } from "../../Common/types/common.types";
+import { Catalogo, Coleccion, EncryptedData } from "../../Common/types/common.types";
 
-export interface EncryptedDetails {
-  ciphertext: string;
-  dataToEncryptHash: string;
-  chain: string;
-  accessControlConditions: AccessControlConditions;
-}
 
 export interface Pedido {
   total: string;
@@ -16,7 +9,7 @@ export interface Pedido {
   blockNumber: string;
   blockTimestamp: string;
   transactionHash: string;
-  fulfillment?: Details | EncryptedDetails;
+  fulfillment?: Details | EncryptedData;
   subOrders: SubOrder[];
   decrypted: boolean;
 }

@@ -293,7 +293,8 @@
     "sceneTotal": "Escena Total",
     "spriteTotal": "Hoja de Sprite Total",
     "tokenTotal": "Tokenizador Total",
-    "trainTotal": "Entrenamiento Total"
+    "trainTotal": "Entrenamiento Total",
+    "decryptPrompt": "Ingresa la clave privada de tu billetera para descifrar tus datos de cumplimiento.\n\nEsta interfaz es completamente de código abierto, se ejecuta solo en tu navegador y nunca almacena tu clave. Asegúrate de estar en un entorno seguro antes de ingresarla."
   },
   "Nav": {
     "lan": "Elegir Idioma"

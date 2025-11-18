@@ -17,7 +17,12 @@ import { SetStateAction, useContext, useEffect, useState } from "react";
 import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { useAccount } from "wagmi";
 import { Details } from "../../Orders/types/orders.types";
-import { AUTOGRAPH_ACTION, AUTOGRAPH_MARKET } from "@/app/lib/constants";
+import {
+  AUTOGRAPH_ACTION,
+  AUTOGRAPH_MARKET,
+  DIGITALAX_ADDRESS,
+  DIGITALAX_PUBLIC_KEY,
+} from "@/app/lib/constants";
 import {
   AutographType,
   Catalogo,
@@ -27,9 +32,7 @@ import {
 } from "../types/common.types";
 import pollResult from "@/app/lib/helpers/pollResult";
 import { Notificacion } from "../../Modals/types/modals.types";
-import { cifrarElementos } from "@/app/lib/helpers/cifrarElementos";
-import { LitNodeClient } from "@lit-protocol/lit-node-client";
-import { LIT_NETWORK } from "@lit-protocol/constants";
+import { encryptForMultipleRecipients, getPublicKeyFromSignature } from "@/app/lib/helpers/encryption";
 
 const usePublicacion = (
   dict: any,
@@ -50,10 +53,6 @@ const usePublicacion = (
   const publicClient = createPublicClient({
     chain: chains.mainnet,
     transport: http("https://rpc.lens.xyz"),
-  });
-  const client = new LitNodeClient({
-    litNetwork: LIT_NETWORK.Datil,
-    debug: false,
   });
   const { address } = useAccount();
   const contexto = useContext(ModalContext);
@@ -142,22 +141,52 @@ const usePublicacion = (
           setPublicacionCargando(false);
           return;
         }
-        const cadena = await cifrarElementos(
-          client,
-          [articuloSeleccionado[articuloIndice]].map((el) => ({
-            color: el.color,
-            cantidad: el.cantidad,
-            tamano: el.tamano,
-            id: (el.elemento as Coleccion)?.coleccionId || 0,
-            tipo: el.tipo,
-            moneda: el.token,
-          })),
+
+        const clientWallet = createWalletClient({
+          chain: chains.mainnet,
+          transport: custom((window as any).ethereum),
+        });
+
+        const message = "Sign this message to encrypt your fulfillment details";
+        const signature = await clientWallet.signMessage({
+          account: address,
+          message,
+        });
+
+        const buyerPublicKey = await getPublicKeyFromSignature(
+          message,
+          signature
+        );
+
+        const encryptedData = await encryptForMultipleRecipients(
           {
+            elementos: [articuloSeleccionado[articuloIndice]].map((el) => ({
+              color: el.color,
+              cantidad: el.cantidad,
+              tamano: el.tamano,
+              id: (el.elemento as Coleccion)?.coleccionId || 0,
+              tipo: el.tipo,
+              moneda: el.token,
+            })),
             ...cumplimiento,
             account: contexto?.lensConectado?.profile?.address,
           },
-          address
+          [
+            { address, publicKey: buyerPublicKey },
+            { address: DIGITALAX_ADDRESS, publicKey: DIGITALAX_PUBLIC_KEY },
+          ]
         );
+
+        const ipfsRes = await fetch("/api/ipfs", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(encryptedData),
+        });
+        const json = await ipfsRes.json();
+
+        const cadena = "ipfs://" + json?.cid;
 
         if (!cadena) {
           setPublicacionCargando(false);

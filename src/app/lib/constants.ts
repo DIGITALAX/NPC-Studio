@@ -10,14 +10,16 @@ export const AUTOGRAPH_MARKET: `0x${string}` =
   "0x67819a22df4232726C7B911C1D4d5c06Cf080Cf8";
 export const INBOX_ID: string =
   "e0deaff9be0da5309d2b19bcb0c133397b2bb20be563ab038e265b0800ddcf57";
-export const DIGITALAX_ADDRESS: `0x${string}` =
-  "0xAA3e5ee4fdC831e5274FE7836c95D670dC2502e6";
 export const AUTOGRAPH_ACTION: `0x${string}` =
   "0x92A1d3260559D755D7EdbFcb0A2280C7506937c7";
 export const AU_ADDRESS: `0x${string}` =
   "0x82C6380105eb593995A674ca25ECA8a8CA5434D7";
 export const SPECTATOR_REWARDS: `0x${string}` =
   "0x176e1c5083565d3D9591BDEE12F5f4D47B0Eb19E";
+export const DIGITALAX_ADDRESS: `0x${string}` =
+  "0xdd35935c12e3748704c96492e5565d34dae73de7";
+export const DIGITALAX_PUBLIC_KEY: string =
+  "0x04d9824e95252fda536edb1e80797e5ba885d2a98e1a6d880ab9ccbe050aa850c8d0fdb95f347256c907468b74e058181b14edc8acb3f3b178f2b7946bb9170ebe";
 
 // export const DELTA_ADDRESS: `0x${string}` = "0x";
 // export const FASHION_ADDRESS: `0x${string}` = "0x";
