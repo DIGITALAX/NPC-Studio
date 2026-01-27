@@ -2,9 +2,10 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
+import { injected } from "wagmi/connectors";
 import { createContext, SetStateAction, useEffect, useState } from "react";
 import { Context, mainnet, Post, PublicClient } from "@lens-protocol/client";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { ConnectKitProvider } from "connectkit";
 import { StorageClient } from "@lens-chain/storage-client";
 import {
   Coleccion,
@@ -18,20 +19,21 @@ import {
 import { Notificacion } from "./components/Modals/types/modals.types";
 import { chains } from "@lens-chain/sdk/viem";
 
-export const config = createConfig(
-  getDefaultConfig({
-    appName: "NPC Studio",
-    walletConnectProjectId: process.env
-      .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-    appUrl: "https://npcstudio.xyz",
-    appIcon: "https://npcstudio.xyz/favicon.ico",
-    chains: [chains.mainnet],
-    transports: {
-      [chains.mainnet.id]: http("https://rpc.lens.xyz"),
-    },
-    ssr: true,
-  })
-);
+const connectors = [
+  injected({
+    shimDisconnect: true,
+    target: "metaMask",
+  }),
+];
+
+export const config = createConfig({
+  chains: [chains.mainnet],
+  connectors,
+  transports: {
+    [chains.mainnet.id]: http("https://rpc.lens.xyz"),
+  },
+  ssr: true,
+});
 
 const queryClient = new QueryClient();
 
